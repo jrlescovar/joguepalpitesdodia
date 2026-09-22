@@ -1,0 +1,19 @@
+node_modules/
+dist/
+.env*
+!.env.example
+.env.production
+*.pem
+*.key
+supabase/.temp/
+.firebase/
+.firebase-cli-temp/
+*-debug.log
+*-debug.*.log
+test-results/
+playwright-report/
+.runtime/
+*.tsbuildinfo
+
+# Private production operations stay local.
+scripts/data-fixes/
