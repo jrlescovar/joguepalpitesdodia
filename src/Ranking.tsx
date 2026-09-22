@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowLeft, Check, Medal, RefreshCw, Trophy } from 'lucide-react';
 import { call, errorMessage } from './backend';
-import { seasonDaysRemaining } from './domain';
+import { SEASON_END_AT, seasonDaysRemaining } from './domain';
 import type { Profile, PublicProfile } from './types';
 import { Avatar, ErrorNotice } from './components';
 import ProfileOverview from './ProfileOverview';
@@ -82,7 +82,7 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, onO
   }, [profile.uid, profile.green, reload]);
 
   const seasonDays = seasonDaysRemaining(now);
-  const seasonEnded = now.getTime() >= Date.parse('2026-10-31T02:59:59Z');
+  const seasonEnded = now.getTime() >= Date.parse(SEASON_END_AT);
   const refreshing = playersLoading || rankLoading;
   const openPlayer = (player: PublicProfile, position: number) => {
     if (player.uid === profile.uid) { onOpenOwnProfile(); return; }

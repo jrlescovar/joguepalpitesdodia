@@ -15,10 +15,10 @@ describe('regras do jogo',()=>{
     expect(dailyAfter('2026-09-21','2026-09-25',1,2,'2026-09-29')).toEqual({dailyStreakCurrent:1,dailyStreakMax:2,lastPlayedDate:'2026-09-29'});
     expect(visibleDaily(1,'2026-09-29','2026-09-25')).toBe(1);
   });
-  it('mostra 39 dias em 21 de setembro até o fim da temporada',()=>{
-    expect(seasonDaysRemaining(new Date('2026-09-22T02:59:00Z'))).toBe(39);
-    expect(seasonDaysRemaining(new Date('2026-10-30T15:00:00Z'))).toBe(0);
-    expect(seasonDaysRemaining(new Date('2026-11-01T15:00:00Z'))).toBe(0);
+  it('mostra 19 dias em 22 de setembro até o fim da temporada',()=>{
+    expect(seasonDaysRemaining(new Date('2026-09-22T15:00:00Z'))).toBe(19);
+    expect(seasonDaysRemaining(new Date('2026-10-11T15:00:00Z'))).toBe(0);
+    expect(seasonDaysRemaining(new Date('2026-10-12T15:00:00Z'))).toBe(0);
   });
   it('valida comprimento, caracteres e nomes reservados',()=>{for(const n of ['ab','nome-muito-longo','João','a b','ADMIN','suporte','a'.repeat(13)]) expect(validUsername(n)).toBe(false);for(const n of ['AbC','joao_1','a'.repeat(12)]) expect(validUsername(n)).toBe(true);});
 });

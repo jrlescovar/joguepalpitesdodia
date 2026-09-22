@@ -24,9 +24,10 @@ export function dailyAfter(lastPrediction: string|null, previousPrediction: stri
 export function visibleDaily(current: number, lastPrediction: string|null|undefined, lastClosedPrediction: string|null) {
   return lastClosedPrediction === null || (lastPrediction !== null && lastPrediction !== undefined && lastPrediction >= lastClosedPrediction) ? current : 0;
 }
-export const SEASON_END_DAY = '2026-10-30';
+export const SEASON_END_DAY = '2026-10-11';
+export const SEASON_END_AT = '2026-10-12T02:59:59Z';
 export function seasonTimeRemaining(now: Date) {
-  const seconds = Math.max(0,Math.floor((Date.parse('2026-10-31T02:59:59Z')-now.getTime())/1000));
+  const seconds = Math.max(0,Math.floor((Date.parse(SEASON_END_AT)-now.getTime())/1000));
   return {days:Math.floor(seconds/86400),hours:Math.floor(seconds%86400/3600),minutes:Math.floor(seconds%3600/60),seconds:seconds%60};
 }
 export function seasonDaysRemaining(now: Date): number {
