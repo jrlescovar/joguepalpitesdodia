@@ -1,0 +1,28 @@
+.login-redesign .public-header { height: 88px; }
+.login-beta { border: 1px solid #496184; border-radius: 999px; padding: 7px 11px; color: #a9cdfd; font-size: 10px; font-weight: 750; letter-spacing: .12em; }
+.login-redesign .login-hero { max-width: 650px; min-height: 0; padding: 64px 0 76px; }
+.login-redesign .login-copy { max-width: 565px; }
+.login-redesign .login-copy h1 { margin-bottom: 22px; font-size: clamp(53px, 5.7vw, 78px); line-height: 1.02; letter-spacing: -.055em; }
+.login-redesign .login-copy h1 span { color: var(--accent); }
+.login-redesign .login-copy .lead { max-width: 510px; margin-bottom: 30px; font-size: 17px; line-height: 1.6; }
+.login-redesign .google-button { min-height: 58px; border-radius: 14px; font-size: 15px; }
+.login-redesign .google-button:focus-visible { outline: 3px solid #94c6ff; outline-offset: 3px; }
+.login-redesign .login-note { margin-top: 14px; font-size: 12px; }
+.login-redesign .how-it-works { padding: 30px 0; }
+.login-redesign .how-it-works article { align-items: center; }
+.login-redesign .how-it-works .step-arrow { display: none; }
+@media (max-width: 900px) {
+  .login-redesign .login-hero { padding: 48px 0 54px; }
+  .login-redesign .login-copy { max-width: 640px; }
+}
+@media (max-width: 700px) {
+  .login-redesign .public-header { height: 76px; }
+  .login-beta { font-size: 9px; padding: 6px 8px; }
+  .login-redesign .login-hero { padding: 36px 0 40px; }
+  .login-redesign .login-copy .eyebrow { margin-bottom: 18px; font-size: 10px; }
+  .login-redesign .login-copy h1 { font-size: clamp(46px, 12.5vw, 62px); margin-bottom: 17px; }
+  .login-redesign .login-copy .lead { margin-bottom: 25px; font-size: 15px; line-height: 1.55; }
+  .login-redesign .google-button { min-height: 56px; }
+  .login-redesign .how-it-works { gap: 20px; }
+}
+@media (max-width: 350px) { .login-redesign .login-copy h1 { font-size: 43px; } }

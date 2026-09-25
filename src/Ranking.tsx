@@ -14,7 +14,7 @@ function RankingSkeleton() {
   </div>;
 }
 
-export default function Ranking({ profile, serverTime, lastClosedPrediction, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
+export default function Ranking({ profile, serverTime, lastClosedPrediction, refreshTick, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; refreshTick: number; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
   const [players, setPlayers] = useState<PublicProfile[]>([]);
   const [playersLoading, setPlayersLoading] = useState(true);
   const [rankLoading, setRankLoading] = useState(true);
@@ -79,7 +79,7 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, onO
       .finally(() => { if (active) setRankLoading(false); });
 
     return () => { active = false; };
-  }, [profile.uid, profile.green, reload]);
+  }, [profile.uid, profile.green, reload, refreshTick]);
 
   const seasonDays = seasonDaysRemaining(now);
   const seasonEnded = now.getTime() >= Date.parse(SEASON_END_AT);
@@ -94,18 +94,18 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, onO
     .filter(Boolean)
     .map(player => ({ player, position: players.indexOf(player) + 1 }));
 
-  if (selected) return <div className="public-profile-view">
-    <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao ranking</button>
-    <div className="page-heading"><div><div className="eyebrow">JOGADOR DO RANKING</div><h1>Perfil público<span>.</span></h1></div></div>
+    if (selected) return <div className="public-profile-view">
+    <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao Torneio</button>
+    <div className="page-heading"><div><div className="eyebrow">JOGADOR DO TORNEIO</div><h1>Perfil público<span>.</span></h1></div></div>
     <ProfileOverview profile={selected.player} lastClosedPrediction={lastClosedPrediction}/>
   </div>;
 
   return <>
     <div className="page-heading">
       <div>
-        <h1>Ranking Edição Beta</h1>
+        <h1>Torneio Edição Beta<span>.</span></h1>
       </div>
-      <button className="icon-button" aria-label={refreshing ? 'Atualizando ranking' : 'Atualizar ranking'} aria-busy={refreshing} onClick={() => setReload(value => value + 1)} disabled={refreshing}>
+      <button className="icon-button" aria-label={refreshing ? 'Atualizando Torneio' : 'Atualizar Torneio'} aria-busy={refreshing} onClick={() => setReload(value => value + 1)} disabled={refreshing}>
         <RefreshCw size={19} className={refreshing ? 'spin' : ''}/>
       </button>
     </div>
@@ -123,10 +123,10 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, onO
         <div className="season-row prize-row"><span>Premiação</span><strong>R$ 100,00</strong></div>
       </section>
     </div>
-    {!playersLoading && podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
+    {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
       <div className="podium-grid">{podium.map(({ player, position }) => <button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} key={player.uid} className={`podium-place place-${position}`} onClick={() => openPlayer(player, position)} aria-label={`Abrir perfil de ${player.username}, posição ${position}`}>
         <span className="podium-medal"><Medal size={21}/>#{position}</span>
-        <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl}/><strong>@{player.username}</strong><small>{player.green}</small>
+        <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}>@{player.username}</strong><small>{player.green}</small>
       </button>)}</div>
     </section>}
     <div className="card ranking-card ranking-continuation" aria-busy={playersLoading}>
@@ -135,13 +135,13 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, onO
         <ol className="ranking-list">
           {players.slice(3).map((player, index) => { const position = index + 4; return <li key={player.uid} className={player.uid === profile.uid ? 'is-me' : ''}><button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} className="rank-player-button" aria-label={`Abrir perfil de ${player.username}, posição ${position}`} onClick={() => openPlayer(player, position)}>
             <span className={`rank-number rank-${position}`}>#{position}</span>
-            <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl}/>
-            <div className="rank-name"><strong>@{player.username}{player.uid === profile.uid && <small>VOCÊ</small>}</strong></div>
+            <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/>
+            <div className="rank-name"><strong><span className={`pass-name-${player.passNameStyle ?? 'none'}`}>@{player.username}</span>{player.uid === profile.uid && <small>VOCÊ</small>}</strong></div>
             <strong className="rank-greens">{player.green}<Check size={13}/></strong>
           </button></li>; })}
         </ol>
         {playersLoading && players.length === 0 && <RankingSkeleton/>}
-        {!playersLoading && !error && players.length === 0 && <div className="daily-empty"><Trophy size={34}/><h2>O ranking começa aqui.</h2><p>Os jogadores aparecerão assim que criarem seus perfis.</p></div>}
+        {!playersLoading && !error && players.length === 0 && <div className="daily-empty"><Trophy size={34}/><h2>O torneio começa aqui.</h2><p>Os jogadores aparecerão assim que criarem seus perfis.</p></div>}
     </div>
   </>;
 }

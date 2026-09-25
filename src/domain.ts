@@ -24,6 +24,21 @@ export function dailyAfter(lastPrediction: string|null, previousPrediction: stri
 export function visibleDaily(current: number, lastPrediction: string|null|undefined, lastClosedPrediction: string|null) {
   return lastClosedPrediction === null || (lastPrediction !== null && lastPrediction !== undefined && lastPrediction >= lastClosedPrediction) ? current : 0;
 }
+export const GREEN_MEDAL_THRESHOLDS = [1, 10, 25, 50, 100] as const;
+export function hitRate(greens: number, reds: number | undefined): number | null {
+  if (typeof reds !== 'number' || greens + reds === 0) return null;
+  return Math.round(greens / (greens + reds) * 100);
+}
+export function greenMedalProgress(greens: number) {
+  const level = GREEN_MEDAL_THRESHOLDS.filter(threshold => greens >= threshold).length;
+  const next = GREEN_MEDAL_THRESHOLDS[level] ?? null;
+  return {
+    level,
+    next,
+    remaining: next === null ? 0 : next - greens,
+    percent: next === null ? 100 : Math.min(100, Math.round(greens / next * 100)),
+  };
+}
 export const SEASON_END_DAY = '2026-10-11';
 export const SEASON_END_AT = '2026-10-12T02:59:59Z';
 export function seasonTimeRemaining(now: Date) {

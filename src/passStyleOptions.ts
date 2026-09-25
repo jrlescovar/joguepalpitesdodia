@@ -1,0 +1,26 @@
+import type { PassNameStyle } from './types';
+
+export const passStyleOptions: [PassNameStyle, string][] = [
+  ['none', 'Normal'], ['gold', 'Dourado'], ['blood', 'Red'],
+  ['purple', 'Purple'], ['green', 'Verde'], ['dark-blue', 'Azul escuro'],
+  ['orange', 'Laranja'], ['pink', 'Rosa'], ['sunset', 'Amarelo · Laranja · Rosa'],
+  ['ember', 'Branco · Marrom · Vermelho'],
+  ['rose-purple', 'Rosinha · Rosa · Roxo'], ['midnight-electric', 'Preto · Roxo · Azul elétrico'],
+  ['green-gold', 'Verde escuro · Verde-limão · Amarelo'], ['lilac-silver', 'Lilás · Azul · Prata'],
+  ['wine-rose', 'Vinho · Magenta · Rosa claro'], ['ice-blue', 'Gelo · Branco · Azul claro'],
+  ['navy-pink', 'Azul-marinho · Violeta · Pink'], ['graphite-silver', 'Grafite · Prata · Branco'],
+  ['rainbow', 'Arco-íris'],
+  ['royal-sapphire', 'Safira · Azul · Dourado'], ['sunset-ocean', 'Pôr do sol · Rosa · Oceano'],
+  ['neon-circuit', 'Limão neon · Ciano · Índigo'], ['coral-lilac', 'Coral · Rosé · Lilás'],
+  ['legend-nebula', 'Nebulosa'], ['legend-abyss', 'Abismo'],
+  ['legend-prism', 'Prisma'], ['legend-solar', 'Solar'],
+  ['legend-ruby-eclipse', 'Eclipse Rubro'],
+  ['myth-petroleum-bronze', 'Petróleo e Bronze'],
+  ['myth-burgundy-sand', 'Bordô e Areia'],
+  ['myth-cerulean-rust', 'Cerúleo e Ferrugem'],
+  ['myth-plum-copper', 'Ameixa e Cobre rosado'],
+  ['myth-jade-mauve', 'Jade e Malva'],
+  ['myth-olive-rose-graphite', 'Oliva, Rosa e Grafite'],
+  ['myth-fuchsia-petroleum', 'Fúcsia e Petróleo'],
+  ['rare-plum-beige', 'Ameixa e Bege'],
+];

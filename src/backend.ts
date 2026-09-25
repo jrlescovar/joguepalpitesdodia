@@ -36,7 +36,7 @@ function prediction(value: unknown): Prediction | null {
   if (!value || typeof value !== 'object') return null;
   const row = value as Record<string, unknown>;
   return {
-    dayId: String(row.dayId), title: String(row.title), description: String(row.description ?? ''),
+    dayId: String(row.dayId), slot: Number(row.slot ?? 0), title: String(row.title), description: String(row.description ?? ''),
     options: row.options as Prediction['options'], closesAt: new AppTimestamp(String(row.closesAt)),
     status: row.status as Prediction['status'],
     ...(row.winningOptionId ? { winningOptionId: String(row.winningOptionId) } : {}),
@@ -62,29 +62,56 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'createAccount': return rpc<T>('claim_or_create_profile', { p_username: data.username, p_avatar_color: data.avatarColor });
     case 'checkUsername': return rpc<T>('check_username', { p_username: data.username });
     case 'updateProfile': return rpc<T>('update_profile_with_avatar', { p_username: data.username, p_avatar_color: data.avatarColor, p_use_google_avatar: data.useGoogleAvatar });
-    case 'getCurrentPrediction': return prediction(await rpc('get_current_prediction')) as T;
-    case 'getPick': return rpc<T>('get_pick', { p_day_id: data.dayId });
+    case 'getCurrentPredictions': return predictions(await rpc('get_current_predictions')) as T;
+    case 'getRecentResults': return predictions(await rpc('get_recent_results')) as T;
+    case 'getPick': return rpc<T>('get_pick_for_game', { p_day_id: data.dayId, p_slot: data.slot });
     case 'getLastClosedPrediction': return rpc<T>('get_last_closed_prediction');
-    case 'submitPick': return rpc<T>('submit_pick', { p_day_id: data.dayId, p_option_id: data.optionId });
+    case 'submitPick': return rpc<T>('submit_pick_for_game', { p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });
     case 'getRankingTop10': return rpc<T>('get_ranking_top10');
+    case 'getGlobalRankTop10': return rpc<T>('get_global_rank_top10');
+    case 'getMyGlobalRank': return rpc<T>('get_my_global_rank');
     case 'getMyRank': return rpc<T>('get_my_rank');
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });
+    case 'getPassStatus': return rpc<T>('get_pass_status');
+    case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
     case 'getAdminState': {
       const state = await rpc<{ registrationsOpen: boolean; predictions: unknown[] }>('get_admin_state');
       return { ...state, predictions: predictions(state.predictions) } as T;
     }
     case 'setRegistrations': return rpc<T>('set_registrations', { p_open: data.open });
-    case 'publishPrediction': return rpc<T>('publish_prediction', { p_day_id: data.dayId, p_title: data.title, p_description: data.description, p_options: data.options, p_closes_at: data.closesAt });
-    case 'settlePrediction': return rpc<T>('settle_prediction', { p_day_id: data.dayId, p_winning_option_id: data.winningOptionId });
+    case 'publishPrediction': return rpc<T>('publish_prediction_ranked', { p_day_id: data.dayId, p_slot: data.slot, p_title: data.title, p_description: data.description, p_options: data.options, p_rank_points: data.rankPoints, p_closes_at: data.closesAt });
+    case 'setOpenPredictionRankPoints': return rpc<T>('set_open_prediction_rank_points', { p_day_id: data.dayId, p_slot: data.slot, p_rank_points: data.rankPoints });
+    case 'settlePrediction': return rpc<T>('settle_prediction_for_slot', { p_day_id: data.dayId, p_slot: data.slot, p_winning_option_id: data.winningOptionId });
     case 'getAdminProfile': return rpc<T>('get_admin_profile', { p_search: data.search });
+    case 'getAdminPassGrant': return rpc<T>('admin_get_pass_grant', { p_profile_id: data.uid });
+    case 'setAdminPassGrant': return rpc<T>('admin_set_pass_grant', { p_profile_id: data.uid, p_days: data.days });
     case 'adminRemoveProfilePhoto': return rpc<T>('admin_remove_profile_photo', { p_profile_id: data.uid });
-    case 'adminUpdateProfile': return rpc<T>('admin_update_profile', {
+    case 'adminUpdateProfile': return rpc<T>('admin_update_profile_ranked', {
       p_profile_id: data.uid, p_username: data.username, p_avatar_color: data.avatarColor,
-      p_level: data.level, p_xp: data.xp, p_green: data.green, p_red: data.red,
+      p_level: data.level, p_xp: data.xp, p_rank_points: data.rankPoints, p_green: data.green, p_red: data.red,
       p_green_streak_current: data.greenStreakCurrent, p_green_streak_max: data.greenStreakMax,
     });
     default: throw Object.assign(new Error('Operação não encontrada.'), { code: 'app/validation' });
   }
+}
+
+export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix') {
+  const { data, error } = await supabase.functions.invoke<{ url?: string; error?: string }>(destination);
+  if (error) {
+    const response = (error as { context?: unknown }).context;
+    if (response instanceof Response) {
+      const body = await response.clone().json().catch(() => null) as { error?: unknown } | null;
+      if (typeof body?.error === 'string') throw new Error(body.error);
+      throw new Error(`Não foi possível abrir a assinatura (HTTP ${response.status}).`);
+    }
+    throw error;
+  }
+  if (!data?.url) throw new Error(data?.error || 'Não foi possível abrir a assinatura.');
+  const target = new URL(data.url);
+  if (target.protocol !== 'https:' || (target.hostname !== 'checkout.stripe.com' && target.hostname !== 'billing.stripe.com')) {
+    throw new Error('Destino de pagamento inválido.');
+  }
+  window.location.assign(target.href);
 }
 
 export function errorMessage(error: unknown): string {
@@ -93,6 +120,8 @@ export function errorMessage(error: unknown): string {
     'app/not-configured': 'A conexão com o novo banco ainda precisa ser configurada.',
     'over_email_send_rate_limit': 'Muitas tentativas de acesso. Aguarde alguns minutos.',
     'validation_failed': 'Confira os dados e tente novamente.',
+    'PGRST121': 'Muitas requisições. Aguarde um minuto e tente novamente.',
+    'PT429': 'Muitas requisições. Aguarde um minuto e tente novamente.',
   };
   if (known[value.code ?? '']) return known[value.code ?? ''];
   if (value.message && !/jwt|postgres|relation|schema|permission denied for/i.test(value.message)) return value.message;

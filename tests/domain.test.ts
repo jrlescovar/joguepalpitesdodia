@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { xpAfter,dayAt,previousDay,dailyAfter,visibleDaily,resultAfter,validUsername,seasonDaysRemaining } from '../src/domain';
+import { xpAfter,dayAt,previousDay,dailyAfter,visibleDaily,resultAfter,validUsername,seasonDaysRemaining,hitRate,greenMedalProgress } from '../src/domain';
 describe('regras do jogo',()=>{
   it('primeiro green chega ao nível 2 com 10/30 XP',()=>expect(xpAfter(1,0,25)).toEqual({level:2,xp:10}));
   it('transfere XP por vários níveis',()=>expect(xpAfter(1,0,100)).toEqual({level:4,xp:10}));
@@ -21,4 +21,11 @@ describe('regras do jogo',()=>{
     expect(seasonDaysRemaining(new Date('2026-10-12T15:00:00Z'))).toBe(0);
   });
   it('valida comprimento, caracteres e nomes reservados',()=>{for(const n of ['ab','nome-muito-longo','João','a b','ADMIN','suporte','a'.repeat(13)]) expect(validUsername(n)).toBe(false);for(const n of ['AbC','joao_1','a'.repeat(12)]) expect(validUsername(n)).toBe(true);});
+  it('calcula acertos apenas sobre palpites resolvidos',()=>{expect(hitRate(1,1)).toBe(50);expect(hitRate(2,1)).toBe(67);expect(hitRate(0,0)).toBeNull();expect(hitRate(1,undefined)).toBeNull();});
+  it('desbloqueia e evolui a medalha de Greens nos cinco marcos',()=>{
+    for (const [greens,level,next] of [[0,0,1],[1,1,10],[9,1,10],[10,2,25],[25,3,50],[50,4,100],[100,5,null],[150,5,null]] as const) {
+      const medal=greenMedalProgress(greens);
+      expect([medal.level,medal.next]).toEqual([level,next]);
+    }
+  });
 });

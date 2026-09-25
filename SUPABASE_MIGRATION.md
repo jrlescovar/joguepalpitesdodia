@@ -42,3 +42,27 @@ O app evita Realtime, carrega o top 10 e consolida o resultado no banco. Para co
 ## Volta segura
 
 A migração foi publicada no Firebase Hosting após validar login Google, perfil importado, palpite, ranking, perfil público e administração. Os arquivos antigos do Firestore foram removidos do código ativo. Os perfis ainda não vinculados são associados automaticamente por e-mail no primeiro login Google.
+
+## Apostas Extras
+
+Para liberar até três jogos por data no site existente, execute "supabase/migrations/005_extra_predictions.sql" no SQL Editor do projeto Supabase antes de publicar o novo build. A migração preserva os palpites anteriores como Aposta do Dia. Cada jogo recebe palpite e resultado próprios; as Extras concedem 5 XP pelo palpite e 25 XP pelo acerto, atualizam greens, reds e sequência de greens. Somente a Aposta do Dia atualiza a sequência diária.
+
+## Desempate do ranking
+
+Depois da migração 005, execute "supabase/migrations/006_ranking_xp_tiebreak.sql" no SQL Editor. Com o mesmo número de greens, o ranking usa o XP total acumulado (incluindo níveis anteriores); se o XP também empatar, usa o menor ID de jogador. Esta migração atualiza imediatamente as posições armazenadas.
+
+## Ranking Global por pontos
+
+Depois da migração 006, execute `supabase/migrations/007_rank_points.sql` no SQL Editor antes de publicar a interface nova. Todos os jogadores começam com 0 pontosRank. O proprietário define entre 1 e 1000 pontos para cada opção ao publicar um novo desafio; apenas o palpite vencedor recebe os pontos da sua opção. Apostas publicadas antes desta migração, mesmo que ainda estejam abertas, não concedem pontosRank. O ranking global mostra os dez maiores totais, desempatando pelo menor ID de jogador. Os graus são Bronze (0–99), Prata (100–199), Ouro (200–299), Platina (300–399), Diamante (400–499) e Mestre (500+). O torneio de greens e XP permanece separado.
+
+Para mostrar a posição do próprio jogador abaixo do top 10 quando ele estiver fora dele, execute `supabase/migrations/008_my_global_rank.sql` antes de publicar a interface correspondente.
+
+Para definir pontosRank nas apostas já publicadas que ainda estejam abertas, execute `supabase/migrations/009_open_prediction_rank_points.sql` no SQL Editor. O proprietário poderá informar os pontos de cada opção em **Administração > Últimos desafios > Definir pontosRank**. A edição deixa de ser permitida quando o prazo da aposta termina; os pontos são concedidos aos palpites vencedores ao confirmar o resultado.
+
+Para corrigir a mensagem de limite de requisições do Supabase, execute `supabase/migrations/010_rate_limit_error.sql`. O limite continua por usuário, com resposta HTTP 429 válida e uma mensagem legível quando houver excesso de chamadas.
+
+Para editar PontosRank de um jogador em **Administração > Editar perfil de jogador**, execute `supabase/migrations/011_admin_profile_rank_points.sql` no SQL Editor antes de publicar a interface correspondente. Somente o proprietário pode salvar essa alteração; o valor aceito vai de 0 a 1.000.000.
+
+Para permitir até quatro Apostas Extras (cinco jogos no total) em cada data, execute `supabase/migrations/012_four_extra_predictions.sql` depois da migração 011. A Aposta do Dia continua sendo a única que altera a sequência diária; cada Extra mantém palpite, resultado, XP e PontosRank próprios.
+
+Para ampliar a capacidade para nove Apostas Extras (dez apostas por data), aplique `supabase/migrations/021_nine_extra_predictions.sql` após as migrações anteriores. A função de publicação e os limites das tabelas passam a aceitar os slots de 0 a 9; a administração carrega até 310 apostas recentes.

@@ -1,0 +1,84 @@
+import { useEffect, useState } from 'react';
+import { ArrowLeft, RefreshCw, Shield } from 'lucide-react';
+import { call, errorMessage } from './backend';
+import { Avatar, ErrorNotice } from './components';
+import ProfileOverview from './ProfileOverview';
+import { rankTier, rankTiers } from './rankTiers';
+import RankEmblem from './RankEmblem';
+import type { PublicProfile } from './types';
+
+type RankedPlayer = PublicProfile & { rankPoints: number; position: number };
+
+function RankProgress({ points, position }: { points: number; position: number | null }) {
+  const tier = rankTier(points);
+  const nextTier = rankTiers[rankTiers.findIndex(item => item.key === tier.key) + 1];
+  if (!nextTier) return <section className="card rank-progress-card rank-progress-master" aria-label="Sua patente no Ranking Global">
+    <div className="rank-progress-caption">SUA PATENTE</div>
+    <div className="rank-progress-master-content"><RankEmblem points={points}/><div><strong>Mestre</strong><span>{points} pontos</span></div><div className="rank-progress-position"><small>POSIÇÃO GLOBAL</small><strong>{position === null ? '—' : `#${position}`}</strong></div></div>
+  </section>;
+  const earned = points - tier.min;
+  const needed = nextTier.min - tier.min;
+  return <section className="card rank-progress-card" aria-label="Progresso da sua patente">
+    <div className="rank-progress-caption">SUA PATENTE</div>
+    <div className="rank-progress-track-row">
+      <div className="rank-progress-tier"><RankEmblem points={points}/><strong>{tier.name}</strong></div>
+      <div className="rank-progress-center"><div className="rank-progress-bar" role="progressbar" aria-label={`Progresso para ${nextTier.name}`} aria-valuemin={0} aria-valuemax={needed} aria-valuenow={earned}><span style={{ width: `${earned / needed * 100}%` }}/></div><span>{points} - {nextTier.min}</span></div>
+      <div className="rank-progress-tier"><RankEmblem points={nextTier.min}/><strong>{nextTier.name}</strong></div>
+    </div>
+  </section>;
+}
+
+function RankingRow({ player, ownUid, onOpen }: { player: RankedPlayer; ownUid: string; onOpen: (player: RankedPlayer) => void }) {
+  const tier = rankTier(player.rankPoints);
+  return <li className={player.uid === ownUid ? 'is-me' : ''}><button type="button" onClick={() => onOpen(player)} aria-label={`Abrir perfil de ${player.username}, posição ${player.position}, rank ${tier.name}, ${player.rankPoints} pontos`}>
+    <span className="global-rank-position">#{player.position}</span>
+    <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/>
+    <span className="global-rank-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}>@{player.username}</strong></span>
+    <RankEmblem points={player.rankPoints}/>
+    <strong className="global-rank-points">{player.rankPoints}</strong>
+  </button></li>;
+}
+
+export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction, refreshTick }: { ownUid: string; ownPoints: number; lastClosedPrediction: string | null; refreshTick: number }) {
+  const [players, setPlayers] = useState<RankedPlayer[]>([]);
+  const [ownRank, setOwnRank] = useState<RankedPlayer | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [reload, setReload] = useState(0);
+  const [selected, setSelected] = useState<RankedPlayer | null>(null);
+  useEffect(() => {
+    let current = true;
+    setLoading(true); setError('');
+    Promise.all([call<RankedPlayer[]>('getGlobalRankTop10'), call<RankedPlayer | null>('getMyGlobalRank').catch(() => null)])
+      .then(([rows, own]) => { if (current) { setPlayers(rows); setOwnRank(own); } })
+      .catch(cause => { if (current) setError(errorMessage(cause)); })
+      .finally(() => { if (current) setLoading(false); });
+    return () => { current = false; };
+  }, [reload, refreshTick]);
+  async function openProfile(player: RankedPlayer) {
+    setSelected(player);
+    try {
+      const details = await call<PublicProfile | null>('getPublicProfile', { uid: player.uid });
+      if (details) setSelected(current => current?.uid === player.uid ? { ...player, ...details } : current);
+    } catch { /* The top-ten row remains available if profile details cannot load. */ }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  if (selected) return <div className="public-profile-view">
+    <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao Ranking</button>
+    <div className="page-heading"><h1>Perfil público<span>.</span></h1></div>
+    <ProfileOverview profile={selected} lastClosedPrediction={lastClosedPrediction}/>
+  </div>;
+  const ownPosition = ownRank?.position ?? players.find(player => player.uid === ownUid)?.position ?? null;
+  return <>
+    <RankProgress points={ownRank?.rankPoints ?? ownPoints} position={ownPosition}/>
+    <div className="page-heading"><div><h1>Ranking Global<span>.</span></h1></div><button className="icon-button" aria-label="Atualizar Ranking" aria-busy={loading} disabled={loading} onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>
+    <div className="card global-ranking-card" aria-busy={loading}>
+      <div className="global-ranking-heading"><span>TOP 10 / JOGADOR</span><span>PONTOS</span></div>
+      {error && <ErrorNotice message={error} retry={() => setReload(value => value + 1)}/>}
+      <ol className="global-ranking-list">{players.map(player => <RankingRow key={player.uid} player={player} ownUid={ownUid} onOpen={player => void openProfile(player)}/>)}</ol>
+      {ownRank && ownRank.position > 10 && <div className="global-ranking-own"><div className="global-ranking-own-label">SUA POSIÇÃO</div><ol className="global-ranking-list"><RankingRow player={ownRank} ownUid={ownUid} onOpen={player => void openProfile(player)}/></ol></div>}
+      {loading && players.length === 0 && <div className="global-ranking-empty" role="status">Carregando jogadores…</div>}
+      {!loading && !error && players.length === 0 && <div className="global-ranking-empty"><Shield size={28}/><p>Os jogadores aparecerão aqui quando entrarem no jogo.</p></div>}
+    </div>
+  </>;
+}

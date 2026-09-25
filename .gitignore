@@ -14,6 +14,10 @@ test-results/
 playwright-report/
 .runtime/
 *.tsbuildinfo
+logo-preview.png
+rank-preview.png
+rank-logos-v2.png
+rank-logos-v3.png
 
 # Private production operations stay local.
 scripts/data-fixes/

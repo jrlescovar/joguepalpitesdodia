@@ -1,0 +1,11 @@
+[functions.pass-checkout]
+verify_jwt = true
+
+[functions.pass-portal]
+verify_jwt = true
+
+[functions.pass-pix]
+verify_jwt = true
+
+[functions.pass-webhook]
+verify_jwt = false

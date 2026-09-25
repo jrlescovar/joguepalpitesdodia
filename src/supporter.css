@@ -1,0 +1,181 @@
+.pass-panel { position: relative; isolation: isolate; margin-top: 24px; padding: 24px; display: grid; gap: 18px; border-color: #9b772f; box-shadow: 0 0 0 1px #d7a84322, inset 0 1px 0 #f9de9550; }
+.pass-panel::before { content: ''; position: absolute; inset: -1px; border: 1px solid #f5d580; border-radius: inherit; box-shadow: 0 0 18px #e9bd6555; pointer-events: none; opacity: .12; animation: supporter-border-pulse 3s var(--ease-in-out) infinite; }
+.pass-heading { display: flex; align-items: center; gap: 14px; }
+.pass-heading > svg { color: #e9bd65; flex: none; }
+.pass-heading h2 { margin: 0; font-size: 1.2rem; }
+.pass-heading p { margin: 4px 0 0; color: #f2d18f; text-shadow: 0 0 12px #e9bd6544; }
+.pass-benefits, .pass-billing-note, .pass-current { margin: 0; line-height: 1.55; }
+.pass-benefits { padding: 2px 0 0; list-style: none; display: grid; gap: 0; }
+.pass-benefits li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid #d7a84322; }
+.pass-benefits li:last-child { border-bottom: 0; }
+.pass-benefits li > svg { color: #e4b85f; flex: none; margin-top: 4px; filter: drop-shadow(0 0 4px #e4b85f66); }
+.pass-benefits li > span { min-width: 0; }
+.pass-benefits small { color: #bdac8b; font-size: inherit; }
+.pass-panel .primary-button { background: linear-gradient(105deg, #f5d580, #dca84d); color: #291a08; border-color: #e5bd66; font-weight: 800; }
+.pass-panel .primary-button:hover:not(:disabled) { background: linear-gradient(105deg, #ffe5a1, #e9bb62); }
+.supporter-emblem { width: 44px; height: 48px; display: inline-grid; place-items: center; flex: none; color: #e7b85c; filter: drop-shadow(0 2px 6px #d99d4560); }
+.pass-panel .supporter-emblem { position: relative; isolation: isolate; filter: none; }
+.supporter-emblem svg { width: 100%; height: 100%; }
+.supporter-emblem-glow { fill: #ad702438; }
+.supporter-emblem-outline { stroke: currentColor; stroke-width: 2.3; stroke-linejoin: round; stroke-linecap: round; }
+.supporter-emblem-inner { stroke: #ffe7a9; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+.supporter-emblem-crown { fill: #ffdf8c; stroke: #ffe2a0; stroke-width: 1.2; stroke-linejoin: round; }
+@keyframes supporter-border-pulse { 50% { opacity: .58; } }
+.profile-supporter-emblem { width: 26px; height: 29px; }
+.profile-supporter-emblem { position: relative; }
+.profile-supporter-emblem::after, .pass-panel .supporter-emblem::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(100deg, #a86b12, #ffe5a1, #e4a830, #fff0bd, #a86b12);
+  background-size: 200% 100%;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%20fill%3D'none'%20stroke%3D'white'%20stroke-width%3D'4'%20stroke-linejoin%3D'round'%20stroke-linecap%3D'round'%3E%3Cpath%20d%3D'M8%2021%2021%2030%2032%208l11%2022%2013-9-5%2028H13z'%2F%3E%3Cpath%20d%3D'm19%2039%208%203%205-12%205%2012%208-3'%2F%3E%3Cpath%20d%3D'M15%2055h34'%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%20fill%3D'none'%20stroke%3D'white'%20stroke-width%3D'4'%20stroke-linejoin%3D'round'%20stroke-linecap%3D'round'%3E%3Cpath%20d%3D'M8%2021%2021%2030%2032%208l11%2022%2013-9-5%2028H13z'%2F%3E%3Cpath%20d%3D'm19%2039%208%203%205-12%205%2012%208-3'%2F%3E%3Cpath%20d%3D'M15%2055h34'%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+  animation: supporter-wave 3s linear infinite;
+}
+.pass-current { color: #86efac; font-weight: 700; }
+.pass-panel fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.pass-panel legend { font-weight: 700; margin-bottom: 12px; }
+.pass-style-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pass-style-option { min-width: 0; min-height: 78px; padding: 10px 6px; border: 1px solid #4b5563; background: #222832; color: #fff; border-radius: 14px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; cursor: pointer; }
+.pass-style-option[aria-pressed="true"] { border-color: #93c5fd; background: #263346; }
+.pass-style-option.style-category-rare { border-color: #499dff; }
+.pass-style-option.style-category-myth { border-color: #ed5b64; }
+.pass-style-option.style-category-legend { border-color: #e5bd5a; }
+.pass-name-preview { font-weight: 800; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; }
+.avatar[class*="pass-border-"]:not(.pass-border-none) { --frame-width: 3px; position: relative; isolation: isolate; overflow: visible; }
+.avatar.large[class*="pass-border-"]:not(.pass-border-none) { --frame-width: 4px; }
+.app-header .avatar-button .avatar { border: 0; }
+.avatar[class*="pass-border-"]:not(.pass-border-none)::before,
+.avatar[class*="pass-border-"]:not(.pass-border-none)::after {
+  content: ""; position: absolute; inset: calc(-1 * var(--frame-width)); border: var(--frame-width) solid transparent; border-radius: 50%; pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+.avatar[class*="pass-border-"]:not(.pass-border-none)::before { background: var(--supporter-ring) border-box; }
+.avatar[class*="pass-border-"]:not(.pass-border-none)::after {
+  background: conic-gradient(from 0deg, transparent 0deg 215deg, var(--frame-wave) 270deg, #fff 290deg, var(--frame-wave) 310deg, transparent 350deg) border-box;
+  animation: supporter-ring-travel 2.4s linear infinite;
+}
+.avatar.pass-border-gold { --frame-wave: #ffe5a1; }
+.avatar.pass-border-blood { --frame-wave: #ff7777; }
+.avatar.pass-border-purple { --frame-wave: #e8a8ff; }
+.avatar.pass-border-green { --frame-wave: #b9f7d0; }
+.avatar.pass-border-dark-blue { --frame-wave: #9fbcff; }
+.avatar.pass-border-orange { --frame-wave: #ffd1a2; }
+.avatar.pass-border-pink { --frame-wave: #ffd1ef; }
+.avatar.pass-border-sunset { --frame-wave: #fff3a6; }
+.avatar.pass-border-ember { --frame-wave: #fff4e9; }
+.avatar.pass-border-rose-purple { --frame-wave: #ffe1f3; }
+.avatar.pass-border-midnight-electric { --frame-wave: #b6c8ff; }
+.avatar.pass-border-green-gold { --frame-wave: #f4fda8; }
+.avatar.pass-border-lilac-silver { --frame-wave: #eef2ff; }
+.avatar.pass-border-wine-rose { --frame-wave: #ffd1e5; }
+.avatar.pass-border-ice-blue { --frame-wave: #fff; }
+.avatar.pass-border-navy-pink { --frame-wave: #ffb0e5; }
+.avatar.pass-border-graphite-silver { --frame-wave: #fff; }
+.avatar.pass-border-rainbow { --frame-wave: #fff; }
+.avatar.pass-border-royal-sapphire { --frame-wave: #fde68a; }
+.avatar.pass-border-sunset-ocean { --frame-wave: #bae6fd; }
+.avatar.pass-border-neon-circuit { --frame-wave: #e9ff9a; }
+.avatar.pass-border-coral-lilac { --frame-wave: #f5d0fe; }
+.avatar.pass-border-gold { --supporter-ring: linear-gradient(100deg, #a86b12, #ffe5a1, #e4a830, #fff0bd, #a86b12); }
+.avatar.pass-border-blood { --supporter-ring: linear-gradient(100deg, #69000a, #ff7777, #a50016, #69000a); }
+.avatar.pass-border-purple { --supporter-ring: linear-gradient(100deg, #4b126a, #e8a8ff, #7620a7, #4b126a); }
+.avatar.pass-border-green { --supporter-ring: linear-gradient(100deg, #21764e, #b9f7d0, #31c77f, #21764e); }
+.avatar.pass-border-dark-blue { --supporter-ring: linear-gradient(100deg, #142660, #5b79c6, #29479c, #142660); }
+.avatar.pass-border-orange { --supporter-ring: linear-gradient(100deg, #853f17, #e9ad68, #c86a29, #853f17); }
+.avatar.pass-border-pink { --supporter-ring: linear-gradient(100deg, #a63d83, #ffd1ef, #f27ac3, #a63d83); }
+.avatar.pass-border-sunset { --supporter-ring: linear-gradient(100deg, #facc15, #fb923c, #ec4899, #facc15); }
+.avatar.pass-border-ember { --supporter-ring: linear-gradient(100deg, #fff8f2, #8b5e47, #dc2626, #fff8f2); }
+.avatar.pass-border-rose-purple { --supporter-ring: linear-gradient(100deg, #ffd1ec, #ec4899, #9333ea, #ffd1ec); }
+.avatar.pass-border-midnight-electric { --supporter-ring: linear-gradient(100deg, #080910, #863de1, #2876ff, #080910); }
+.avatar.pass-border-green-gold { --supporter-ring: linear-gradient(100deg, #14532d, #a3e635, #facc15, #14532d); }
+.avatar.pass-border-lilac-silver { --supporter-ring: linear-gradient(100deg, #c4b5fd, #60a5fa, #e5e7eb, #c4b5fd); }
+.avatar.pass-border-wine-rose { --supporter-ring: linear-gradient(100deg, #881337, #db2777, #fbcfe8, #881337); }
+.avatar.pass-border-ice-blue { --supporter-ring: linear-gradient(100deg, #a5f3fc, #fff, #93c5fd, #a5f3fc); }
+.avatar.pass-border-navy-pink { --supporter-ring: linear-gradient(100deg, #1e3a8a, #7c3aed, #ec4899, #1e3a8a); }
+.avatar.pass-border-graphite-silver { --supporter-ring: linear-gradient(100deg, #6b7280, #cbd5e1, #fff, #6b7280); }
+.avatar.pass-border-rainbow { --supporter-ring: linear-gradient(100deg, #ef4444, #f97316, #facc15, #22c55e, #0ea5e9, #8b5cf6, #ef4444); }
+.avatar.pass-border-royal-sapphire { --supporter-ring: linear-gradient(100deg, #1d4ed8, #60a5fa, #fbbf24, #1d4ed8); }
+.avatar.pass-border-sunset-ocean { --supporter-ring: linear-gradient(100deg, #f97316, #ec4899, #0ea5e9, #f97316); }
+.avatar.pass-border-neon-circuit { --supporter-ring: linear-gradient(100deg, #a3e635, #22d3ee, #6366f1, #a3e635); }
+.avatar.pass-border-coral-lilac { --supporter-ring: linear-gradient(100deg, #fb7185, #fda4af, #c4b5fd, #fb7185); }
+.pass-name-blood, .pass-name-purple { background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
+.pass-name-blood { background-image: linear-gradient(100deg, #69000a, #ff7777, #a50016, #69000a); }
+.pass-name-purple { background-image: linear-gradient(100deg, #4b126a, #e8a8ff, #7620a7, #4b126a); }
+.pass-name-green, .pass-name-dark-blue, .pass-name-orange, .pass-name-pink, .pass-name-sunset, .pass-name-ember, .pass-name-rose-purple, .pass-name-midnight-electric, .pass-name-green-gold, .pass-name-lilac-silver, .pass-name-wine-rose, .pass-name-ice-blue, .pass-name-navy-pink, .pass-name-graphite-silver, .pass-name-rainbow, .pass-name-royal-sapphire, .pass-name-sunset-ocean, .pass-name-neon-circuit, .pass-name-coral-lilac { background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
+.pass-name-green { background-image: linear-gradient(100deg, #21764e, #b9f7d0, #31c77f, #21764e); }
+.pass-name-dark-blue { background-image: linear-gradient(100deg, #142660, #5b79c6, #29479c, #142660); }
+.pass-name-orange { background-image: linear-gradient(100deg, #853f17, #e9ad68, #c86a29, #853f17); }
+.pass-name-pink { background-image: linear-gradient(100deg, #a63d83, #ffd1ef, #f27ac3, #a63d83); }
+.pass-name-sunset { background-image: linear-gradient(100deg, #facc15, #fb923c, #ec4899, #facc15); }
+.pass-name-ember { background-image: linear-gradient(100deg, #fff8f2, #8b5e47, #dc2626, #fff8f2); }
+.pass-name-rose-purple { background-image: linear-gradient(100deg, #ffd1ec, #ec4899, #9333ea, #ffd1ec); }
+.pass-name-midnight-electric { background-image: linear-gradient(100deg, #343849, #863de1, #2876ff, #343849); }
+.pass-name-green-gold { background-image: linear-gradient(100deg, #14532d, #a3e635, #facc15, #14532d); }
+.pass-name-lilac-silver { background-image: linear-gradient(100deg, #c4b5fd, #60a5fa, #e5e7eb, #c4b5fd); }
+.pass-name-wine-rose { background-image: linear-gradient(100deg, #881337, #db2777, #fbcfe8, #881337); }
+.pass-name-ice-blue { background-image: linear-gradient(100deg, #a5f3fc, #fff, #93c5fd, #a5f3fc); }
+.pass-name-navy-pink { background-image: linear-gradient(100deg, #1e3a8a, #7c3aed, #ec4899, #1e3a8a); }
+.pass-name-graphite-silver { background-image: linear-gradient(100deg, #6b7280, #cbd5e1, #fff, #6b7280); }
+.pass-name-rainbow { background-image: linear-gradient(100deg, #ef4444, #f97316, #facc15, #22c55e, #0ea5e9, #8b5cf6, #ef4444); }
+.pass-name-royal-sapphire { background-image: linear-gradient(100deg, #1d4ed8, #60a5fa, #fbbf24, #1d4ed8); }
+.pass-name-sunset-ocean { background-image: linear-gradient(100deg, #f97316, #ec4899, #0ea5e9, #f97316); }
+.pass-name-neon-circuit { background-image: linear-gradient(100deg, #a3e635, #22d3ee, #6366f1, #a3e635); }
+.pass-name-coral-lilac { background-image: linear-gradient(100deg, #fb7185, #fda4af, #c4b5fd, #fb7185); }
+/* Cores adicionais para comparação no editor de perfil. */
+.avatar[class*="pass-border-legend-"], .avatar[class*="pass-border-myth-"], .avatar[class*="pass-border-rare-"] { --frame-wave: #fff; }
+[class*="pass-name-legend-"], [class*="pass-name-myth-"], [class*="pass-name-rare-"] { background-image: var(--trial-gradient); background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
+@media (prefers-reduced-motion: reduce) { [class*="pass-name-legend-"], [class*="pass-name-myth-"], [class*="pass-name-rare-"] { animation: none; } }
+.avatar.pass-border-legend-nebula, .pass-name-legend-nebula { --trial-gradient: linear-gradient(100deg, #2b102c, #4b7872, #e8cf91, #152f5b, #2b102c); }
+.avatar.pass-border-legend-nebula { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-legend-abyss, .pass-name-legend-abyss { --trial-gradient: linear-gradient(100deg, #061c22, #63efad, #becbd9, #312e81, #061c22); }
+.avatar.pass-border-legend-abyss { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-legend-prism, .pass-name-legend-prism { --trial-gradient: linear-gradient(100deg, #ff6b5b, #3dd6cb, #9859dc, #f5f5f4, #ff6b5b); }
+.avatar.pass-border-legend-prism { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-legend-solar, .pass-name-legend-solar { --trial-gradient: linear-gradient(100deg, #101a2d, #fff4cf, #df8b23, #9edcf0, #101a2d); }
+.avatar.pass-border-legend-solar { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-legend-ruby-eclipse, .pass-name-legend-ruby-eclipse { --trial-gradient: linear-gradient(100deg, #250b16, #f2384d, #ffdbd0, #364775, #250b16); }
+.avatar.pass-border-legend-ruby-eclipse { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-petroleum-bronze, .pass-name-myth-petroleum-bronze { --trial-gradient: linear-gradient(100deg, #0f4650, #a87943, #2ac9be, #0f4650); }
+.avatar.pass-border-myth-petroleum-bronze { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-burgundy-sand, .pass-name-myth-burgundy-sand { --trial-gradient: linear-gradient(100deg, #641b35, #e2c49e, #638498, #641b35); }
+.avatar.pass-border-myth-burgundy-sand { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-cerulean-rust, .pass-name-myth-cerulean-rust { --trial-gradient: linear-gradient(100deg, #2d8cba, #b75e3b, #f0e4ce, #2d8cba); }
+.avatar.pass-border-myth-cerulean-rust { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-plum-copper, .pass-name-myth-plum-copper { --trial-gradient: linear-gradient(100deg, #65345f, #c98775, #dbeefa, #65345f); }
+.avatar.pass-border-myth-plum-copper { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-jade-mauve, .pass-name-myth-jade-mauve { --trial-gradient: linear-gradient(100deg, #186d63, #b383b0, #f3dfbc, #186d63); }
+.avatar.pass-border-myth-jade-mauve { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-olive-rose-graphite, .pass-name-myth-olive-rose-graphite { --trial-gradient: linear-gradient(100deg, #6a744a, #c58b9e, #52545d, #6a744a); }
+.avatar.pass-border-myth-olive-rose-graphite { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-myth-fuchsia-petroleum, .pass-name-myth-fuchsia-petroleum { --trial-gradient: linear-gradient(100deg, #c93e9e, #164d59, #f4e9d4, #c93e9e); }
+.avatar.pass-border-myth-fuchsia-petroleum { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-rare-plum-beige, .pass-name-rare-plum-beige { --trial-gradient: linear-gradient(100deg, #77506b, #e2ccb7, #77506b); }
+.avatar.pass-border-rare-plum-beige { --supporter-ring: var(--trial-gradient); }
+@keyframes supporter-wave { to { background-position: 200% 0; } }
+@keyframes supporter-ring-travel { to { transform: rotate(360deg); } }
+@media (max-width: 500px) { .pass-panel { padding: 18px; } .pass-style-options { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (prefers-reduced-motion: reduce) { .pass-name-blood, .pass-name-purple, .pass-name-sunset, .pass-name-ember, .pass-name-rose-purple, .pass-name-midnight-electric, .pass-name-green-gold, .pass-name-lilac-silver, .pass-name-wine-rose, .pass-name-ice-blue, .pass-name-navy-pink, .pass-name-graphite-silver, .pass-name-rainbow, .pass-name-royal-sapphire, .pass-name-sunset-ocean, .pass-name-neon-circuit, .pass-name-coral-lilac, .avatar[class*="pass-border-"]::after { animation: none; } }
+
+.pass-name-gold { background-image: linear-gradient(100deg, #a86b12, #ffe5a1, #e4a830, #fff0bd, #a86b12); background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
+.profile-style-group { margin: 18px 0 22px; }
+.profile-style-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 14px; border: 1px solid #3c4653; border-radius: 12px; background: #171d26; }
+.profile-style-tabs button { min-height: 40px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-weight: 700; cursor: pointer; }
+.profile-style-tabs button[aria-pressed="true"] { background: #263346; color: #f4f7fb; box-shadow: 0 0 0 1px #93c5fd88; }
+.profile-style-group .pass-style-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.profile-style-group .pass-style-option { position: relative; min-height: 106px; height: auto; }
+.profile-style-group .frame-option { min-height: 114px; gap: 5px; font-size: .75rem; }
+.profile-style-group .frame-option .avatar { width: 43px; height: 43px; }
+.profile-style-group .pass-style-option-label { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; width: 100%; max-height: 2.4em; color: #dbe5f1; font-size: .7rem; font-weight: 700; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
+.pass-style-locked-note { display: flex; align-items: center; gap: 6px; margin: 0 0 10px; color: var(--muted); font-size: .8125rem; }
+.profile-style-group .pass-style-option.is-locked { color: var(--muted); cursor: not-allowed; opacity: .68; }
+.profile-style-group .pass-style-option.is-locked .pass-name-preview { color: var(--muted); text-shadow: none; }
+.profile-style-group .pass-style-option.is-locked svg { position: absolute; right: 9px; top: 9px; }
+.profile-form > .primary-button { margin-top: 18px; }
+@media (prefers-reduced-motion: reduce) { .pass-name-gold { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .pass-name-green, .pass-name-dark-blue, .pass-name-orange, .pass-name-pink { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .profile-supporter-emblem::after, .pass-panel .supporter-emblem::before { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .pass-panel::before { animation: none; } }
