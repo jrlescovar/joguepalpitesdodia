@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 840" width="1200" height="840">
+  <defs>
+    <symbol id="gift" viewBox="0 0 64 64">
+      <g fill="none" stroke="#ffe0a5" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+        <rect x="13" y="27" width="38" height="27" rx="2"/><rect x="10" y="22" width="44" height="10" rx="2"/><path d="M32 22v32M32 22c-8-1-16-3-15-9 1-7 11-7 15 9Zm0 0c8-1 16-3 15-9-1-7-11-7-15 9Z"/>
+      </g>
+    </symbol>
+    <g id="panel"><rect x="0" y="0" width="368" height="350" rx="24" fill="#1d222b" stroke="#47505c"/></g>
+  </defs>
+  <rect width="1200" height="840" fill="#12161d"/>
+  <text x="600" y="48" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-weight="700" font-size="27">Caixa de estilos — 5 formatos planos</text>
+  <text x="600" y="77" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="16">Mesmo presente e paleta do jogo · mudanças na forma da caixa e da tampa</text>
+
+  <g transform="translate(22 104)">
+    <use href="#panel"/>
+    <text x="24" y="40" fill="#f3f5f8" font-family="Arial,sans-serif" font-weight="700" font-size="19">1 · Tampa reta</text>
+    <text x="24" y="65" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="14">A caixa atual, com tampa nivelada</text>
+    <rect x="80" y="141" width="208" height="139" rx="18" fill="#25272c" stroke="#e8b765" stroke-width="2"/>
+    <rect x="96" y="156" width="176" height="108" rx="9" fill="none" stroke="#a87640" opacity=".55"/>
+    <rect x="68" y="125" width="232" height="43" rx="9" fill="#75512e" stroke="#ffd083" stroke-width="2"/>
+    <path d="M76 134h216" stroke="#e2ad67" opacity=".7"/>
+    <use href="#gift" x="144" y="175" width="80" height="80"/>
+    <text x="184" y="321" text-anchor="middle" fill="#ffd48d" font-family="Arial,sans-serif" font-size="14">reta e equilibrada</text>
+  </g>
+
+  <g transform="translate(416 104)">
+    <use href="#panel"/>
+    <text x="24" y="40" fill="#f3f5f8" font-family="Arial,sans-serif" font-weight="700" font-size="19">2 · Tampa fina</text>
+    <text x="24" y="65" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="14">Mais leve, com corpo alto</text>
+    <rect x="91" y="127" width="186" height="158" rx="13" fill="#23272e" stroke="#e8b765" stroke-width="2"/>
+    <rect x="106" y="146" width="156" height="120" rx="5" fill="none" stroke="#a87640" opacity=".55"/>
+    <rect x="74" y="119" width="220" height="25" rx="6" fill="#73502d" stroke="#ffd083" stroke-width="2"/>
+    <path d="M82 126h204" stroke="#e2ad67" opacity=".7"/>
+    <use href="#gift" x="144" y="175" width="80" height="80"/>
+    <text x="184" y="321" text-anchor="middle" fill="#ffd48d" font-family="Arial,sans-serif" font-size="14">simples e elegante</text>
+  </g>
+
+  <g transform="translate(810 104)">
+    <use href="#panel"/>
+    <text x="24" y="40" fill="#f3f5f8" font-family="Arial,sans-serif" font-weight="700" font-size="19">3 · Baú compacto</text>
+    <text x="24" y="65" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="14">Tampa reta larga, corpo mais baixo</text>
+    <rect x="64" y="159" width="240" height="113" rx="18" fill="#25272c" stroke="#e8b765" stroke-width="2"/>
+    <rect x="80" y="172" width="208" height="85" rx="8" fill="none" stroke="#a87640" opacity=".55"/>
+    <rect x="54" y="137" width="260" height="39" rx="9" fill="#75512e" stroke="#ffd083" stroke-width="2"/>
+    <path d="M62 145h244" stroke="#e2ad67" opacity=".7"/>
+    <use href="#gift" x="147" y="179" width="74" height="74"/>
+    <text x="184" y="321" text-anchor="middle" fill="#ffd48d" font-family="Arial,sans-serif" font-size="14">mais presença na tela</text>
+  </g>
+
+  <g transform="translate(219 472)">
+    <use href="#panel"/>
+    <text x="24" y="40" fill="#f3f5f8" font-family="Arial,sans-serif" font-weight="700" font-size="19">4 · Presente quadrado</text>
+    <text x="24" y="65" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="14">Tampa reta e proporção vertical</text>
+    <rect x="104" y="131" width="160" height="157" rx="12" fill="#25272c" stroke="#e8b765" stroke-width="2"/>
+    <rect x="118" y="150" width="132" height="122" rx="5" fill="none" stroke="#a87640" opacity=".55"/>
+    <rect x="91" y="120" width="186" height="38" rx="8" fill="#75512e" stroke="#ffd083" stroke-width="2"/>
+    <path d="M99 128h170" stroke="#e2ad67" opacity=".7"/>
+    <use href="#gift" x="144" y="175" width="80" height="80"/>
+    <text x="184" y="321" text-anchor="middle" fill="#ffd48d" font-family="Arial,sans-serif" font-size="14">cara de presente</text>
+  </g>
+
+  <g transform="translate(613 472)">
+    <use href="#panel"/>
+    <text x="24" y="40" fill="#f3f5f8" font-family="Arial,sans-serif" font-weight="700" font-size="19">5 · Tampa encaixada</text>
+    <text x="24" y="65" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="14">Tampa curta, sem sobras nas laterais</text>
+    <rect x="80" y="132" width="208" height="148" rx="17" fill="#25272c" stroke="#e8b765" stroke-width="2"/>
+    <rect x="96" y="151" width="176" height="113" rx="8" fill="none" stroke="#a87640" opacity=".55"/>
+    <rect x="79" y="124" width="210" height="37" rx="7" fill="#75512e" stroke="#ffd083" stroke-width="2"/>
+    <path d="M87 132h194" stroke="#e2ad67" opacity=".7"/>
+    <use href="#gift" x="144" y="175" width="80" height="80"/>
+    <text x="184" y="321" text-anchor="middle" fill="#ffd48d" font-family="Arial,sans-serif" font-size="14">discreta e sólida</text>
+  </g>
+</svg>

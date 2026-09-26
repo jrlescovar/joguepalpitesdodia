@@ -5,16 +5,18 @@ import { Avatar, ErrorNotice } from './components';
 import ProfileOverview from './ProfileOverview';
 import { rankTier, rankTiers } from './rankTiers';
 import RankEmblem from './RankEmblem';
+import DailyBattle from './DailyBattle';
 import type { PublicProfile } from './types';
 
 type RankedPlayer = PublicProfile & { rankPoints: number; position: number };
+type GlobalRankingPage = { players: RankedPlayer[]; ownRank: RankedPlayer | null };
 
 function RankProgress({ points, position }: { points: number; position: number | null }) {
   const tier = rankTier(points);
   const nextTier = rankTiers[rankTiers.findIndex(item => item.key === tier.key) + 1];
   if (!nextTier) return <section className="card rank-progress-card rank-progress-master" aria-label="Sua patente no Ranking Global">
     <div className="rank-progress-caption">SUA PATENTE</div>
-    <div className="rank-progress-master-content"><RankEmblem points={points}/><div><strong>Mestre</strong><span>{points} pontos</span></div><div className="rank-progress-position"><small>POSIÇÃO GLOBAL</small><strong>{position === null ? '—' : `#${position}`}</strong></div></div>
+    <div className="rank-progress-master-content"><RankEmblem points={points}/><div><strong>{tier.name}</strong><span>{tier.min}+ pts</span></div><div className="rank-progress-position"><small>POSIÇÃO GLOBAL</small><strong>{position === null ? '—' : `#${position}`}</strong></div></div>
   </section>;
   const earned = points - tier.min;
   const needed = nextTier.min - tier.min;
@@ -22,7 +24,7 @@ function RankProgress({ points, position }: { points: number; position: number |
     <div className="rank-progress-caption">SUA PATENTE</div>
     <div className="rank-progress-track-row">
       <div className="rank-progress-tier"><RankEmblem points={points}/><strong>{tier.name}</strong></div>
-      <div className="rank-progress-center"><div className="rank-progress-bar" role="progressbar" aria-label={`Progresso para ${nextTier.name}`} aria-valuemin={0} aria-valuemax={needed} aria-valuenow={earned}><span style={{ width: `${earned / needed * 100}%` }}/></div><span>{points} - {nextTier.min}</span></div>
+      <div className="rank-progress-center"><div className="rank-progress-bar" role="progressbar" aria-label={`Progresso para ${nextTier.name}`} aria-valuemin={0} aria-valuemax={needed} aria-valuenow={earned}><span style={{ width: `${earned / needed * 100}%` }}/></div><span>{tier.min} - {nextTier.min - 1}</span></div>
       <div className="rank-progress-tier"><RankEmblem points={nextTier.min}/><strong>{nextTier.name}</strong></div>
     </div>
   </section>;
@@ -49,8 +51,8 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
   useEffect(() => {
     let current = true;
     setLoading(true); setError('');
-    Promise.all([call<RankedPlayer[]>('getGlobalRankTop10'), call<RankedPlayer | null>('getMyGlobalRank').catch(() => null)])
-      .then(([rows, own]) => { if (current) { setPlayers(rows); setOwnRank(own); } })
+    call<GlobalRankingPage>('getGlobalRankingPage')
+      .then(({ players: rows, ownRank: own }) => { if (current) { setPlayers(rows); setOwnRank(own); } })
       .catch(cause => { if (current) setError(errorMessage(cause)); })
       .finally(() => { if (current) setLoading(false); });
     return () => { current = false; };
@@ -69,8 +71,9 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
     <ProfileOverview profile={selected} lastClosedPrediction={lastClosedPrediction}/>
   </div>;
   const ownPosition = ownRank?.position ?? players.find(player => player.uid === ownUid)?.position ?? null;
-  return <>
+  return <div className="global-ranking-page">
     <RankProgress points={ownRank?.rankPoints ?? ownPoints} position={ownPosition}/>
+    <DailyBattle refreshTick={refreshTick + reload}/>
     <div className="page-heading"><div><h1>Ranking Global<span>.</span></h1></div><button className="icon-button" aria-label="Atualizar Ranking" aria-busy={loading} disabled={loading} onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>
     <div className="card global-ranking-card" aria-busy={loading}>
       <div className="global-ranking-heading"><span>TOP 10 / JOGADOR</span><span>PONTOS</span></div>
@@ -80,5 +83,5 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
       {loading && players.length === 0 && <div className="global-ranking-empty" role="status">Carregando jogadores…</div>}
       {!loading && !error && players.length === 0 && <div className="global-ranking-empty"><Shield size={28}/><p>Os jogadores aparecerão aqui quando entrarem no jogo.</p></div>}
     </div>
-  </>;
+  </div>;
 }

@@ -30,10 +30,9 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
     <div className="pass-heading"><SupporterEmblem/><div><h2>Seja um Apoiador</h2><p>R$ 4,97 por mês</p></div></div>
     <ul className="pass-benefits">
       <li><Check size={17} aria-hidden="true"/><span>XP 1,5× em todos os ganhos.</span></li>
-      <li><Check size={17} aria-hidden="true"/><span>Nome personalizado exclusivo.</span></li>
-      <li><Check size={17} aria-hidden="true"/><span>Moldura de perfil.</span></li>
-      <li><Clock3 size={17} aria-hidden="true"/><span>Personalização exclusiva do fundo de perfil <small>— em breve.</small></span></li>
       <li><Check size={17} aria-hidden="true"/><span>Emblema de apoiador.</span></li>
+      <li><Check size={17} aria-hidden="true"/><span>5x Caixa de Personalização.</span></li>
+      <li><Clock3 size={17} aria-hidden="true"/><span>Personalização exclusiva do fundo de perfil <small>— em breve.</small></span></li>
       <li><Clock3 size={17} aria-hidden="true"/><span>Isento de taxa na criação de torneios personalizados <small>— em breve.</small></span></li>
       <li><Clock3 size={17} aria-hidden="true"/><span>Outras novidades em breve.</span></li>
     </ul>

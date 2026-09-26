@@ -9,7 +9,7 @@
     "preview": "vite preview --host 0.0.0.0",
     "test": "vitest run",
     "check:deploy-config": "node scripts/check-supabase-env.mjs",
-    "deploy": "npm run check:deploy-config && npm run build && firebase deploy --only hosting --project jogueapostadodia"
+    "deploy": "npm run check:deploy-config && npm run build && firebase deploy --only hosting:canonical --project jogueapostadodia"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.6",

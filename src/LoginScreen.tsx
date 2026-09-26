@@ -3,7 +3,7 @@ import './login.css';
 
 export default function LoginScreen({ onEnter, busy, error }: { onEnter: () => void; busy: boolean; error: string }) {
   return <div className="login-page login-redesign">
-    <header className="public-header"><a className="brand" href="#conteudo" aria-label="Aposta do Dia, ir para o conteúdo"><img className="brand-mark" src="/favicon.svg?v=brand-2" alt=""/><span>aposta<span className="brand-light">do</span>dia<span className="brand-dot">.</span></span></a><span className="login-beta">VERSÃO BETA</span></header>
+    <header className="public-header"><a className="brand" href="#conteudo" aria-label="Palpitesdodia, ir para o conteúdo"><img className="brand-mark" src="/favicon.svg?v=brand-3" alt=""/><span>Palpites<span className="brand-light">do</span>dia</span></a><span className="login-beta">VERSÃO BETA</span></header>
     <main id="conteudo" className="login-main login-hero">
       <section className="login-copy">
         <div className="eyebrow"><span/> UM NOVO DESAFIO TODOS OS DIAS</div>
@@ -21,7 +21,7 @@ export default function LoginScreen({ onEnter, busy, error }: { onEnter: () => v
       </section>
     </main>
     <section className="how-it-works" aria-label="O que você encontra no jogo">
-      <article><div className="step-icon"><Crosshair/></div><div><small>01 / PALPITE</small><h2>Desafios todos os dias</h2><p>Uma Aposta do Dia e até nove Extras.</p></div></article>
+      <article><div className="step-icon"><Crosshair/></div><div><small>01 / PALPITE</small><h2>Desafios todos os dias</h2><p>Um desafio diário e até nove extras.</p></div></article>
       <article><div className="step-icon"><Zap/></div><div><small>02 / PROGRESSO</small><h2>Cada green conta</h2><p>Ganhe XP e acompanhe suas conquistas.</p></div></article>
       <article><div className="step-icon"><Trophy/></div><div><small>03 / RANKING</small><h2>Mostre sua evolução</h2><p>Compare seu desempenho com outros jogadores.</p></div></article>
     </section>

@@ -14,12 +14,12 @@ function RankingSkeleton() {
   </div>;
 }
 
+type TournamentRankingPage = { players: PublicProfile[]; ownRank: { position: number | null; change?: number } | null };
+
 export default function Ranking({ profile, serverTime, lastClosedPrediction, refreshTick, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; refreshTick: number; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
   const [players, setPlayers] = useState<PublicProfile[]>([]);
-  const [playersLoading, setPlayersLoading] = useState(true);
-  const [rankLoading, setRankLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [rankError, setRankError] = useState('');
   const [rank, setRank] = useState<number | null>(null);
   const [reload, setReload] = useState(0);
   const [now, setNow] = useState(() => new Date(serverTime));
@@ -36,11 +36,11 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, ref
   }, [selected]);
 
   useLayoutEffect(() => {
-    if (restoreScrollY === null || playersLoading) return;
+    if (restoreScrollY === null || loading) return;
     window.scrollTo({ top: restoreScrollY, behavior: 'instant' });
     rowButtons.current.get(profile.uid)?.focus({ preventScroll: true });
     onScrollRestored();
-  }, [restoreScrollY, playersLoading, players]);
+  }, [restoreScrollY, loading, players]);
 
   useEffect(() => {
     if (!selected) return;
@@ -61,29 +61,20 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, ref
 
   useEffect(() => {
     let active = true;
-    setPlayersLoading(true);
-    setRankLoading(true);
+    setLoading(true);
     setError('');
-    setRankError('');
 
-    call<PublicProfile[]>('getRankingTop10')
-      .then(result => {
-        if (active) setPlayers(result);
-      })
+    call<TournamentRankingPage>('getTournamentRankingPage')
+      .then(result => { if (active) { setPlayers(result.players); setRank(result.ownRank?.position ?? null); } })
       .catch(cause => { if (active) setError(errorMessage(cause)); })
-      .finally(() => { if (active) setPlayersLoading(false); });
-
-    call<{ position: number | null; change?: number }>('getMyRank')
-      .then(result => { if (active) setRank(result.position); })
-      .catch(cause => { if (active) setRankError(errorMessage(cause)); })
-      .finally(() => { if (active) setRankLoading(false); });
+      .finally(() => { if (active) setLoading(false); });
 
     return () => { active = false; };
   }, [profile.uid, profile.green, reload, refreshTick]);
 
   const seasonDays = seasonDaysRemaining(now);
   const seasonEnded = now.getTime() >= Date.parse(SEASON_END_AT);
-  const refreshing = playersLoading || rankLoading;
+  const refreshing = loading;
   const openPlayer = (player: PublicProfile, position: number) => {
     if (player.uid === profile.uid) { onOpenOwnProfile(); return; }
     rankingScroll.current = window.scrollY;
@@ -111,12 +102,11 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, ref
     </div>
     <div className="ranking-summary">
       <div>
-        <div className="card my-rank" aria-busy={rankLoading}>
+        <div className="card my-rank" aria-busy={loading}>
           <span className="eyebrow">SEU LUGAR NO JOGO</span><Trophy size={32}/>
-          <strong>{rank ? `#${rank}` : rankLoading ? '···' : '—'}</strong>
-          <span className="muted text-sm">{rankError ? 'Posição indisponível' : 'Sua posição global'}</span>
+          <strong>{rank ? `#${rank}` : loading ? '···' : '—'}</strong>
+          <span className="muted text-sm">{error ? 'Posição indisponível' : 'Sua posição global'}</span>
         </div>
-        {rankError && <ErrorNotice message={rankError} retry={() => setReload(value => value + 1)}/>}
       </div>
       <section className="card season-card season-card-inline" aria-label="Temporada e premiação">
         <div className="season-row"><span>{seasonEnded ? 'Temporada' : 'Termina em'}</span><strong>{seasonEnded ? 'Encerrada' : seasonDays === 0 ? 'Hoje' : `${seasonDays} ${seasonDays === 1 ? 'dia' : 'dias'}`}</strong></div>
@@ -129,19 +119,19 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, ref
         <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}>@{player.username}</strong><small>{player.green}</small>
       </button>)}</div>
     </section>}
-    <div className="card ranking-card ranking-continuation" aria-busy={playersLoading}>
+    <div className="card ranking-card ranking-continuation" aria-busy={loading}>
         <div className="ranking-table-heading"><span>POSIÇÃO / JOGADOR</span><span>GREENS</span></div>
         {error && <ErrorNotice message={error} retry={() => setReload(value => value + 1)}/>}
         <ol className="ranking-list">
           {players.slice(3).map((player, index) => { const position = index + 4; return <li key={player.uid} className={player.uid === profile.uid ? 'is-me' : ''}><button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} className="rank-player-button" aria-label={`Abrir perfil de ${player.username}, posição ${position}`} onClick={() => openPlayer(player, position)}>
             <span className={`rank-number rank-${position}`}>#{position}</span>
             <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/>
-            <div className="rank-name"><strong><span className={`pass-name-${player.passNameStyle ?? 'none'}`}>@{player.username}</span>{player.uid === profile.uid && <small>VOCÊ</small>}</strong></div>
+            <div className="rank-name"><strong><span className={`pass-name-${player.passNameStyle ?? 'none'}`}>@{player.username}</span></strong></div>
             <strong className="rank-greens">{player.green}<Check size={13}/></strong>
           </button></li>; })}
         </ol>
-        {playersLoading && players.length === 0 && <RankingSkeleton/>}
-        {!playersLoading && !error && players.length === 0 && <div className="daily-empty"><Trophy size={34}/><h2>O torneio começa aqui.</h2><p>Os jogadores aparecerão assim que criarem seus perfis.</p></div>}
+        {loading && players.length === 0 && <RankingSkeleton/>}
+        {!loading && !error && players.length === 0 && <div className="daily-empty"><Trophy size={34}/><h2>O torneio começa aqui.</h2><p>Os jogadores aparecerão assim que criarem seus perfis.</p></div>}
     </div>
   </>;
 }

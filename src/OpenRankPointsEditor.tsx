@@ -30,7 +30,7 @@ export default function OpenRankPointsEditor({ prediction, onClose, onSaved }: {
     }
   }
 
-  return <Modal open onOpenChange={open => { if (!open && !busy) onClose(); }} title="PontosRank da aposta" description="Defina a dificuldade de cada opção antes do encerramento. Se a opção vencer, todos que a escolheram receberão os pontos indicados.">
+  return <Modal open onOpenChange={open => { if (!open && !busy) onClose(); }} title="PontosRank do palpite" description="Defina a dificuldade de cada opção antes do encerramento. Se a opção vencer, todos que a escolheram receberão os pontos indicados.">
     <p className="confirm-selection">{prediction.title}</p>
     <div className="open-rank-points-fields">{prediction.options.map((option, index) => <label key={option.id}>
       <span>{option.label}</span>

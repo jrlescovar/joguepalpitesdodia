@@ -1,5 +1,6 @@
 {
-  "hosting": {
+  "hosting": [{
+    "target": "canonical",
     "public": "dist",
     "ignore": [
       "firebase.json",
@@ -52,5 +53,5 @@
         ]
       }
     ]
-  }
+  }]
 }

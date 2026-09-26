@@ -24,6 +24,10 @@ export function dailyAfter(lastPrediction: string|null, previousPrediction: stri
 export function visibleDaily(current: number, lastPrediction: string|null|undefined, lastClosedPrediction: string|null) {
   return lastClosedPrediction === null || (lastPrediction !== null && lastPrediction !== undefined && lastPrediction >= lastClosedPrediction) ? current : 0;
 }
+export function firstPlayableGameIndex(games: { status: string; closesAt: { toMillis(): number } }[], now: number): number {
+  const index = games.findIndex(game => game.status === 'open' && game.closesAt.toMillis() > now);
+  return index >= 0 ? index : 0;
+}
 export const GREEN_MEDAL_THRESHOLDS = [1, 10, 25, 50, 100] as const;
 export function hitRate(greens: number, reds: number | undefined): number | null {
   if (typeof reds !== 'number' || greens + reds === 0) return null;

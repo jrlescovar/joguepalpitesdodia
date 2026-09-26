@@ -1,5 +1,7 @@
 # Aposta do Dia
 
+Site atual: https://joguepalpitesdodia.web.app. O Hosting do endereço antigo `jogueapostadodia.web.app` está desativado. As instruções de Firebase Authentication e Firestore abaixo descrevem a versão anterior; a configuração atual de autenticação e dados está em `SUPABASE_MIGRATION.md`.
+
 Site mobile-first com React, Vite, TypeScript, Tailwind, Firebase Authentication, Cloud Firestore e Hosting. A arquitetura atual não utiliza Cloud Functions nem exige Blaze. O plano Spark possui cotas de uso: se forem atingidas, operações podem ser interrompidas até a renovação das cotas.
 
 Identidade visual azul; verde exclusivo de greens e vermelho de reds. Rodapé: © 2026 Desenvolvido por Jrlescovar.

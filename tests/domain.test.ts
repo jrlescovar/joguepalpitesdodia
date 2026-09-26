@@ -1,5 +1,5 @@
 import { describe,it,expect } from 'vitest';
-import { xpAfter,dayAt,previousDay,dailyAfter,visibleDaily,resultAfter,validUsername,seasonDaysRemaining,hitRate,greenMedalProgress } from '../src/domain';
+import { xpAfter,dayAt,previousDay,dailyAfter,visibleDaily,resultAfter,validUsername,seasonDaysRemaining,hitRate,greenMedalProgress,firstPlayableGameIndex } from '../src/domain';
 describe('regras do jogo',()=>{
   it('primeiro green chega ao nível 2 com 10/30 XP',()=>expect(xpAfter(1,0,25)).toEqual({level:2,xp:10}));
   it('transfere XP por vários níveis',()=>expect(xpAfter(1,0,100)).toEqual({level:4,xp:10}));
@@ -27,5 +27,15 @@ describe('regras do jogo',()=>{
       const medal=greenMedalProgress(greens);
       expect([medal.level,medal.next]).toEqual([level,next]);
     }
+  });
+  it('abre o carrossel na primeira aposta que ainda aceita palpites',()=>{
+    const at=(time:number)=>({toMillis:()=>time});
+    expect(firstPlayableGameIndex([
+      {status:'settled',closesAt:at(100)},
+      {status:'open',closesAt:at(100)},
+      {status:'open',closesAt:at(300)},
+      {status:'open',closesAt:at(400)},
+    ],200)).toBe(2);
+    expect(firstPlayableGameIndex([{status:'settled',closesAt:at(100)}],200)).toBe(0);
   });
 });

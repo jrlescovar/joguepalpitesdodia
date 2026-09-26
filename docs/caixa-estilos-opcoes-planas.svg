@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 820" role="img" aria-labelledby="title desc">
+  <title id="title">Cinco variações planas da caixa de estilos</title>
+  <desc id="desc">Cinco caixas desenhadas com as mesmas proporções, cores escuras, traço dourado e ícone de presente da caixa atual do site.</desc>
+  <defs>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#292831"/><stop offset="1" stop-color="#1e242c"/></linearGradient>
+    <linearGradient id="chest" x1="0" y1="0" x2=".85" y2="1"><stop stop-color="#573c2c"/><stop offset=".45" stop-color="#302a29"/><stop offset="1" stop-color="#1d252e"/></linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#a17a4e"/><stop offset=".55" stop-color="#66482f"/><stop offset="1" stop-color="#302a29"/></linearGradient>
+    <radialGradient id="aura"><stop stop-color="#d99d4a" stop-opacity=".23"/><stop offset="1" stop-color="#d99d4a" stop-opacity="0"/></radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="12"/></filter>
+    <g id="body">
+      <ellipse cx="130" cy="171" rx="104" ry="28" fill="url(#aura)" filter="url(#blur)"/>
+      <rect x="28" y="79" width="204" height="117" rx="19" fill="url(#chest)" stroke="#efbf71" stroke-width="2"/>
+      <rect x="45" y="94" width="170" height="85" rx="9" fill="none" stroke="#9f7549" stroke-opacity=".55" stroke-width="1.5"/>
+    </g>
+    <g id="lid-tilted" transform="rotate(-4 130 80)">
+      <rect x="17" y="62" width="226" height="40" rx="12" fill="url(#top)" stroke="#f7ce87" stroke-width="2"/>
+      <path d="M30 67H230" stroke="#f8dda1" stroke-opacity=".45" stroke-width="1.5"/>
+    </g>
+    <g id="gift" fill="none" stroke="#ffe2a7" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="108" y="137" width="44" height="31" rx="2"/>
+      <rect x="103" y="127" width="54" height="10" rx="2"/>
+      <path d="M130 127v41M130 127c-13-1-21-14-13-17 7-3 13 6 13 17Zm0 0c13-1 21-14 13-17-7-3-13 6-13 17Z"/>
+    </g>
+    <path id="spark" d="m71 59 5-11 5 11 11 5-11 5-5 11-5-11-11-5Z" fill="#ffe0a2"/>
+  </defs>
+  <rect width="1000" height="820" fill="#111418"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <g transform="translate(20 20)">
+      <rect width="470" height="245" rx="22" fill="url(#card)" stroke="#725a39"/>
+      <text x="24" y="37" fill="#f5f5f8" font-size="19" font-weight="700">1 · Tampa reta</text>
+      <g transform="translate(105 23)"><use href="#body"/><use href="#spark"/><rect x="17" y="62" width="226" height="40" rx="12" fill="url(#top)" stroke="#f7ce87" stroke-width="2"/><path d="M30 67H230" stroke="#f8dda1" stroke-opacity=".45" stroke-width="1.5"/><use href="#gift"/></g>
+    </g>
+    <g transform="translate(510 20)">
+      <rect width="470" height="245" rx="22" fill="url(#card)" stroke="#725a39"/>
+      <text x="24" y="37" fill="#f5f5f8" font-size="19" font-weight="700">2 · Tampa elevada</text>
+      <g transform="translate(105 23)"><use href="#body"/><path d="M34 87H226" stroke="#f8d18a" stroke-width="3" opacity=".65"/><use href="#spark"/><g transform="translate(0 -10)"><use href="#lid-tilted"/></g><use href="#gift"/></g>
+    </g>
+    <g transform="translate(20 285)">
+      <rect width="470" height="245" rx="22" fill="url(#card)" stroke="#725a39"/>
+      <text x="24" y="37" fill="#f5f5f8" font-size="19" font-weight="700">3 · Fita discreta</text>
+      <g transform="translate(105 23)"><use href="#body"/><path d="M123 103v88m14-88v88" stroke="#c39153" stroke-opacity=".55" stroke-width="2"/><use href="#spark"/><use href="#lid-tilted"/><use href="#gift"/></g>
+    </g>
+    <g transform="translate(510 285)">
+      <rect width="470" height="245" rx="22" fill="url(#card)" stroke="#725a39"/>
+      <text x="24" y="37" fill="#f5f5f8" font-size="19" font-weight="700">4 · Borda iluminada</text>
+      <g transform="translate(105 23)"><use href="#body"/><rect x="30" y="81" width="200" height="113" rx="17" fill="none" stroke="#ffdf9b" stroke-opacity=".65" stroke-width="1"/><use href="#spark"/><use href="#lid-tilted"/><use href="#gift"/></g>
+    </g>
+    <g transform="translate(265 550)">
+      <rect width="470" height="245" rx="22" fill="url(#card)" stroke="#725a39"/>
+      <text x="24" y="37" fill="#f5f5f8" font-size="19" font-weight="700">5 · Presente em destaque</text>
+      <g transform="translate(105 23)"><use href="#body"/><use href="#spark"/><use href="#lid-tilted"/><circle cx="130" cy="147" r="37" fill="#ffdd9c" fill-opacity=".06" stroke="#e9bb70" stroke-opacity=".32" stroke-width="1"/><use href="#gift"/></g>
+    </g>
+  </g>
+</svg>

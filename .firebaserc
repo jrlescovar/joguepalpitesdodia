@@ -1,1 +1,15 @@
-{"projects":{"default":"jogueapostadodia"}}
+{
+  "projects": {
+    "default": "jogueapostadodia"
+  },
+  "targets": {
+    "jogueapostadodia": {
+      "hosting": {
+        "canonical": [
+          "joguepalpitesdodia"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

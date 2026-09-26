@@ -5,6 +5,12 @@ dist/
 .env.production
 *.pem
 *.key
+*.p8
+*.p12
+*.pfx
+*service-account*.json
+*serviceAccount*.json
+*credentials*.json
 supabase/.temp/
 .firebase/
 .firebase-cli-temp/

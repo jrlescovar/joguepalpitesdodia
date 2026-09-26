@@ -1,12 +1,14 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 
-const origin = 'https://jogueapostadodia.web.app';
-const cors = { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Headers': 'authorization, apikey, x-client-info, content-type', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
-const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers: { ...cors, 'Content-Type': 'application/json' } });
+const allowedOrigins = new Set(['https://jogueapostadodia.web.app', 'https://joguepalpitesdodia.web.app']);
 
 Deno.serve(async request => {
+  const origin = request.headers.get('origin') ?? '';
+  if (!allowedOrigins.has(origin)) return new Response(JSON.stringify({ error: 'Requisição inválida.' }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+  const cors = { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Headers': 'authorization, apikey, x-client-info, content-type', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
+  const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers: { ...cors, 'Content-Type': 'application/json' } });
   if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
-  if (request.method !== 'POST' || request.headers.get('origin') !== origin) return json({ error: 'Requisição inválida.' }, 403);
+  if (request.method !== 'POST') return json({ error: 'Requisição inválida.' }, 403);
   const authorization = request.headers.get('authorization');
   if (!authorization?.startsWith('Bearer ')) return json({ error: 'Entre na sua conta.' }, 401);
   const url = Deno.env.get('SUPABASE_URL')!;

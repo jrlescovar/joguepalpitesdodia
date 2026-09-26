@@ -20,8 +20,8 @@ O site continua hospedado no Firebase Hosting. Autenticação, perfis, palpites 
 
 1. Crie um projeto no plano Free em Supabase.
 2. Abra **SQL Editor**, cole todo o arquivo `supabase/migrations/001_initial.sql` e execute uma vez.
-3. Em **Authentication > URL Configuration**, use `https://jogueapostadodia.web.app` como Site URL e adicione `https://jogueapostadodia.web.app/**` à lista de redirects.
-4. Em **Authentication > Providers > Google**, copie a callback exibida pelo Supabase. No Google Auth Platform, o cliente Web existente pode receber `https://jogueapostadodia.web.app` nas origens e a callback do Supabase nos redirects. Gere um segredo separado, mantendo o antigo para o Firebase, e salve o novo somente no provider Google do Supabase.
+3. Em **Authentication > URL Configuration**, use `https://joguepalpitesdodia.web.app` como Site URL e adicione `https://joguepalpitesdodia.web.app/**` à lista de redirects. O domínio antigo pode permanecer na lista durante a transição.
+4. Em **Authentication > Providers > Google**, copie a callback exibida pelo Supabase. No Google Auth Platform, o cliente Web existente pode receber `https://joguepalpitesdodia.web.app` nas origens e a callback do Supabase nos redirects. Gere um segredo separado, mantendo o antigo para o Firebase, e salve o novo somente no provider Google do Supabase.
 5. Em **Project Settings > API**, copie a Project URL e a chave publishable. Crie `.env` a partir de `.env.example`.
 6. Importe os usuários antigos antes de liberar o novo build. A ligação é feita pelo e-mail: no primeiro login Google, o registro importado recebe o novo ID de autenticação e mantém nome, número, XP, greens, avatar, sequências e histórico.
 7. Valide login, criação/recuperação de perfil, palpite, ranking, perfil público e administração.

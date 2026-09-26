@@ -40,11 +40,22 @@ function prediction(value: unknown): Prediction | null {
     options: row.options as Prediction['options'], closesAt: new AppTimestamp(String(row.closesAt)),
     status: row.status as Prediction['status'],
     ...(row.winningOptionId ? { winningOptionId: String(row.winningOptionId) } : {}),
+    ...(row.myPickStatus === 'green' || row.myPickStatus === 'red' ? { myPickStatus: row.myPickStatus } : {}),
   };
 }
 
 function predictions(value: unknown): Prediction[] {
   return Array.isArray(value) ? value.map(prediction).filter((item): item is Prediction => Boolean(item)) : [];
+}
+
+let currentPredictionsRequest: Promise<Prediction[]> | null = null;
+function currentPredictions(): Promise<Prediction[]> {
+  if (currentPredictionsRequest) return currentPredictionsRequest;
+  const request = rpc<unknown>('get_current_predictions').then(predictions);
+  currentPredictionsRequest = request;
+  const clear = () => { if (currentPredictionsRequest === request) currentPredictionsRequest = null; };
+  void request.then(clear, clear);
+  return request;
 }
 
 async function rpc<T>(name: string, args: Record<string, unknown> = {}): Promise<T> {
@@ -57,23 +68,34 @@ async function rpc<T>(name: string, args: Record<string, unknown> = {}): Promise
 export async function call<T = unknown>(name: string, payload: unknown = {}): Promise<T> {
   const data = payload as Record<string, unknown>;
   switch (name) {
+    case 'getPlayerBootstrap': return rpc<T>('get_player_bootstrap');
     case 'getSession': return rpc<T>('get_session');
     case 'getProfile': return rpc<T>('get_or_claim_profile');
     case 'createAccount': return rpc<T>('claim_or_create_profile', { p_username: data.username, p_avatar_color: data.avatarColor });
     case 'checkUsername': return rpc<T>('check_username', { p_username: data.username });
     case 'updateProfile': return rpc<T>('update_profile_with_avatar', { p_username: data.username, p_avatar_color: data.avatarColor, p_use_google_avatar: data.useGoogleAvatar });
-    case 'getCurrentPredictions': return predictions(await rpc('get_current_predictions')) as T;
+    case 'getCurrentPredictions': return currentPredictions() as T;
     case 'getRecentResults': return predictions(await rpc('get_recent_results')) as T;
     case 'getPick': return rpc<T>('get_pick_for_game', { p_day_id: data.dayId, p_slot: data.slot });
+    case 'getPicksForDay': return rpc<T>('get_picks_for_day', { p_day_id: data.dayId });
     case 'getLastClosedPrediction': return rpc<T>('get_last_closed_prediction');
     case 'submitPick': return rpc<T>('submit_pick_for_game', { p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });
     case 'getRankingTop10': return rpc<T>('get_ranking_top10');
     case 'getGlobalRankTop10': return rpc<T>('get_global_rank_top10');
     case 'getMyGlobalRank': return rpc<T>('get_my_global_rank');
+    case 'getGlobalRankingPage': return rpc<T>('get_global_ranking_page');
+    case 'getMyDailyBattle': return rpc<T>('get_my_daily_battle_with_ranks');
+    case 'getBattleProfileStats': return rpc<T>('get_battle_profile_stats', { p_profile_id: data.uid });
+    case 'getProfileOverviewMeta': return rpc<T>('get_profile_overview_meta', { p_profile_id: data.uid });
     case 'getMyRank': return rpc<T>('get_my_rank');
+    case 'getTournamentRankingPage': return rpc<T>('get_tournament_ranking_page');
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });
     case 'getPassStatus': return rpc<T>('get_pass_status');
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
+    case 'getBoxState': return rpc<T>('get_box_state');
+    case 'openBox': return rpc<T>('open_box', { p_request_id: data.requestId });
+    case 'getAdminBoxBalance': return rpc<T>('admin_get_box_balance', { p_profile_id: data.uid });
+    case 'grantBoxes': return rpc<T>('admin_grant_boxes', { p_profile_id: data.uid, p_quantity: data.quantity });
     case 'getAdminState': {
       const state = await rpc<{ registrationsOpen: boolean; predictions: unknown[] }>('get_admin_state');
       return { ...state, predictions: predictions(state.predictions) } as T;
@@ -83,6 +105,8 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'setOpenPredictionRankPoints': return rpc<T>('set_open_prediction_rank_points', { p_day_id: data.dayId, p_slot: data.slot, p_rank_points: data.rankPoints });
     case 'settlePrediction': return rpc<T>('settle_prediction_for_slot', { p_day_id: data.dayId, p_slot: data.slot, p_winning_option_id: data.winningOptionId });
     case 'getAdminProfile': return rpc<T>('get_admin_profile', { p_search: data.search });
+    case 'getAdminPicksForDay': return rpc<T>('get_admin_picks_for_day', { p_profile_id: data.uid, p_day_id: data.day });
+    case 'adminCorrectPick': return rpc<T>('admin_correct_pick', { p_profile_id: data.uid, p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });
     case 'getAdminPassGrant': return rpc<T>('admin_get_pass_grant', { p_profile_id: data.uid });
     case 'setAdminPassGrant': return rpc<T>('admin_set_pass_grant', { p_profile_id: data.uid, p_days: data.days });
     case 'adminRemoveProfilePhoto': return rpc<T>('admin_remove_profile_photo', { p_profile_id: data.uid });

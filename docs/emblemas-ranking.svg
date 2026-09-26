@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 610" width="1120" height="610">
+<rect width="1120" height="610" fill="#12161d"/>
+<text x="560" y="48" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="27" font-weight="700">Emblemas do Ranking Global</text>
+<g transform="translate(24 80)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#d39262">
+<path d="M32 3 52 15v27L32 60 12 42V15z" fill="currentColor" opacity=".14"/>
+<path d="M32 3 52 15v27L32 60 12 42V15z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 11 45 19v20L32 50 19 39V19z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m32 16 7 15-7 16-7-16z" fill="currentColor"/>
+<path d="m25 31-9-8m23 8 9-8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Bronze</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">0–99 pontos</text></g>
+<g transform="translate(298 80)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#d9e5f3">
+<path d="M32 4 56 19 48 49 32 60 16 49 8 19z" fill="currentColor" opacity=".14"/>
+<path d="M32 4 56 19 48 49 32 60 16 49 8 19z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 13v36M13 23l19 12 19-12M15 32l17 10 17-10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m22 18 10-6 10 6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Prata</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">100–149 pontos</text></g>
+<g transform="translate(572 80)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#ffd46c">
+<path d="M32 3 53 12v28L32 61 11 40V12z" fill="currentColor" opacity=".14"/>
+<path d="M32 3 53 12v28L32 61 11 40V12z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 11 46 18v19L32 51 18 37V18z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m21 24 7 6 4-11 4 11 7-6-2 15H23z" fill="currentColor"/>
+<path d="M23 43h18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Ouro</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">150–299 pontos</text></g>
+<g transform="translate(846 80)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#a2e4d8">
+<path d="M23 5h18l17 27-17 27H23L6 32z" fill="currentColor" opacity=".14"/>
+<path d="M23 5h18l17 27-17 27H23L6 32z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M25 13h14l12 19-12 19H25L13 32z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 17v30M17 32h30m-25-10 20 20m0-20L22 42" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Platina</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">300–499 pontos</text></g>
+<g transform="translate(24 336)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#bc83ff">
+<path d="M18 9h28l14 17-28 32L4 26z" fill="currentColor" opacity=".14"/>
+<path d="M18 9h28l14 17-28 32L4 26z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 26h56M18 9l-5 17 19 32 19-32-5-17M18 9l14 17L46 9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Diamante</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">500–749 pontos</text></g>
+<g transform="translate(298 336)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#fb5968">
+<path d="M32 4 48 16 59 15 54 42 32 60 10 42 5 15l11 1z" fill="currentColor" opacity=".14"/>
+<path d="M32 4 48 16 59 15 54 42 32 60 10 42 5 15l11 1z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 11 45 21l8-1-4 19-17 14-17-14-4-19 8 1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M33 16c2 8-2 10-2 15 4-2 6-5 7-9 8 8 10 18 5 25-3 5-9 8-11 8s-8-3-11-8c-5-8-2-17 4-23 0 6 2 9 4 11 0-7-1-12 4-19z" fill="currentColor"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Lendário</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">750–999 pontos</text></g>
+<g transform="translate(572 336)"><rect width="250" height="230" rx="20" fill="#1d222b" stroke="#46505f"/>
+<svg x="77" y="27" width="96" height="96" viewBox="0 0 64 64" style="color:#ffd77a">
+<path d="M32 2 43 13l15 2-5 17 5 18-26 12L6 50l5-18-5-17 15-2z" fill="currentColor" opacity=".14"/>
+<path d="M32 2 43 13l15 2-5 17 5 18-26 12L6 50l5-18-5-17 15-2z" fill="none" stroke="#f3f5f8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M32 10 41 19l9 1-3 13 3 13-18 8-18-8 3-13-3-13 9-1z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="m32 15 4.5 10 11 1.3-8 7.5 2 11L32 39l-10 5.8 2-11-8-7.5L27.5 25z" fill="currentColor"/>
+<path d="M22 52 32 57l10-5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+<text x="125" y="159" text-anchor="middle" fill="#f3f5f8" font-family="Arial,sans-serif" font-size="20" font-weight="700">Mestre</text>
+<text x="125" y="188" text-anchor="middle" fill="#aeb9ca" font-family="Arial,sans-serif" font-size="15">1000+ pontos</text></g>
+</svg>

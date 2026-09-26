@@ -35,11 +35,18 @@ export default function RankEmblem({ points }: { points: number }) {
         <path className="rank-stroke" d="M18 9h28l14 17-28 32L4 26z"/>
         <path className="rank-thin" d="M4 26h56M18 9l-5 17 19 32 19-32-5-17M18 9l14 17L46 9"/>
       </>}
-      {tier.key === 'master' && <>
+      {tier.key === 'legendary' && <>
         <path className="rank-ghost" d="M32 4 48 16 59 15 54 42 32 60 10 42 5 15l11 1z"/>
         <path className="rank-stroke" d="M32 4 48 16 59 15 54 42 32 60 10 42 5 15l11 1z"/>
         <path className="rank-thin" d="M32 11 45 21l8-1-4 19-17 14-17-14-4-19 8 1z"/>
-        <path className="rank-fill" d="m32 17 4.3 10.2L47 28l-8.2 7 2.7 10.5L32 40l-9.5 5.5L25.2 35 17 28l10.7-.8z"/>
+        <path className="rank-fill" d="M33 16c2 8-2 10-2 15 4-2 6-5 7-9 8 8 10 18 5 25-3 5-9 8-11 8s-8-3-11-8c-5-8-2-17 4-23 0 6 2 9 4 11 0-7-1-12 4-19z"/>
+      </>}
+      {tier.key === 'master' && <>
+        <path className="rank-ghost" d="M32 2 43 13l15 2-5 17 5 18-26 12L6 50l5-18-5-17 15-2z"/>
+        <path className="rank-stroke rank-master-border" d="M32 2 43 13l15 2-5 17 5 18-26 12L6 50l5-18-5-17 15-2z"/>
+        <path className="rank-thin" d="M32 10 41 19l9 1-3 13 3 13-18 8-18-8 3-13-3-13 9-1z"/>
+        <path className="rank-fill" d="m32 15 4.5 10 11 1.3-8 7.5 2 11L32 39l-10 5.8 2-11-8-7.5L27.5 25z"/>
+        <path className="rank-stroke" d="M22 52 32 57l10-5"/>
       </>}
     </svg>
   </span>;
