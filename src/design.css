@@ -632,7 +632,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .profile-rank-badge { position: absolute; top: 18px; left: 24px; display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 42px; }
 .profile-rank-badge .rank-emblem { width: 42px; height: 48px; }
 .profile-rank-badge > strong { color: #f4f7fb; font-size: .83rem; font-variant-numeric: tabular-nums; }
-.profile-rank-global { position: absolute; top: 10px; left: calc(100% + 4px); color: #f4f7fb; font-size: 1.08rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.profile-rank-global { position: absolute; top: 10px; left: calc(100% - 1px); color: #f4f7fb; font-size: 1.08rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .avatar { overflow: hidden; }
 .avatar > img { display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
 .avatar.has-image { border: 0; }

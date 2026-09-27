@@ -61,7 +61,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   if (showBalance && 'balance' in profile) rows.push(['Saldo', `R$ ${profile.balance.toLocaleString('pt-BR')}`]);
   return <div className="profile-overview"><div className="profile-layout">
     <section className="card profile-identity">
-      {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{showBalance && globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
+      {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
       <h2 className={`pass-name-${profile.passNameStyle ?? 'none'}`}>@{profile.username}</h2>
       <span className="muted text-sm">#{profile.playerId}</span>
