@@ -362,7 +362,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .podium-place.place-3 { min-height: 146px; border-color: #b8734966; }
 .podium-place:active { transform: scale(.98); }
 @media (hover:hover) { .podium-place:hover { transform: translateY(-2px); border-color: var(--accent); } }
-.podium-place .avatar { margin-top: 2px; }
+.podium-place .avatar { margin-top: 2px; position: relative; top: 4px; }
 .podium-place > strong { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-size: .875rem; }
 .podium-place > small { color: #f7f8fb; font-size: .875rem; font-weight: 650; }
 .podium-medal { display: inline-flex; align-items: center; gap: 5px; font-size: .875rem; font-weight: 750; }
