@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Check, Target, Trophy, X } from 'lucide-react';
 import { call } from './backend';
-import { greenMedalProgress, hitRate, visibleDaily } from './domain';
+import { battleMedalProgress, greenMedalProgress, hitRate, visibleDaily } from './domain';
 import { Avatar, XpBar } from './components';
 import RankEmblem from './RankEmblem';
 import SupporterEmblem from './SupporterEmblem';
 import GreenMedalEmblem from './GreenMedalEmblem';
+import BattleMedalEmblem from './BattleMedalEmblem';
 import BetaTesterEmblem from './BetaTesterEmblem';
 import type { Profile, PublicProfile } from './types';
 
@@ -17,9 +18,10 @@ function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; la
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
 }
 
-export default function ProfileOverview({ profile, lastClosedPrediction, showBalance = false, supporterActive = false, refreshTick = 0 }: {
+export default function ProfileOverview({ profile, lastClosedPrediction, today, showBalance = false, supporterActive = false, refreshTick = 0 }: {
   profile: OverviewProfile;
   lastClosedPrediction: string | null;
+  today: string;
   showBalance?: boolean;
   supporterActive?: boolean;
   refreshTick?: number;
@@ -41,16 +43,15 @@ export default function ProfileOverview({ profile, lastClosedPrediction, showBal
   }, [profile.uid, profile.rankPoints, refreshTick]);
   const numberOrDash = (value: number | undefined) => typeof value === 'number' ? value : '—';
   const daily = typeof profile.dailyStreakCurrent === 'number'
-    ? visibleDaily(profile.dailyStreakCurrent, profile.lastPlayedPrediction, lastClosedPrediction)
+    ? visibleDaily(profile.dailyStreakCurrent, profile.lastPlayedPrediction, lastClosedPrediction, today)
     : '—';
   const rate = hitRate(profile.green, profile.red);
   const battleTotal = battleStats ? battleStats.wins + battleStats.losses + battleStats.draws : 0;
   const battleWinRate = battleStats && battleTotal > 0 ? `${Math.round(100 * battleStats.wins / battleTotal)}%` : battleStats ? '0%' : '—';
   const medal = greenMedalProgress(profile.green);
+  const battleMedal = battleStats ? battleMedalProgress(battleStats.wins) : null;
   const publicSupporterActive = 'supporterActive' in profile && profile.supporterActive === true;
-  const hasSupporterEmblem = supporterActive || publicSupporterActive ||
-    (profile.passBorderStyle !== undefined && profile.passBorderStyle !== 'none') ||
-    (profile.passNameStyle !== undefined && profile.passNameStyle !== 'none');
+  const hasSupporterEmblem = supporterActive || publicSupporterActive;
   const rows: Array<[string, number | string]> = [
     ['Greens consecutivos', numberOrDash(profile.greenStreakCurrent)],
     ['Maior sequência de greens', numberOrDash(profile.greenStreakMax)],
@@ -84,12 +85,17 @@ export default function ProfileOverview({ profile, lastClosedPrediction, showBal
         <GreenMedalEmblem level={medal.level}/>
         <strong className="medal-name">Colecionador de Greens</strong>
       </div>}
+      {battleMedal&&battleMedal.level>0&&<div className="medal-tile" role="img" aria-label={`Colecionador de Vitórias, nível ${battleMedal.level}`}>
+        <span className="medal-level">Nível {battleMedal.level}</span>
+        <BattleMedalEmblem level={battleMedal.level}/>
+        <strong className="medal-name">Colecionador de Vitórias</strong>
+      </div>}
       {profile.betaTester&&<div className="medal-tile" role="img" aria-label="Medalha Beta Tester">
         <span className="medal-level">Edição Beta</span>
         <BetaTesterEmblem/>
         <strong className="medal-name">Beta Tester</strong>
       </div>}
-      {medal.level===0&&!profile.betaTester&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
+      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
   </section></div>;
 }

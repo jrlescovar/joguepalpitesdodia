@@ -6,14 +6,16 @@ describe('regras do jogo',()=>{
   it('não dá XP a um red e interrompe somente a sequência de greens',()=>expect(resultAfter({level:2,xp:10,green:1,red:0,greenStreakCurrent:1,greenStreakMax:1},false)).toEqual({level:2,xp:10,green:1,red:1,greenStreakCurrent:0,greenStreakMax:1}));
   it('usa o calendário de Brasília na virada de UTC',()=>{expect(dayAt(new Date('2026-09-22T02:59:59Z'))).toBe('2026-09-21');expect(dayAt(new Date('2026-09-22T03:00:00Z'))).toBe('2026-09-22');});
   it('trata meses, anos e dias bissextos',()=>{expect(previousDay('2028-03-01')).toBe('2028-02-29');expect(previousDay('2027-01-01')).toBe('2026-12-31');});
-  it('mantém a sequência até a próxima aposta, mesmo com dias sem jogo',()=>{
-    expect(dailyAfter('2026-09-21','2026-09-21',1,1,'2026-09-25').dailyStreakCurrent).toBe(2);
-    expect(visibleDaily(1,'2026-09-21','2026-09-21')).toBe(1);
+  it('conta somente palpites principais em dias corridos',()=>{
+    expect(dailyAfter('2026-09-21',1,1,'2026-09-22')).toEqual({dailyStreakCurrent:2,dailyStreakMax:2,lastPlayedDate:'2026-09-22'});
+    expect(dailyAfter('2026-09-21',1,1,'2026-09-23')).toEqual({dailyStreakCurrent:1,dailyStreakMax:1,lastPlayedDate:'2026-09-23'});
+    expect(dailyAfter('2026-09-22',2,2,'2026-09-24')).toEqual({dailyStreakCurrent:1,dailyStreakMax:2,lastPlayedDate:'2026-09-24'});
   });
-  it('zera a sequência exibida ao perder uma aposta e reinicia ao voltar',()=>{
-    expect(visibleDaily(1,'2026-09-21','2026-09-25')).toBe(0);
-    expect(dailyAfter('2026-09-21','2026-09-25',1,2,'2026-09-29')).toEqual({dailyStreakCurrent:1,dailyStreakMax:2,lastPlayedDate:'2026-09-29'});
-    expect(visibleDaily(1,'2026-09-29','2026-09-25')).toBe(1);
+  it('zera a sequência visível após um dia perdido ou o prazo de hoje',()=>{
+    expect(visibleDaily(2,'2026-09-22','2026-09-22','2026-09-23')).toBe(2);
+    expect(visibleDaily(2,'2026-09-21','2026-09-21','2026-09-23')).toBe(0);
+    expect(visibleDaily(2,'2026-09-22','2026-09-23','2026-09-23')).toBe(0);
+    expect(visibleDaily(1,'2026-09-23','2026-09-23','2026-09-23')).toBe(1);
   });
   it('mostra 19 dias em 22 de setembro até o fim da temporada',()=>{
     expect(seasonDaysRemaining(new Date('2026-09-22T15:00:00Z'))).toBe(19);

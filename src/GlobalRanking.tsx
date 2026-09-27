@@ -41,7 +41,7 @@ function RankingRow({ player, ownUid, onOpen }: { player: RankedPlayer; ownUid: 
   </button></li>;
 }
 
-export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction, refreshTick }: { ownUid: string; ownPoints: number; lastClosedPrediction: string | null; refreshTick: number }) {
+export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction, today, refreshTick, onBattleSettled }: { ownUid: string; ownPoints: number; lastClosedPrediction: string | null; today: string; refreshTick: number; onBattleSettled?: () => void }) {
   const [players, setPlayers] = useState<RankedPlayer[]>([]);
   const [ownRank, setOwnRank] = useState<RankedPlayer | null>(null);
   const [loading, setLoading] = useState(true);
@@ -68,12 +68,12 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
   if (selected) return <div className="public-profile-view">
     <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao Ranking</button>
     <div className="page-heading"><h1>Perfil público<span>.</span></h1></div>
-    <ProfileOverview profile={selected} lastClosedPrediction={lastClosedPrediction}/>
+    <ProfileOverview profile={selected} lastClosedPrediction={lastClosedPrediction} today={today}/>
   </div>;
   const ownPosition = ownRank?.position ?? players.find(player => player.uid === ownUid)?.position ?? null;
   return <div className="global-ranking-page">
     <RankProgress points={ownRank?.rankPoints ?? ownPoints} position={ownPosition}/>
-    <DailyBattle refreshTick={refreshTick + reload}/>
+    <DailyBattle refreshTick={refreshTick + reload} onSettled={() => { setReload(value => value + 1); onBattleSettled?.(); }}/>
     <div className="page-heading"><div><h1>Ranking Global<span>.</span></h1></div><button className="icon-button" aria-label="Atualizar Ranking" aria-busy={loading} disabled={loading} onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>
     <div className="card global-ranking-card" aria-busy={loading}>
       <div className="global-ranking-heading"><span>TOP 10 / JOGADOR</span><span>PONTOS</span></div>

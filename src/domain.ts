@@ -17,12 +17,13 @@ export function xpAfter(level: number, xp: number, reward: number) {
   while (nextXp >= nextLevel * 15) { nextXp -= nextLevel * 15; nextLevel += 1; }
   return {level:nextLevel, xp:nextXp};
 }
-export function dailyAfter(lastPrediction: string|null, previousPrediction: string|null, current: number, max: number, day: string) {
-  const next = lastPrediction !== null && lastPrediction === previousPrediction ? current + 1 : 1;
+export function dailyAfter(lastPrediction: string|null, current: number, max: number, day: string) {
+  const next = lastPrediction === previousDay(day) ? current + 1 : 1;
   return {dailyStreakCurrent:next, dailyStreakMax:Math.max(max,next),lastPlayedDate:day};
 }
-export function visibleDaily(current: number, lastPrediction: string|null|undefined, lastClosedPrediction: string|null) {
-  return lastClosedPrediction === null || (lastPrediction !== null && lastPrediction !== undefined && lastPrediction >= lastClosedPrediction) ? current : 0;
+export function visibleDaily(current: number, lastPrediction: string|null|undefined, lastClosedPrediction: string|null, today: string) {
+  const requiredDay = lastClosedPrediction !== null && lastClosedPrediction >= today ? today : previousDay(today);
+  return lastPrediction !== null && lastPrediction !== undefined && lastPrediction >= requiredDay ? current : 0;
 }
 export function firstPlayableGameIndex(games: { status: string; closesAt: { toMillis(): number } }[], now: number): number {
   const index = games.findIndex(game => game.status === 'open' && game.closesAt.toMillis() > now);
@@ -42,6 +43,10 @@ export function greenMedalProgress(greens: number) {
     remaining: next === null ? 0 : next - greens,
     percent: next === null ? 100 : Math.min(100, Math.round(greens / next * 100)),
   };
+}
+// Battle victories unlock the same five levels as the green medal.
+export function battleMedalProgress(wins: number) {
+  return greenMedalProgress(wins);
 }
 export const SEASON_END_DAY = '2026-10-11';
 export const SEASON_END_AT = '2026-10-12T02:59:59Z';

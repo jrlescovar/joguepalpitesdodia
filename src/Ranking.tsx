@@ -16,7 +16,7 @@ function RankingSkeleton() {
 
 type TournamentRankingPage = { players: PublicProfile[]; ownRank: { position: number | null; change?: number } | null };
 
-export default function Ranking({ profile, serverTime, lastClosedPrediction, refreshTick, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; refreshTick: number; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
+export default function Ranking({ profile, serverTime, lastClosedPrediction, today, refreshTick, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; today: string; refreshTick: number; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
   const [players, setPlayers] = useState<PublicProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -87,8 +87,8 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, ref
 
     if (selected) return <div className="public-profile-view">
     <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao Torneio</button>
-    <div className="page-heading"><div><div className="eyebrow">JOGADOR DO TORNEIO</div><h1>Perfil público<span>.</span></h1></div></div>
-    <ProfileOverview profile={selected.player} lastClosedPrediction={lastClosedPrediction}/>
+    <div className="page-heading"><div><h1>Perfil público<span>.</span></h1></div></div>
+    <ProfileOverview profile={selected.player} lastClosedPrediction={lastClosedPrediction} today={today}/>
   </div>;
 
   return <>
@@ -110,7 +110,7 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, ref
       </div>
       <section className="card season-card season-card-inline" aria-label="Temporada e premiação">
         <div className="season-row"><span>{seasonEnded ? 'Temporada' : 'Termina em'}</span><strong>{seasonEnded ? 'Encerrada' : seasonDays === 0 ? 'Hoje' : `${seasonDays} ${seasonDays === 1 ? 'dia' : 'dias'}`}</strong></div>
-        <div className="season-row prize-row"><span>Premiação</span><strong>R$ 100,00</strong></div>
+        <div className="season-row prize-row"><span>Premiação</span><strong>R$ 182,00</strong></div>
       </section>
     </div>
     {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">

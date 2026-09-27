@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Swords } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice } from './components';
@@ -15,9 +15,17 @@ type Battle = {
   dayId: string; preview: boolean; protected: boolean;
   result?: 'open' | 'left' | 'right' | 'draw' | 'no_contest';
   myResult?: 'open' | 'win' | 'loss' | 'draw' | 'no_contest';
+  myRankDelta?: number | null;
   hasOpponent?: boolean; scoreVisible?: boolean; myPoints?: number | null; theirPoints?: number | null;
   me?: Fighter; opponent?: Fighter | null; reelCandidates?: ReelCandidate[];
 };
+
+const battleDateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
+function formatBattleDate(dayId: string, daysAhead = 0) {
+  const date = new Date(`${dayId}T12:00:00Z`);
+  date.setUTCDate(date.getUTCDate() + daysAhead);
+  return battleDateFormatter.format(date);
+}
 
 function FighterTile({ fighter, side, showRank = true }: { fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean }) {
   const rank = 'rankPoints' in fighter && 'globalPosition' in fighter ? fighter : null;
@@ -47,14 +55,23 @@ function BattleContent({ battle }: { battle: Battle }) {
 
   const candidates = battle.reelCandidates ?? [];
   const entries = [0, 1, 2, 3].map(index => candidates[index % candidates.length] ?? opponent!).concat(opponent ? [opponent] : []);
-  const battleDate = `${battle.dayId.slice(8, 10)}/${battle.dayId.slice(5, 7)}`;
-  const result = battle.myResult === 'win' ? 'Vitória · +15 pts no Ranking' : battle.myResult === 'loss' ? 'Derrota · −15 pts no Ranking' : battle.myResult === 'draw' ? 'Empate · −10 pts para cada jogador' : '';
+  const battleDate = formatBattleDate(battle.dayId);
+  const showScore = !battle.preview && battle.scoreVisible;
+  const outcome = !battle.preview && battle.myResult === 'win' ? 'win' : !battle.preview && battle.myResult === 'loss' ? 'loss' : null;
+  const resultLabel = outcome === 'win' ? 'GANHOU' : outcome === 'loss' ? 'PERDEU' : '';
+  const delta = battle.myRankDelta;
+  const deltaLabel = typeof delta === 'number' ? `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} pts` : null;
   return <section className={`card daily-battle-card${battle.preview ? ' battle-preview' : ''}`} aria-label="Batalha do Dia">
-    <div className="battle-heading"><span><Swords size={19}/> BATALHA DO DIA {battleDate}</span></div>
+    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}</div>
     {opponent && battle.me ? <>
       <div className="battle-versus">
         <FighterTile fighter={battle.me} side="me"/>
-        <span className="battle-x" aria-hidden="true">X</span>
+        <div className={`battle-center${showScore ? ' has-score' : ''}`} role={showScore ? 'status' : undefined} aria-label={showScore ? `${resultLabel ? `${resultLabel}. ` : ''}Placar: ${battle.myPoints ?? 0} pontos a ${battle.theirPoints ?? 0} pontos${outcome && deltaLabel ? `. Ranking: ${deltaLabel}` : ''}` : undefined}>
+          {showScore && outcome && <strong className={`battle-result-label battle-tone-${outcome}`}>{resultLabel}</strong>}
+          {showScore && <span className={`battle-points${outcome ? ` battle-tone-${outcome}` : ''}`}>{battle.myPoints ?? 0}</span>}
+          <span className="battle-center-mark">{showScore && <small aria-hidden="true">pts</small>}<span className="battle-x" aria-hidden="true">X</span></span>
+          {showScore && <span className="battle-points">{battle.theirPoints ?? 0}</span>}
+        </div>
         <div className="battle-reel-window">
           <span className="battle-sr" role="status">{finished ? `Adversário: ${opponent.username}` : 'Revelando adversário'}</span>
           <div className={`battle-reel-track${reveal ? ' is-revealed' : ''}`} aria-hidden="true">
@@ -62,23 +79,29 @@ function BattleContent({ battle }: { battle: Battle }) {
           </div>
         </div>
       </div>
-      {!battle.preview && battle.scoreVisible && <div className="battle-score" role="status">{battle.myPoints ?? 0} pts × {battle.theirPoints ?? 0} pts</div>}
       {battle.result === 'no_contest' && <p className="battle-outcome">Sem adversário nesta rodada</p>}
-      {result && <p className="battle-outcome">{result}</p>}
-    </> : <div className="battle-waiting">{battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.'}</div>}
+    </> : <div className="battle-waiting">{battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
   </section>;
 }
 
-export default function DailyBattle({ refreshTick }: { refreshTick: number }) {
+export default function DailyBattle({ refreshTick, onSettled }: { refreshTick: number; onSettled?: () => void }) {
   const [battle, setBattle] = useState<Battle | null>(null);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
+  const lastOutcome = useRef('');
+  const onSettledRef = useRef(onSettled);
+  onSettledRef.current = onSettled;
   useEffect(() => {
     let active = true;
     let timer: number | undefined;
     const load = () => call<Battle>('getMyDailyBattle').then(value => {
       if (!active) return;
       setBattle(value); setError('');
+      const outcome = `${value.dayId}:${value.result}:${value.myRankDelta}`;
+      if (!value.preview && (value.myResult === 'win' || value.myResult === 'loss') && lastOutcome.current !== outcome) {
+        lastOutcome.current = outcome;
+        onSettledRef.current?.();
+      }
       if (!value.hasOpponent || (!value.preview && value.result === 'open')) {
         timer = window.setTimeout(() => { if (document.visibilityState === 'visible') void load(); }, 30000);
       }
