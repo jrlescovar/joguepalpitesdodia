@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Swords } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Swords } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice } from './components';
 import RankEmblem from './RankEmblem';
@@ -12,7 +12,7 @@ type Fighter = Pick<PublicProfile, 'uid' | 'username' | 'avatarColor' | 'avatarU
 };
 type ReelCandidate = Omit<Fighter, 'rankPoints' | 'globalPosition'>;
 type Battle = {
-  dayId: string; preview: boolean; protected: boolean;
+  dayId: string; preview: boolean; protected: boolean; historical?: boolean;
   result?: 'open' | 'left' | 'right' | 'draw' | 'no_contest';
   myResult?: 'open' | 'win' | 'loss' | 'draw' | 'no_contest';
   myRankDelta?: number | null;
@@ -40,7 +40,7 @@ function FighterTile({ fighter, side, showRank = true }: { fighter: Fighter | Re
 
 function BattleContent({ battle }: { battle: Battle }) {
   const key = `daily-battle-reveal-${battle.dayId}-${battle.me?.uid}`;
-  const alreadyShown = () => Boolean(localStorage.getItem(key)) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const alreadyShown = () => Boolean(battle.historical || localStorage.getItem(key)) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [reveal, setReveal] = useState(alreadyShown);
   const [finished, setFinished] = useState(alreadyShown);
   const opponent = battle.opponent;
@@ -80,12 +80,14 @@ function BattleContent({ battle }: { battle: Battle }) {
         </div>
       </div>
       {battle.result === 'no_contest' && <p className="battle-outcome">Sem adversário nesta rodada</p>}
-    </> : <div className="battle-waiting">{battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
+    </> : <div className="battle-waiting">{battle.result === 'no_contest' ? 'Sem adversário nesta rodada.' : battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
   </section>;
 }
 
 export default function DailyBattle({ refreshTick, onSettled }: { refreshTick: number; onSettled?: () => void }) {
   const [battle, setBattle] = useState<Battle | null>(null);
+  const [previousBattle, setPreviousBattle] = useState<Battle | null>(null);
+  const [page, setPage] = useState<'today' | 'yesterday'>('today');
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
   const lastOutcome = useRef('');
@@ -94,9 +96,9 @@ export default function DailyBattle({ refreshTick, onSettled }: { refreshTick: n
   useEffect(() => {
     let active = true;
     let timer: number | undefined;
-    const load = () => call<Battle>('getMyDailyBattle').then(value => {
+    const load = () => Promise.all([call<Battle>('getMyDailyBattle'), call<Battle | null>('getMyPreviousDailyBattle')]).then(([value, previous]) => {
       if (!active) return;
-      setBattle(value); setError('');
+      setBattle(value); setPreviousBattle(previous); setError('');
       const outcome = `${value.dayId}:${value.result}:${value.myRankDelta}`;
       if (!value.preview && (value.myResult === 'win' || value.myResult === 'loss') && lastOutcome.current !== outcome) {
         lastOutcome.current = outcome;
@@ -115,5 +117,13 @@ export default function DailyBattle({ refreshTick, onSettled }: { refreshTick: n
   }, [refreshTick, reload]);
   if (error) return <ErrorNotice message={`Batalha do Dia: ${error}`} retry={() => setReload(value => value + 1)}/>;
   if (!battle) return <div className="card daily-battle-card battle-waiting" role="status">Preparando Batalha do Dia…</div>;
-  return <BattleContent key={`${battle.dayId}-${battle.opponent?.uid ?? 'waiting'}`} battle={battle}/>;
+  const shownBattle = page === 'yesterday' && previousBattle ? previousBattle : battle;
+  return <div className={`daily-battle-view${previousBattle ? ' has-history' : ''}`}>
+    <BattleContent key={`${shownBattle.dayId}-${shownBattle.opponent?.uid ?? 'waiting'}`} battle={shownBattle}/>
+    {previousBattle && <nav className="battle-day-nav" aria-label="Dias da Batalha do Dia">
+      <button type="button" aria-label={`Ver batalha de ontem, ${formatBattleDate(previousBattle.dayId)}`} disabled={page === 'yesterday'} onClick={() => setPage('yesterday')}><ChevronLeft size={20} aria-hidden="true"/></button>
+      <span aria-live="polite">{page === 'yesterday' ? '1 / 2' : '2 / 2'}</span>
+      <button type="button" aria-label={`Ver batalha de hoje, ${formatBattleDate(battle.dayId)}`} disabled={page === 'today'} onClick={() => setPage('today')}><ChevronRight size={20} aria-hidden="true"/></button>
+    </nav>}
+  </div>;
 }
