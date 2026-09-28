@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check, ChevronLeft, ChevronRight, Clock3, Trophy, X } from 'lucide-react';
+import { Check, ChevronLeft, ChevronRight, Clock3, History, X } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { brasiliaDate, ErrorNotice } from './components';
 import type { Prediction } from './types';
@@ -28,7 +28,7 @@ export default function RecentResults({ refreshTick }: { refreshTick: number }) 
   const dayIndex = days.indexOf(day);
   if (results === null && !error && !unavailable) return null;
   return <section id="resultados-anteriores" className="recent-results" aria-label="Resultados anteriores">
-    <div className="section-heading"><h2>Resultados anteriores</h2><Trophy size={17}/></div>
+    <div className="section-heading"><h2>Resultados anteriores</h2><History size={17}/></div>
     {error && <ErrorNotice message={error} retry={() => setRetry(value => value + 1)}/>}
     {unavailable && <div className="card recent-results-empty">Resultados temporariamente indisponíveis.</div>}
     {!error && results?.length === 0 && <div className="card recent-results-empty"><Clock3 size={18}/> Os resultados de hoje aparecerão aqui quando forem confirmados.</div>}
