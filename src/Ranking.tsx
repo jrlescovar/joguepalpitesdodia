@@ -111,7 +111,7 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, tod
       </div>
       <section className="card season-card season-card-inline" aria-label="Temporada e premiação">
         <div className="season-row"><span>{seasonEnded ? 'Temporada' : 'Termina em'}</span><strong>{seasonEnded ? 'Encerrada' : seasonDays === 0 ? 'Hoje' : `${seasonDays} ${seasonDays === 1 ? 'dia' : 'dias'}`}</strong></div>
-        <div className="season-row prize-row"><span>Premiação</span><strong>R$ 182,00</strong></div>
+        <div className="season-row prize-row"><span>Premiação</span><strong>R$ 314,00</strong></div>
       </section>
     </div>
     {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
