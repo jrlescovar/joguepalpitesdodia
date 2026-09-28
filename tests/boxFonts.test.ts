@@ -5,7 +5,7 @@ describe('font catalog',()=>{
  it('contains each custom font exactly once with the configured rarity, excludes Normal',()=>{
  const fonts=boxCatalog.filter(item=>item.kind==='font');
  expect(fonts.map(item=>item.style).sort()).toEqual(usernameFonts.filter(([id])=>fontRarity(id)!==null).map(([id])=>id).sort());
- expect(Object.fromEntries(fonts.map(item=>[item.style,item.rarity]))).toEqual({monocraft:'legendary',dancingscript:'legendary',bebasneue:'epic',amaticsc:'mythic',kalam:'mythic',orbitron:'epic',permanentmarker:'mythic',blackopsone:'rare',audiowide:'rare',specialelite:'mythic',luckiestguy:'epic',creepster:'epic',metalmania:'epic',frijole:'mythic',rye:'mythic',quantico:'common'});
+ expect(Object.fromEntries(fonts.map(item=>[item.style,item.rarity]))).toEqual({monocraft:'legendary',dancingscript:'legendary',bebasneue:'epic',amaticsc:'mythic',kalam:'mythic',orbitron:'epic',permanentmarker:'mythic',blackopsone:'rare',audiowide:'rare',specialelite:'mythic',luckiestguy:'epic',creepster:'epic',metalmania:'epic',frijole:'mythic',rye:'mythic',quantico:'rare'});
  expect(fonts.every(item=>boxStyleLabel(item.style)!==item.style)).toBe(true);
  });
  it('keeps owner preview fonts unclassified and outside boxes',()=>{for(const [id] of usernameFonts.filter(([font])=>font!=='normal'&&fontRarity(font)===null)){expect(fontRarity(id)).toBeNull();expect(boxCatalog.some(item=>item.style===id)).toBe(false);}});
