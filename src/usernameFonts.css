@@ -21,17 +21,39 @@
 @font-face{font-family:'Permanent Marker';src:url('/fonts/permanentmarker.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-permanentmarker{font-family:'Permanent Marker',sans-serif!important;font-weight:400!important;}
 
-@font-face{font-family:'Anton';src:url('/fonts/anton.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-anton{font-family:'Anton',sans-serif!important;font-weight:400!important;}
 
-@font-face{font-family:'Righteous';src:url('/fonts/righteous.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-righteous{font-family:'Righteous',sans-serif!important;font-weight:400!important;}
 
-@font-face{font-family:'Russo One';src:url('/fonts/russoone.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-russoone{font-family:'Russo One',sans-serif!important;font-weight:400!important;}
 
 @font-face{font-family:'Black Ops One';src:url('/fonts/blackopsone.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-blackopsone{font-family:'Black Ops One',sans-serif!important;font-weight:400!important;}
 
-@font-face{font-family:'Caveat';src:url('/fonts/caveat.woff2') format('woff2');font-style:normal;font-weight:400 700;font-display:swap}
-.username-font-caveat{font-family:'Caveat',sans-serif!important;padding-inline:.18em;}
+
+@font-face{font-family:'Bungee';src:url('/fonts/bungee.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-bungee{font-family:'Bungee',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Nosifer';src:url('/fonts/nosifer.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-nosifer{font-family:'Nosifer',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Creepster';src:url('/fonts/creepster.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-creepster{font-family:'Creepster',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Press Start 2P';src:url('/fonts/pressstart2p.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-pressstart2p{font-family:'Press Start 2P',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Audiowide';src:url('/fonts/audiowide.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-audiowide{font-family:'Audiowide',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Rubik Mono One';src:url('/fonts/rubikmonoone.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-rubikmonoone{font-family:'Rubik Mono One',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Wallpoet';src:url('/fonts/wallpoet.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-wallpoet{font-family:'Wallpoet',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Luckiest Guy';src:url('/fonts/luckiestguy.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-luckiestguy{font-family:'Luckiest Guy',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Special Elite';src:url('/fonts/specialelite.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-specialelite{font-family:'Special Elite',sans-serif!important;font-weight:400!important;}
+
+@font-face{font-family:'Great Vibes';src:url('/fonts/greatvibes.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-greatvibes{font-family:'Great Vibes',sans-serif!important;font-weight:400!important;padding-inline:.18em;}
