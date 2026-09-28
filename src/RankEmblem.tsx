@@ -21,8 +21,8 @@ export default function RankEmblem({ points }: { points: number }) {
         <path className="rank-ghost" d="M32 3 53 12v28L32 61 11 40V12z"/>
         <path className="rank-stroke" d="M32 3 53 12v28L32 61 11 40V12z"/>
         <path className="rank-thin" d="M32 11 46 18v19L32 51 18 37V18z"/>
-        <path className="rank-fill" d="m21 24 7 6 4-11 4 11 7-6-2 15H23z"/>
-        <path className="rank-stroke" d="M23 43h18"/>
+        <path className="rank-stroke" d="m20 22 12 8 12-8m-24 9 12 8 12-8m-24 9 12 8 12-8"/>
+        <path className="rank-thin" d="M32 16v32"/>
       </>}
       {tier.key === 'platinum' && <>
         <path className="rank-ghost" d="M23 5h18l17 27-17 27H23L6 32z"/>
@@ -53,7 +53,8 @@ export default function RankEmblem({ points }: { points: number }) {
         <path className="rank-elite-shield" d="M32 3 54 14v25L32 61 10 39V14z"/>
         <path className="rank-stroke" d="M32 3 54 14v25L32 61 10 39V14z"/>
         <path className="rank-thin rank-elite-inner" d="M32 10 47 19v17L32 52 17 36V19z"/>
-        <path className="rank-fill" d="m32 17 5 11 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2z"/>
+        <path className="rank-fill" d="m21 24 7 6 4-11 4 11 7-6-2 15H23z"/>
+        <path className="rank-stroke" d="M23 43h18"/>
         <path className="rank-thin" d="m5 23 3 18 12 12m39-30-3 18-12 12"/>
       </>}
       {tier.key === 'legendary' && <>
