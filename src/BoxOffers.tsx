@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, CircleHelp, Gift, LoaderCircle, Sparkles } from 'lucide-react';
+import { Box, CircleHelp, LoaderCircle, PackageOpen, Sparkles } from 'lucide-react';
 import { errorMessage, passRedirect } from './backend';
 import { ErrorNotice, Modal } from './components';
 import { boxRarities } from './boxCatalog';
@@ -19,7 +19,7 @@ export default function BoxOffers() {
     <div className="box-offers-heading"><div><span className="box-offers-eyebrow"><Sparkles size={13} aria-hidden="true"/> NOVIDADE NA LOJA</span><h2>Oferta de Lançamento de Personalização</h2></div><button type="button" className="box-help-button" aria-label="Sobre os pacotes de caixas" onClick={() => setHelp(true)}><CircleHelp size={21}/></button></div>
     <div className="box-offers-grid">{[{ quantity: 3, price: '3,21' }, { quantity: 7, price: '5,67' }].map(pack => <article className={`box-offer${pack.quantity === 7 ? ' box-offer-best' : ''}`} key={pack.quantity}>
       <div className="box-offer-tag">{pack.quantity === 7 ? 'Em Alta' : null}</div>
-      <div className="box-offer-art" aria-hidden="true"><Gift size={46} strokeWidth={1.5}/><span>×{pack.quantity}</span></div>
+      <div className="box-offer-art" aria-hidden="true"><PackageOpen size={46} strokeWidth={1.5}/><span>×{pack.quantity}</span></div>
       <h3>{pack.quantity} caixas</h3><p>de personalização</p>
       <button type="button" className="box-offer-buy" disabled={busy !== null} onClick={() => void buy(pack.quantity)} aria-label={`Comprar ${pack.quantity} caixas por R$ ${pack.price}`}>{busy === pack.quantity ? <LoaderCircle size={17} className="spin"/> : <Box size={17} aria-hidden="true"/>} R$ {pack.price}</button>
     </article>)}</div>
