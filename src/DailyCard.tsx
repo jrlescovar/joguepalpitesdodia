@@ -61,7 +61,7 @@ function GameCard({ prediction, instanceId, pick, selected, now, offset, countdo
   onSubmit: () => void;
 }) {
   const expired = prediction.closesAt.toMillis() <= now || prediction.status !== 'open';
-  return <section className="card daily-card"><div className="daily-header"><span><Goal size={18} /> {gameLabel(prediction).toUpperCase()}</span>{supporterActive && <span className="daily-header-premium"><Zap size={13} aria-hidden="true"/> XP Premium: Ativado</span>}{!expired && !pick && <span className="xp-pill"><Zap size={14} /> +{supporterActive ? 8 : 5} XP</span>}</div>
+  return <section className="card daily-card"><div className="daily-header"><span><Goal size={18} /> {gameLabel(prediction).toUpperCase()}</span>{(supporterActive || (!expired && !pick)) && <span className={`xp-pill${supporterActive ? ' xp-pill-premium' : ''}`}><Zap size={14} aria-hidden="true"/> +{supporterActive ? 8 : 5} XP</span>}</div>
     {pick === undefined ? <DailySkeleton /> : <div className="prediction-content"><h2 className={prediction.title.length > 65 ? 'game-title-very-long' : prediction.title.length > 32 ? 'game-title-long' : undefined}>{gameTitle(prediction.title)}</h2><p className="muted text-sm whitespace-pre-line">{prediction.description}</p>
       <span className={`deadline ${expired ? 'in-play' : ''}`}><Clock3 size={14} />{prediction.status === 'settled' ? 'RESULTADO CONFIRMADO' : expired ? 'EM JOGO' : 'PALPITES ENCERRAM EM'}</span>
       {!expired && <Countdown until={prediction.closesAt.toMillis()} offset={offset} active={countdownActive} />}

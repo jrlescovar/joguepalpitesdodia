@@ -143,7 +143,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .daily-header { border-color: #33465f; padding: 20px 24px; flex-wrap: wrap; gap: 8px 10px; }
 .daily-header > span:first-child { font-size: .8125rem; letter-spacing: .07em; }
 .daily-header > span:first-child svg { color: var(--accent); }
-.daily-header-premium { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: #f3cc7a; font-size: .65rem; font-weight: 600; letter-spacing: 0; white-space: nowrap; }
+.daily-header .xp-pill-premium { color: #f3cc7a; background: #f3cc7a12; border-color: #f3cc7a30; }
 .daily-header-deadline { color: var(--accent); font-size: .75rem; line-height: 1.25; text-align: right; margin-left: auto; }
 .xp-pill {
   color: var(--accent);
