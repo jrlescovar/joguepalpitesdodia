@@ -1,3 +1,4 @@
+import { fontRarity } from './boxCatalog';
 import UsernameText from './UsernameText';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
 import { useEffect,useState,type FormEvent } from 'react';
@@ -45,7 +46,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     {styleTab!=='font'&&!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
     {styleTab!=='font'&&canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
     <div className={'pass-style-options'+(styleTab==='frame'?' frame-style-options':'')}>
-      {styleTab==='font'?usernameFonts.filter(([font])=>font==='normal'||allStylesUnlocked||unlockedFonts.has(font)).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(font==='normal'?'':' style-category-legend')} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{font!=='normal'&&<small> · Lendária</small>}</span></button>):styleTab==='name'?
+      {styleTab==='font'?usernameFonts.filter(([font])=>font==='normal'||allStylesUnlocked||unlockedFonts.has(font)).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(font==='normal'?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{font!=='normal'&&<small> · {fontRarity(font)==='legendary'?'Lendária':fontRarity(font)==='mythic'?'Mítica':'Épica'}</small>}</span></button>):styleTab==='name'?
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);

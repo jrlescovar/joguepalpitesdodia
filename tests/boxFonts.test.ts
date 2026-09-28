@@ -1,11 +1,11 @@
 import {describe,it,expect} from 'vitest';
 import {boxCatalog,boxRarities,boxStyleLabel} from '../src/boxCatalog';
 import {usernameFonts} from '../src/usernameFonts';
-describe('legendary font catalog',()=>{
- it('contains each custom font exactly once as legendary, excludes Normal',()=>{
+describe('font catalog',()=>{
+ it('contains each custom font exactly once with the configured rarity, excludes Normal',()=>{
  const fonts=boxCatalog.filter(item=>item.kind==='font');
  expect(fonts.map(item=>item.style).sort()).toEqual(usernameFonts.filter(([id])=>id!=='normal').map(([id])=>id).sort());
- expect(fonts.every(item=>item.rarity==='legendary')).toBe(true);
+ expect(Object.fromEntries(fonts.map(item=>[item.style,item.rarity]))).toEqual({monocraft:'legendary',dancingscript:'legendary',bebasneue:'epic',amaticsc:'mythic',kalam:'mythic'});
  expect(fonts.every(item=>boxStyleLabel(item.style)!==item.style)).toBe(true);
  });
  it('keeps color/frame pairs separate and total rarity odds unchanged',()=>{

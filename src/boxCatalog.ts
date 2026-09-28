@@ -16,5 +16,6 @@ export function boxRarity(style:PassNameStyle):BoxRarity {
   if(epic.has(style))return 'epic';
   return commonPassStyles.has(style)?'common':'rare';
 }
-export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none').flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>font!=='normal').map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:'legendary' as const}))];
+export function fontRarity(font:UsernameFont):BoxRarity {return font==='bebasneue'?'epic':font==='amaticsc'||font==='kalam'?'mythic':'legendary';}
+export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none').flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>font!=='normal').map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)}))];
 export function boxStyleLabel(style:PassNameStyle|UsernameFont){return passStyleOptions.find(([id])=>id===style)?.[1]??usernameFonts.find(([id])=>id===style)?.[1]??style;}
