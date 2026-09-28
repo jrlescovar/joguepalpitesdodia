@@ -92,6 +92,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getTournamentRankingPage': return rpc<T>('get_tournament_ranking_page');
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });
     case 'getPassStatus': return rpc<T>('get_pass_status');
+    case 'setUsernameFont': return rpc<T>('set_username_font', { p_font: data.font });
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
     case 'getBoxState': return rpc<T>('get_box_state');
     case 'openBox': return rpc<T>('open_box', { p_request_id: data.requestId });

@@ -1,0 +1,2 @@
+export const usernameFonts = [["normal","Normal","inherit"],["monocraft","Monocraft","Monocraft"],["dancingscript","Dancing Script","Dancing Script"],["bebasneue","Bebas Neue","Bebas Neue"],["oswald","Oswald","Oswald"],["amaticsc","Amatic SC","Amatic SC"],["kalam","Kalam","Kalam"],["patrickhand","Patrick Hand","Patrick Hand"],["lobster","Lobster","Lobster"]] as const;
+export type UsernameFont = typeof usernameFonts[number][0];

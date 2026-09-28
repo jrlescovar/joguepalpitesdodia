@@ -6,7 +6,7 @@ import RankEmblem from './RankEmblem';
 import type { PublicProfile } from './types';
 import './dailyBattle.css';
 
-type Fighter = Pick<PublicProfile, 'uid' | 'username' | 'avatarColor' | 'avatarUrl' | 'passBorderStyle' | 'passNameStyle'> & {
+type Fighter = Pick<PublicProfile, 'uid' | 'username' | 'avatarColor' | 'avatarUrl' | 'passBorderStyle' | 'passNameStyle' | 'usernameFont'> & {
   rankPoints: number;
   globalPosition: number;
 };
@@ -34,7 +34,7 @@ function FighterTile({ fighter, side, showRank = true, onOpenProfile }: { onOpen
       {showRank && rank && <>{side === 'opponent' && <span>#{rank.globalPosition}</span>}<RankEmblem points={rank.rankPoints}/>{side === 'me' && <span>#{rank.globalPosition}</span>}</>}
     </span>
     <Avatar name={fighter.username} color={fighter.avatarColor} imageUrl={fighter.avatarUrl} borderStyle={fighter.passBorderStyle}/>
-    <strong className={`pass-name-${fighter.passNameStyle ?? 'none'}`}>@{fighter.username}</strong>
+    <strong className={`pass-name-${fighter.passNameStyle ?? 'none'} username-font-${fighter.usernameFont ?? 'normal'}`}>@{fighter.username}</strong>
   </div>;
 }
 
