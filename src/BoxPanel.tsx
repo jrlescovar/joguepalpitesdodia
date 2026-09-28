@@ -18,7 +18,7 @@ function BoxArt({opening=false}:{opening?:boolean}){
   return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><span className="box-art-lid"/><span className="box-art-body"><Gift size={62} strokeWidth={1.5}/></span></div>;
 }
 
-export default function BoxPanel({profile,onChanged}:{profile:Profile;onChanged:()=>void}){
+export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Profile;onChanged:()=>void;refreshTick?:number}){
   const [state,setState]=useState<BoxState|null>(null);
   const [opening,setOpening]=useState<BoxOpening|null>(null);
   const [helpOpen,setHelpOpen]=useState(false);
@@ -32,7 +32,18 @@ export default function BoxPanel({profile,onChanged}:{profile:Profile;onChanged:
   const trackRef=useRef<HTMLDivElement>(null);
   const animationRef=useRef<Animation|null>(null);
 
-  useEffect(()=>{let active=true;call<BoxState>('getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setError(errorMessage(cause));});return()=>{active=false;};},[profile.uid]);
+  useEffect(()=>{let active=true;call<BoxState>('getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick]);
+  useEffect(()=>{
+    if(new URLSearchParams(location.search).get('boxes')!=='paid')return;
+    let active=true;
+    let attempts=0;
+    const timer=window.setInterval(()=>{
+      attempts+=1;
+      void call<BoxState>('getBoxState').then(value=>{if(active)setState(value);}).catch(()=>{});
+      if(attempts>=6)window.clearInterval(timer);
+    },5000);
+    return()=>{active=false;window.clearInterval(timer);};
+  },[profile.uid]);
   useEffect(()=>()=>animationRef.current?.cancel(),[]);
 
   useEffect(()=>{

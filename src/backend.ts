@@ -120,8 +120,8 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
   }
 }
 
-export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix') {
-  const { data, error } = await supabase.functions.invoke<{ url?: string; error?: string }>(destination);
+export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string }) {
+  const { data, error } = await supabase.functions.invoke<{ url?: string; error?: string }>(destination, body ? { body } : undefined);
   if (error) {
     const response = (error as { context?: unknown }).context;
     if (response instanceof Response) {

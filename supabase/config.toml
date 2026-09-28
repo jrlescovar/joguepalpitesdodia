@@ -9,3 +9,6 @@ verify_jwt = true
 
 [functions.pass-webhook]
 verify_jwt = false
+
+[functions.box-checkout]
+verify_jwt = true
