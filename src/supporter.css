@@ -151,6 +151,11 @@
 .avatar.pass-border-legend-solar { --supporter-ring: var(--trial-gradient); }
 .avatar.pass-border-legend-ruby-eclipse, .pass-name-legend-ruby-eclipse { --trial-gradient: linear-gradient(100deg, #250b16, #f2384d, #ffdbd0, #364775, #250b16); }
 .avatar.pass-border-legend-ruby-eclipse { --supporter-ring: var(--trial-gradient); }
+/* Keep the animated names readable throughout the wave, without changing frames. */
+.pass-name-legend-nebula { --trial-gradient: linear-gradient(100deg, #dba2df, #82cfc3, #e8cf91, #a4bfea, #dba2df); }
+.pass-name-legend-abyss { --trial-gradient: linear-gradient(100deg, #78c9c5, #63efad, #becbd9, #b6b2f2, #78c9c5); }
+.pass-name-legend-solar { --trial-gradient: linear-gradient(100deg, #96b7e4, #fff4cf, #efac55, #9edcf0, #96b7e4); }
+.pass-name-legend-ruby-eclipse { --trial-gradient: linear-gradient(100deg, #e897b7, #ff7181, #ffdbd0, #a0b4e9, #e897b7); }
 .avatar.pass-border-myth-petroleum-bronze, .pass-name-myth-petroleum-bronze { --trial-gradient: linear-gradient(100deg, #0f4650, #a87943, #2ac9be, #0f4650); }
 .avatar.pass-border-myth-petroleum-bronze { --supporter-ring: var(--trial-gradient); }
 .avatar.pass-border-myth-burgundy-sand, .pass-name-myth-burgundy-sand { --trial-gradient: linear-gradient(100deg, #641b35, #e2c49e, #638498, #641b35); }
