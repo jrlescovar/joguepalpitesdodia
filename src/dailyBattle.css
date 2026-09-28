@@ -58,3 +58,11 @@
 @media (prefers-reduced-motion: reduce) {
   .battle-reel-track.is-revealed { transition: none; }
 }
+
+.battle-pager-window { display: grid; overflow: hidden; }
+.battle-page { grid-area: 1 / 1; min-width: 0; transform: translateX(0); transition: transform 200ms var(--ease-out); }
+.battle-pager-window .daily-battle-card { margin-bottom: 0; }
+.daily-battle-view[data-page="today"] .battle-page-previous { transform: translateX(-100%); }
+.daily-battle-view[data-page="previous"] .battle-page-today { transform: translateX(100%); }
+.daily-battle-view[data-motion="off"] .battle-page { transition: none; }
+@media (prefers-reduced-motion: reduce) { .battle-page { transition: none; } }
