@@ -1,10 +1,10 @@
 import { useId } from 'react';
 
-export default function ChestIcon({ size = 64, className }: { size?: number; className?: string }) {
+export default function ChestIcon({ size = 64, className, opening = false }: { size?: number; className?: string; opening?: boolean }) {
   const id = useId().replace(/:/g, '');
   const gold = `chest-gold-${id}`;
   const wood = `chest-wood-${id}`;
-  return <svg className={className} width={size} height={size * 72 / 80} viewBox="0 0 80 72" fill="none" aria-hidden="true">
+  return <svg className={className} width={size} height={size * (opening ? 96 : 72) / 80} viewBox={opening ? '0 -24 80 96' : '0 0 80 72'} fill="none" aria-hidden="true">
     <defs>
       <linearGradient id={gold} x1="8" y1="12" x2="67" y2="64" gradientUnits="userSpaceOnUse"><stop stopColor="#ffedb3"/><stop offset=".5" stopColor="#eeb95e"/><stop offset="1" stopColor="#a86f28"/></linearGradient>
       <linearGradient id={wood} x1="40" y1="22" x2="40" y2="64" gradientUnits="userSpaceOnUse"><stop stopColor="#815625"/><stop offset="1" stopColor="#3f2c1c"/></linearGradient>

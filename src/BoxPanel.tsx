@@ -17,7 +17,7 @@ function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
 }
 
 function BoxArt({opening=false}:{opening?:boolean}){
-  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest"/></div>;
+  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening}/></div>;
 }
 
 export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Profile;onChanged:()=>void;refreshTick?:number}){
