@@ -1,65 +1,66 @@
 /* Self-hosted fonts; original OFL licenses are in /fonts/. */
-@font-face{font-family:'Monocraft';src:url('/fonts/monocraft.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Monocraft';src:url('/fonts/monocraft.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-monocraft{font-family:'Monocraft',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Dancing Script';src:url('/fonts/dancingscript.woff2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
+@font-face{font-family:'Dancing Script';src:url('/fonts/dancingscript.woff2?v=2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}
 .username-font-dancingscript{font-family:'Dancing Script',sans-serif!important;}
-@font-face{font-family:'Bebas Neue';src:url('/fonts/bebasneue.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Bebas Neue';src:url('/fonts/bebasneue.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-bebasneue{font-family:'Bebas Neue',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Amatic SC';src:url('/fonts/amaticsc.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Amatic SC';src:url('/fonts/amaticsc.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-amaticsc{font-family:'Amatic SC',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Kalam';src:url('/fonts/kalam.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Kalam';src:url('/fonts/kalam.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-kalam{font-family:'Kalam',sans-serif!important;font-weight:400!important;}
 /* Script glyphs extend past their advance width, especially the initial J. */
 .username-font-dancingscript,.username-font-kalam{padding-inline:.18em;}
 
-@font-face{font-family:'Orbitron';src:url('/fonts/orbitron.woff2') format('woff2');font-style:normal;font-weight:400 900;font-display:swap}
+@font-face{font-family:'Orbitron';src:url('/fonts/orbitron.woff2?v=2') format('woff2');font-style:normal;font-weight:400 900;font-display:swap}
 .username-font-orbitron{font-family:'Orbitron',sans-serif!important;}
 
 
 
 
-@font-face{font-family:'Permanent Marker';src:url('/fonts/permanentmarker.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Permanent Marker';src:url('/fonts/permanentmarker.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-permanentmarker{font-family:'Permanent Marker',sans-serif!important;font-weight:400!important;}
 
 
 
 
-@font-face{font-family:'Black Ops One';src:url('/fonts/blackopsone.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Black Ops One';src:url('/fonts/blackopsone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-blackopsone{font-family:'Black Ops One',sans-serif!important;font-weight:400!important;}
 
 
 
 
-@font-face{font-family:'Creepster';src:url('/fonts/creepster.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Creepster';src:url('/fonts/creepster.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-creepster{font-family:'Creepster',sans-serif!important;font-weight:400!important;}
 
 
-@font-face{font-family:'Audiowide';src:url('/fonts/audiowide.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Audiowide';src:url('/fonts/audiowide.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-audiowide{font-family:'Audiowide',sans-serif!important;font-weight:400!important;}
 
 
 
-@font-face{font-family:'Luckiest Guy';src:url('/fonts/luckiestguy.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Luckiest Guy';src:url('/fonts/luckiestguy.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-luckiestguy{font-family:'Luckiest Guy',sans-serif!important;font-weight:400!important;}
 
-@font-face{font-family:'Special Elite';src:url('/fonts/specialelite.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Special Elite';src:url('/fonts/specialelite.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-specialelite{font-family:'Special Elite',sans-serif!important;font-weight:400!important;}
 
 
-@font-face{font-family:'Metal Mania';src:url('/fonts/metalmania.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Metal Mania';src:url('/fonts/metalmania.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-metalmania{font-family:'Metal Mania',sans-serif!important;font-weight:400!important;}
 
 
-@font-face{font-family:'Rye';src:url('/fonts/rye.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Rye';src:url('/fonts/rye.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-rye{font-family:'Rye',sans-serif!important;font-weight:400!important;}
 
-@font-face{font-family:'Frijole';src:url('/fonts/frijole.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Frijole';src:url('/fonts/frijole.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-frijole{font-family:'Frijole',sans-serif!important;font-weight:400!important;}
 
 
 
-@font-face{font-family:'Quantico';src:url('/fonts/quantico.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:'Quantico';src:url('/fonts/quantico.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-quantico{font-family:'Quantico',sans-serif!important;font-weight:400!important;}
+
 
 
 
