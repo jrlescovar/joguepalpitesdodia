@@ -110,11 +110,13 @@ export default function BoxPanel({profile,onChanged}:{profile:Profile;onChanged:
   }
 
   function close(){animationRef.current?.cancel();setOpening(null);setPhase('result');}
-  return <section className="card box-panel" aria-label="Caixa de estilos">
+  return <>
+    {((state?.balance ?? 0) > 0 || pending) && <section className="card box-panel" aria-label="Caixa de estilos">
     <div className="box-panel-heading"><div className="box-topline"><h2>Caixa de estilos</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
     <BoxArt/>
     <div className="box-panel-actions"><button className="primary-button" type="button" disabled={busy||(!pending&&(state?.balance??0)<1)} onClick={()=>void openBox()}>{busy?<LoaderCircle className="spin" size={18}/>:pending||(state?.balance??0)>0?<Sparkles size={18}/>:<Box size={18}/>} {busy?'Preparando abertura…':pending?'Retomar abertura':state===null?'Carregando…':state.balance>0?'Abrir caixa':'Indisponível'}</button></div>
     {error&&!opening&&<ErrorNotice message={error}/>}
+    </section>}
     <Modal open={helpOpen} onOpenChange={setHelpOpen} title="Como funcionam as caixas"><div className="box-help-content"><p>Cada abertura entrega um item: nome colorido ou moldura de perfil. Se você já tiver o mesmo item, recebe XP.</p><div className="box-odds"><h3>Chances por raridade</h3><div>{boxRarities.map(tier=><span key={tier.id} className={`box-tier box-tier-${tier.id}`}><b>{tier.label}</b><strong>{tier.chance}%</strong><small>Repetido: +{tier.duplicateXp} XP</small></span>)}</div></div></div></Modal>
     <Modal open={Boolean(opening)} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
       {opening&&<div className="box-reveal">
@@ -123,5 +125,5 @@ export default function BoxPanel({profile,onChanged}:{profile:Profile;onChanged:
           {error&&<ErrorNotice message={error}/>}<div className="box-result-actions">{!opening.duplicate&&<button type="button" className="primary-button" disabled={equipBusy} onClick={()=>void equip()}>{equipBusy?<LoaderCircle className="spin" size={18}/>:<Sparkles size={18}/>} Equipar agora</button>}<button type="button" className="secondary-button" onClick={close} disabled={equipBusy}>Fechar</button></div></>}
       </div>}
     </Modal>
-  </section>;
+  </>;
 }
