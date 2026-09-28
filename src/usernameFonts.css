@@ -9,3 +9,5 @@
 .username-font-amaticsc{font-family:'Amatic SC',sans-serif!important;font-weight:400!important;}
 @font-face{font-family:'Kalam';src:url('/fonts/kalam.woff2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-kalam{font-family:'Kalam',sans-serif!important;font-weight:400!important;}
+/* Script glyphs extend past their advance width, especially the initial J. */
+.username-font-dancingscript,.username-font-kalam{padding-inline:.18em;}
