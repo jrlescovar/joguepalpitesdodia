@@ -25,7 +25,9 @@
 .battle-rank .rank-emblem { width: 32px; height: 36px; }
 .battle-rank.is-concealed { visibility: hidden; }
 .battle-center { display: flex; align-items: end; justify-content: center; justify-self: center; white-space: nowrap; transform: translateY(-13px); }
-.battle-center.has-score { position: relative; display: grid; grid-template-columns: repeat(3, max-content); align-items: center; gap: 7px; transform: none; }
+.battle-center.has-score { position: relative; display: grid; grid-template-columns: 1fr max-content 1fr; width: max-content; align-items: center; gap: 7px; transform: none; }
+.battle-center.has-score > .battle-points:first-of-type { justify-self: end; }
+.battle-center.has-score > .battle-points:last-child { justify-self: start; }
 .battle-center-mark { position: relative; display: flex; flex-direction: column; align-items: center; line-height: 1; }
 .battle-center-mark small { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); color: #a9bbd4; font-size: .67rem; font-weight: 700; letter-spacing: .02em; }
 .battle-x { color: #f4f7fb; font-size: 1.15rem; font-weight: 800; text-align: center; }
