@@ -40,7 +40,7 @@
 .box-reel-item { display: flex; flex: none; flex-direction: column; align-items: center; justify-content: center; gap: 5px; width: 130px; height: 136px; padding: 8px; border: 1px solid var(--tier-color); border-radius: 11px; background: #232b37; text-align: center; }
 .box-reel-item .avatar { width: 54px; height: 54px; }
 .box-reel-item .box-name-preview { max-width: 100%; overflow: hidden; font-size: .9rem; white-space: nowrap; }
-.box-reel-item span:not(.avatar) { max-width: 100%; overflow: hidden; color: #f3f5fa; font-size: .73rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
+.box-reel-item > span:not(.avatar) { max-width: 100%; overflow: hidden; color: #f3f5fa; font-size: .73rem; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
 .box-reel-item small { color: var(--tier-color); font-size: .7rem; }
 .box-result { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 28px 15px; border: 1px solid var(--tier-color); border-radius: 15px; background: radial-gradient(circle at center,#2a3342,#1b222c 74%); text-align: center; box-shadow: 0 0 28px color-mix(in srgb,var(--tier-color) 18%,transparent); }
 .box-result-rarity { color: var(--tier-color); font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
