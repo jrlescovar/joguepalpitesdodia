@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Box, CircleHelp, LoaderCircle, PackageOpen, Sparkles } from 'lucide-react';
 import { errorMessage, passRedirect } from './backend';
-import { ErrorNotice, Modal } from './components';
-import { boxRarities } from './boxCatalog';
+import { ErrorNotice } from './components';
+import BoxHelp from './BoxHelp';
 import './box-offers.css';
 
 export default function BoxOffers() {
@@ -25,6 +25,6 @@ export default function BoxOffers() {
     </article>)}</div>
     {returned === 'paid' && <p className="box-offers-status" role="status">Aguardando confirmação do pagamento. Suas caixas aparecem assim que ele for confirmado.</p>}
     {error && <ErrorNotice message={error}/>}
-    <Modal open={help} onOpenChange={setHelp} title="Caixas de Personalização"><div className="box-offers-help"><p>Cada caixa entrega uma cor de nome ou uma moldura aleatória. Itens repetidos viram XP.</p><p>As caixas são liberadas após a confirmação do pagamento. Você pode comprar os pacotes quantas vezes quiser.</p><div className="box-offers-rarities">{boxRarities.map(tier => <p key={tier.id}><strong>{tier.label}</strong><span>{tier.chance}% · Repetido: +{tier.duplicateXp} XP</span></p>)}</div></div></Modal>
+    <BoxHelp open={help} onOpenChange={setHelp}/>
   </section>;
 }

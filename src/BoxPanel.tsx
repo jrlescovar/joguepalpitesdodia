@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Box, CircleHelp, Gift, LoaderCircle, Sparkles, Zap } from 'lucide-react';
+import { Box, CircleHelp, PackageOpen, LoaderCircle, Sparkles, Zap } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice, Modal } from './components';
 import { boxCatalog, boxRarities, boxStyleLabel } from './boxCatalog';
 import type { BoxItem, BoxOpening, BoxState, PassStatus, Profile } from './types';
 import './box.css';
+import BoxHelp from './BoxHelp';
 
 const pendingKey=(uid:string)=>`apostadodia:box-opening:${uid}`;
 
@@ -15,7 +16,7 @@ function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
 }
 
 function BoxArt({opening=false}:{opening?:boolean}){
-  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><span className="box-art-lid"/><span className="box-art-body"><Gift size={62} strokeWidth={1.5}/></span></div>;
+  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><span className="box-art-lid"/><span className="box-art-body"><PackageOpen size={62} strokeWidth={1.5}/></span></div>;
 }
 
 export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Profile;onChanged:()=>void;refreshTick?:number}){
@@ -122,13 +123,13 @@ export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Prof
 
   function close(){animationRef.current?.cancel();setOpening(null);setPhase('result');}
   return <>
-    {((state?.balance ?? 0) > 0 || pending) && <section className="card box-panel" aria-label="Caixa de estilos">
-    <div className="box-panel-heading"><div className="box-topline"><h2>Caixa de estilos</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
+    {((state?.balance ?? 0) > 0 || pending) && <section className="card box-panel" aria-label="Caixa de Personalização">
+    <div className="box-panel-heading"><div className="box-topline"><h2>Caixa de Personalização</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
     <BoxArt/>
     <div className="box-panel-actions"><button className="primary-button" type="button" disabled={busy||(!pending&&(state?.balance??0)<1)} onClick={()=>void openBox()}>{busy?<LoaderCircle className="spin" size={18}/>:pending||(state?.balance??0)>0?<Sparkles size={18}/>:<Box size={18}/>} {busy?'Preparando abertura…':pending?'Retomar abertura':state===null?'Carregando…':state.balance>0?'Abrir caixa':'Indisponível'}</button></div>
     {error&&!opening&&<ErrorNotice message={error}/>}
     </section>}
-    <Modal open={helpOpen} onOpenChange={setHelpOpen} title="Como funcionam as caixas"><div className="box-help-content"><p>Cada abertura entrega um item: nome colorido ou moldura de perfil. Se você já tiver o mesmo item, recebe XP.</p><div className="box-odds"><h3>Chances por raridade</h3><div>{boxRarities.map(tier=><span key={tier.id} className={`box-tier box-tier-${tier.id}`}><b>{tier.label}</b><strong>{tier.chance}%</strong><small>Repetido: +{tier.duplicateXp} XP</small></span>)}</div></div></div></Modal>
+    <BoxHelp open={helpOpen} onOpenChange={setHelpOpen}/>
     <Modal open={Boolean(opening)} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
       {opening&&<div className="box-reveal">
         {phase==='box'?<div className="box-opening-stage"><BoxArt opening/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind==='frame'&&<small>Moldura</small>}</div>)}</div></div>:

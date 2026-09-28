@@ -16,9 +16,6 @@
 .box-offer-buy:hover { filter: brightness(1.08); }
 .box-offer-buy:disabled { opacity: .65; cursor: wait; }
 .box-offers-status { font-size: 13px; color: #86efac; line-height: 1.5; }
-.box-offers-help { font-size: 13px; line-height: 1.6; }
-.box-offers-rarities p { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 7px 0; border-top: 1px solid var(--line); }
-.box-offers-rarities span { color: var(--muted); font-size: 12px; }
 @media (max-width: 640px) {
   .box-offers { padding: 16px; }
   .box-offers-heading h2 { font-size: 1rem; }
