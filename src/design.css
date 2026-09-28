@@ -611,10 +611,10 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .muted, .streak-row, .season-row > span { color: #f0f2f7; }
 }
 
-.profile-identity { position: relative; }
+.profile-identity { position: relative; padding-bottom: 16px; }
 @media (min-width: 641px) {
-  .profile-layout .profile-identity { align-self: start; padding-bottom: 26px; }
-  .profile-layout .profile-identity .xp-block { margin-top: 20px; }
+  .profile-layout .profile-identity { align-self: start; padding-bottom: 16px; }
+  .profile-layout .profile-identity .xp-block { margin-top: 12px; }
 }
 .profile-rank-badge { position: absolute; top: 18px; left: 24px; display: flex; flex-direction: column; align-items: center; gap: 2px; min-width: 42px; }
 .profile-rank-badge .rank-emblem { width: 42px; height: 48px; }
@@ -641,7 +641,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   position: static;
   margin: 0;
 }
-.profile-identity .xp-block { margin-bottom: 0; }
+.profile-identity .xp-block { margin-top: 12px; margin-bottom: 0; }
 .profile-logout {
   flex-direction: column;
   align-items: flex-end;
