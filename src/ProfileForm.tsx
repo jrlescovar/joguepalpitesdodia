@@ -49,7 +49,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
           return <button type="button" key={style} className={'pass-style-option '+(category?'style-category-'+category+' ':'')+(locked?'is-locked':'')} aria-pressed={nameStyle===style} aria-label={'Nome '+(category?categoryName[category]+' · ':'')+label+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setNameStyle(style)}>
-            <span className={'pass-name-preview '+(locked?'':'pass-name-'+style)}>@{username||'Nome'}</span>
+            <span className={'pass-name-preview '+(locked?'':'pass-name-'+style)}><UsernameText name={username||'Nome'} font={usernameFont}/></span>
             <span className="pass-style-option-label">{label}</span>
             {locked&&<LockKeyhole size={15} aria-hidden="true"/>}
           </button>;
