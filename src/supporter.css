@@ -163,14 +163,14 @@
 
 .pass-name-gold { background-image: linear-gradient(100deg, #9a5a0b 0%, #f1b933 18%, #fff8db 31%, #f5c858 39%, #bd7d14 55%, #fff0b5 72%, #d69420 87%, #9a5a0b 100%); background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
 .profile-style-group { margin: 18px 0 22px; }
-.profile-style-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 14px; border: 1px solid #3c4653; border-radius: 12px; background: #171d26; }
+.profile-style-tabs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 4px; margin-bottom: 14px; border: 1px solid #3c4653; border-radius: 12px; background: #171d26; }
 .profile-style-tabs button { min-height: 40px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-weight: 700; cursor: pointer; }
 .profile-style-tabs button[aria-pressed="true"] { background: #263346; color: #f4f7fb; box-shadow: 0 0 0 1px #93c5fd88; }
 .profile-style-group .pass-style-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .profile-style-group .pass-style-option { position: relative; min-height: 106px; height: auto; }
 .profile-style-group .pass-style-option:not(.frame-option) { min-height: 82px; padding-block: 8px; gap: 4px; }
-.profile-style-group .frame-option { min-height: 114px; gap: 5px; font-size: .75rem; }
-.profile-style-group .frame-option .avatar { width: 43px; height: 43px; }
+.profile-style-group .frame-option { min-height: 82px; padding-block: 8px; gap: 4px; font-size: .75rem; }
+.profile-style-group .frame-option .avatar { width: 36px; height: 36px; }
 .profile-style-group .pass-style-option-label { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; width: 100%; max-height: 2.4em; color: #dbe5f1; font-size: .7rem; font-weight: 700; line-height: 1.2; text-align: center; overflow-wrap: anywhere; }
 .pass-style-locked-note { display: flex; align-items: center; gap: 6px; margin: 0 0 10px; color: var(--muted); font-size: .8125rem; }
 .profile-style-group .pass-style-option.is-locked { color: var(--muted); cursor: not-allowed; opacity: .68; }

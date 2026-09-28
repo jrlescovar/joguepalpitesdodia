@@ -14,7 +14,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
   const [box,setBox]=useState<BoxState|null>(null);
   const [nameStyle,setNameStyle]=useState<PassNameStyle>(profile?.passNameStyle??'none');
   const [borderStyle,setBorderStyle]=useState<PassBorderStyle>(profile?.passBorderStyle??'none');
-  const [styleTab,setStyleTab]=useState<'name'|'frame'>('name');
+  const [styleTab,setStyleTab]=useState<'name'|'frame'|'font'>('name');
   const allStylesUnlocked=profile?.playerId===1000001;
   const canStyle=allStylesUnlocked||Boolean(box?.inventory.length);
   const unlockedNames=new Set(box?.inventory.filter(item=>item.kind==='name').map(item=>item.style));
@@ -34,13 +34,14 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
   return <form onSubmit={save} className="profile-form"><div className="avatar-choice"><Avatar name={username||'?'} color={color} imageUrl={useGoogleAvatar?profile?.avatarUrl:null} borderStyle={canStyle?borderStyle:'none'} large/><div><strong>Com a sua cara.</strong><p>{!useGoogleAvatar?'Avatar tradicional.':profile?.avatarUrl?'Foto da sua conta Google.':'A foto será atualizada no próximo login.'}</p></div></div>{profile&&<div className="google-photo-setting"><div><strong>Usar foto do Google</strong><span>Desative para usar sua inicial colorida.</span></div><button type="button" role="switch" aria-checked={useGoogleAvatar} aria-label="Usar foto do Google" className={`toggle ${useGoogleAvatar?'on':''}`} onClick={()=>setUseGoogleAvatar(value=>!value)}><span/></button></div>}{!useGoogleAvatar&&<fieldset><legend className="sr-only">Cor do avatar</legend><div className="color-options">{avatarColors.map((c,i)=><label key={c} style={{'--avatar-color':c} as React.CSSProperties}><input type="radio" name="avatarColor" value={c} checked={c===color} onChange={()=>setColor(c)}/><span>{c===color&&<Check size={18}/>}</span><span className="sr-only">{colorNames[i]}</span></label>)}</div></fieldset>}{profile&&<fieldset className="profile-style-group">
     <legend className="field-label">Personalização do perfil</legend>
     <div className="profile-style-tabs" role="group" aria-label="Escolher personalização">
-      <button type="button" aria-pressed={styleTab==='name'} onClick={()=>setStyleTab('name')}>Nome</button>
+      <button type="button" aria-pressed={styleTab==='name'} onClick={()=>setStyleTab('name')}>Cor nome</button>
       <button type="button" aria-pressed={styleTab==='frame'} onClick={()=>setStyleTab('frame')}>Moldura</button>
+      <button type="button" aria-pressed={styleTab==='font'} onClick={()=>setStyleTab('font')}>Fonte</button>
     </div>
-    {!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
-    {canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
+    {styleTab!=='font'&&!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
+    {styleTab!=='font'&&canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
     <div className="pass-style-options">
-      {styleTab==='name'?
+      {styleTab==='font'?<button type="button" className="pass-style-option" aria-pressed={true} aria-label="Fonte Normal"><span className="pass-name-preview">@{username||'Nome'}</span><span className="pass-style-option-label">Normal</span></button>:styleTab==='name'?
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
