@@ -35,6 +35,16 @@
   animation: supporter-wave 3s linear infinite;
 }
 .pass-current { color: #86efac; font-weight: 700; }
+@media (max-width: 640px) {
+  .card.pass-panel { padding: 16px 18px; gap: 12px; }
+  .pass-panel .pass-heading { gap: 10px; }
+  .pass-panel .pass-heading h2 { font-size: 1rem; }
+  .pass-panel .pass-heading p { font-size: .8125rem; }
+  .pass-panel .supporter-emblem { width: 32px; height: 36px; }
+  .pass-panel .pass-benefits, .pass-panel .pass-current { font-size: .8125rem; line-height: 1.4; }
+  .pass-panel .pass-benefits li { padding: 8px 0; gap: 8px; }
+  .pass-panel .pass-benefits li > svg { width: 15px; height: 15px; margin-top: 2px; }
+}
 .pass-panel fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .pass-panel legend { font-weight: 700; margin-bottom: 12px; }
 .pass-style-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
