@@ -27,9 +27,9 @@ function formatBattleDate(dayId: string, daysAhead = 0) {
   return battleDateFormatter.format(date);
 }
 
-function FighterTile({ fighter, side, showRank = true }: { fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean }) {
+function FighterTile({ fighter, side, showRank = true, onOpenProfile }: { onOpenProfile?: (uid: string) => void; fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean }) {
   const rank = 'rankPoints' in fighter && 'globalPosition' in fighter ? fighter : null;
-  return <div className={`battle-fighter battle-fighter-${side}`}>
+  return <div className={`battle-fighter battle-fighter-${side}`} role={onOpenProfile ? 'button' : undefined} tabIndex={onOpenProfile ? 0 : undefined} aria-label={onOpenProfile ? `Abrir perfil de ${fighter.username}` : undefined} onClick={()=>onOpenProfile?.(fighter.uid)} onKeyDown={event=>{if(onOpenProfile&&(event.key==='Enter'||event.key===' ')){event.preventDefault();onOpenProfile(fighter.uid);}}}>
     <span className={`battle-rank${showRank ? '' : ' is-concealed'}`}>
       {showRank && rank && <>{side === 'opponent' && <span>#{rank.globalPosition}</span>}<RankEmblem points={rank.rankPoints}/>{side === 'me' && <span>#{rank.globalPosition}</span>}</>}
     </span>
@@ -38,7 +38,7 @@ function FighterTile({ fighter, side, showRank = true }: { fighter: Fighter | Re
   </div>;
 }
 
-function BattleContent({ battle }: { battle: Battle }) {
+function BattleContent({ battle, onOpenProfile }: { battle: Battle; onOpenProfile?: (uid: string) => void }) {
   const key = `daily-battle-reveal-${battle.dayId}-${battle.me?.uid}`;
   const alreadyShown = () => Boolean(battle.historical || localStorage.getItem(key)) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [reveal, setReveal] = useState(alreadyShown);
@@ -65,7 +65,7 @@ function BattleContent({ battle }: { battle: Battle }) {
     <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}</div>
     {opponent && battle.me ? <>
       <div className="battle-versus">
-        <FighterTile fighter={battle.me} side="me"/>
+        <FighterTile fighter={battle.me} side="me" onOpenProfile={onOpenProfile}/>
         <div className={`battle-center${showScore ? ' has-score' : ''}`} role={showScore ? 'status' : undefined} aria-label={showScore ? `${resultLabel ? `${resultLabel}. ` : ''}Placar: ${battle.myPoints ?? 0} pontos a ${battle.theirPoints ?? 0} pontos${outcome && deltaLabel ? `. Ranking: ${deltaLabel}` : ''}` : undefined}>
           {showScore && outcome && <strong className={`battle-result-label battle-tone-${outcome}`}>{resultLabel}</strong>}
           {showScore && <span className={`battle-points${outcome ? ` battle-tone-${outcome}` : ''}`}>{battle.myPoints ?? 0}</span>}
@@ -75,7 +75,7 @@ function BattleContent({ battle }: { battle: Battle }) {
         <div className="battle-reel-window">
           <span className="battle-sr" role="status">{finished ? `Adversário: ${opponent.username}` : 'Revelando adversário'}</span>
           <div className={`battle-reel-track${reveal ? ' is-revealed' : ''}`} aria-hidden="true">
-            {entries.map((fighter, index) => <FighterTile key={`${fighter.uid}-${index}`} fighter={fighter} side="opponent" showRank={finished && index === entries.length - 1}/>)}
+            {entries.map((fighter, index) => <FighterTile key={`${fighter.uid}-${index}`} fighter={fighter} side="opponent" showRank={finished && index === entries.length - 1} onOpenProfile={finished && index === entries.length - 1 ? onOpenProfile : undefined}/>)}
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ function BattleContent({ battle }: { battle: Battle }) {
   </section>;
 }
 
-export default function DailyBattle({ refreshTick, onSettled }: { refreshTick: number; onSettled?: () => void }) {
+export default function DailyBattle({ refreshTick, onSettled, onOpenProfile }: { refreshTick: number; onSettled?: () => void; onOpenProfile?: (uid: string) => void }) {
   const [battle, setBattle] = useState<Battle | null>(null);
   const [previousBattle, setPreviousBattle] = useState<Battle | null>(null);
   const [page, setPage] = useState<'today' | 'yesterday'>('today');
@@ -119,7 +119,7 @@ export default function DailyBattle({ refreshTick, onSettled }: { refreshTick: n
   if (!battle) return <div className="card daily-battle-card battle-waiting" role="status">Preparando Batalha do Dia…</div>;
   const shownBattle = page === 'yesterday' && previousBattle ? previousBattle : battle;
   return <div className={`daily-battle-view${previousBattle ? ' has-history' : ''}`}>
-    <BattleContent key={`${shownBattle.dayId}-${shownBattle.opponent?.uid ?? 'waiting'}`} battle={shownBattle}/>
+    <BattleContent key={`${shownBattle.dayId}-${shownBattle.opponent?.uid ?? 'waiting'}`} battle={shownBattle} onOpenProfile={onOpenProfile}/>
     {previousBattle && <nav className="battle-day-nav" aria-label="Dias da Batalha do Dia">
       <button type="button" aria-label={`Ver batalha de ontem, ${formatBattleDate(previousBattle.dayId)}`} disabled={page === 'yesterday'} onClick={() => setPage('yesterday')}><ChevronLeft size={20} aria-hidden="true"/></button>
       <span aria-live="polite">{page === 'yesterday' ? '1 / 2' : '2 / 2'}</span>

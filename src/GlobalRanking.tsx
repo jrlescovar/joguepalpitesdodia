@@ -73,7 +73,7 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
   const ownPosition = ownRank?.position ?? players.find(player => player.uid === ownUid)?.position ?? null;
   return <div className="global-ranking-page">
     <RankProgress points={ownRank?.rankPoints ?? ownPoints} position={ownPosition}/>
-    <DailyBattle refreshTick={refreshTick + reload} onSettled={() => { setReload(value => value + 1); onBattleSettled?.(); }}/>
+    <DailyBattle onOpenProfile={uid=>{void call<PublicProfile | null>('getPublicProfile',{uid}).then(details=>{if(details){setSelected({...details,rankPoints:details.rankPoints ?? 0,position:details.rankPosition ?? 0});window.scrollTo({top:0,behavior:'instant'});}}).catch(cause=>setError(errorMessage(cause)));}} refreshTick={refreshTick + reload} onSettled={() => { setReload(value => value + 1); onBattleSettled?.(); }}/>
     <div className="page-heading"><div><h1>Ranking Global<span>.</span></h1></div><button className="icon-button" aria-label="Atualizar Ranking" aria-busy={loading} disabled={loading} onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>
     <div className="card global-ranking-card" aria-busy={loading}>
       <div className="global-ranking-heading"><span>TOP 10 / JOGADOR</span><span>PONTOS</span></div>
