@@ -40,4 +40,17 @@ describe('regras do jogo',()=>{
     ],200)).toBe(2);
     expect(firstPlayableGameIndex([{status:'settled',closesAt:at(100)}],200)).toBe(0);
   });
+  it('abre no jogo sem resultado quando todos os prazos fecharam',()=>{
+    const at=(time:number)=>({toMillis:()=>time});
+    expect(firstPlayableGameIndex([
+      {status:'settled',closesAt:at(100)},
+      {status:'settled',closesAt:at(100)},
+      {status:'open',closesAt:at(100)},
+    ],200)).toBe(2);
+    expect(firstPlayableGameIndex([
+      {status:'settled',closesAt:at(100)},
+      {status:'settling',closesAt:at(100)},
+    ],200)).toBe(1);
+    expect(firstPlayableGameIndex([],200)).toBe(0);
+  });
 });

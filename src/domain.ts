@@ -27,7 +27,9 @@ export function visibleDaily(current: number, lastPrediction: string|null|undefi
 }
 export function firstPlayableGameIndex(games: { status: string; closesAt: { toMillis(): number } }[], now: number): number {
   const index = games.findIndex(game => game.status === 'open' && game.closesAt.toMillis() > now);
-  return index >= 0 ? index : 0;
+  if (index >= 0) return index;
+  const inPlayIndex = games.findIndex(game => game.status !== 'settled');
+  return inPlayIndex >= 0 ? inPlayIndex : 0;
 }
 export const GREEN_MEDAL_THRESHOLDS = [1, 10, 25, 50, 100] as const;
 export function hitRate(greens: number, reds: number | undefined): number | null {
