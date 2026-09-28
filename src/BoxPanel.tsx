@@ -1,3 +1,4 @@
+import UsernameText from './UsernameText';
 import { useEffect, useRef, useState } from 'react';
 import { Box, CircleHelp, LoaderCircle, Sparkles, Zap } from 'lucide-react';
 import { call, errorMessage } from './backend';
@@ -13,7 +14,7 @@ const pendingKey=(uid:string)=>`apostadodia:box-opening:${uid}`;
 function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
   return item.kind==='frame'
     ? <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.useGoogleAvatar===false?null:profile.avatarUrl} borderStyle={item.style} large/>
-    : <strong className={`box-name-preview pass-name-${item.style}`}>{profile.username}</strong>;
+    : <strong className={`box-name-preview pass-name-${item.kind==='font'?(profile.passNameStyle??'none'):item.style}`}><UsernameText name={profile.username} font={item.kind==='font'?item.style:profile.usernameFont}/></strong>;
 }
 
 function BoxArt({opening=false}:{opening?:boolean}){
@@ -92,17 +93,17 @@ export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Prof
     try{
       const result=await call<BoxOpening>('openBox',{requestId});
       sessionStorage.removeItem(key);setPending(false);
-      setState(current=>({balance:result.balance,inventory:result.duplicate?current?.inventory??[]:[...(current?.inventory??[]),{kind:result.kind,style:result.style,rarity:result.rarity}]}));
+      setState(current=>({balance:result.balance,inventory:result.duplicate?current?.inventory??[]:[...(current?.inventory??[]),result]}));
       const candidates=boxCatalog;
       const visualDraws=crypto.getRandomValues(new Uint32Array(26));
-      const reel=Array.from(visualDraws.slice(0,23),(draw,index)=>({kind:index%2===0?'name':'frame',...candidates[draw%candidates.length]} as BoxItem));
-      reel.push({kind:result.kind,style:result.style,rarity:result.rarity});
-      reel.push(...Array.from(visualDraws.slice(23,25),(draw,index)=>({kind:index%2===0?'name':'frame',...candidates[draw%candidates.length]} as BoxItem)));
+      const reel=Array.from(visualDraws.slice(0,23),draw=>candidates[draw%candidates.length]);
+      reel.push(result);
+      reel.push(...Array.from(visualDraws.slice(23,25),draw=>candidates[draw%candidates.length]));
       if(result.rarity==='common'){
         const legendaryStyles=candidates.filter(item=>item.rarity==='legendary');
         const nearMiss=visualDraws[25]%3;
-        if(nearMiss!==1)reel[22]={kind:reel[22].kind,...legendaryStyles[visualDraws[22]%legendaryStyles.length]};
-        if(nearMiss!==0)reel[24]={kind:reel[24].kind,...legendaryStyles[visualDraws[24]%legendaryStyles.length]};
+        if(nearMiss!==1)reel[22]=legendaryStyles[visualDraws[22]%legendaryStyles.length];
+        if(nearMiss!==0)reel[24]=legendaryStyles[visualDraws[24]%legendaryStyles.length];
       }
       setStrip(reel);setDotCount(1);setOpening(result);setPhase('box');
       onChanged();
@@ -113,11 +114,14 @@ export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Prof
     if(!opening||opening.duplicate)return;
     setEquipBusy(true);setError('');
     try{
+      if(opening.kind==='font')await call('setUsernameFont',{font:opening.style});
+      else {
       const current=await call<PassStatus>('getPassStatus');
       await call('setPassStyles',{
         nameStyle:opening.kind==='name'?opening.style:current.nameStyle,
         borderStyle:opening.kind==='frame'?opening.style:current.borderStyle,
       });
+      }
       setOpening(null);onChanged();
     }catch(cause){setError(errorMessage(cause));}finally{setEquipBusy(false);}
   }
@@ -133,8 +137,8 @@ export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Prof
     <BoxHelp open={helpOpen} onOpenChange={setHelpOpen}/>
     <Modal open={Boolean(opening)} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
       {opening&&<div className="box-reveal">
-        {phase==='box'?<div className="box-opening-stage"><BoxArt opening/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind==='frame'&&<small>Moldura</small>}</div>)}</div></div>:
-          <><div className={`box-result box-tier-${opening.rarity}`}><span className="box-result-rarity">{boxRarities.find(tier=>tier.id===opening.rarity)?.label}</span><PrizePreview item={opening} profile={profile}/><strong>{boxStyleLabel(opening.style)}</strong><span>{opening.kind==='name'?'Cor de nome':'Moldura de perfil'}</span>{opening.duplicate&&<span className="box-xp-reward" role="status"><Zap size={18} aria-hidden="true"/> +{opening.xpAwarded} XP</span>}</div>
+        {phase==='box'?<div className="box-opening-stage"><BoxArt opening/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':'Moldura'}</small>}</div>)}</div></div>:
+          <><div className={`box-result box-tier-${opening.rarity}`}><span className="box-result-rarity">{boxRarities.find(tier=>tier.id===opening.rarity)?.label}</span><PrizePreview item={opening} profile={profile}/><strong>{boxStyleLabel(opening.style)}</strong><span>{opening.kind==='name'?'Cor de nome':opening.kind==='font'?'Fonte do nome':'Moldura de perfil'}</span>{opening.duplicate&&<span className="box-xp-reward" role="status"><Zap size={18} aria-hidden="true"/> +{opening.xpAwarded} XP</span>}</div>
           {error&&<ErrorNotice message={error}/>}<div className="box-result-actions">{!opening.duplicate&&<button type="button" className="primary-button" disabled={equipBusy} onClick={()=>void equip()}>{equipBusy?<LoaderCircle className="spin" size={18}/>:<Sparkles size={18}/>} Equipar agora</button>}<button type="button" className="secondary-button" onClick={close} disabled={equipBusy}>Fechar</button></div></>}
       </div>}
     </Modal>
