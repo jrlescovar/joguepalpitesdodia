@@ -1,3 +1,4 @@
+import UsernameText from './UsernameText';
 import { useEffect, useRef, useState } from 'react';
 import { ChevronLeft, ChevronRight, Swords } from 'lucide-react';
 import { call, errorMessage } from './backend';
@@ -34,7 +35,7 @@ function FighterTile({ fighter, side, showRank = true, onOpenProfile }: { onOpen
       {showRank && rank && <>{side === 'opponent' && <span>#{rank.globalPosition}</span>}<RankEmblem points={rank.rankPoints}/>{side === 'me' && <span>#{rank.globalPosition}</span>}</>}
     </span>
     <Avatar name={fighter.username} color={fighter.avatarColor} imageUrl={fighter.avatarUrl} borderStyle={fighter.passBorderStyle}/>
-    <strong className={`pass-name-${fighter.passNameStyle ?? 'none'} username-font-${fighter.usernameFont ?? 'normal'}`}>@{fighter.username}</strong>
+    <strong className={`pass-name-${fighter.passNameStyle ?? 'none'}`}><UsernameText name={fighter.username} font={fighter.usernameFont}/></strong>
   </div>;
 }
 

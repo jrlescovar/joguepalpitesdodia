@@ -1,3 +1,4 @@
+import UsernameText from './UsernameText';
 import { useEffect, useState } from 'react';
 import { ArrowLeft, RefreshCw, Shield, CircleHelp } from 'lucide-react';
 import { call, errorMessage } from './backend';
@@ -37,7 +38,7 @@ function RankingRow({ player, ownUid, onOpen }: { player: RankedPlayer; ownUid: 
   return <li className={player.uid === ownUid ? 'is-me' : ''}><button type="button" onClick={() => onOpen(player)} aria-label={`Abrir perfil de ${player.username}, posição ${player.position}, rank ${tier.name}, ${player.rankPoints} pontos`}>
     <span className="global-rank-position">#{player.position}</span>
     <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/>
-    <span className="global-rank-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'} username-font-${player.usernameFont ?? 'normal'}`}>@{player.username}</strong></span>
+    <span className="global-rank-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></strong></span>
     <RankEmblem points={player.rankPoints}/>
     <strong className="global-rank-points">{player.rankPoints}</strong>
   </button></li>;

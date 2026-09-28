@@ -1,3 +1,4 @@
+import UsernameText from './UsernameText';
 import { useEffect, useState } from 'react';
 import { Check, Target, Trophy, X } from 'lucide-react';
 import { call } from './backend';
@@ -62,7 +63,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
-      <h2 className={`pass-name-${profile.passNameStyle ?? 'none'} username-font-${profile.usernameFont ?? 'normal'}`}>@{profile.username}</h2>
+      <h2 className={`pass-name-${profile.passNameStyle ?? 'none'}`}><UsernameText name={profile.username} font={profile.usernameFont}/></h2>
       <span className="muted text-sm">#{profile.playerId}</span>
       {typeof profile.level === 'number' && typeof profile.xp === 'number'
         ? <><div className="profile-level-mark">{hasSupporterEmblem&&<SupporterEmblem className="profile-supporter-emblem"/>}<span className="level-badge">Nível {profile.level}</span></div><XpBar profile={{ level: profile.level, xp: profile.xp }} showRemaining={false}/></>
