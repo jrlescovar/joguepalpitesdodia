@@ -7,9 +7,9 @@ describe('regras do jogo',()=>{
   it('usa o calendário de Brasília na virada de UTC',()=>{expect(dayAt(new Date('2026-09-22T02:59:59Z'))).toBe('2026-09-21');expect(dayAt(new Date('2026-09-22T03:00:00Z'))).toBe('2026-09-22');});
   it('trata meses, anos e dias bissextos',()=>{expect(previousDay('2028-03-01')).toBe('2028-02-29');expect(previousDay('2027-01-01')).toBe('2026-12-31');});
   it('conta somente palpites principais em dias corridos',()=>{
-    expect(dailyAfter('2026-09-21',1,1,'2026-09-22')).toEqual({dailyStreakCurrent:2,dailyStreakMax:2,lastPlayedDate:'2026-09-22'});
-    expect(dailyAfter('2026-09-21',1,1,'2026-09-23')).toEqual({dailyStreakCurrent:1,dailyStreakMax:1,lastPlayedDate:'2026-09-23'});
-    expect(dailyAfter('2026-09-22',2,2,'2026-09-24')).toEqual({dailyStreakCurrent:1,dailyStreakMax:2,lastPlayedDate:'2026-09-24'});
+    expect(dailyAfter('2026-09-21',1,'2026-09-22')).toEqual({dailyStreakCurrent:2,lastPlayedDate:'2026-09-22'});
+    expect(dailyAfter('2026-09-21',1,'2026-09-23')).toEqual({dailyStreakCurrent:1,lastPlayedDate:'2026-09-23'});
+    expect(dailyAfter('2026-09-22',2,'2026-09-24')).toEqual({dailyStreakCurrent:1,lastPlayedDate:'2026-09-24'});
   });
   it('zera a sequência visível após um dia perdido ou o prazo de hoje',()=>{
     expect(visibleDaily(2,'2026-09-22','2026-09-22','2026-09-23')).toBe(2);

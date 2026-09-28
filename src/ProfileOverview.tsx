@@ -56,7 +56,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Greens consecutivos', numberOrDash(profile.greenStreakCurrent)],
     ['Maior sequência de greens', numberOrDash(profile.greenStreakMax)],
     ['Dias consecutivos', daily],
-    ['Maior sequência de dias consecutivos', numberOrDash(profile.dailyStreakMax)],
   ];
   if (showBalance && 'balance' in profile) rows.push(['Saldo', `R$ ${profile.balance.toLocaleString('pt-BR')}`]);
   return <div className="profile-overview"><div className="profile-layout">

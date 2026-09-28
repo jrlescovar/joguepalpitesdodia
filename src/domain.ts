@@ -17,9 +17,9 @@ export function xpAfter(level: number, xp: number, reward: number) {
   while (nextXp >= nextLevel * 15) { nextXp -= nextLevel * 15; nextLevel += 1; }
   return {level:nextLevel, xp:nextXp};
 }
-export function dailyAfter(lastPrediction: string|null, current: number, max: number, day: string) {
+export function dailyAfter(lastPrediction: string|null, current: number, day: string) {
   const next = lastPrediction === previousDay(day) ? current + 1 : 1;
-  return {dailyStreakCurrent:next, dailyStreakMax:Math.max(max,next),lastPlayedDate:day};
+  return {dailyStreakCurrent:next, lastPlayedDate:day};
 }
 export function visibleDaily(current: number, lastPrediction: string|null|undefined, lastClosedPrediction: string|null, today: string) {
   const requiredDay = lastClosedPrediction !== null && lastClosedPrediction >= today ? today : previousDay(today);
