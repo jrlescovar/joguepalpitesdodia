@@ -57,7 +57,7 @@ export default function AdminPickCorrection({ profile, onCorrect }: { profile: P
 
   return <section className="admin-pick-card" aria-label="Corrigir palpites do jogador">
     <div className="admin-pick-heading"><Pencil size={18}/><strong>Corrigir palpite</strong></div>
-    <p>Escolha a data e o palpite de @{profile.username}. A mudança vale somente para este jogador.</p>
+    <p>Escolha a data e o palpite de {profile.username}. A mudança vale somente para este jogador.</p>
     <label className="field-label" htmlFor="admin-pick-day">Data do palpite</label>
     <input id="admin-pick-day" type="date" value={day} max={today()} onChange={event => setDay(event.target.value)}/>
     {picks.length === 0 && !error && <p className="muted">Nenhum palpite deste jogador nessa data.</p>}
@@ -75,7 +75,7 @@ export default function AdminPickCorrection({ profile, onCorrect }: { profile: P
     })}
     {error && !selected && <ErrorNotice message={error}/>}
     {success && <p className="success-message" role="status"><Check size={18}/>{success}</p>}
-    <Modal open={Boolean(selected)} onOpenChange={open => { if (!open && !busy) setSelected(null); }} title="Confirmar correção do palpite" description={`A correção de @${profile.username} será registrada e, se houver resultado, greens, reds, XP e PontosRank serão ajustados.`}>
+    <Modal open={Boolean(selected)} onOpenChange={open => { if (!open && !busy) setSelected(null); }} title="Confirmar correção do palpite" description={`A correção de ${profile.username} será registrada e, se houver resultado, greens, reds, XP e PontosRank serão ajustados.`}>
       {selected && <div className="admin-pick-review">
         <strong>{selected.pick.title}</strong>
         <p>Palpite atual: {optionLabel(selected.pick, selected.pick.optionId)}</p>

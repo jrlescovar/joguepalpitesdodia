@@ -13,7 +13,7 @@ const pendingKey=(uid:string)=>`apostadodia:box-opening:${uid}`;
 function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
   return item.kind==='frame'
     ? <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.useGoogleAvatar===false?null:profile.avatarUrl} borderStyle={item.style} large/>
-    : <strong className={`box-name-preview pass-name-${item.style}`}>@{profile.username}</strong>;
+    : <strong className={`box-name-preview pass-name-${item.style}`}>{profile.username}</strong>;
 }
 
 function BoxArt({opening=false}:{opening?:boolean}){

@@ -89,7 +89,7 @@ export default function AdminProfileEditor() {
       const quantity=Number(boxQuantity);
       const balance=await call<number>('grantBoxes',{uid:profile.uid,quantity});
       setBoxBalance(balance);setBoxGrantReview(false);
-      setSuccess(`${quantity} ${quantity===1?'caixa concedida':'caixas concedidas'} a @${profile.username}.`);
+      setSuccess(`${quantity} ${quantity===1?'caixa concedida':'caixas concedidas'} a ${profile.username}.`);
     }catch(cause){setError(errorMessage(cause));}finally{setBusy(false);}
   }
 
@@ -118,10 +118,10 @@ export default function AdminProfileEditor() {
     <div className="admin-profile-body">
       <form onSubmit={find}>
         <label className="field-label" htmlFor="admin-player-search">Nome de usuário ou ID</label>
-        <div className="admin-search-row"><input id="admin-player-search" value={search} onChange={event => setSearch(event.target.value)} placeholder="@jogador ou #1000002" required/><button className="secondary-button" disabled={busy}><Search size={16}/>Buscar</button></div>
+        <div className="admin-search-row"><input id="admin-player-search" value={search} onChange={event => setSearch(event.target.value)} placeholder="jogador ou #1000002" required/><button className="secondary-button" disabled={busy}><Search size={16}/>Buscar</button></div>
       </form>
       {profile && fields && <form onSubmit={save} className="admin-profile-form">
-        <div className="admin-player-preview"><Avatar name={fields.username || '?'} color={fields.avatarColor} imageUrl={profile.avatarUrl}/><div><strong>@{profile.username}</strong><span>#{profile.playerId}</span></div>{profile.avatarUrl&&<button type="button" className="text-button admin-remove-photo" onClick={()=>setRemovePhotoReview(true)}><Trash2 size={16}/>Remover foto</button>}</div>
+        <div className="admin-player-preview"><Avatar name={fields.username || '?'} color={fields.avatarColor} imageUrl={profile.avatarUrl}/><div><strong>{profile.username}</strong><span>#{profile.playerId}</span></div>{profile.avatarUrl&&<button type="button" className="text-button admin-remove-photo" onClick={()=>setRemovePhotoReview(true)}><Trash2 size={16}/>Remover foto</button>}</div>
         <label className="field-label" htmlFor="admin-username">Nome de usuário</label>
         <input id="admin-username" value={fields.username} onChange={event => setFields({ ...fields, username: event.target.value })} minLength={3} maxLength={12} pattern="[A-Za-z0-9_]{3,12}" required/>
         <fieldset><legend className="field-label">Cor do avatar</legend><div className="color-options">{avatarColors.map((color, index) => <label key={color} style={{ '--avatar-color': color } as React.CSSProperties}><input type="radio" name="adminAvatarColor" value={color} checked={fields.avatarColor === color} onChange={() => setFields({ ...fields, avatarColor: color })}/><span>{fields.avatarColor === color && <Check size={18}/>}</span><span className="sr-only">{colorNames[index]}</span></label>)}</div></fieldset>
@@ -155,10 +155,10 @@ export default function AdminProfileEditor() {
       {error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setRemovePhotoReview(false)} disabled={busy}>Cancelar</button><button type="button" className="primary-button" onClick={()=>void removePhoto()} disabled={busy}>{busy?'Removendo…':'Remover foto'}</button></div>
     </Modal>
     <Modal open={Boolean(grantReview)} onOpenChange={open=>{if(!open&&!busy)setGrantReview(null);}} title={grantReview === 'disable' ? 'Desativar Premium gratuito?' : 'Ativar Premium gratuito?'} description={grantReview === 'disable' ? 'Os benefícios gratuitos terminam imediatamente. Uma assinatura paga ativa continua valendo.' : `O jogador terá Premium por ${grantDays} ${Number(grantDays) === 1 ? 'dia' : 'dias'}, a partir de agora. Nenhuma caixa será concedida automaticamente.`}>
-      <p className="confirm-selection">@{profile?.username}</p>
+      <p className="confirm-selection">{profile?.username}</p>
       {error&&<ErrorNotice message={error}/>}
       <div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void setFreePremium()} disabled={busy}>{busy?'Salvando…':grantReview === 'disable'?'Desativar':'Confirmar Premium'}</button></div>
     </Modal>
-    <Modal open={boxGrantReview} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(false);}} title="Conceder caixas?" description={`Adicionar ${boxQuantity} ${Number(boxQuantity)===1?'caixa':'caixas'} ao saldo de @${profile?.username??'jogador'}.`}><p className="confirm-selection">@{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(false)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
+    <Modal open={boxGrantReview} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(false);}} title="Conceder caixas?" description={`Adicionar ${boxQuantity} ${Number(boxQuantity)===1?'caixa':'caixas'} ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(false)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
   </details>;
 }
