@@ -43,7 +43,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     </div>
     {styleTab!=='font'&&!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
     {styleTab!=='font'&&canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
-    <div className="pass-style-options">
+    <div className={'pass-style-options'+(styleTab==='frame'?' frame-style-options':'')}>
       {styleTab==='font'?usernameFonts.filter(([font])=>font==='normal'||allStylesUnlocked).map(([font,label])=><button key={font} type="button" className="pass-style-option" aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}</span></button>):styleTab==='name'?
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';

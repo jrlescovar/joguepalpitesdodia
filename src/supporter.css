@@ -183,6 +183,7 @@
 .profile-style-tabs button { min-height: 40px; border: 0; border-radius: 9px; background: transparent; color: var(--muted); font-weight: 700; cursor: pointer; }
 .profile-style-tabs button[aria-pressed="true"] { background: #263346; color: #f4f7fb; box-shadow: 0 0 0 1px #93c5fd88; }
 .profile-style-group .pass-style-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 640px) { .profile-style-group .frame-style-options { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .profile-style-group .pass-style-option { position: relative; min-height: 106px; height: auto; }
 .profile-style-group .pass-style-option:not(.frame-option) { min-height: 82px; padding-block: 8px; gap: 4px; }
 .profile-style-group .frame-option { min-height: 82px; padding-block: 8px; gap: 4px; font-size: .75rem; }
