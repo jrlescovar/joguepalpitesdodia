@@ -10,17 +10,23 @@ export default function ProfileBattle({uid,refreshTick}:{uid:string;refreshTick:
   const [error,setError]=useState('');
   const [retry,setRetry]=useState(0);
   useEffect(()=>{
-    let active=true;let timer:number|undefined;
+    let active=true;let inFlight=false;let shouldPoll=true;
     const load=async()=>{
+      if(inFlight)return;
+      inFlight=true;
       try {
         const value=await call<ProfileBattles>('getProfileDailyBattles',{uid});
         if(!active)return;
         setBattles(value);setError('');
-        if(value.today?.result==='open')timer=window.setTimeout(()=>{if(document.visibilityState==='visible')void load();},30000);
-      }catch(cause){if(active)setError(errorMessage(cause));}
+        shouldPoll=!value.today||value.today.result==='open'||value.previous?.result==='open';
+      }catch(cause){if(active){setError(errorMessage(cause));shouldPoll=true;}}
+      finally{inFlight=false;}
     };
+    const onVisible=()=>{if(document.visibilityState==='visible')void load();};
+    const timer=window.setInterval(()=>{if(shouldPoll&&document.visibilityState==='visible')void load();},30000);
+    document.addEventListener('visibilitychange',onVisible);
     void load();
-    return()=>{active=false;if(timer!==undefined)clearTimeout(timer);};
+    return()=>{active=false;clearInterval(timer);document.removeEventListener('visibilitychange',onVisible);};
   },[uid,refreshTick,retry]);
   if(error)return <ErrorNotice message={'Batalha do Dia: '+error} retry={()=>setRetry(value=>value+1)}/>;
   if(!battles?.today&&!battles?.previous)return null;

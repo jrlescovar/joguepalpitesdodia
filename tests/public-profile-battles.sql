@@ -16,6 +16,22 @@ begin
 end $$;
 update public.daily_battles set result='open' where id=(select id from public.daily_battles where day_id=public.battle_today() and player_right is not null order by id limit 1);
 do $$
+declare b public.daily_battles;v jsonb;mine integer;theirs integer;has_positive boolean:=false;before_hash text;after_hash text;
+begin
+ select md5(string_agg(to_jsonb(p)::text,',' order by p.id)) into before_hash from public.public_profiles p;
+ for b in select * from public.daily_battles where day_id=public.battle_today() and player_right is not null and result='open' loop
+  v:=public.get_profile_daily_battles(b.player_left)->'today';
+  select coalesce(sum((o->>'rankPoints')::integer),0) into mine from public.picks k join public.predictions g on g.day_id=k.prediction_day and g.slot=k.slot cross join lateral jsonb_array_elements(g.options)o where k.profile_id=b.player_left and k.prediction_day=b.day_id and k.status='green' and g.status='settled' and o->>'id'=k.option_id;
+  select coalesce(sum((o->>'rankPoints')::integer),0) into theirs from public.picks k join public.predictions g on g.day_id=k.prediction_day and g.slot=k.slot cross join lateral jsonb_array_elements(g.options)o where k.profile_id=b.player_right and k.prediction_day=b.day_id and k.status='green' and g.status='settled' and o->>'id'=k.option_id;
+  if not (v->>'scoreVisible')::boolean or (v->>'myPoints')::integer<>mine or (v->>'theirPoints')::integer<>theirs or v->>'myResult'<>'open' or v->>'myRankDelta' is not null then raise exception 'Wrong partial score: %',v;end if;
+  if mine>0 or theirs>0 then has_positive:=true;end if;
+ end loop;
+ if not has_positive then raise exception 'Missing settled green fixture';end if;
+ select md5(string_agg(to_jsonb(p)::text,',' order by p.id)) into after_hash from public.public_profiles p;
+ if before_hash<>after_hash then raise exception 'Partial reads changed totals';end if;
+end $$;
+update public.predictions set status='open' where day_id=public.battle_today();
+do $$
 declare b public.daily_battles;left_view jsonb;
 begin
  select * into b from public.daily_battles where day_id=public.battle_today() and player_right is not null order by id limit 1;
@@ -26,7 +42,7 @@ begin
  if not has_function_privilege('authenticated','public.get_profile_daily_battles(uuid)','execute') then raise exception 'Missing public read';end if;
 end $$;
 rollback;
-select 'Both perspectives, completed/open scores, missing profile, privacy, read-only and permissions OK; fixtures rolled back' as result;
+select 'Both perspectives, completed/partial/unsettled scores, missing profile, privacy, read-only and permissions OK; fixtures rolled back' as result;
 
 
 
