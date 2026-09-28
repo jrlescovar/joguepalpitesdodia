@@ -12,7 +12,7 @@ type Fighter = Pick<PublicProfile, 'uid' | 'username' | 'avatarColor' | 'avatarU
   globalPosition: number;
 };
 type ReelCandidate = Omit<Fighter, 'rankPoints' | 'globalPosition'>;
-type Battle = {
+export type Battle = {
   dayId: string; preview: boolean; protected: boolean; historical?: boolean;
   result?: 'open' | 'left' | 'right' | 'draw' | 'no_contest';
   myResult?: 'open' | 'win' | 'loss' | 'draw' | 'no_contest';
@@ -22,7 +22,7 @@ type Battle = {
 };
 
 const battleDateFormatter = new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'UTC' });
-function formatBattleDate(dayId: string, daysAhead = 0) {
+export function formatBattleDate(dayId: string, daysAhead = 0) {
   const date = new Date(`${dayId}T12:00:00Z`);
   date.setUTCDate(date.getUTCDate() + daysAhead);
   return battleDateFormatter.format(date);
@@ -39,20 +39,20 @@ function FighterTile({ fighter, side, showRank = true, onOpenProfile }: { onOpen
   </div>;
 }
 
-function BattleContent({ battle, onOpenProfile }: { battle: Battle; onOpenProfile?: (uid: string) => void }) {
+export function BattleContent({ battle, onOpenProfile, instant = false }: { battle: Battle; onOpenProfile?: (uid: string) => void; instant?: boolean }) {
   const key = `daily-battle-reveal-${battle.dayId}-${battle.me?.uid}`;
-  const alreadyShown = () => Boolean(battle.historical || localStorage.getItem(key)) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const alreadyShown = () => instant || Boolean(battle.historical || localStorage.getItem(key)) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [reveal, setReveal] = useState(alreadyShown);
   const [finished, setFinished] = useState(alreadyShown);
   const opponent = battle.opponent;
   useEffect(() => {
     if (!opponent) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced || localStorage.getItem(key)) { setReveal(true); setFinished(true); return; }
+    if (instant || reduced || localStorage.getItem(key)) { setReveal(true); setFinished(true); return; }
     const start = window.setTimeout(() => setReveal(true), 80);
     const end = window.setTimeout(() => { setFinished(true); localStorage.setItem(key, '1'); }, 2300);
     return () => { clearTimeout(start); clearTimeout(end); };
-  }, [key, opponent?.uid]);
+  }, [key, opponent?.uid, instant]);
 
   const candidates = battle.reelCandidates ?? [];
   const entries = [0, 1, 2, 3].map(index => candidates[index % candidates.length] ?? opponent!).concat(opponent ? [opponent] : []);

@@ -1,4 +1,5 @@
 import UsernameText from './UsernameText';
+import ProfileBattle from './ProfileBattle';
 import { useEffect, useState } from 'react';
 import { Check, Target, Trophy, X } from 'lucide-react';
 import { call } from './backend';
@@ -77,6 +78,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   </div><section className="profile-battle-stats" aria-label="Estatísticas da Batalha do Dia">
     <h2>Batalha do Dia</h2>
     <div className="score-grid profile-score-grid"><Stat icon={Trophy} label="Vitórias" value={battleStats?.wins ?? '—'} tone="battle-wins"/><Stat icon={X} label="Derrotas" value={battleStats?.losses ?? '—'} tone="red"/><Stat icon={Target} label="% de vitória" value={battleWinRate} tone="accuracy"/></div>
+    <ProfileBattle key={profile.uid} uid={profile.uid} refreshTick={refreshTick}/>
   </section><section className="card achievements-card" aria-label="Medalhas e marcas">
     <div className="achievements-heading"><span className="eyebrow">MEDALHAS E MARCAS</span></div>
     <div className="medals-grid">
