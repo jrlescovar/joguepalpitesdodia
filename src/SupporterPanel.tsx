@@ -37,7 +37,7 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
       <li><Clock3 size={17} aria-hidden="true"/><span>Outras novidades em breve.</span></li>
     </ul>
     {pass?.active ? <>
-      <p className="pass-current" role="status">{paidActive ? 'Assinatura ativa' : prepaidActive ? 'Premium por Pix ativo' : 'Premium gratuito ativo'}{date ? ` · ${paidActive && !pass.cancelAtPeriodEnd ? 'Próxima renovação em' : 'Termina em'} ${date}` : ''}</p>
+      <p className={`pass-current${!paidActive && !prepaidActive ? ' pass-current-free' : ''}`} role="status">{!paidActive && !prepaidActive ? (date ? `Termina em ${date}` : null) : <>{paidActive ? 'Assinatura ativa' : 'Premium por Pix ativo'}{date ? ` · ${paidActive && !pass.cancelAtPeriodEnd ? 'Próxima renovação em' : 'Termina em'} ${date}` : ''}</>}</p>
       {paidActive && <button type="button" className="text-button" disabled={busy} onClick={() => void redirect('pass-portal')}>Gerenciar ou cancelar assinatura</button>}
     </> : pass ? <>
       <p className="pass-billing-note">A cobrança de R$ 4,97 começa ao assinar e se renova mensalmente. Cancele a assinatura a qualquer momento.</p>

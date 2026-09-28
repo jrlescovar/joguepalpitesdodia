@@ -35,6 +35,7 @@
   animation: supporter-wave 3s linear infinite;
 }
 .pass-current { color: #86efac; font-weight: 700; }
+.pass-current-free { text-align: center; }
 @media (max-width: 640px) {
   .card.pass-panel { padding: 16px 18px; gap: 12px; }
   .pass-panel .pass-heading { gap: 10px; }
