@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, RefreshCw, Shield } from 'lucide-react';
+import { ArrowLeft, RefreshCw, Shield, CircleHelp } from 'lucide-react';
 import { call, errorMessage } from './backend';
-import { Avatar, ErrorNotice } from './components';
+import { Avatar, ErrorNotice, Modal } from './components';
 import ProfileOverview from './ProfileOverview';
 import { rankTier, rankTiers } from './rankTiers';
 import RankEmblem from './RankEmblem';
@@ -12,16 +12,18 @@ type RankedPlayer = PublicProfile & { rankPoints: number; position: number };
 type GlobalRankingPage = { players: RankedPlayer[]; ownRank: RankedPlayer | null };
 
 function RankProgress({ points, position }: { points: number; position: number | null }) {
+  const [showRanks, setShowRanks] = useState(false);
+  const guide = <><button type="button" className="rank-guide-button" aria-label="Ver patentes e pontuações" onClick={() => setShowRanks(true)}><CircleHelp size={22}/></button><Modal open={showRanks} onOpenChange={setShowRanks} title="Patentes do Ranking"><div className="rank-guide-list">{rankTiers.map((item, index) => <div className="rank-guide-row" key={item.key}><RankEmblem points={item.min}/><strong>{item.name}</strong><span>{rankTiers[index + 1] ? `${item.min} a ${rankTiers[index + 1].min - 1} pts` : `${item.min} pts ou mais`}</span></div>)}</div></Modal></>;
   const tier = rankTier(points);
   const nextTier = rankTiers[rankTiers.findIndex(item => item.key === tier.key) + 1];
   if (!nextTier) return <section className="card rank-progress-card rank-progress-master" aria-label="Sua patente no Ranking Global">
-    <div className="rank-progress-caption">SUA PATENTE</div>
+    <div className="rank-progress-caption">SUA PATENTE</div>{guide}
     <div className="rank-progress-master-content"><RankEmblem points={points}/><div><strong>{tier.name}</strong><span>{tier.min}+ pts</span></div><div className="rank-progress-position"><small>POSIÇÃO GLOBAL</small><strong>{position === null ? '—' : `#${position}`}</strong></div></div>
   </section>;
   const earned = points - tier.min;
   const needed = nextTier.min - tier.min;
   return <section className="card rank-progress-card" aria-label="Progresso da sua patente">
-    <div className="rank-progress-caption">SUA PATENTE</div>
+    <div className="rank-progress-caption">SUA PATENTE</div>{guide}
     <div className="rank-progress-track-row">
       <div className="rank-progress-tier"><RankEmblem points={points}/><strong>{tier.name}</strong></div>
       <div className="rank-progress-center"><div className="rank-progress-bar" role="progressbar" aria-label={`Progresso para ${nextTier.name}`} aria-valuemin={0} aria-valuemax={needed} aria-valuenow={earned}><span style={{ width: `${earned / needed * 100}%` }}/></div><span>{tier.min} - {nextTier.min - 1}</span></div>

@@ -906,3 +906,20 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .admin-option-row { grid-template-columns: minmax(0,1fr) 92px; gap: 8px; }
   .pick-options.options-2 .option-copy { align-items: center; }
 }
+
+/* Patentes e guia de pontuação */
+.rank-emblem-emerald { --rank-color: #35db98; --rank-glow: #35db9833; }
+.rank-emblem-sapphire { --rank-color: #3568c8; --rank-glow: #2452b544; }
+.rank-emblem-elite { --rank-color: #f49a45; --rank-glow: #ee873233; }
+.rank-elite-shield { fill: #303640; }
+.rank-elite-inner { stroke: #8a929e; }
+.rank-progress-card { position: relative; }
+.rank-guide-button { position: absolute; top: 9px; right: 10px; width: 40px; height: 40px; display: grid; place-items: center; background: transparent; border: 0; color: var(--muted); border-radius: 50%; cursor: pointer; }
+.rank-guide-button:hover { color: #75b2ff; background: #75b2ff12; }
+.rank-progress-caption { padding-right: 36px; }
+.rank-guide-list { display: grid; margin-top: 18px; }
+.rank-guide-row { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.rank-guide-row:last-child { border-bottom: 0; }
+.rank-guide-row .rank-emblem { width: 34px; height: 39px; }
+.rank-guide-row strong { font-size: 14px; }
+.rank-guide-row > span:last-child { font-size: 12px; color: var(--muted); }

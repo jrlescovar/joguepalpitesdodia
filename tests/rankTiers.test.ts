@@ -7,9 +7,12 @@ describe('graus do Ranking Global', () => {
     [100, 'Prata'], [250, 'Prata'],
     [251, 'Ouro'], [400, 'Ouro'],
     [401, 'Platina'], [600, 'Platina'],
-    [601, 'Diamante'], [850, 'Diamante'],
-    [851, 'Lendário'], [1249, 'Lendário'],
-    [1250, 'Mestre'], [2000, 'Mestre'],
+    [601, 'Diamante'], [900, 'Diamante'],
+    [901, 'Esmeralda'], [1200, 'Esmeralda'],
+    [1201, 'Safira'], [1500, 'Safira'],
+    [1501, 'Lendário'], [1800, 'Lendário'],
+    [1801, 'Elite'], [2099, 'Elite'],
+    [2100, 'Mestre'], [3000, 'Mestre'],
   ])('classifica %i pontos como %s', (points, name) => {
     expect(rankTier(points).name).toBe(name);
   });
