@@ -198,3 +198,6 @@
 @media (prefers-reduced-motion: reduce) { .pass-name-green, .pass-name-dark-blue, .pass-name-orange, .pass-name-pink { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .profile-supporter-emblem::after, .pass-panel .supporter-emblem::before { animation: none; } }
 @media (prefers-reduced-motion: reduce) { .pass-panel::before { animation: none; } }
+
+/* Keep font previews steady while their self-hosted font finishes loading. */
+.profile-style-group .font-style-options .pass-name-preview { height: 32px; line-height: 32px; flex-shrink: 0; }

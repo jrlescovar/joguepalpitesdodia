@@ -24,6 +24,17 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
   const unlockedNames=new Set(box?.inventory.filter(item=>item.kind==='name').map(item=>item.style));
   const unlockedFrames=new Set(box?.inventory.filter(item=>item.kind==='frame').map(item=>item.style));
   const unlockedFonts=new Set(box?.inventory.filter(item=>item.kind==='font').map(item=>item.style));
+  const [loadedFonts,setLoadedFonts]=useState<Set<UsernameFont>>(()=>new Set(['normal']));
+  useEffect(()=>{
+    let active=true;
+    const available=usernameFonts.filter(([font])=>font!=='normal'&&(allStylesUnlocked||box?.inventory.some(item=>item.kind==='font'&&item.style===font)));
+    for(const [font,,family] of available){
+      void document.fonts.load('400 16px "'+family+'"').then(faces=>{
+        if(active&&faces.length)setLoadedFonts(current=>new Set([...current,font]));
+      }).catch(()=>{});
+    }
+    return()=>{active=false;};
+  },[allStylesUnlocked,box]);
   const visibleNameStyles=passStyleOptions.filter(([style])=>style==='none'||allStylesUnlocked||unlockedNames.has(style));
   const visibleFrameStyles=passStyleOptions.filter(([style])=>style==='none'||allStylesUnlocked||unlockedFrames.has(style));
   useEffect(()=>{if(!profile)return;let active=true;call<PassStatus>('getPassStatus').then(status=>{if(active){setPass(status);setNameStyle(current=>current===profile.passNameStyle?status.nameStyle:current);setBorderStyle(current=>current===profile.passBorderStyle?status.borderStyle:current);}}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
@@ -45,8 +56,8 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     </div>
     {styleTab!=='font'&&!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
     {styleTab!=='font'&&canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
-    <div className={'pass-style-options'+(styleTab==='frame'?' frame-style-options':'')}>
-      {styleTab==='font'?usernameFonts.filter(([font])=>font==='normal'||allStylesUnlocked||unlockedFonts.has(font)).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(fontRarity(font)===null?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{fontRarity(font)!==null&&<small> · {fontRarity(font)==='legendary'?'Lendária':fontRarity(font)==='mythic'?'Mítica':'Épica'}</small>}</span></button>):styleTab==='name'?
+    <div className={'pass-style-options'+(styleTab==='frame'?' frame-style-options':styleTab==='font'?' font-style-options':'')}>
+      {styleTab==='font'?usernameFonts.filter(([font])=>font==='normal'||allStylesUnlocked||unlockedFonts.has(font)).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(fontRarity(font)===null?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle} style={{visibility:loadedFonts.has(font)?'visible':'hidden'}}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{fontRarity(font)!==null&&<small> · {fontRarity(font)==='legendary'?'Lendária':fontRarity(font)==='mythic'?'Mítica':'Épica'}</small>}</span></button>):styleTab==='name'?
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
