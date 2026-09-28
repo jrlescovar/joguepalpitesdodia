@@ -16,6 +16,7 @@ export type Battle = {
   result?: 'open' | 'left' | 'right' | 'draw' | 'no_contest';
   myResult?: 'open' | 'win' | 'loss' | 'draw' | 'no_contest';
   myRankDelta?: number | null;
+  settledPredictions?: number; totalPredictions?: number;
   hasOpponent?: boolean; scoreVisible?: boolean; myPoints?: number | null; theirPoints?: number | null;
   me?: Fighter; opponent?: Fighter | null; reelCandidates?: ReelCandidate[];
 };
@@ -62,7 +63,7 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
   const delta = battle.myRankDelta;
   const deltaLabel = typeof delta === 'number' ? `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} pts` : null;
   return <section className={`card daily-battle-card${battle.preview ? ' battle-preview' : ''}`} aria-label="Batalha do Dia">
-    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}</div>
+    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}{!battle.preview&&Number(battle.settledPredictions)>0&&Number(battle.totalPredictions)>0&&<small className="battle-prediction-progress" aria-label={String(battle.settledPredictions)+' de '+battle.totalPredictions+' apostas finalizadas'}>{battle.settledPredictions}/{battle.totalPredictions}</small>}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}</div>
     {opponent && battle.me ? <>
       <div className="battle-versus">
         <FighterTile fighter={battle.me} side="me" onOpenProfile={onOpenProfile}/>

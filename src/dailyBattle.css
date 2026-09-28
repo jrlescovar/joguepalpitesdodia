@@ -66,3 +66,5 @@
 .daily-battle-view[data-page="previous"] .battle-page-today { transform: translateX(100%); }
 .daily-battle-view[data-motion="off"] .battle-page { transition: none; }
 @media (prefers-reduced-motion: reduce) { .battle-page { transition: none; } }
+
+.battle-prediction-progress { margin-left: 10px; color: var(--muted); font-size: inherit; letter-spacing: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
