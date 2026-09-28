@@ -262,7 +262,12 @@ export default function DailyCard({ uid, session, refreshTick, supporterActive, 
   if (!games) return <section className="card daily-card"><DailySkeleton /></section>;
   if (games.length === 0) return <section className="card daily-card"><div className="daily-header"><span><Goal size={18} /> PALPITES DO DIA</span></div><div className="daily-empty"><div className="empty-icon"><Clock3 size={33} /></div><span className="eyebrow">PRÓXIMO PALPITE</span><h2>Aguardando o próximo desafio</h2><p>Assim que o administrador publicar, o desafio aparecerá aqui.</p></div></section>;
   const renderGame = (game: Prediction, instanceId: string, countdownActive: boolean) => <GameCard prediction={game} instanceId={instanceId} pick={picks[gameKey(game)]} selected={selected[gameKey(game)] || ''} now={now} offset={clockOffset} countdownActive={countdownActive} supporterActive={supporterActive} busy={busyKey === gameKey(game)} onSelect={optionId => setSelected(previous => ({ ...previous, [gameKey(game)]: optionId }))} onSubmit={() => void submit(game)} />;
-  return games.length === 1 ? renderGame(games[0], 'single', true) : desktop
+  const todaysGames=games.filter(game=>game.dayId===session.dayId);
+  const waitingForResults=todaysGames.length>0
+    && todaysGames.every(game=>game.status!=='open'||game.closesAt.toMillis()<=now)
+    && todaysGames.some(game=>game.status!=='settled');
+  const cards=games.length === 1 ? renderGame(games[0], 'single', true) : desktop
     ? <DesktopGames games={games} now={Date.now() + clockOffset} renderGame={renderGame} />
     : <MobileGames games={games} now={Date.now() + clockOffset} renderGame={renderGame} />;
+  return <>{cards}{waitingForResults&&<p className="upcoming-predictions-notice" role="status">Palpites para o dia seguinte está liberado em instantes</p>}</>;
 }

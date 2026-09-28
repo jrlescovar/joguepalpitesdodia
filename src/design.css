@@ -126,6 +126,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 }
 .dashboard-layout { gap: 26px; }
 .home-dashboard-layout { display: block; }
+.upcoming-predictions-notice { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: 14px; line-height: 1.5; }
 .dashboard-primary { display: flex; flex-direction: column; gap: 20px; }
 .player-summary { margin-bottom: 0; padding: 22px 24px; }
 .player-summary h2 { font-size: 1rem; }
