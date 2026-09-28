@@ -143,6 +143,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .daily-header { border-color: #33465f; padding: 20px 24px; flex-wrap: wrap; gap: 8px 10px; }
 .daily-header > span:first-child { font-size: .8125rem; letter-spacing: .07em; }
 .daily-header > span:first-child svg { color: var(--accent); }
+.daily-header-premium { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: #f3cc7a; font-size: .65rem; font-weight: 600; letter-spacing: 0; white-space: nowrap; }
 .daily-header-deadline { color: var(--accent); font-size: .75rem; line-height: 1.25; text-align: right; margin-left: auto; }
 .xp-pill {
   color: var(--accent);
@@ -152,7 +153,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   border: 1px solid #75b2ff21;
 }
 .prediction-content { padding: 28px 28px 30px; }
-.prediction-content h2 { font-size: clamp(1.6rem, 2.8vw, 2rem); letter-spacing: -.035em; margin-bottom: 7px; }
+.prediction-content h2 { font-size: clamp(1.6rem, 2.8vw, 2rem); letter-spacing: -.035em; margin-bottom: 4px; }
 .prediction-content > p { font-size: .9375rem; line-height: 1.5; margin-bottom: 24px; }
 .deadline { font-size: .8125rem; color: var(--muted); }
 .deadline.in-play { color: var(--accent); background: #75b2ff12; border-color: #75b2ff38; }
@@ -400,20 +401,6 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .profile-overview .achievements-card { grid-column: 1; grid-row: 2; margin-top: 0; }
   .profile-overview .profile-battle-stats { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
 }
-.premium-xp-note {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 6px;
-  margin: 0 0 14px;
-  color: #f3cc7a;
-  font-size: .8125rem;
-  line-height: 1.4;
-  text-align: left;
-}
-.premium-xp-note svg { flex: none; margin-top: .1em; }
-.premium-xp-note span { min-width: 0; }
-.prediction-content > p.premium-xp-note { text-align: left; }
 .my-rank > strong { font-variant-numeric: tabular-nums; }
 .my-rank > span.muted { font-size: .875rem; }
 .season-card { padding: 6px 18px; }
@@ -726,7 +713,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .desktop-games .daily-card { height: 100%; }
   .desktop-games .daily-header { padding: 16px; }
   .desktop-games .prediction-content { padding: 20px 16px 24px; }
-  .desktop-games .prediction-content h2 { display: flex; align-items: center; justify-content: center; min-height: 4.5rem; font-size: 1.5rem; line-height: 1.22; }
+  .desktop-games .prediction-content h2 { display: flex; align-items: center; justify-content: center; font-size: 1.5rem; line-height: 1.22; }
   .desktop-games .prediction-content h2.game-title-long { font-size: 1.22rem; }
   .desktop-games .prediction-content h2.game-title-very-long { font-size: 1.05rem; }
   .desktop-games .countdown { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
@@ -770,7 +757,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 
 
 @media (max-width: 640px) {
-  .mobile-games .prediction-content h2 { min-height: 70px; display: flex; align-items: center; justify-content: center; line-height: 1.18; }
+  .mobile-games .prediction-content h2 { display: flex; align-items: center; justify-content: center; line-height: 1.18; }
   .mobile-games .prediction-content h2.game-title-long { font-size: 1.125rem; }
   .mobile-games .prediction-content h2.game-title-very-long { font-size: 1rem; }
   .mobile-games .pick-options label { min-height: 60px; }
