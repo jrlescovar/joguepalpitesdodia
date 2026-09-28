@@ -2,7 +2,6 @@ import UsernameText from './UsernameText';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { ArrowLeft, Check, Medal, RefreshCw, Trophy } from 'lucide-react';
 import { call, errorMessage } from './backend';
-import { SEASON_END_AT, seasonDaysRemaining } from './domain';
 import type { Profile, PublicProfile } from './types';
 import { Avatar, ErrorNotice } from './components';
 import ProfileOverview from './ProfileOverview';
@@ -17,13 +16,12 @@ function RankingSkeleton() {
 
 type TournamentRankingPage = { players: PublicProfile[]; ownRank: { position: number | null; change?: number } | null };
 
-export default function Ranking({ profile, serverTime, lastClosedPrediction, today, refreshTick, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; today: string; refreshTick: number; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
+export default function Ranking({ profile, lastClosedPrediction, today, refreshTick, onOpenOwnProfile, restoreScrollY, onScrollRestored }: { profile: Profile; serverTime: number; lastClosedPrediction: string | null; today: string; refreshTick: number; onOpenOwnProfile: () => void; restoreScrollY: number | null; onScrollRestored: () => void }) {
   const [players, setPlayers] = useState<PublicProfile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [rank, setRank] = useState<number | null>(null);
   const [reload, setReload] = useState(0);
-  const [now, setNow] = useState(() => new Date(serverTime));
   const [selected, setSelected] = useState<{ player: PublicProfile; position: number } | null>(null);
   const rankingScroll = useRef(0);
   const viewReady = useRef(false);
@@ -53,12 +51,6 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, tod
     return () => { active = false; };
   }, [selected?.player.uid]);
 
-  useEffect(() => {
-    const offset = serverTime - Date.now();
-    setNow(new Date(Date.now() + offset));
-    const timer = window.setInterval(() => setNow(new Date(Date.now() + offset)), 60000);
-    return () => clearInterval(timer);
-  }, [serverTime]);
 
   useEffect(() => {
     let active = true;
@@ -73,8 +65,6 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, tod
     return () => { active = false; };
   }, [profile.uid, profile.green, reload, refreshTick]);
 
-  const seasonDays = seasonDaysRemaining(now);
-  const seasonEnded = now.getTime() >= Date.parse(SEASON_END_AT);
   const refreshing = loading;
   const openPlayer = (player: PublicProfile, position: number) => {
     if (player.uid === profile.uid) { onOpenOwnProfile(); return; }
@@ -109,10 +99,6 @@ export default function Ranking({ profile, serverTime, lastClosedPrediction, tod
           <span className="muted text-sm">{error ? 'Posição indisponível' : 'Sua posição global'}</span>
         </div>
       </div>
-      <section className="card season-card season-card-inline" aria-label="Temporada e premiação">
-        <div className="season-row"><span>{seasonEnded ? 'Temporada' : 'Termina em'}</span><strong>{seasonEnded ? 'Encerrada' : seasonDays === 0 ? 'Hoje' : `${seasonDays} ${seasonDays === 1 ? 'dia' : 'dias'}`}</strong></div>
-        <div className="season-row prize-row"><span>Premiação</span><strong>R$ 314,00</strong></div>
-      </section>
     </div>
     {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
       <div className="podium-grid">{podium.map(({ player, position }) => <button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} key={player.uid} className={`podium-place place-${position}`} onClick={() => openPlayer(player, position)} aria-label={`Abrir perfil de ${player.username}, posição ${position}`}>
