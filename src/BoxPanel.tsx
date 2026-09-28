@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { Box, CircleHelp, PackageOpen, LoaderCircle, Sparkles, Zap } from 'lucide-react';
+import { Box, CircleHelp, LoaderCircle, Sparkles, Zap } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice, Modal } from './components';
 import { boxCatalog, boxRarities, boxStyleLabel } from './boxCatalog';
 import type { BoxItem, BoxOpening, BoxState, PassStatus, Profile } from './types';
 import './box.css';
 import BoxHelp from './BoxHelp';
+import ChestIcon from './ChestIcon';
 
 const pendingKey=(uid:string)=>`apostadodia:box-opening:${uid}`;
 
@@ -16,7 +17,7 @@ function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
 }
 
 function BoxArt({opening=false}:{opening?:boolean}){
-  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><span className="box-art-lid"/><span className="box-art-body"><PackageOpen size={62} strokeWidth={1.5}/></span></div>;
+  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest"/></div>;
 }
 
 export default function BoxPanel({profile,onChanged,refreshTick=0}:{profile:Profile;onChanged:()=>void;refreshTick?:number}){
