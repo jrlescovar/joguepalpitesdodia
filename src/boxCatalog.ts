@@ -16,6 +16,6 @@ export function boxRarity(style:PassNameStyle):BoxRarity {
   if(epic.has(style))return 'epic';
   return commonPassStyles.has(style)?'common':'rare';
 }
-export function fontRarity(font:UsernameFont):BoxRarity|null {return font==='bebasneue'?'epic':font==='amaticsc'||font==='kalam'?'mythic':font==='monocraft'||font==='dancingscript'?'legendary':null;}
+export function fontRarity(font:UsernameFont):BoxRarity|null {return font==='bebasneue'||font==='orbitron'?'epic':font==='amaticsc'||font==='kalam'||font==='permanentmarker'?'mythic':font==='monocraft'||font==='dancingscript'?'legendary':null;}
 export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none').flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>fontRarity(font)!==null).map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
 export function boxStyleLabel(style:PassNameStyle|UsernameFont){return passStyleOptions.find(([id])=>id===style)?.[1]??usernameFonts.find(([id])=>id===style)?.[1]??style;}
