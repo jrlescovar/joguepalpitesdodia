@@ -19,7 +19,7 @@ function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
 }
 
 function BoxArt({opening=false,halloween=false}:{opening?:boolean;halloween?:boolean}){
-  return <div className={`box-art${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} halloween={halloween}/></div>;
+  return <div className={`box-art ${halloween?'box-art-halloween':'box-art-classic'}${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} halloween={halloween}/></div>;
 }
 
 export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic'}:{profile:Profile;onChanged:()=>void;refreshTick?:number;theme?:'classic'|'halloween'}){

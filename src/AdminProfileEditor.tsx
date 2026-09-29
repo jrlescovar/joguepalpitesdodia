@@ -29,7 +29,9 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
   const [passGrant, setPassGrant] = useState<AdminPassGrant | null>(null);
   const [boxBalance,setBoxBalance]=useState<number|null>(null);
   const [boxQuantity,setBoxQuantity]=useState('1');
-  const [boxGrantReview,setBoxGrantReview]=useState(false);
+  const [halloweenBoxBalance,setHalloweenBoxBalance]=useState<number|null>(null);
+  const [halloweenBoxQuantity,setHalloweenBoxQuantity]=useState('1');
+  const [boxGrantReview,setBoxGrantReview]=useState<'classic'|'halloween'|null>(null);
   const [grantDays, setGrantDays] = useState('30');
   const [grantReview, setGrantReview] = useState<'activate' | 'disable' | null>(null);
   const [busy, setBusy] = useState(false);
@@ -41,12 +43,12 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
   }
   useEffect(() => { if (initialSearch) void loadPlayer(initialSearch); }, [initialSearch]);
   async function loadPlayer(query: string) {
-    setBusy(true); setError(''); setSuccess(''); setProfile(null); setFields(null); setReview(null); setPassGrant(null); setBoxBalance(null);
+    setBusy(true); setError(''); setSuccess(''); setProfile(null); setFields(null); setReview(null); setPassGrant(null); setBoxBalance(null); setHalloweenBoxBalance(null);
     try {
       const found = await call<Profile>('getAdminProfile', { search: query });
       setProfile(found); setFields(fieldsFrom(found));
-      const [grant,balance]=await Promise.all([call<AdminPassGrant>('getAdminPassGrant', { uid: found.uid }),call<number>('getAdminBoxBalance',{uid:found.uid})]);
-      setPassGrant(grant);setBoxBalance(balance);
+      const [grant,balance,halloweenBalance]=await Promise.all([call<AdminPassGrant>('getAdminPassGrant', { uid: found.uid }),call<number>('getAdminBoxBalance',{uid:found.uid}),call<number>('getAdminHalloweenBoxBalance',{uid:found.uid})]);
+      setPassGrant(grant);setBoxBalance(balance);setHalloweenBoxBalance(halloweenBalance);
     } catch (cause) { setError(errorMessage(cause)); } finally { setBusy(false); }
   }
 
@@ -87,13 +89,15 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
   }
 
   async function grantBoxes(){
-    if(!profile)return;
+    if(!profile||!boxGrantReview)return;
     setBusy(true);setError('');setSuccess('');
     try{
-      const quantity=Number(boxQuantity);
-      const balance=await call<number>('grantBoxes',{uid:profile.uid,quantity});
-      setBoxBalance(balance);setBoxGrantReview(false);
-      setSuccess(`${quantity} ${quantity===1?'caixa concedida':'caixas concedidas'} a ${profile.username}.`);
+      const themed=boxGrantReview==='halloween';
+      const quantity=Number(themed?halloweenBoxQuantity:boxQuantity);
+      const balance=await call<number>(themed?'grantHalloweenBoxes':'grantBoxes',{uid:profile.uid,quantity});
+      if(themed)setHalloweenBoxBalance(balance);else setBoxBalance(balance);
+      setBoxGrantReview(null);
+      setSuccess(`${quantity} ${quantity===1?'caixa concedida':'caixas concedidas'} ${themed?'de Halloween ':''}a ${profile.username}.`);
     }catch(cause){setError(errorMessage(cause));}finally{setBusy(false);}
   }
 
@@ -147,7 +151,8 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
         {passGrant.freeActive && <button type="button" className="text-button" disabled={busy} onClick={() => setGrantReview('disable')}>Desativar Premium gratuito</button>}
         <p className="muted text-xs">O prazo começa agora. A assinatura paga, se existir, não será alterada. Caixas devem ser concedidas separadamente abaixo.</p>
       </section>}
-      {profile&&boxBalance!==null&&<section className="admin-pass-card" aria-label="Caixas do jogador"><div className="admin-pass-heading"><Box size={19}/><strong>Caixas do jogador</strong></div><p>Saldo disponível: <strong>{boxBalance}</strong></p><label className="field-label" htmlFor="admin-box-quantity">Quantidade para conceder</label><div className="admin-pass-actions"><input id="admin-box-quantity" type="number" min="1" max="100" step="1" value={boxQuantity} onChange={event=>setBoxQuantity(event.target.value)}/><button type="button" className="secondary-button" disabled={busy||!Number.isInteger(Number(boxQuantity))||Number(boxQuantity)<1||Number(boxQuantity)>100} onClick={()=>setBoxGrantReview(true)}>Conceder caixas</button></div><p className="muted text-xs">A concessão fica registrada. Cada abertura consome uma caixa.</p></section>}
+      {profile&&boxBalance!==null&&<section className="admin-pass-card" aria-label="Caixas do jogador"><div className="admin-pass-heading"><Box size={19}/><strong>Caixas de Personalização</strong></div><p>Saldo disponível: <strong>{boxBalance}</strong></p><label className="field-label" htmlFor="admin-box-quantity">Quantidade para conceder</label><div className="admin-pass-actions"><input id="admin-box-quantity" type="number" min="1" max="100" step="1" value={boxQuantity} onChange={event=>setBoxQuantity(event.target.value)}/><button type="button" className="secondary-button" disabled={busy||!Number.isInteger(Number(boxQuantity))||Number(boxQuantity)<1||Number(boxQuantity)>100} onClick={()=>setBoxGrantReview('classic')}>Conceder caixas</button></div><p className="muted text-xs">A concessão fica registrada. Cada abertura consome uma caixa.</p></section>}
+      {profile&&halloweenBoxBalance!==null&&<section className="admin-pass-card admin-halloween-boxes" aria-label="Caixas de Halloween do jogador"><div className="admin-pass-heading"><Box size={19}/><strong>Caixas de Halloween</strong></div><p>Saldo disponível: <strong>{halloweenBoxBalance}</strong></p><label className="field-label" htmlFor="admin-halloween-box-quantity">Quantidade para conceder</label><div className="admin-pass-actions"><input id="admin-halloween-box-quantity" type="number" min="1" max="100" step="1" value={halloweenBoxQuantity} onChange={event=>setHalloweenBoxQuantity(event.target.value)}/><button type="button" className="secondary-button" disabled={busy||!Number.isInteger(Number(halloweenBoxQuantity))||Number(halloweenBoxQuantity)<1||Number(halloweenBoxQuantity)>100} onClick={()=>setBoxGrantReview('halloween')}>Conceder caixas de Halloween</button></div><p className="muted text-xs">Estas caixas abrem somente itens do evento.</p></section>}
       {error && !review && <ErrorNotice message={error}/>}
       {success && <p className="success-message" role="status"><Check size={18}/>{success}</p>}
     </div>
@@ -164,7 +169,7 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
       {error&&<ErrorNotice message={error}/>}
       <div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void setFreePremium()} disabled={busy}>{busy?'Salvando…':grantReview === 'disable'?'Desativar':'Confirmar Premium'}</button></div>
     </Modal>
-    <Modal className="admin-dialog" open={boxGrantReview} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(false);}} title="Conceder caixas?" description={`Adicionar ${boxQuantity} ${Number(boxQuantity)===1?'caixa':'caixas'} ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(false)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
+    <Modal className="admin-dialog" open={Boolean(boxGrantReview)} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(null);}} title={boxGrantReview==='halloween'?'Conceder caixas de Halloween?':'Conceder caixas?'} description={`Adicionar ${boxGrantReview==='halloween'?halloweenBoxQuantity:boxQuantity} ${Number(boxGrantReview==='halloween'?halloweenBoxQuantity:boxQuantity)===1?'caixa':'caixas'} ${boxGrantReview==='halloween'?'de Halloween ':''}ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
   </section>;
 }
 

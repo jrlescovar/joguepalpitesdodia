@@ -21,19 +21,24 @@ export default function ChestIcon({ size = 64, className, opening = false, hallo
   </svg>;
   return <svg className={className} width={size} height={size * (opening ? 96 : 72) / 80} viewBox={opening ? '0 -24 80 96' : '0 0 80 72'} fill="none" aria-hidden="true">
     <defs>
-      <linearGradient id={gold} x1="8" y1="12" x2="67" y2="64" gradientUnits="userSpaceOnUse"><stop stopColor={halloween?'#ffd08d':'#ffedb3'}/><stop offset=".5" stopColor={halloween?'#f78435':'#eeb95e'}/><stop offset="1" stopColor={halloween?'#9f3d55':'#a86f28'}/></linearGradient>
-      <linearGradient id={wood} x1="40" y1="22" x2="40" y2="64" gradientUnits="userSpaceOnUse"><stop stopColor={halloween?'#492742':'#815625'}/><stop offset="1" stopColor={halloween?'#171323':'#3f2c1c'}/></linearGradient>
+      <linearGradient id={gold} x1="9" y1="7" x2="68" y2="66" gradientUnits="userSpaceOnUse"><stop stopColor="#ffe8a0"/><stop offset=".47" stopColor="#e5a836"/><stop offset="1" stopColor="#a65f1f"/></linearGradient>
+      <linearGradient id={wood} x1="16" y1="18" x2="65" y2="62" gradientUnits="userSpaceOnUse"><stop stopColor="#526b84"/><stop offset=".48" stopColor="#30445f"/><stop offset="1" stopColor="#1b2b43"/></linearGradient>
     </defs>
-    <path d="M12 34h56v25a5 5 0 0 1-5 5H17a5 5 0 0 1-5-5V34Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3"/>
-    <path d="M22 34v29m36-29v29" stroke="#edc478" strokeWidth="4"/>
+    <path d="M8 32h64v26l-5 9H13l-5-9V32Z" fill="#17253a" stroke="#80501f" strokeWidth="3" strokeLinejoin="round"/>
+    <path d="M12 35h56v21l-4 7H16l-4-7V35Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3" strokeLinejoin="round"/>
+    <path d="M13 54h54M25 36v26m30-26v26" stroke="#b77726" strokeWidth="2.7"/>
+    <path d="M24 38v17m32-17v17" stroke="#ffe29a" strokeWidth="1.5"/>
+    <path d="M9 36h9v8H9Zm53 0h9v8h-9ZM11 55h10v8h-8Zm48 0h10l-3 8h-7Z" fill={`url(#${gold})`} stroke="#754817" strokeWidth="1.6" strokeLinejoin="round"/>
+    <path d="M20 65h11v4H18Zm29 0h11l2 4H49Z" fill="#9e6125"/>
     <g className="chest-lid">
-      <path d="M10 33V25c0-12 9-18 17-18h26c9 0 17 7 17 18v8H10Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3"/>
-      <path d="M22 9v24m36-24v24" stroke="#edc478" strokeWidth="4"/>
-      <path d="M10 33h60" stroke="#ffe0a0" strokeWidth="4"/>
-      <rect x="32" y="28" width="16" height="20" rx="3" fill="#e6b45d" stroke="#ffe5aa" strokeWidth="2"/>
-      {halloween?<text x="40" y="43" textAnchor="middle" fill="#3d1c2c" fontSize="15" fontWeight="900">?</text>:<><path d="M37 35.5c0-4 6-4 6 0 0 2.5-3 2.5-3 5" stroke="#3d2c1b" strokeWidth="2.2" strokeLinecap="round"/><circle cx="40" cy="44" r="1.2" fill="#3d2c1b"/></>}
-      <path d="M27 16h25" stroke="#fff0bd" strokeWidth="2" strokeLinecap="round" opacity=".65"/>
+      <path d="M8 34V23C8 11 20 5 40 5s32 6 32 18v11H8Z" fill="#15253b" stroke="#80501f" strokeWidth="3"/>
+      <path d="M12 31v-8C12 13 23 9 40 9s28 4 28 14v8H12Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3"/>
+      <path d="M23 12c-2 6-3 13-3 20m37-20c2 6 3 13 3 20" stroke="#a56822" strokeWidth="5"/>
+      <path d="M24 12c-2 6-3 13-3 20m35-20c2 6 3 13 3 20" stroke="#f9d580" strokeWidth="1.7"/>
+      <path d="M9 31h62v6H9Z" fill={`url(#${gold})`} stroke="#754817" strokeWidth="1.5"/>
+      <path d="M34 32h12v14l-6 4-6-4V32Z" fill={`url(#${gold})`} stroke="#754817" strokeWidth="2" strokeLinejoin="round"/>
+      <path d="M37 38c0-3 6-3 6 0 0 2-3 2-3 4" stroke="#3e2a1d" strokeWidth="2" strokeLinecap="round"/><circle cx="40" cy="45" r="1.1" fill="#3e2a1d"/>
+      <path d="M16 21h5v5h-5Zm43 0h5v5h-5Z" fill="#e7b454" stroke="#85501e" strokeWidth="1"/>
     </g>
-    <path d="m69 4 1.8 4.8L76 11l-5.2 2-1.8 5-2-5-5-2 5-2.2L69 4Z" fill="#ffe7a8"/>
   </svg>;
 }

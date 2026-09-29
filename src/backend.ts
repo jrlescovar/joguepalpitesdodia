@@ -104,6 +104,8 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'openHalloweenBox': return rpc<T>('open_halloween_box', { p_request_id: data.requestId });
     case 'getAdminBoxBalance': return rpc<T>('admin_get_box_balance', { p_profile_id: data.uid });
     case 'grantBoxes': return rpc<T>('admin_grant_boxes', { p_profile_id: data.uid, p_quantity: data.quantity });
+    case 'getAdminHalloweenBoxBalance': return rpc<T>('admin_get_halloween_box_balance', { p_profile_id: data.uid });
+    case 'grantHalloweenBoxes': return rpc<T>('admin_grant_halloween_boxes', { p_profile_id: data.uid, p_quantity: data.quantity });
     case 'getAdminState': {
       const state = await rpc<{ registrationsOpen: boolean; predictions: unknown[] }>('get_admin_state');
       return { ...state, predictions: predictions(state.predictions) } as T;
