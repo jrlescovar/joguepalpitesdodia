@@ -20,7 +20,7 @@ function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; la
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
 }
 
-export default function ProfileOverview({ profile, lastClosedPrediction, today, showBalance = false, supporterActive = false, refreshTick = 0 }: {
+export default function ProfileOverview({ profile, lastClosedPrediction, today, supporterActive = false, refreshTick = 0 }: {
   profile: OverviewProfile;
   lastClosedPrediction: string | null;
   today: string;
@@ -61,7 +61,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Maior sequência de reds', numberOrDash(profile.redStreakMax)],
     ['Dias consecutivos', daily],
   ];
-  if (showBalance && 'balance' in profile) rows.push(['Saldo', `R$ ${profile.balance.toLocaleString('pt-BR')}`]);
   return <div className="profile-overview"><div className="profile-layout">
     <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
@@ -103,3 +102,4 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     </div>
   </section></div>;
 }
+
