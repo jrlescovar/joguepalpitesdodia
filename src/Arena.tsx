@@ -33,7 +33,6 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
     {error && <ErrorNotice message={error} retry={() => setReload(value => value + 1)}/>}
     {loading && !data && <p role="status">Carregando Arena…</p>}
     {data && <>
-      <section className="card arena-king"><Crown size={30}/><div><span className="eyebrow">REI DA ARENA</span>{data.king ? <button onClick={() => openProfile(data.king!)}><Avatar name={data.king.username} color={data.king.avatarColor} imageUrl={data.king.avatarUrl} borderStyle={data.king.passBorderStyle}/><strong className={`pass-name-${data.king.passNameStyle ?? 'none'}`}><UsernameText name={data.king.username} font={data.king.usernameFont}/></strong></button> : <strong>A coroa espera seu primeiro campeão</strong>}<p>{data.king ? `Título conquistado em ${brasiliaDate(data.king.wonOn)}. Mantido até o próximo campeão.` : 'Quem somar mais pontos no dia conquista o título.'}</p></div></section>
       <p className="arena-qualification">{data.qualified ? 'Você está classificado para a Arena!' : 'Você não está classificado para a Arena'}{!data.qualified && <small>Acompanhe os dez classificados e a disputa pela coroa.</small>}</p>
       <section className="card arena-table" aria-busy={loading}><header><span><Swords size={19}/>ARENA DO DIA</span><strong>{data.settled}/{data.total}</strong></header><div className="arena-round-info"><span>{brasiliaDate(data.dayId)}</span><strong>{data.status === 'finished' ? 'Rodada encerrada' : 'Em disputa'}</strong></div>
         <div className="arena-columns"><span>JOGADOR</span><span>PTS DO DIA</span></div>
@@ -42,4 +41,5 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
     </>}
   </div>;
 }
+
 
