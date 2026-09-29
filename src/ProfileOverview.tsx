@@ -11,11 +11,12 @@ import SupporterEmblem from './SupporterEmblem';
 import GreenMedalEmblem from './GreenMedalEmblem';
 import BattleMedalEmblem from './BattleMedalEmblem';
 import BetaTesterEmblem from './BetaTesterEmblem';
+import ArenaMedalEmblem from './ArenaMedalEmblem';
 import type { Profile, PublicProfile } from './types';
 
 type OverviewProfile = Profile | PublicProfile;
 type BattleStats = { wins: number; losses: number; draws: number };
-type OverviewMeta = { globalPosition: number; battleStats: BattleStats };
+type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number };
 
 function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; label: string; value: number | string; tone: string; hint?: string }) {
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
@@ -33,17 +34,20 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   const [arenaKing, setArenaKing] = useState(false);
   useEffect(() => { let active = true; setArenaKing(false); void call<boolean>('getArenaKing', { uid: profile.uid }).then(value => { if (active) setArenaKing(value); }).catch(() => {}); return () => { active = false; }; }, [profile.uid, refreshTick]);
   const [battleStats, setBattleStats] = useState<BattleStats | null>(null);
+  const [arenaWins, setArenaWins] = useState(0);
   useEffect(() => {
     let active = true;
     setGlobalPosition(null);
     setBattleStats(null);
+    setArenaWins(0);
     void call<OverviewMeta | null>('getProfileOverviewMeta', { uid: profile.uid })
       .then(meta => {
         if (!active) return;
         setGlobalPosition(typeof meta?.globalPosition === 'number' ? meta.globalPosition : null);
         setBattleStats(meta?.battleStats ?? null);
+        setArenaWins(meta?.arenaWins ?? 0);
       })
-      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); } });
+      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); } });
     return () => { active = false; };
   }, [profile.uid, profile.rankPoints, refreshTick]);
   const numberOrDash = (value: number | undefined) => typeof value === 'number' ? value : '—';
@@ -102,7 +106,12 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         <BetaTesterEmblem/>
         <strong className="medal-name">Beta Tester</strong>
       </div>}
-      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
+      {arenaWins>0&&<div className="medal-tile" role="img" aria-label={`Medalha Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
+        <span className="medal-level">Medalha Arena</span>
+        <ArenaMedalEmblem/>
+        <strong className="medal-name">{arenaWins} {arenaWins===1?'vitória':'vitórias'}</strong>
+      </div>}
+      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&arenaWins===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
   </section></div>;
 }

@@ -389,10 +389,12 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .medal-tile > .green-medal-emblem { transform: translateY(3px) scale(1.15); }
 .medal-tile > .battle-medal-emblem { transform: translateY(3px) scale(1.15); }
 .medal-tile > .beta-medal-emblem { transform: translateY(3px) scale(1.15); }
+.medal-tile > .arena-medal-emblem { transform: translateY(3px) scale(1.15); }
 .medal-name { align-self: start; color: #f4f7fb; font-size: .62rem; line-height: 1.15; }
 .green-medal-emblem + .medal-name { margin-top: 5px; }
 .battle-medal-emblem + .medal-name { margin-top: 5px; }
 .beta-medal-emblem + .medal-name { margin-top: 11px; }
+.arena-medal-emblem + .medal-name { margin-top: 5px; }
 .medals-grid .achievements-empty { grid-column: 1 / -1; }
 @media (min-width: 1024px) {
   .profile-overview { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 20px 24px; align-items: start; }
