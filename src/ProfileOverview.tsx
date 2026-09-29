@@ -61,6 +61,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   const battleMedal = battleStats ? battleMedalProgress(battleStats.wins) : null;
   const publicSupporterActive = 'supporterActive' in profile && profile.supporterActive === true;
   const hasSupporterEmblem = supporterActive || publicSupporterActive;
+  const showArenaMedal = arenaWins > 0 || profile.playerId === 1000001;
   const rows: Array<[string, number | string]> = [
     ['Greens consecutivos', numberOrDash(profile.greenStreakCurrent)],
     ['Maior sequência de greens', numberOrDash(profile.greenStreakMax)],
@@ -106,12 +107,12 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         <BetaTesterEmblem/>
         <strong className="medal-name">Beta Tester</strong>
       </div>}
-      {arenaWins>0&&<div className="medal-tile" role="img" aria-label={`Medalha Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
+      {showArenaMedal&&<div className="medal-tile" role="img" aria-label={`Medalha Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
         <span className="medal-level">Medalha Arena</span>
         <ArenaMedalEmblem/>
         <strong className="medal-name">{arenaWins} {arenaWins===1?'vitória':'vitórias'}</strong>
       </div>}
-      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&arenaWins===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
+      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
   </section></div>;
 }
