@@ -7,7 +7,8 @@ export default function ArenaMedalEmblem(){
   <path d="M46 5h18l9 9-24 35-12-17z" fill="#c68b3e" stroke="#f5d78d" strokeWidth="2" strokeLinejoin="round"/>
   <circle cx="40" cy="57" r="27" fill={`url(#arena-medal-${id})`} stroke="#fff1ba" strokeWidth="2.5"/>
   <circle cx="40" cy="57" r="20" fill="#42301d" stroke="#f8d985" strokeWidth="1.5"/>
-  <path d="m26 62-3-17 10 7 7-14 7 14 10-7-3 17H26zm3 5h22" fill="#e8b857" stroke="#fff1ba" strokeWidth="2" strokeLinejoin="round"/>
-  <circle cx="40" cy="45" r="2" fill="#fff1ba"/>
+  <path d="m25 39-4-10 10 4 25 29-5 5z" fill="#e8b857" stroke="#fff1ba" strokeWidth="1.8" strokeLinejoin="round"/>
+  <path d="m55 39 4-10-10 4-25 29 5 5z" fill="#f4cc76" stroke="#fff1ba" strokeWidth="1.8" strokeLinejoin="round"/>
+  <path d="m45 61 9-8m-19 8-9-8m-3 12 7 7m27-7-7 7" stroke="#fff1ba" strokeWidth="2.5" strokeLinecap="round"/>
  </svg>;
 }

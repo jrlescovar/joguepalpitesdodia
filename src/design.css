@@ -382,8 +382,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .achievement-item small { margin-top: 3px; color: var(--muted); font-size: .75rem; }
 .achievements-empty { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 78px; border: 1px dashed var(--line); border-radius: 14px; color: var(--muted); font-size: .875rem; }
 .achievements-empty svg { color: #f3cf70; }
-.medals-grid { display: grid; grid-template-columns: repeat(auto-fit, 100px); justify-content: start; gap: 12px; }
-.medal-tile { width: 100px; height: 95px; display: grid; grid-template-rows: 14px 32px 28px; justify-items: center; align-content: center; row-gap: 3px; padding: 6px 4px; border: 1px solid #3c4653; border-radius: 12px; background: #75b2ff08; text-align: center; }
+.medals-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 324px; justify-content: start; gap: 12px; }
+.medal-tile { width: 100%; min-width: 0; height: 95px; display: grid; grid-template-rows: 14px 32px 28px; justify-items: center; align-content: center; row-gap: 3px; padding: 6px 4px; border: 1px solid #3c4653; border-radius: 12px; background: #75b2ff08; text-align: center; }
 .medal-level { color: #a7c7ef; font-size: .65rem; font-weight: 700; line-height: 14px; white-space: nowrap; }
 .medal-tile > svg { display: block; width: 29px; height: 32px; }
 .medal-tile > .green-medal-emblem { transform: translateY(3px) scale(1.15); }
@@ -565,8 +565,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .podium-medal { font-size: .8125rem; }
   .achievement-grid { grid-template-columns: 1fr; }
   .achievements-card { padding: 19px; }
-  .medals-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; max-width: 324px; margin-inline: auto; }
-  .medals-grid .medal-tile { flex: 0 0 calc((100% - 24px) / 3); width: auto; min-width: 0; }
+  .medals-grid { margin-inline: auto; }
   .medals-grid .achievements-empty { width: 100%; }
   .rank-player-button { gap: 10px; min-height: 66px; padding: 10px 13px; }
   .public-profile-back { margin-bottom: 15px; }

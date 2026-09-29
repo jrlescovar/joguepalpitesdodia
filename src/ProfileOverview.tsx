@@ -107,8 +107,8 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         <BetaTesterEmblem/>
         <strong className="medal-name">Beta Tester</strong>
       </div>}
-      {showArenaMedal&&<div className="medal-tile" role="img" aria-label={`Medalha Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
-        <span className="medal-level">Medalha Arena</span>
+      {showArenaMedal&&<div className="medal-tile" role="img" aria-label={`Campeão Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
+        <span className="medal-level">Campeão Arena</span>
         <ArenaMedalEmblem/>
         <strong className="medal-name">{arenaWins} {arenaWins===1?'vitória':'vitórias'}</strong>
       </div>}
