@@ -1,6 +1,6 @@
-.avatar.pass-border-halloween-pumpkin { --supporter-ring: linear-gradient(120deg,#ff6500,#ffe600,#ff9500,#ff6500); }
-.avatar.pass-border-halloween-bloodmoon { --supporter-ring: linear-gradient(120deg,#a83258,#ff959d,#ff333d,#a83258); }
-.avatar.pass-border-halloween-mist { --supporter-ring: linear-gradient(120deg,#a86bff,#ffffff,#a86bff,#b8bdc9,#a86bff); }
+.avatar.pass-border-halloween-pumpkin { --supporter-ring: linear-gradient(120deg,#ff6500,#ffe600,#ff9500,#ff6500); --frame-wave:#fff4a3; }
+.avatar.pass-border-halloween-bloodmoon { --supporter-ring: linear-gradient(120deg,#a83258,#ff959d,#ff333d,#a83258); --frame-wave:#ffd0d4; }
+.avatar.pass-border-halloween-mist { --supporter-ring: linear-gradient(120deg,#a86bff,#ffffff,#a86bff,#b8bdc9,#a86bff); --frame-wave:#ffffff; }
 .pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist { background-size:200% 100%;background-clip:text;-webkit-background-clip:text;color:transparent;animation:supporter-wave 3s linear infinite; }
 .pass-name-halloween-pumpkin { background-image:linear-gradient(100deg,#ff6500,#ffe600,#ff9500,#ff6500); }
 .pass-name-halloween-bloodmoon { background-image:linear-gradient(100deg,#a83258,#ff959d,#ff333d,#a83258); }
