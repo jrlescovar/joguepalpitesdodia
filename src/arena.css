@@ -3,7 +3,8 @@
 .arena-qualification { font-size: 14px; text-align: center; margin: 0; color: #a8cfff; }
 .arena-qualification small { display: block; font-size: 12px; color: #aab2c0; margin-top: 6px; }
 .arena-table { overflow: hidden; padding: 0; width: 100%; }
-.arena-table header { display: flex; align-items: center; justify-content: space-between; padding: 18px; border-bottom: 1px solid #3a475c; }
+.arena-table header { display: flex; align-items: center; justify-content: space-between; padding: 11px 18px; border-bottom: 1px solid #3a475c; }
+.arena-table .arena-columns { padding-block: 9px; }
 .arena-table header span { display: flex; align-items: center; gap: 8px; font-size: 13px; letter-spacing: 1px; font-weight: 700; }
 .arena-table header svg { color: #8bbaff; }
 .arena-table .global-ranking-list button { grid-template-columns: 38px 42px minmax(0, 1fr) 72px; }
