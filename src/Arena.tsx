@@ -28,19 +28,20 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
   }, [refreshTick, reload, today]);
   function openProfile(player: PublicProfile) { setSelected(player); window.scrollTo({ top: 0, behavior: 'instant' }); }
   if (selected) return <div className="public-profile-view"><button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar à Arena</button><div className="page-heading"><h1>Perfil público<span>.</span></h1></div><ProfileOverview profile={selected} today={today} lastClosedPrediction={lastClosedPrediction}/></div>;
-  return <div className="arena-page">
+  return <div className="arena-page global-ranking-page">
     <div className="page-heading"><h1>Arena<span>.</span></h1><button className="icon-button" disabled={loading} aria-label="Atualizar Arena" onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>
     {error && <ErrorNotice message={error} retry={() => setReload(value => value + 1)}/>}
     {loading && !data && <p role="status">Carregando Arena…</p>}
     {data && <>
       <p className="arena-qualification">{data.qualified ? 'Você está classificado para a Arena!' : 'Você não está classificado para a Arena'}{!data.qualified && <small>Acompanhe os dez classificados e a disputa pela coroa.</small>}</p>
-      <section className="card arena-table" aria-busy={loading}><header><span><Swords size={19}/>Arena do Dia {data.dayId.slice(8, 10)}/{data.dayId.slice(5, 7)}</span><strong>{data.settled}/{data.total}</strong></header>
-        <div className="arena-columns"><span>JOGADOR</span><span>PTS DO DIA</span></div>
-        <ol>{data.players.map((player, index) => <li key={player.uid} className={player.uid === ownUid ? 'arena-is-me' : ''}><button onClick={() => openProfile(player)} aria-label={`Abrir perfil de ${player.username}, ${player.points} pontos na Arena`}><span className={`arena-position${index === 0 ? ' arena-first' : ''}`}>{player.uid === data.winnerId ? <Crown size={19}/> : `#${index + 1}`}</span><Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><span className="arena-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></strong><small>{player.greens} greens{player.uid === data.winnerId ? ' · Campeão' : ''}</small></span><strong className="arena-points">{player.points}</strong></button></li>)}</ol>
+      <section className="card arena-table global-ranking-card" aria-busy={loading}><header><span><Swords size={19}/>Arena do Dia {data.dayId.slice(8, 10)}/{data.dayId.slice(5, 7)}</span><strong>{data.settled}/{data.total}</strong></header>
+        <div className="arena-columns global-ranking-heading"><span>JOGADOR</span><span>PTS DO DIA</span></div>
+        <ol className="global-ranking-list">{data.players.map((player, index) => <li key={player.uid} className={player.uid === ownUid ? 'arena-is-me is-me' : ''}><button onClick={() => openProfile(player)} aria-label={`Abrir perfil de ${player.username}, ${player.points} pontos na Arena`}><span className={`arena-position global-rank-position${index === 0 ? ' arena-first' : ''}`}>{player.uid === data.winnerId ? <Crown size={19}/> : `#${index + 1}`}</span><Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><span className="arena-player global-rank-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></strong><small>{player.greens} greens{player.uid === data.winnerId ? ' · Campeão' : ''}</small></span><strong className="arena-points global-rank-points">{player.points}</strong></button></li>)}</ol>
       </section>
     </>}
   </div>;
 }
+
 
 
 
