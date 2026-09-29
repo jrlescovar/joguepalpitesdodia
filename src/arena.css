@@ -10,6 +10,8 @@
 .arena-table .avatar { width: 42px; height: 42px; }
 .arena-position.global-rank-position { color: #fff; }
 .arena-position.arena-first { color: #f4cb72; }
+.arena-position.arena-second { color: #c8d2e0; }
+.arena-position.arena-third { color: #cd9968; }
 .arena-player small { display: block; font-size: 10px; color: #aab2c0; }
 .profile-arena-crown { display: flex; justify-content: center; gap: 6px; align-items: center; color: #f4cb72; font-size: 12px; margin: 8px 0; }
 @media (max-width: 640px) {
