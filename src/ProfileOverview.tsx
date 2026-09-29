@@ -12,9 +12,8 @@ import GreenMedalEmblem from './GreenMedalEmblem';
 import BattleMedalEmblem from './BattleMedalEmblem';
 import BetaTesterEmblem from './BetaTesterEmblem';
 import ArenaMedalEmblem from './ArenaMedalEmblem';
-import type { Profile, PublicProfile, ProfileBackgroundStyle } from './types';
+import type { Profile, PublicProfile } from './types';
 import './halloween.css';
-import HalloweenScene from './HalloweenScene';
 
 type OverviewProfile = Profile | PublicProfile;
 type BattleStats = { wins: number; losses: number; draws: number };
@@ -34,8 +33,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
 }) {
   const [globalPosition, setGlobalPosition] = useState<number | null>(null);
   const [arenaKing, setArenaKing] = useState(false);
-  const [background, setBackground] = useState<ProfileBackgroundStyle>('none');
-  useEffect(() => { let active=true;setBackground('none');void call<ProfileBackgroundStyle>('getProfileBackground',{uid:profile.uid}).then(style=>{if(active)setBackground(style??'none');}).catch(()=>{});return()=>{active=false;};},[profile.uid,refreshTick]);
   useEffect(() => { let active = true; setArenaKing(false); void call<boolean>('getArenaKing', { uid: profile.uid }).then(value => { if (active) setArenaKing(value); }).catch(() => {}); return () => { active = false; }; }, [profile.uid, refreshTick]);
   const [battleStats, setBattleStats] = useState<BattleStats | null>(null);
   const [arenaWins, setArenaWins] = useState(0);
@@ -74,8 +71,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Dias consecutivos', daily],
   ];
   return <div className="profile-overview"><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/><div className="profile-layout">
-    <section className={`card profile-identity profile-background-${background}`}>
-      <HalloweenScene style={background}/>
+    <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
       <h2 className={`pass-name-${profile.passNameStyle ?? 'none'}`}><UsernameText name={profile.username} font={profile.usernameFont}/></h2>

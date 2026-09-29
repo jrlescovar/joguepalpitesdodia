@@ -31,14 +31,15 @@ Deno.serve(async request => {
       const checkoutResponse = await fetch(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(sessionId)}`, { headers: { Authorization: `Bearer ${stripeKey}` } });
       if (!checkoutResponse.ok) return json({ error: 'Não foi possível verificar o pagamento.' }, 502);
       const checkout = await checkoutResponse.json();
-      if (checkout.mode === 'payment' && checkout.metadata?.purchase_kind === 'style_boxes') {
+      if (checkout.mode === 'payment' && ['style_boxes','halloween_boxes'].includes(checkout.metadata?.purchase_kind)) {
         if (checkout.payment_status !== 'paid') return json({ received: true });
         const profileId = checkout.metadata?.profile_id;
         const quantity = Number(checkout.metadata?.box_quantity);
-        const expectedAmount = quantity === 3 ? 321 : quantity === 7 ? 567 : null;
+        const halloween=checkout.metadata.purchase_kind==='halloween_boxes';
+        const expectedAmount = halloween?(quantity===2?321:quantity===6?567:null):(quantity===3?321:quantity===7?567:null);
         if (expectedAmount === null || checkout.id !== sessionId || typeof profileId !== 'string' || checkout.client_reference_id !== profileId || checkout.currency !== 'brl' || checkout.amount_total !== expectedAmount) return json({ error: 'Compra de caixas inválida.' }, 400);
         const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-        const { error } = await db.rpc('credit_box_purchase', { p_profile_id: profileId, p_session_id: sessionId, p_quantity: quantity, p_amount_cents: expectedAmount });
+        const { error } = await db.rpc(halloween?'credit_halloween_box_purchase':'credit_box_purchase', { p_profile_id: profileId, p_session_id: sessionId, p_quantity: quantity, p_amount_cents: expectedAmount });
         if (error) { console.error('credit_box_purchase', error); return json({ error: 'Não foi possível entregar as caixas.' }, 500); }
         return json({ received: true });
       }

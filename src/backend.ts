@@ -98,11 +98,10 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getPassStatus': return rpc<T>('get_pass_status');
     case 'setUsernameFont': return rpc<T>('set_username_font', { p_font: data.font });
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
+    case 'getHalloweenBoxState': return rpc<T>('get_halloween_box_state');
     case 'getBoxState': return rpc<T>('get_box_state');
     case 'openBox': return rpc<T>('open_box', { p_request_id: data.requestId });
     case 'openHalloweenBox': return rpc<T>('open_halloween_box', { p_request_id: data.requestId });
-    case 'getProfileBackground': return rpc<T>('get_profile_background', { p_profile_id: data.uid });
-    case 'setProfileBackground': return rpc<T>('set_profile_background', { p_style: data.style });
     case 'getAdminBoxBalance': return rpc<T>('admin_get_box_balance', { p_profile_id: data.uid });
     case 'grantBoxes': return rpc<T>('admin_grant_boxes', { p_profile_id: data.uid, p_quantity: data.quantity });
     case 'getAdminState': {
@@ -130,7 +129,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
   }
 }
 
-export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string }) {
+export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween' }) {
   const { data, error } = await supabase.functions.invoke<{ url?: string; error?: string }>(destination, body ? { body } : undefined);
   if (error) {
     const response = (error as { context?: unknown }).context;

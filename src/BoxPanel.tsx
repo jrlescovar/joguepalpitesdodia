@@ -9,12 +9,10 @@ import './box.css';
 import BoxHelp from './BoxHelp';
 import ChestIcon from './ChestIcon';
 import './halloween.css';
-import HalloweenScene from './HalloweenScene';
 
 const pendingKey=(uid:string,theme:string)=>theme==='classic'?`apostadodia:box-opening:${uid}`:`apostadodia:box-opening:${theme}:${uid}`;
 
 function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
-  if(item.kind==='background')return <span className="halloween-background-preview"><HalloweenScene style={item.style}/></span>;
   return item.kind==='frame'
     ? <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.useGoogleAvatar===false?null:profile.avatarUrl} borderStyle={item.style} large/>
     : <strong className={`box-name-preview pass-name-${item.kind==='font'?(profile.passNameStyle??'none'):item.style}`}><UsernameText name={profile.username} font={item.kind==='font'?item.style:'normal'}/></strong>;
@@ -40,18 +38,18 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
   const trackRef=useRef<HTMLDivElement>(null);
   const animationRef=useRef<Animation|null>(null);
 
-  useEffect(()=>{let active=true;call<BoxState>('getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick]);
+  useEffect(()=>{let active=true;call<BoxState>(themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick,themed]);
   useEffect(()=>{
     if(new URLSearchParams(location.search).get('boxes')!=='paid')return;
     let active=true;
     let attempts=0;
     const timer=window.setInterval(()=>{
       attempts+=1;
-      void call<BoxState>('getBoxState').then(value=>{if(active)setState(value);}).catch(()=>{});
+      void call<BoxState>(themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(()=>{});
       if(attempts>=6)window.clearInterval(timer);
     },5000);
     return()=>{active=false;window.clearInterval(timer);};
-  },[profile.uid]);
+  },[profile.uid,themed]);
   useEffect(()=>()=>animationRef.current?.cancel(),[]);
 
   useEffect(()=>{
@@ -120,7 +118,6 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
     setEquipBusy(true);setError('');
     try{
       if(opening.kind==='font')await call('setUsernameFont',{font:opening.style});
-      else if(opening.kind==='background')await call('setProfileBackground',{style:opening.style});
       else {
       const current=await call<PassStatus>('getPassStatus');
       await call('setPassStyles',{
@@ -136,7 +133,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
   return <>
     {(themed || (state?.balance ?? 0) > 0 || pending) && <section className={`card box-panel${themed?' box-panel-halloween':''}`} aria-label={themed?'Caixa de Halloween':'Caixa de Personalização'}>
     <div className="box-panel-heading"><div className="box-topline"><h2>{themed?'Caixa de Halloween':'Caixa de Personalização'}</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
-    {themed&&<p className="box-halloween-description">Cores de nome, molduras, fontes e fundos exclusivos. Usa o mesmo saldo de caixas.</p>}
+    {themed&&<p className="box-halloween-description">Cores de nome, molduras e fontes exclusivas do evento.</p>}
     <BoxArt halloween={themed}/>
     <div className="box-panel-actions"><button className="primary-button" type="button" disabled={busy||(!pending&&(state?.balance??0)<1)} onClick={()=>void openBox()}>{busy?<LoaderCircle className="spin" size={18}/>:pending||(state?.balance??0)>0?<Sparkles size={18}/>:<Box size={18}/>} {busy?'Preparando abertura…':pending?'Retomar abertura':state===null?'Carregando…':state.balance>0?'Abrir caixa':'Indisponível'}</button></div>
     {error&&!opening&&<ErrorNotice message={error}/>}
@@ -144,8 +141,8 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
     <BoxHelp open={helpOpen} onOpenChange={setHelpOpen} theme={theme}/>
     <Modal open={Boolean(opening)} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
       {opening&&<div className="box-reveal">
-        {phase==='box'?<div className="box-opening-stage"><BoxArt opening halloween={themed}/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}${themed?' halloween-item':''}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':item.kind==='background'?'Fundo':'Moldura'}</small>}</div>)}</div></div>:
-          <><div className={`box-result box-tier-${opening.rarity}${themed?' halloween-item':''}`}><span className="box-result-rarity">{boxRarities.find(tier=>tier.id===opening.rarity)?.label}</span><PrizePreview item={opening} profile={profile}/><strong>{boxStyleLabel(opening.style)}</strong><span>{opening.kind==='name'?'Cor de nome':opening.kind==='font'?'Fonte do nome':opening.kind==='background'?'Fundo de perfil':'Moldura de perfil'}</span>{opening.duplicate&&<span className="box-xp-reward" role="status"><Zap size={18} aria-hidden="true"/> +{opening.xpAwarded} XP</span>}</div>
+        {phase==='box'?<div className="box-opening-stage"><BoxArt opening halloween={themed}/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}${themed?' halloween-item':''}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}{themed?' · Evento':''}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':'Moldura'}</small>}</div>)}</div></div>:
+          <><div className={`box-result box-tier-${opening.rarity}${themed?' halloween-item':''}`}><span className="box-result-rarity">{boxRarities.find(tier=>tier.id===opening.rarity)?.label}</span><PrizePreview item={opening} profile={profile}/><strong>{boxStyleLabel(opening.style)}{themed?' · Evento':''}</strong><span>{opening.kind==='name'?'Cor de nome':opening.kind==='font'?'Fonte do nome':'Moldura de perfil'}</span>{opening.duplicate&&<span className="box-xp-reward" role="status"><Zap size={18} aria-hidden="true"/> +{opening.xpAwarded} XP</span>}</div>
           {error&&<ErrorNotice message={error}/>}<div className="box-result-actions">{!opening.duplicate&&<button type="button" className="primary-button" disabled={equipBusy} onClick={()=>void equip()}>{equipBusy?<LoaderCircle className="spin" size={18}/>:<Sparkles size={18}/>} Equipar agora</button>}<button type="button" className="secondary-button" onClick={close} disabled={equipBusy}>Fechar</button></div></>}
       </div>}
     </Modal>

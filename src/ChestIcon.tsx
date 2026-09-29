@@ -4,6 +4,21 @@ export default function ChestIcon({ size = 64, className, opening = false, hallo
   const id = useId().replace(/:/g, '');
   const gold = `chest-gold-${id}`;
   const wood = `chest-wood-${id}`;
+  if(halloween)return <svg className={className} width={size} height={size*(opening?96:72)/80} viewBox={opening?'0 -24 80 96':'0 0 80 72'} fill="none" aria-hidden="true">
+    <defs><linearGradient id={gold} x1="14" y1="10" x2="66" y2="65" gradientUnits="userSpaceOnUse"><stop stopColor="#ffda5b"/><stop offset=".4" stopColor="#ff931f"/><stop offset="1" stopColor="#cc460b"/></linearGradient><linearGradient id={wood} x1="40" y1="34" x2="40" y2="62" gradientUnits="userSpaceOnUse"><stop stopColor="#fff887"/><stop offset="1" stopColor="#ffb000"/></linearGradient></defs>
+    <path d="M11 33h58v20c0 10-9 14-16 13H27c-8 1-16-3-16-13V33Z" fill={`url(#${gold})`} stroke="#ffc263" strokeWidth="2"/>
+    <path d="M25 34c-3 13-3 23 2 31m28-31c3 13 3 23-2 31M40 35v30" stroke="#a8440d" strokeWidth="2" opacity=".45"/>
+    <path d="m20 44 8 5 4-4 7 6 7-6 5 4 10-5-4 12-7 4-8-3-8 3-8-5Z" fill="#391707" stroke="#ffde53" strokeWidth="1.3"/>
+    <path d="m29 49 4 5 3-5m10 1 3 5 3-5" fill={`url(#${wood})`}/>
+    <g className="chest-lid">
+      <path d="m36 10 1-8 7-1-2 10" fill="#658837" stroke="#acc05b" strokeWidth="2"/>
+      <path d="M10 33V25C10 14 18 7 28 9c8-4 16-4 24 0 11-2 18 6 18 16v8H10Z" fill={`url(#${gold})`} stroke="#ffc263" strokeWidth="2"/>
+      <path d="M28 10c-5 6-6 14-5 22m29-22c5 6 6 14 5 22M40 9v22" stroke="#b34b10" strokeWidth="2" opacity=".45"/>
+      <path d="m19 18 14 10-15 1Zm42 0-14 10 15 1Z" fill="#351606" stroke="#fff07b" strokeWidth="1.4"/>
+      <path d="m40 24-4 6h8Z" fill="#351606"/>
+      <path d="M10 33h60" stroke="#ffd478" strokeWidth="3"/>
+    </g>
+  </svg>;
   return <svg className={className} width={size} height={size * (opening ? 96 : 72) / 80} viewBox={opening ? '0 -24 80 96' : '0 0 80 72'} fill="none" aria-hidden="true">
     <defs>
       <linearGradient id={gold} x1="8" y1="12" x2="67" y2="64" gradientUnits="userSpaceOnUse"><stop stopColor={halloween?'#ffd08d':'#ffedb3'}/><stop offset=".5" stopColor={halloween?'#f78435':'#eeb95e'}/><stop offset="1" stopColor={halloween?'#9f3d55':'#a86f28'}/></linearGradient>

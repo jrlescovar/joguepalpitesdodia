@@ -16,7 +16,9 @@ Deno.serve(async request => {
   const authorization = request.headers.get('authorization');
   if (!authorization?.startsWith('Bearer ')) return json({ error: 'Entre na sua conta.' }, 401);
   const input = await request.json().catch(() => null);
-  const pack = packs[String(input?.quantity)];
+  const theme=input?.theme??'classic';
+  const halloweenPacks: typeof packs={'2':{quantity:2,amount:321},'6':{quantity:6,amount:567}};
+  const pack = theme==='halloween'?halloweenPacks[String(input?.quantity)]:theme==='classic'?packs[String(input?.quantity)]:undefined;
   if (!pack || typeof input?.requestId !== 'string' || !/^[0-9a-f-]{36}$/i.test(input.requestId)) return json({ error: 'Pacote inválido.' }, 400);
   const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
   if (!stripeKey) return json({ error: 'Pagamento ainda não configurado.' }, 503);
@@ -34,11 +36,11 @@ Deno.serve(async request => {
     'payment_method_types[0]': 'card',
     'line_items[0][price_data][currency]': 'brl',
     'line_items[0][price_data][unit_amount]': String(pack.amount),
-    'line_items[0][price_data][product_data][name]': `${pack.quantity} Caixas de Personalização`,
-    'line_items[0][price_data][product_data][description]': 'Oferta de Lançamento de Personalização. Compra avulsa de caixas com cores de nome ou molduras aleatórias. Itens repetidos se convertem em XP.',
+    'line_items[0][price_data][product_data][name]': `${pack.quantity} Caixas de ${theme==='halloween'?'Halloween':'Personalização'}`,
+    'line_items[0][price_data][product_data][description]': `Compra avulsa de caixas de ${theme==='halloween'?'Halloween':'Personalização'} com cores de nome, molduras ou fontes aleatórias. Itens repetidos se convertem em XP.`,
     'line_items[0][quantity]': '1',
     'metadata[profile_id]': profileId,
-    'metadata[purchase_kind]': 'style_boxes',
+    'metadata[purchase_kind]': theme==='halloween'?'halloween_boxes':'style_boxes',
     'metadata[box_quantity]': String(pack.quantity),
     client_reference_id: profileId,
     success_url: `${origin}/?boxes=paid#temporada`,
@@ -47,7 +49,7 @@ Deno.serve(async request => {
   if (user.email) body.set('customer_email', user.email);
   const response = await fetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${stripeKey}`, 'Content-Type': 'application/x-www-form-urlencoded', 'Idempotency-Key': `boxes-${profileId}-${pack.quantity}-${input.requestId}` },
+    headers: { Authorization: `Bearer ${stripeKey}`, 'Content-Type': 'application/x-www-form-urlencoded', 'Idempotency-Key': `boxes-${theme}-${profileId}-${pack.quantity}-${input.requestId}` },
     body,
   });
   const checkout = await response.json();
