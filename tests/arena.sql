@@ -26,7 +26,7 @@ begin
  alter table public.predictions disable trigger user;
  update public.predictions set status='settled' where day_id=d;
  perform public.refresh_arena_round(d);
- select profile_id into a from public.arena_entries where day_id=d order by points desc,greens desc,seed limit 1;
+ select profile_id into a from public.arena_entries where day_id=d order by points desc,greens desc,level desc,seed limit 1;
  if (select winner_id from public.arena_rounds where day_id=d)<>a or not exists(select 1 from public.arena_crown where profile_id=a and won_on=d) then raise exception 'Champion failed'; end if;
  update public.arena_entries set points=points+99999 where day_id=d and seed=10;
  perform public.refresh_arena_round(d);
@@ -38,3 +38,4 @@ begin
  if has_function_privilege('authenticated','public.ensure_arena_round(date)','execute') or has_table_privilege('authenticated','public.arena_entries','insert') then raise exception 'Direct mutations allowed'; end if;
 end;$$;
 rollback;
+
