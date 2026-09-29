@@ -12,7 +12,8 @@
 .arena-position.arena-first { color: #f4cb72; }
 .arena-position.arena-second { color: #c8d2e0; }
 .arena-position.arena-third { color: #cd9968; }
-.arena-player small { display: block; font-size: 10px; color: #aab2c0; }
+.arena-player { position: relative; }
+.arena-player small { position: absolute; top: 100%; left: 0; display: block; font-size: 10px; line-height: 12px; color: #aab2c0; }
 .profile-arena-crown { display: flex; justify-content: center; gap: 6px; align-items: center; color: #f4cb72; font-size: 12px; margin: 8px 0; }
 @media (max-width: 640px) {
   .arena-table .global-ranking-list button { grid-template-columns: 28px 36px minmax(0, 1fr) 42px; }
