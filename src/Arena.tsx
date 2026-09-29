@@ -9,12 +9,17 @@ import './arena.css';
 
 type ArenaPlayer = PublicProfile & { points: number; greens: number; seed: number; qualifyingPoints: number };
 export type ArenaState = { dayId: string; status: 'open' | 'finished'; winnerId: string | null; qualified: boolean; settled: number; total: number; king: (PublicProfile & { wonOn: string }) | null; players: ArenaPlayer[] };
+type ArenaHistoryEntry = { dayId: string; winner: PublicProfile; points: number; greens: number };
 export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick }: { ownUid: string; today: string; lastClosedPrediction: string | null; refreshTick: number }) {
   const [data, setData] = useState<ArenaState | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
   const [selected, setSelected] = useState<PublicProfile | null>(null);
+  const [history, setHistory] = useState<ArenaHistoryEntry[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(true);
+  const [historyError, setHistoryError] = useState('');
+  const [historyHasMore, setHistoryHasMore] = useState(false);
   useEffect(() => {
     let active = true;
     async function refresh() {
@@ -26,6 +31,30 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
     const timer = window.setInterval(() => { if (document.visibilityState === 'visible') void refresh(); }, 30000);
     return () => { active = false; clearInterval(timer); };
   }, [refreshTick, reload, today]);
+  useEffect(() => {
+    let active = true;
+    setHistoryLoading(true);
+    void call<ArenaHistoryEntry[]>('getArenaHistory').then(rows => {
+      if (!active) return;
+      setHistory(rows.slice(0, 10));
+      setHistoryHasMore(rows.length > 10);
+      setHistoryError('');
+    }).catch(cause => { if (active) setHistoryError(errorMessage(cause)); })
+      .finally(() => { if (active) setHistoryLoading(false); });
+    return () => { active = false; };
+  }, [refreshTick, reload, today]);
+  async function loadMoreHistory() {
+    const beforeDay = history.at(-1)?.dayId;
+    if (!beforeDay || historyLoading) return;
+    setHistoryLoading(true);
+    try {
+      const rows = await call<ArenaHistoryEntry[]>('getArenaHistory', { beforeDay });
+      setHistory(previous => [...previous, ...rows.slice(0, 10)]);
+      setHistoryHasMore(rows.length > 10);
+      setHistoryError('');
+    } catch (cause) { setHistoryError(errorMessage(cause)); }
+    finally { setHistoryLoading(false); }
+  }
   function openProfile(player: PublicProfile) { setSelected(player); window.scrollTo({ top: 0, behavior: 'instant' }); }
   if (selected) return <div className="public-profile-view"><button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar à Arena</button><div className="page-heading"><h1>Perfil público<span>.</span></h1></div><ProfileOverview profile={selected} today={today} lastClosedPrediction={lastClosedPrediction}/></div>;
   return <div className="arena-page global-ranking-page">
@@ -40,6 +69,21 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
       </section>
       <p className="arena-qualification">{data.qualified ? 'Você está classificado para a Arena!' : 'Você não está classificado para a Arena'}{!data.qualified && <small>Acompanhe os dez classificados e a disputa pela coroa.</small>}</p>
     </>}
+    <section className="arena-history" aria-label="Histórico da Arena">
+      <h2>Histórico da Arena</h2>
+      {historyError && <ErrorNotice message={historyError} retry={() => setReload(value => value + 1)}/>}
+      {historyLoading && history.length === 0 && <p className="arena-history-empty" role="status">Carregando campeões…</p>}
+      {!historyLoading && !historyError && history.length === 0 && <p className="arena-history-empty">Os campeões aparecerão aqui após a primeira Arena encerrada.</p>}
+      {history.length > 0 && <ol className="arena-history-list">{history.map(entry => <li key={entry.dayId}>
+        <button type="button" className="arena-history-card card" onClick={() => openProfile(entry.winner)} aria-label={`Abrir perfil de ${entry.winner.username}, campeão da Arena de ${entry.dayId.slice(8, 10)}/${entry.dayId.slice(5, 7)}`}>
+          <span className="arena-history-date">{entry.dayId.slice(8, 10)}/{entry.dayId.slice(5, 7)}</span>
+          <Avatar name={entry.winner.username} color={entry.winner.avatarColor} imageUrl={entry.winner.avatarUrl} borderStyle={entry.winner.passBorderStyle}/>
+          <span className="arena-history-player"><strong className={`pass-name-${entry.winner.passNameStyle ?? 'none'}`}><UsernameText name={entry.winner.username} font={entry.winner.usernameFont}/></strong><small>{entry.greens} greens</small></span>
+          <span className="arena-history-score"><Crown size={16}/><strong>{entry.points} pts</strong></span>
+        </button>
+      </li>)}</ol>}
+      {historyHasMore && <button type="button" className="secondary-button arena-history-more" disabled={historyLoading} onClick={() => void loadMoreHistory()}>{historyLoading ? 'Carregando…' : 'Ver mais campeões'}</button>}
+    </section>
   </div>;
 }
 

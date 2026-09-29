@@ -16,7 +16,21 @@
 .arena-player { position: relative; margin-left: 5px; }
 .arena-player small { position: absolute; top: 100%; left: 0; display: block; font-size: 10px; line-height: 12px; color: #aab2c0; }
 .profile-arena-crown { display: flex; justify-content: center; gap: 6px; align-items: center; color: #f4cb72; font-size: 12px; margin: 8px 0; }
+.arena-history { display: grid; gap: 12px; margin-top: 12px; }
+.arena-history h2 { margin: 0; font-size: 20px; }
+.arena-history-empty { margin: 0; color: #aab2c0; font-size: 14px; }
+.arena-history-list { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.arena-history-card { display: grid; grid-template-columns: 44px 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; color: #f4f7fb; text-align: left; cursor: pointer; }
+.arena-history-card .avatar { width: 42px; height: 42px; }
+.arena-history-date { color: #a8cfff; font-size: 13px; font-weight: 700; }
+.arena-history-player { display: grid; min-width: 0; gap: 3px; }
+.arena-history-player strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
+.arena-history-player small { color: #aab2c0; font-size: 12px; }
+.arena-history-score { display: grid; justify-items: end; gap: 2px; color: #f4cb72; font-size: 13px; white-space: nowrap; }
+.arena-history-more { justify-self: center; }
 @media (max-width: 640px) {
   .arena-table .global-ranking-list button { grid-template-columns: 28px 36px minmax(0, 1fr) 42px; }
   .arena-table .avatar { width: 36px; height: 36px; }
+  .arena-history-card { grid-template-columns: 34px 36px minmax(0, 1fr) auto; gap: 8px; padding: 10px 12px; }
+  .arena-history-card .avatar { width: 36px; height: 36px; }
 }
