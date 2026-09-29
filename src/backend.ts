@@ -110,6 +110,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'setOpenPredictionRankPoints': return rpc<T>('set_open_prediction_rank_points', { p_day_id: data.dayId, p_slot: data.slot, p_rank_points: data.rankPoints });
     case 'settlePrediction': return rpc<T>('settle_prediction_for_slot', { p_day_id: data.dayId, p_slot: data.slot, p_winning_option_id: data.winningOptionId });
     case 'getAdminProfile': return rpc<T>('get_admin_profile', { p_search: data.search });
+    case 'getAdminPlayers': return rpc<T>('get_admin_players', { p_search: data.search, p_page: data.page });
     case 'getAdminPicksForDay': return rpc<T>('get_admin_picks_for_day', { p_profile_id: data.uid, p_day_id: data.day });
     case 'adminAddPick': return rpc<T>('admin_add_pick', { p_profile_id: data.uid, p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });
     case 'adminCorrectPick': return rpc<T>('admin_correct_pick', { p_profile_id: data.uid, p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });

@@ -75,7 +75,7 @@ export default function AdminPickCorrection({ profile, onCorrect }: { profile: P
     })}
     {error && !selected && <ErrorNotice message={error}/>}
     {success && <p className="success-message" role="status"><Check size={18}/>{success}</p>}
-    <Modal open={Boolean(selected)} onOpenChange={open => { if (!open && !busy) setSelected(null); }} title={selected?.pick.optionId?"Confirmar correção do palpite":"Adicionar palpite do jogador"} description={`A correção de ${profile.username} será registrada e, se houver resultado, greens, reds, XP e PontosRank serão ajustados.`}>
+    <Modal className="admin-dialog" open={Boolean(selected)} onOpenChange={open => { if (!open && !busy) setSelected(null); }} title={selected?.pick.optionId?"Confirmar correção do palpite":"Adicionar palpite do jogador"} description={`A correção de ${profile.username} será registrada e, se houver resultado, greens, reds, XP e PontosRank serão ajustados.`}>
       {selected && <div className="admin-pick-review">
         <strong>{selected.pick.title}</strong>
         <p>Palpite atual: {optionLabel(selected.pick, selected.pick.optionId)}</p>
@@ -91,3 +91,4 @@ export default function AdminPickCorrection({ profile, onCorrect }: { profile: P
     </Modal>
   </section>;
 }
+

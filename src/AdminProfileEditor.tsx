@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Box, Check, Search, Sparkles, Trash2, Users } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { avatarColors, colorNames, type AdminPassGrant, type Profile } from './types';
@@ -20,7 +20,7 @@ function fieldsFrom(profile: Profile): Fields {
   return { username: profile.username, avatarColor: profile.avatarColor, level: String(profile.level), xp: String(profile.xp), rankPoints: String(profile.rankPoints ?? 0), green: String(profile.green), red: String(profile.red), greenStreakCurrent: String(profile.greenStreakCurrent), greenStreakMax: String(profile.greenStreakMax) };
 }
 
-export default function AdminProfileEditor() {
+export default function AdminProfileEditor({ initialSearch }: { initialSearch?: string } = {}) {
   const [search, setSearch] = useState('');
   const [profile, setProfile] = useState<Profile | null>(null);
   const [fields, setFields] = useState<Fields | null>(null);
@@ -37,9 +37,13 @@ export default function AdminProfileEditor() {
   const [success, setSuccess] = useState('');
 
   async function find(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setBusy(true); setError(''); setSuccess(''); setProfile(null); setFields(null); setReview(null); setPassGrant(null); setBoxBalance(null);
+    event.preventDefault(); await loadPlayer(search);
+  }
+  useEffect(() => { if (initialSearch) void loadPlayer(initialSearch); }, [initialSearch]);
+  async function loadPlayer(query: string) {
+    setBusy(true); setError(''); setSuccess(''); setProfile(null); setFields(null); setReview(null); setPassGrant(null); setBoxBalance(null);
     try {
-      const found = await call<Profile>('getAdminProfile', { search });
+      const found = await call<Profile>('getAdminProfile', { search: query });
       setProfile(found); setFields(fieldsFrom(found));
       const [grant,balance]=await Promise.all([call<AdminPassGrant>('getAdminPassGrant', { uid: found.uid }),call<number>('getAdminBoxBalance',{uid:found.uid})]);
       setPassGrant(grant);setBoxBalance(balance);
@@ -113,13 +117,14 @@ export default function AdminProfileEditor() {
     ...numericFields,
   ] as { key: keyof Fields; label: string }[]).filter(({ key }) => review[key] !== original[key]) : [];
 
-  return <details className="card admin-profile-card">
-    <summary><Users size={19}/> Editar perfil de jogador</summary>
+  return <section className="card admin-profile-card">
+    <h2><Users size={19}/> {profile ? `Administrar ${profile.username}` : 'Painel do jogador'}</h2>
     <div className="admin-profile-body">
-      <form onSubmit={find}>
+      {!initialSearch && <form onSubmit={find}>
         <label className="field-label" htmlFor="admin-player-search">Nome de usuário ou ID</label>
         <div className="admin-search-row"><input id="admin-player-search" value={search} onChange={event => setSearch(event.target.value)} placeholder="jogador ou #1000002" required/><button className="secondary-button" disabled={busy}><Search size={16}/>Buscar</button></div>
-      </form>
+      </form>}
+      {busy && !profile && <p role="status">Carregando jogador…</p>}
       {profile && fields && <form onSubmit={save} className="admin-profile-form">
         <div className="admin-player-preview"><Avatar name={fields.username || '?'} color={fields.avatarColor} imageUrl={profile.avatarUrl}/><div><strong>{profile.username}</strong><span>#{profile.playerId}</span></div>{profile.avatarUrl&&<button type="button" className="text-button admin-remove-photo" onClick={()=>setRemovePhotoReview(true)}><Trash2 size={16}/>Remover foto</button>}</div>
         <label className="field-label" htmlFor="admin-username">Nome de usuário</label>
@@ -146,19 +151,20 @@ export default function AdminProfileEditor() {
       {error && !review && <ErrorNotice message={error}/>}
       {success && <p className="success-message" role="status"><Check size={18}/>{success}</p>}
     </div>
-    <Modal open={Boolean(review)} onOpenChange={open => { if (!open && !busy) setReview(null); }} title="Revisar alteração do jogador" description={`Confira os dados antes de alterar o ranking e a experiência de #${profile?.playerId ?? ''}.`}>
+    <Modal className="admin-dialog" open={Boolean(review)} onOpenChange={open => { if (!open && !busy) setReview(null); }} title="Revisar alteração do jogador" description={`Confira os dados antes de alterar o ranking e a experiência de #${profile?.playerId ?? ''}.`}>
       <div className="admin-change-list">{changes.map(({ key, label }) => <div className="admin-change-row" key={key}><span>{label}</span><strong>{key === 'avatarColor' ? `${colorNames[avatarColors.indexOf(original?.avatarColor ?? '')] ?? 'Atual'} → ${colorNames[avatarColors.indexOf(review?.avatarColor ?? '')] ?? 'Nova'}` : `${original?.[key]} → ${review?.[key]}`}</strong></div>)}</div>
       {error && <ErrorNotice message={error}/>}
       <div className="admin-review-actions"><button type="button" className="secondary-button" onClick={() => setReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={() => review && void commit(review)} disabled={busy}>{busy ? 'Salvando…' : 'Confirmar alteração'}</button></div>
     </Modal>
-    <Modal open={removePhotoReview} onOpenChange={open=>{if(!open&&!busy)setRemovePhotoReview(false);}} title="Remover foto do jogador?" description="O avatar voltará para a inicial colorida. A foto atual do Google será sincronizada quando o jogador entrar novamente.">
+    <Modal className="admin-dialog" open={removePhotoReview} onOpenChange={open=>{if(!open&&!busy)setRemovePhotoReview(false);}} title="Remover foto do jogador?" description="O avatar voltará para a inicial colorida. A foto atual do Google será sincronizada quando o jogador entrar novamente.">
       {error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setRemovePhotoReview(false)} disabled={busy}>Cancelar</button><button type="button" className="primary-button" onClick={()=>void removePhoto()} disabled={busy}>{busy?'Removendo…':'Remover foto'}</button></div>
     </Modal>
-    <Modal open={Boolean(grantReview)} onOpenChange={open=>{if(!open&&!busy)setGrantReview(null);}} title={grantReview === 'disable' ? 'Desativar Premium gratuito?' : 'Ativar Premium gratuito?'} description={grantReview === 'disable' ? 'Os benefícios gratuitos terminam imediatamente. Uma assinatura paga ativa continua valendo.' : `O jogador terá Premium por ${grantDays} ${Number(grantDays) === 1 ? 'dia' : 'dias'}, a partir de agora. Nenhuma caixa será concedida automaticamente.`}>
+    <Modal className="admin-dialog" open={Boolean(grantReview)} onOpenChange={open=>{if(!open&&!busy)setGrantReview(null);}} title={grantReview === 'disable' ? 'Desativar Premium gratuito?' : 'Ativar Premium gratuito?'} description={grantReview === 'disable' ? 'Os benefícios gratuitos terminam imediatamente. Uma assinatura paga ativa continua valendo.' : `O jogador terá Premium por ${grantDays} ${Number(grantDays) === 1 ? 'dia' : 'dias'}, a partir de agora. Nenhuma caixa será concedida automaticamente.`}>
       <p className="confirm-selection">{profile?.username}</p>
       {error&&<ErrorNotice message={error}/>}
       <div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void setFreePremium()} disabled={busy}>{busy?'Salvando…':grantReview === 'disable'?'Desativar':'Confirmar Premium'}</button></div>
     </Modal>
-    <Modal open={boxGrantReview} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(false);}} title="Conceder caixas?" description={`Adicionar ${boxQuantity} ${Number(boxQuantity)===1?'caixa':'caixas'} ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(false)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
-  </details>;
+    <Modal className="admin-dialog" open={boxGrantReview} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(false);}} title="Conceder caixas?" description={`Adicionar ${boxQuantity} ${Number(boxQuantity)===1?'caixa':'caixas'} ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(false)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
+  </section>;
 }
+
