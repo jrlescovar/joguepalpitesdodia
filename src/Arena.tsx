@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowLeft, Crown, RefreshCw, Swords } from 'lucide-react';
 import { call, errorMessage } from './backend';
-import { Avatar, brasiliaDate, ErrorNotice } from './components';
+import { Avatar, ErrorNotice } from './components';
 import UsernameText from './UsernameText';
 import ProfileOverview from './ProfileOverview';
 import type { PublicProfile } from './types';
@@ -34,12 +34,13 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
     {loading && !data && <p role="status">Carregando Arena…</p>}
     {data && <>
       <p className="arena-qualification">{data.qualified ? 'Você está classificado para a Arena!' : 'Você não está classificado para a Arena'}{!data.qualified && <small>Acompanhe os dez classificados e a disputa pela coroa.</small>}</p>
-      <section className="card arena-table" aria-busy={loading}><header><span><Swords size={19}/>ARENA DO DIA</span><strong>{data.settled}/{data.total}</strong></header><div className="arena-round-info"><span>{brasiliaDate(data.dayId)}</span><strong>{data.status === 'finished' ? 'Rodada encerrada' : 'Em disputa'}</strong></div>
+      <section className="card arena-table" aria-busy={loading}><header><span><Swords size={19}/>Arena do Dia {data.dayId.slice(8, 10)}/{data.dayId.slice(5, 7)}</span><strong>{data.settled}/{data.total}</strong></header>
         <div className="arena-columns"><span>JOGADOR</span><span>PTS DO DIA</span></div>
         <ol>{data.players.map((player, index) => <li key={player.uid} className={player.uid === ownUid ? 'arena-is-me' : ''}><button onClick={() => openProfile(player)} aria-label={`Abrir perfil de ${player.username}, ${player.points} pontos na Arena`}><span className={`arena-position${index === 0 ? ' arena-first' : ''}`}>{player.uid === data.winnerId ? <Crown size={19}/> : `#${index + 1}`}</span><Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><span className="arena-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></strong><small>{player.greens} greens{player.uid === data.winnerId ? ' · Campeão' : ''}</small></span><strong className="arena-points">{player.points}</strong></button></li>)}</ol>
       </section>
     </>}
   </div>;
 }
+
 
 
