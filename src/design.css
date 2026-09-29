@@ -296,7 +296,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 }
 
 .ranking-table-heading { font-size: .75rem; letter-spacing: .07em; color: var(--muted); }
-.rank-name > strong { font-size: .9375rem; }
+.rank-name > strong { font-size: calc(.9375rem + 2px); }
 .rank-name > span, .rank-name small, .rank-number { font-size: .75rem; }
 .rank-number { width: 30px; font-size: .875rem; font-weight: 700; }
 .rank-name small { color: var(--accent); font-weight: 700; letter-spacing: .03em; }
@@ -365,7 +365,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .podium-place:active { transform: scale(.98); }
 @media (hover:hover) { .podium-place:hover { transform: translateY(-2px); border-color: var(--accent); } }
 .podium-place .avatar { margin-top: 2px; position: relative; top: 4px; }
-.podium-place > strong { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-size: .875rem; }
+.podium-place > strong { max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-size: calc(.875rem + 2px); }
 .podium-place > small { color: #f7f8fb; font-size: .875rem; font-weight: 650; }
 .podium-medal { display: inline-flex; align-items: center; gap: 5px; font-size: .875rem; font-weight: 750; }
 .place-1 .podium-medal { color: #f3cf70; }
@@ -548,7 +548,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .streak-row, .profile-stats .streak-row { font-size: .8125rem; }
   .streak-row strong, .profile-stats .streak-row strong { font-size: .9375rem; }
   .ranking-table-heading { font-size: .75rem; }
-  .rank-name > strong { font-size: .875rem; }
+  .rank-name > strong { font-size: calc(.875rem + 2px); }
   .rank-name > span, .rank-name small { font-size: .75rem; }
   .ranking-summary { grid-template-columns: 1fr; gap: 10px; margin-bottom: 18px; }
   .ranking-summary .my-rank { grid-template-columns: 40px minmax(0, 1fr) auto; padding: 18px; }
@@ -558,7 +558,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .podium-place.place-1 { min-height: 166px; }
   .podium-place.place-2 { min-height: 148px; }
   .podium-place.place-3 { min-height: 140px; }
-  .podium-place > strong { font-size: .8125rem; }
+  .podium-place > strong { font-size: calc(.8125rem + 2px); }
   .podium-place > small { font-size: .875rem; }
   .podium-medal { font-size: .8125rem; }
   .achievement-grid { grid-template-columns: 1fr; }
@@ -848,7 +848,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .global-ranking-list button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 .global-rank-position { color: #c8d2e0; font-weight: 750; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
 .global-rank-player { min-width: 0; display: block; }
-.global-rank-player strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .94rem; }
+.global-rank-player strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: calc(.94rem + 2px); }
 .global-rank-points { justify-self: end; white-space: nowrap; font-size: 1.13rem; font-variant-numeric: tabular-nums; }
 .global-rank-points small { color: var(--muted); font-size: .7rem; font-weight: 500; }
 .rank-emblem { width: 34px; height: 38px; display: inline-grid; place-items: center; color: var(--rank-color); filter: drop-shadow(0 1px 4px var(--rank-glow)); }
@@ -899,7 +899,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .global-ranking-own-label { padding: 14px 12px 0; }
   .global-ranking-list button { grid-template-columns: 28px 36px minmax(0,1fr) 32px 42px; gap: 7px; padding: 10px 22px 10px 12px; min-height: 65px; }
   .global-ranking-list .avatar { width: 36px; height: 36px; font-size: 1rem; }
-  .global-rank-player strong { font-size: .875rem; }
+  .global-rank-player strong { font-size: calc(.875rem + 2px); }
   .global-rank-position { font-size: .9rem; }
   .global-rank-points { font-size: .95rem; }
   .global-rank-points small { display: block; text-align: right; }
@@ -924,3 +924,4 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .rank-guide-row .rank-emblem { width: 34px; height: 39px; }
 .rank-guide-row strong { font-size: 14px; }
 .rank-guide-row > span:last-child { font-size: 12px; color: var(--muted); }
+
