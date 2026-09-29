@@ -18,6 +18,7 @@ export default function BoxOffers() {
   }
   return <section className="card box-offers" aria-label="Oferta de Lançamento de Personalização">
     <div className="box-offers-heading"><div><span className="box-offers-eyebrow"><Sparkles size={13} aria-hidden="true"/> NOVIDADE NA LOJA</span><h2>Oferta de Lançamento de Personalização</h2></div><button type="button" className="box-help-button" aria-label="Sobre os pacotes de caixas" onClick={() => setHelp(true)}><CircleHelp size={21}/></button></div>
+    <p className="box-offers-choice">Cada caixa comprada pode abrir a Caixa de Personalização ou a Caixa de Halloween.</p>
     <div className="box-offers-grid">{[{ quantity: 3, price: '3,21' }, { quantity: 7, price: '5,67' }].map(pack => <article className={`box-offer${pack.quantity === 7 ? ' box-offer-best' : ''}`} key={pack.quantity}>
       <div className="box-offer-tag">{pack.quantity === 7 ? 'Em Alta' : null}</div>
       <div className="box-offer-art" aria-hidden="true"><ChestIcon/><span>×{pack.quantity}</span></div>

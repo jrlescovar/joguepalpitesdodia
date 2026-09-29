@@ -2,7 +2,7 @@ import { commonPassStyles, passStyleOptions } from './passStyleOptions';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
 import type { BoxItem, BoxRarity, PassNameStyle } from './types';
 
-const epic = new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige']);
+const epic = new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-bloodmoon']);
 export const boxRarities: {id:BoxRarity;label:string;chance:number;duplicateXp:number}[] = [
   {id:'common',label:'Comum',chance:40,duplicateXp:25},
   {id:'rare',label:'Raro',chance:30,duplicateXp:50},
@@ -11,11 +11,15 @@ export const boxRarities: {id:BoxRarity;label:string;chance:number;duplicateXp:n
   {id:'legendary',label:'Lendário',chance:5,duplicateXp:500},
 ];
 export function boxRarity(style:PassNameStyle):BoxRarity {
+  if(style==='halloween-mist')return 'mythic';
   if(style==='gold'||style==='rainbow'||style.startsWith('legend-'))return 'legendary';
   if(style.startsWith('myth-'))return 'mythic';
   if(epic.has(style))return 'epic';
   return commonPassStyles.has(style)?'common':'rare';
 }
-export function fontRarity(font:UsernameFont):BoxRarity|null {const rarities:Partial<Record<UsernameFont,BoxRarity>>={"quantico":"rare","blackopsone":"rare","audiowide":"rare","bebasneue":"epic","orbitron":"epic","luckiestguy":"epic","creepster":"epic","metalmania":"epic","frijole":"mythic","rye":"mythic","amaticsc":"mythic","kalam":"mythic","permanentmarker":"mythic","specialelite":"mythic","monocraft":"legendary","dancingscript":"legendary"};return rarities[font]??null;}
-export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none').flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>fontRarity(font)!==null).map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
-export function boxStyleLabel(style:PassNameStyle|UsernameFont){return passStyleOptions.find(([id])=>id===style)?.[1]??usernameFonts.find(([id])=>id===style)?.[1]??style;}
+export function fontRarity(font:UsernameFont):BoxRarity|null {const rarities:Partial<Record<UsernameFont,BoxRarity>>={"quantico":"rare","blackopsone":"rare","audiowide":"rare","bebasneue":"epic","orbitron":"epic","luckiestguy":"epic","creepster":"epic","eater":"epic","butcherman":"mythic","metalmania":"epic","frijole":"mythic","rye":"mythic","amaticsc":"mythic","kalam":"mythic","permanentmarker":"mythic","specialelite":"mythic","monocraft":"legendary","dancingscript":"legendary"};return rarities[font]??null;}
+export const halloweenStyles = ['halloween-pumpkin','halloween-bloodmoon','halloween-mist'] as const;
+export const halloweenBackgrounds = [['halloween-house','Casa Assombrada','common'],['halloween-graveyard','Cemitério à Lua','rare'],['halloween-bats','Noite dos Morcegos','legendary']] as const;
+export const halloweenCatalog:BoxItem[]=[...halloweenStyles.flatMap(style=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),{kind:'font',style:'eater',rarity:'epic'},{kind:'font',style:'butcherman',rarity:'mythic'},...halloweenBackgrounds.map(([style,,rarity])=>({kind:'background' as const,style,rarity}))];
+export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none'&&!halloweenStyles.includes(style as typeof halloweenStyles[number])).flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>fontRarity(font)!==null&&font!=='eater'&&font!=='butcherman').map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
+export function boxStyleLabel(style:PassNameStyle|UsernameFont|string){return passStyleOptions.find(([id])=>id===style)?.[1]??usernameFonts.find(([id])=>id===style)?.[1]??halloweenBackgrounds.find(([id])=>id===style)?.[1]??style;}

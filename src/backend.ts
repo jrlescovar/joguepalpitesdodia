@@ -100,6 +100,9 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
     case 'getBoxState': return rpc<T>('get_box_state');
     case 'openBox': return rpc<T>('open_box', { p_request_id: data.requestId });
+    case 'openHalloweenBox': return rpc<T>('open_halloween_box', { p_request_id: data.requestId });
+    case 'getProfileBackground': return rpc<T>('get_profile_background', { p_profile_id: data.uid });
+    case 'setProfileBackground': return rpc<T>('set_profile_background', { p_style: data.style });
     case 'getAdminBoxBalance': return rpc<T>('admin_get_box_balance', { p_profile_id: data.uid });
     case 'grantBoxes': return rpc<T>('admin_grant_boxes', { p_profile_id: data.uid, p_quantity: data.quantity });
     case 'getAdminState': {

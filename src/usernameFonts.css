@@ -1,4 +1,8 @@
 /* Self-hosted fonts; original OFL licenses are in /fonts/. */
+@font-face{font-family:'Butcherman';src:url('/fonts/butcherman.woff2?v=1') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-butcherman{font-family:'Butcherman',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Eater';src:url('/fonts/eater.woff2?v=1') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-eater{font-family:'Eater',sans-serif!important;font-weight:400!important;}
 @font-face{font-family:'Monocraft';src:url('/fonts/monocraft.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
 .username-font-monocraft{font-family:'Monocraft',sans-serif!important;font-weight:400!important;}
 @font-face{font-family:'Dancing Script';src:url('/fonts/dancingscript.woff2?v=2') format('woff2');font-style:normal;font-weight:100 900;font-display:swap}

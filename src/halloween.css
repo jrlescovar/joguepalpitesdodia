@@ -1,0 +1,31 @@
+.avatar.pass-border-halloween-pumpkin { --supporter-ring: linear-gradient(120deg,#f47921,#ffcf5c,#a8461b,#f47921); }
+.avatar.pass-border-halloween-bloodmoon { --supporter-ring: linear-gradient(120deg,#ff9b45,#a30d28,#ffb768,#ff9b45); }
+.avatar.pass-border-halloween-mist { --supporter-ring: linear-gradient(120deg,#ffab45,#8a5cd7,#d9b4ff,#ffab45); }
+.pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist { background-size:200% 100%;background-clip:text;-webkit-background-clip:text;color:transparent;animation:supporter-wave 3s linear infinite; }
+.pass-name-halloween-pumpkin { background-image:linear-gradient(100deg,#ff8b2b,#ffdc79,#e8611e,#ff8b2b); }
+.pass-name-halloween-bloodmoon { background-image:linear-gradient(100deg,#ffad60,#e6474b,#ffd0a1,#ffad60); }
+.pass-name-halloween-mist { background-image:linear-gradient(100deg,#ffc06c,#b799f0,#f0ddff,#ffc06c); }
+.profile-identity[class*="profile-background-halloween-"] { position:relative;isolation:isolate;overflow:hidden;border-color:#b96b32; }
+.halloween-background-preview { display:block;width:100%;height:44px;border:1px solid #bb713b;border-radius:8px;background-color:#1a202b; }
+.halloween-background-preview { position:relative;overflow:hidden; }
+.halloween-scene { position:absolute;inset:0;width:100%;height:100%;pointer-events:none; }
+.profile-identity>.halloween-scene { z-index:-1;opacity:.8; }
+.halloween-scene-bats .halloween-flying-bats { animation:halloween-flight 8s ease-in-out infinite alternate; }
+@keyframes halloween-flight { to { transform:translate(-20px,6px); } }
+@media(prefers-reduced-motion:reduce){.halloween-scene-bats .halloween-flying-bats{animation:none}}
+.box-result .halloween-background-preview { height:120px; }
+.halloween-background-preview.profile-background-none { border-color:#586273; }
+.profile-style-tabs:has(button:nth-child(4)) { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.halloween-background-option { border-color:#ae6733; }
+.profile-style-group .pass-style-option.halloween-item,.profile-style-group .pass-style-option.halloween-background-option { border-color:#e88c39; }
+.card.box-panel-halloween { border-color:#ad682f;background:radial-gradient(circle at 50% 15%,#51302c 0,#28202c 45%,#171c25 100%); }
+.box-panel-halloween .box-art-glow { background:#f8863f38; }
+.box-panel-halloween .box-art-chest { color:#ffb05c; }
+.box-panel-halloween .box-topline h2 { color:#ffd09a; }
+.box-panel-halloween .primary-button { background:#ed8c38;color:#201223;border-color:#efac65; }
+.box-halloween-description { margin:8px 0 0;color:#f1c9ad;font-size:13px; }
+.box-offers-choice { margin:10px 0 18px;color:#b8c8da;font-size:13px; }
+.box-reel-item.halloween-item,.box-result.halloween-item { border-color:#ea8d3c;box-shadow:0 0 0 1px #ea8d3c66; }
+.halloween-catalog { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin-top:18px;font-size:12px;color:#e4c6ad; }
+.halloween-catalog h3 { grid-column:1/-1;margin:0 0 4px;color:#ffd09a; }
+@media(prefers-reduced-motion:reduce){.pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist{animation:none}}

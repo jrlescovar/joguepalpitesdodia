@@ -9,7 +9,7 @@ export function warmUsernameFont(font:UsernameFont) {
   requested.add(font);
   const link=document.createElement('link');
   link.rel='preload';link.as='font';link.type='font/woff2';link.crossOrigin='anonymous';
-  link.href='/fonts/'+font+'.woff2?v=2';
+  link.href='/fonts/'+font+'.woff2?v='+(font==='eater'||font==='butcherman'?'1':'2');
   document.head.appendChild(link);
   try {
     const previous=JSON.parse(localStorage.getItem(cacheKey)||'[]');
