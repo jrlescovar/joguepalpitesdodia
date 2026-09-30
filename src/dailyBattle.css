@@ -20,7 +20,7 @@
 .battle-preview .battle-versus { padding-bottom: 8px; }
 .battle-fighter { position: relative; height: 164px; min-width: 0; padding-top: 32px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; }
 .battle-fighter .avatar { width: 75px; height: 75px; font-size: 1.8rem; }
-.battle-fighter strong { max-width: 100%; overflow-wrap: anywhere; font-size: 1.13rem; }
+.battle-fighter > strong { display: flex; align-items: flex-start; justify-content: center; width: 100%; height: 28px; max-width: 100%; overflow-wrap: anywhere; font-size: 1.13rem; line-height: 1.25; }
 .battle-rank { position: absolute; top: 0; display: inline-flex; align-items: center; justify-content: center; gap: 0; color: #e7edf6; font-size: 1.18rem; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1; }
 .battle-fighter-me .battle-rank { left: -10px; }
 .battle-fighter-opponent .battle-rank { right: -10px; }
