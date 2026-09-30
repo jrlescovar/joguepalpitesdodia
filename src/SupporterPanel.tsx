@@ -38,6 +38,7 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
       <ul className="pass-offer-benefits">
         <li><Zap size={23} aria-hidden="true"/><div><strong>+50% de XP</strong><span>Em todos os ganhos.</span></div></li>
         <li><ChestIcon size={28}/><div><strong>7 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
+        <li><ChestIcon size={28} graffiti/><div><strong>1 Caixa de Fontes</strong><span>Ao assinar e em toda renovação.</span></div></li>
         <li><SupporterEmblem/><div><strong>Emblema de apoiador</strong><span>Seu apoio em destaque no perfil.</span></div></li>
       </ul>
     </div>
