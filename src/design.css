@@ -1017,3 +1017,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .shop-layout > .box-panel { align-self: stretch; display: flex; flex-direction: column; }
   .shop-layout > .box-panel .box-panel-actions { margin-top: auto; }
 }
+
+@media (min-width: 1200px) {
+  .global-ranking-dashboard > .global-ranking-summary { padding-top: 16px; }
+}
