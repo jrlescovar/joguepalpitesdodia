@@ -11,7 +11,7 @@ export const boxRarities: {id:BoxRarity;label:string;chance:number;duplicateXp:n
   {id:'legendary',label:'Lendário',chance:5,duplicateXp:500},
 ];
 export function boxRarity(style:PassNameStyle):BoxRarity {
-  if(style==='halloween-mist'||style==='halloween-bloodmoon')return 'mythic';
+  if(style==='lab-blue-9'||style==='halloween-mist'||style==='halloween-bloodmoon')return 'mythic';
   if(style==='gold'||style==='rainbow'||style.startsWith('legend-'))return 'legendary';
   if(style.startsWith('myth-'))return 'mythic';
   if(epic.has(style))return 'epic';

@@ -1,10 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { ownerStyleVariants } from '../src/ownerStyleVariants';
 import { passStyleOptions } from '../src/passStyleOptions';
-import { boxCatalog, halloweenCatalog, fontBoxCatalog } from '../src/boxCatalog';
+import { boxCatalog, halloweenCatalog, fontBoxCatalog, boxRarity } from '../src/boxCatalog';
 import { usernameFonts } from '../src/usernameFonts';
 
 describe('owner palette variants',()=>{
+  it('classifies the original Blue 9 as mythic without adding it to any box',()=>{
+    expect(passStyleOptions.find(([style])=>style==='lab-blue-9')?.[1]).toBe('Órbita Azul');
+    expect(boxRarity('lab-blue-9')).toBe('mythic');
+    expect([...boxCatalog,...halloweenCatalog,...fontBoxCatalog].some(item=>item.style==='lab-blue-9')).toBe(false);
+    const position=passStyleOptions.findIndex(([style])=>style==='lab-blue-9');
+    expect(position).toBeGreaterThan(passStyleOptions.findIndex(([style])=>style==='myth-fuchsia-petroleum'));
+    expect(position).toBeLessThan(passStyleOptions.findIndex(([style])=>style==='gold'));
+  });
   it('keeps colored sweeps distinct and readable on dark cards throughout the gradient',()=>{
     const rgb=(hex:string)=>hex.match(/[a-f0-9]{2}/gi)!.map(value=>parseInt(value,16));
     const luminance=(channels:number[])=>channels.map(value=>{

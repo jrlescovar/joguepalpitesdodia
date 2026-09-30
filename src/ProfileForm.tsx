@@ -10,7 +10,7 @@ import { commonPassStyles, passStyleOptions } from './passStyleOptions';
 import './halloween.css';
 import './ownerStyleVariants.css';
 const epicStyles=new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
-const styleCategory=(style:PassNameStyle)=>style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
+const styleCategory=(style:PassNameStyle)=>style==='lab-blue-9'?'myth':style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
 const categoryName={rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
 export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:()=>void;onShop?:()=>void;supporterActive?:boolean}) {
   const [username,setUsername]=useState(profile?.username||'');const [color,setColor]=useState(profile&&avatarColors.includes(profile.avatarColor)?profile.avatarColor:avatarColors[0]);
@@ -63,7 +63,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
-          return <button type="button" key={style} className={'pass-style-option '+(style.startsWith('halloween-')?'halloween-item ':'')+(style.startsWith('lab-blue-')?'style-category-lab ':category?'style-category-'+category+' ':'')+(locked?'is-locked':'')} aria-pressed={nameStyle===style} aria-label={'Nome '+(category?categoryName[category]+' · ':'')+label+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setNameStyle(style)}>
+          return <button type="button" key={style} className={'pass-style-option '+(style.startsWith('halloween-')?'halloween-item ':'')+(category?'style-category-'+category+' ':style.startsWith('lab-blue-')?'style-category-lab ':'')+(locked?'is-locked':'')} aria-pressed={nameStyle===style} aria-label={'Nome '+(category?categoryName[category]+' · ':'')+label+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setNameStyle(style)}>
             <span className={'pass-name-preview '+(locked?'':'pass-name-'+style)}><UsernameText name={username||'Nome'} font={usernameFont}/></span>
             <span className="pass-style-option-label">{label}{style.startsWith('halloween-')&&<small> · Evento</small>}</span>
             {locked&&<LockKeyhole size={15} aria-hidden="true"/>}
@@ -73,7 +73,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
           const frameLabel=style==='none'?'Sem moldura':label;
-          return <button type="button" key={style} className={'pass-style-option frame-option '+(style.startsWith('halloween-')?'halloween-item ':'')+(style.startsWith('lab-blue-')?'style-category-lab ':category?'style-category-'+category+' ':'')+(locked?'is-locked':'')} aria-pressed={borderStyle===style} aria-label={'Moldura '+(category?categoryName[category]+' · ':'')+frameLabel+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setBorderStyle(style)}>
+          return <button type="button" key={style} className={'pass-style-option frame-option '+(style.startsWith('halloween-')?'halloween-item ':'')+(category?'style-category-'+category+' ':style.startsWith('lab-blue-')?'style-category-lab ':'')+(locked?'is-locked':'')} aria-pressed={borderStyle===style} aria-label={'Moldura '+(category?categoryName[category]+' · ':'')+frameLabel+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setBorderStyle(style)}>
             <Avatar name={username||'?'} color={color} imageUrl={useGoogleAvatar?profile.avatarUrl:null} borderStyle={locked?'none':style}/>
             <span className="pass-style-option-label">{frameLabel}{style.startsWith('halloween-')&&<small> · Evento</small>}</span>
             {locked&&<LockKeyhole size={15} aria-hidden="true"/>}
