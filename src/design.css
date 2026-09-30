@@ -1028,3 +1028,18 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .app-main-ranking { padding-top: 20px; }
   .global-ranking-dashboard .global-ranking-results > .page-heading { height: 46px; min-height: 46px; margin-bottom: 18px; }
 }
+
+/* Allow room for tall glyphs and decorative first/last letters inside name labels. */
+.global-rank-player strong, .rank-name > strong, .podium-place > strong, .player-summary-identity h2 {
+  line-height: 1.5;
+  padding-block: 4px;
+  margin-block: -4px;
+}
+.global-rank-player .username-text, .rank-name .username-text,
+.podium-place > strong .username-text, .player-summary-identity .username-text {
+  display: inline-block;
+  padding-inline: .18em;
+  line-height: 1.35;
+  vertical-align: middle;
+}
+.player-summary-identity h2 { margin-bottom: 2px; }
