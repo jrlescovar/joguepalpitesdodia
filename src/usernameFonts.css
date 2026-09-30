@@ -76,3 +76,7 @@
 /* Give the taller glyphs space inside the gradient preview's clipping area. */
 .profile-style-group .pass-name-preview:has(.username-font-unifrakturcook),
 .profile-style-group .pass-name-preview:has(.username-font-marckscript){display:flex;align-items:center;justify-content:center;height:40px;line-height:1.4;}
+
+@media (min-width: 1200px) {
+  :root { --username-desktop-increase: 2px; }
+}
