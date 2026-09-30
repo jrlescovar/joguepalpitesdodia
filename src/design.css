@@ -1003,3 +1003,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .shop-layout > .box-panel { order: 2; }
   .shop-layout > .error-notice { order: 2; }
 }
+
+@media (min-width: 1200px) {
+  .app-main-home { padding-top: 20px; }
+}
