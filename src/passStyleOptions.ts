@@ -1,11 +1,11 @@
 import type { PassNameStyle } from './types';
 
-export const commonPassStyles = new Set<PassNameStyle>(['none','blood','purple','green','dark-blue','orange','pink']);
+export const commonPassStyles = new Set<PassNameStyle>(['none','blood','purple','green','dark-blue','pink']);
 
 export const passStyleOptions: [PassNameStyle, string][] = [
   ['none', 'Normal'], ['blood', 'Red'],
   ['purple', 'Purple'], ['green', 'Green'], ['dark-blue', 'Blue'],
-  ['orange', 'Orange'], ['pink', 'Pink'], ['sunset', 'Fade'],
+  ['pink', 'Pink'], ['sunset', 'Fade'],
   ['ember', 'Salmão'],
   ['rose-purple', 'Algodão'],
   ['green-gold', 'Braza'], ['lilac-silver', 'Prata Lilás'],
