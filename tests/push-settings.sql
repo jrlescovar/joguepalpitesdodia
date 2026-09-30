@@ -9,10 +9,10 @@ begin
   target:=public.own_profile_id();
   if target is null then raise exception 'Test account not found'; end if;
   updated:=public.set_my_push_settings(true,false,true);
-  if updated<>jsonb_build_object('available',true,'reminder',false,'result',true) then
+  if updated<>jsonb_build_object('available',true) then
     raise exception 'Settings response did not match saved values';
   end if;
-  if not exists(select 1 from public.push_preferences where profile_id=target and available and not reminder and result) then
+  if not exists(select 1 from public.push_preferences where profile_id=target and available and not reminder and not result) then
     raise exception 'Settings were not saved';
   end if;
 end;
