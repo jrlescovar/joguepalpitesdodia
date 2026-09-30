@@ -131,7 +131,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .upcoming-predictions-notice { margin: 18px 0 0; text-align: center; color: var(--muted); font-size: 14px; line-height: 1.5; }
 .dashboard-primary { display: flex; flex-direction: column; gap: 20px; }
 .player-summary { margin-bottom: 0; padding: 22px 24px; }
-.player-summary h2 { font-size: 1rem; }
+.player-summary h2 { font-size: 17px; }
 .level-badge { font-size: .75rem; color: var(--accent); border-color: #5687bd66; background: #75b2ff10; }
 .xp-block > div:first-child, .xp-block strong, .xp-block > small { font-size: .75rem; }
 .xp-track { height: 6px; background: #333b48; }
