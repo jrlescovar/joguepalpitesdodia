@@ -1,7 +1,7 @@
 # Pix com InfinitePay
 
-Cartão e assinatura mensal continuam nos endpoints Stripe existentes. Os botões
-Pix das caixas e do Apoiador por 30 dias usam `infinitepay-checkout`.
+A assinatura mensal de Apoiador continua na Stripe. Cada pacote de caixas tem
+um único botão, com ícone e preço, que usa `infinitepay-checkout`.
 
 Configuração do servidor: `INFINITEPAY_HANDLE=jrlescovar` nos secrets do projeto
 Supabase. Na conta InfinitePay, habilitar Checkout Integrado e desativar a etapa
@@ -21,7 +21,8 @@ O checkout InfinitePay também oferece cartão. Uma compra avulsa já paga por e
 meio é entregue normalmente; ela não cria assinatura recorrente. A assinatura
 mensal do site continua exclusivamente na Stripe.
 
-Apoiador por Pix: R$ 4,97 por 30 dias, 7 caixas normais, 1 caixa de fontes e 1 mês
+Pedidos antigos de Apoiador por Pix continuam sendo confirmados, mas essa opção
+não aparece mais na loja. Esses pedidos concedem 30 dias, 7 caixas normais, 1 caixa de fontes e 1 mês
 na medalha de apoiador. O registro usa prefixo `ip_` na coluna legada
 `pass_prepaid_payments.stripe_session_id`; seus triggers existentes concedem
 caixas e contam o mês pago. Concessão gratuita do admin não entra nesse contador.

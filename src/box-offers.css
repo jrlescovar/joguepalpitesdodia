@@ -15,7 +15,7 @@
 .box-offer-buy { width: 100%; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 7px; border: 1px solid #f0cb85; border-radius: 10px; background: linear-gradient(#ffe5a3,#eabb68); color: #302313; font-size: 16px; font-weight: 800; cursor: pointer; }
 .box-offer-buy:hover { filter: brightness(1.08); }
 .box-offer-buy:disabled { opacity: .65; cursor: wait; }
-.box-offer-buy-pix { margin-top: 8px; background: #1b2535; color: #ffe09b; }
+.box-offer-buy-pix { background: #1b2535; color: #ffe09b; }
 .box-offer-buy:focus-visible { outline: 2px solid #93c5fd; outline-offset: 3px; }
 .infinitepay-return { display: flex; align-items: center; gap: 12px; padding: 16px; margin-bottom: 20px; flex-wrap: wrap; }
 .infinitepay-return > span { flex: 1; min-width: 160px; }
