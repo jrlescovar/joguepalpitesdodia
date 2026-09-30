@@ -1043,3 +1043,11 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   vertical-align: middle;
 }
 .player-summary-identity h2 { margin-bottom: 2px; }
+
+/* Extend the paint area for script flourishes without moving the name. */
+.global-rank-player strong:has(.username-font-dancingscript),
+.rank-name > strong:has(.username-font-dancingscript),
+.podium-place > strong:has(.username-font-dancingscript) {
+  overflow: visible;
+  clip-path: inset(-8px -4px -8px -8px);
+}

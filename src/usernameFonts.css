@@ -84,7 +84,7 @@
 /* Dancing Script's initial J and descenders extend beyond the normal text box. */
 .username-text.username-font-dancingscript {
   display: inline-block;
-  padding: .14em .25em .18em .4em !important;
+  padding: .14em .18em .18em !important;
   line-height: 1.5 !important;
   vertical-align: middle;
 }
