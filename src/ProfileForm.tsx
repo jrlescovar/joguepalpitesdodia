@@ -8,8 +8,9 @@ import { avatarColors,colorNames,type Profile, type PassStatus, type PassNameSty
 import { Avatar,ErrorNotice } from './components';
 import { commonPassStyles, passStyleOptions } from './passStyleOptions';
 import './halloween.css';
+import './ownerStyleVariants.css';
 const epicStyles=new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
-const styleCategory=(style:PassNameStyle)=>style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
+const styleCategory=(style:PassNameStyle)=>style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
 const categoryName={rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
 export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:()=>void;onShop?:()=>void;supporterActive?:boolean}) {
   const [username,setUsername]=useState(profile?.username||'');const [color,setColor]=useState(profile&&avatarColors.includes(profile.avatarColor)?profile.avatarColor:avatarColors[0]);

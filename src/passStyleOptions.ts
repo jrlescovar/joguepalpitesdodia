@@ -1,4 +1,5 @@
 import type { PassNameStyle } from './types';
+import { ownerStyleVariants } from './ownerStyleVariants';
 
 export const commonPassStyles = new Set<PassNameStyle>(['none','blood','purple','green','dark-blue','pink']);
 
@@ -36,4 +37,5 @@ export const passStyleOptions: [PassNameStyle, string][] = [
   ['lab-blue-7', 'Azul 7'],
   ['lab-blue-9', 'Azul 9'],
   ['lab-blue-10', 'Azul 10'],
+  ...ownerStyleVariants.map(([style,label]):[PassNameStyle,string]=>[style,label]),
 ];

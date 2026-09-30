@@ -20,6 +20,7 @@ import BoxOffers from './BoxOffers';
 import InfinitePayReturn, { readInfinitePayReturn } from './InfinitePayReturn';
 import RecentResults from './RecentResults';
 import Arena from './Arena';
+import './ownerStyleVariants.css';
 type Tab='temporada'|'ranking'|'inicio'|'torneio'|'perfil'|'arena';
 const tabs=[{id:'temporada',label:'Loja',icon:ShoppingBag},{id:'ranking',label:'Ranking',icon:Shield},{id:'inicio',label:'Início',icon:Home},{id:'torneio',label:'Torneio',icon:Trophy},{id:'arena',label:'Arena',icon:Swords}] as const;
 function currentTab():Tab {const hash=location.hash.slice(1);return hash==='perfil'||tabs.some(t=>t.id===hash)?hash as Tab:'inicio';}
