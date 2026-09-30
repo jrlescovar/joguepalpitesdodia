@@ -47,14 +47,15 @@
 .pass-name-lab-blue-10-tropical-light, .pass-border-lab-blue-10-tropical-light { --lab-dark:#629135; --lab-mid:#b7f35c; --lab-light:#ffffe8; --lab-accent:#ffca6c; }
 .pass-name-lab-blue-10-indigo-vortex, .pass-border-lab-blue-10-indigo-vortex { --lab-dark:#6262b7; --lab-mid:#a2b6ff; --lab-light:#f1f5ff; --lab-accent:#e0a4ff; }
 .pass-name-lab-blue-10-golden-galaxy, .pass-border-lab-blue-10-golden-galaxy { --lab-dark:#a57a31; --lab-mid:#ffdb81; --lab-light:#fffbea; --lab-accent:#f7a9dd; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::before { background:repeating-conic-gradient(var(--lab-light) 0deg 12deg,var(--lab-mid) 12deg 30deg,var(--lab-accent) 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::after { background:var(--lab-light) border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
+/* Frame glints stay colored, except the requested Halo (6) and Orbit (9). */
+.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,var(--lab-dark) 12deg 30deg,color-mix(in srgb,var(--lab-mid) 80%,var(--lab-accent)) 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::after { background:var(--lab-mid) border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::before { background:var(--lab-mid) border-box; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::after { background:var(--lab-mid) border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::after { background:var(--lab-accent) border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,transparent 12deg 22deg) border-box; animation:frame-blue-dashes 8s steps(16,end) infinite; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::after { background:repeating-conic-gradient(transparent 0deg 82deg,var(--lab-light) 82deg 90deg) border-box; animation:frame-blue-dashes 4s steps(8,end) infinite reverse; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::after { background:repeating-conic-gradient(transparent 0deg 82deg,var(--lab-mid) 82deg 90deg) border-box; animation:frame-blue-dashes 4s steps(8,end) infinite reverse; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-dark),var(--lab-mid),var(--lab-dark)) border-box; animation:frame-blue-current 9s linear infinite reverse; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::after { background:repeating-conic-gradient(transparent 0deg 100deg,var(--lab-mid) 103deg,var(--lab-mid) 110deg,var(--lab-mid) 117deg,transparent 120deg) border-box; animation:frame-blue-satellites 3s linear infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::after { background:repeating-conic-gradient(transparent 0deg 100deg,var(--lab-mid) 103deg,var(--lab-light) 110deg,var(--lab-mid) 117deg,transparent 120deg) border-box; animation:frame-blue-satellites 3s linear infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-mid),var(--lab-accent),var(--lab-dark)) border-box; animation:frame-blue-aurora 7s linear infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::after { background:conic-gradient(transparent,var(--lab-mid),transparent,var(--lab-accent),transparent) border-box; opacity:.55; animation:frame-blue-aurora 5.5s linear infinite reverse; }
 @media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar.avatar.avatar[class*="pass-border-lab-blue-"]::before,.avatar.avatar.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
