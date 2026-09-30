@@ -1,13 +1,15 @@
-/* Palette variants preserve each approved family's name and frame motion. */
+/* Keep each palette's hue across the animation; white is only a brief glint. */
 [class*="pass-name-lab-blue-4-"], [class*="pass-name-lab-blue-6-"], [class*="pass-name-lab-blue-7-"], [class*="pass-name-lab-blue-9-"], [class*="pass-name-lab-blue-10-"] {
-  color:var(--lab-mid); background:linear-gradient(var(--lab-angle),var(--lab-dark),var(--lab-mid),var(--lab-light),var(--lab-accent),var(--lab-dark)); background-size:250% 250%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  --lab-ink-shadow:color-mix(in srgb,var(--lab-mid) 70%,var(--lab-dark)); --lab-ink-accent:color-mix(in srgb,var(--lab-mid) 85%,var(--lab-accent));
+  color:var(--lab-mid); background:linear-gradient(var(--lab-angle),var(--lab-ink-shadow),var(--lab-mid),var(--lab-ink-accent),var(--lab-mid),var(--lab-ink-shadow)); background-size:250% 250%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
 }
-[class*="pass-name-lab-blue-4-"] { --lab-angle:116deg; animation:lab-ice 3.4s ease-in-out infinite; }
+[class*="pass-name-lab-blue-4-"] { --lab-angle:116deg; background-image:linear-gradient(var(--lab-angle),var(--lab-mid) 0%,var(--lab-mid) 46%,var(--lab-light) 50%,var(--lab-mid) 54%,var(--lab-mid) 100%); animation:lab-palette-ice 3.4s ease-in-out infinite; }
 [class*="pass-name-lab-blue-6-"] { --lab-angle:174deg; animation:lab-palette-mist 4.1s ease-in-out infinite; }
 [class*="pass-name-lab-blue-7-"] { --lab-angle:203deg; animation:lab-scan 4.45s ease-in-out infinite; }
 [class*="pass-name-lab-blue-9-"] { --lab-angle:261deg; animation:lab-deep 5.15s ease-in-out infinite; }
 [class*="pass-name-lab-blue-10-"] { --lab-angle:290deg; animation:lab-aurora 5.5s ease-in-out infinite; }
 @keyframes lab-palette-mist {50%{filter:drop-shadow(0 0 5px var(--lab-accent));background-position:50% 100%}}
+@keyframes lab-palette-ice {50%{filter:brightness(1.12);background-position:100% 100%}}
 
 /* Named palettes for both the username and matching frame. */
 .pass-name-lab-blue-4-rose-quartz, .pass-border-lab-blue-4-rose-quartz { --lab-dark:#9d386b; --lab-mid:#fb85ba; --lab-light:#fff1f8; --lab-accent:#f9b9db; }
@@ -48,11 +50,11 @@
 .avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::before { background:repeating-conic-gradient(var(--lab-light) 0deg 12deg,var(--lab-mid) 12deg 30deg,var(--lab-accent) 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::after { background:var(--lab-light) border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::before { background:var(--lab-mid) border-box; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::after { background:var(--lab-accent) border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::after { background:var(--lab-mid) border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,transparent 12deg 22deg) border-box; animation:frame-blue-dashes 8s steps(16,end) infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::after { background:repeating-conic-gradient(transparent 0deg 82deg,var(--lab-light) 82deg 90deg) border-box; animation:frame-blue-dashes 4s steps(8,end) infinite reverse; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-dark),var(--lab-mid),var(--lab-dark)) border-box; animation:frame-blue-current 9s linear infinite reverse; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::after { background:repeating-conic-gradient(transparent 0deg 100deg,var(--lab-mid) 103deg,var(--lab-light) 110deg,var(--lab-mid) 117deg,transparent 120deg) border-box; animation:frame-blue-satellites 3s linear infinite; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-light),var(--lab-accent),var(--lab-dark)) border-box; animation:frame-blue-aurora 7s linear infinite; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::after { background:conic-gradient(transparent,var(--lab-light),transparent,var(--lab-accent),transparent) border-box; opacity:.55; animation:frame-blue-aurora 5.5s linear infinite reverse; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::after { background:repeating-conic-gradient(transparent 0deg 100deg,var(--lab-mid) 103deg,var(--lab-mid) 110deg,var(--lab-mid) 117deg,transparent 120deg) border-box; animation:frame-blue-satellites 3s linear infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-mid),var(--lab-accent),var(--lab-dark)) border-box; animation:frame-blue-aurora 7s linear infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::after { background:conic-gradient(transparent,var(--lab-mid),transparent,var(--lab-accent),transparent) border-box; opacity:.55; animation:frame-blue-aurora 5.5s linear infinite reverse; }
 @media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar.avatar.avatar[class*="pass-border-lab-blue-"]::before,.avatar.avatar.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
