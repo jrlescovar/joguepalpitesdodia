@@ -134,7 +134,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
   function close(){animationRef.current?.cancel();setOpening(null);setPhase('result');}
   return <>
     {loadError&&<ErrorNotice message={loadError} retry={()=>setLoadRetry(value=>value+1)}/>}
-    {(themed || (state?.balance ?? 0) > 0 || pending) && <section className={`card box-panel${themed?' box-panel-halloween':''}`} aria-label={themed?'Caixa de Halloween':'Caixa de Personalização'}>
+    {((state?.balance ?? 0) > 0 || pending) && <section className={`card box-panel${themed?' box-panel-halloween':''}`} aria-label={themed?'Caixa de Halloween':'Caixa de Personalização'}>
     <div className="box-panel-heading"><div className="box-topline"><h2>{themed?'Caixa de Halloween':'Caixa de Personalização'}</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
     <BoxArt halloween={themed}/>
     <div className="box-panel-actions"><button className="primary-button" type="button" disabled={busy||(!pending&&(state?.balance??0)<1)} onClick={()=>void openBox()}>{busy?<LoaderCircle className="spin" size={18}/>:pending||(state?.balance??0)>0?<Sparkles size={18}/>:<Box size={18}/>} {busy?'Preparando abertura…':pending?'Retomar abertura':state===null?'Carregando…':state.balance>0?'Abrir caixa':'Indisponível'}</button></div>
