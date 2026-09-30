@@ -110,3 +110,5 @@
 .comparison-summary > small { color: #b5bdca; line-height: 1.5; }
 @media (min-width: 1200px) { .battle-comparison-dialog { width: min(760px, calc(100vw - 80px)); } .battle-comparison-row { padding: 18px; } .battle-comparison-row p { font-size: 15px; } .battle-comparison-choices strong { font-size: 14px; } .comparison-player .avatar { width: 72px; height: 72px; } }
 @media (max-width: 380px) { .comparison-matchup { gap: 6px; padding-inline: 6px; grid-template-columns: minmax(0,1fr) 90px minmax(0,1fr); } .comparison-player > strong { font-size: .8rem; } .comparison-player .avatar { width: 46px; height: 46px; } .comparison-final-score > strong { font-size: 1.15rem; } }
+
+.battle-fighter .avatar[class*="pass-border-"]:not(.pass-border-none) { --frame-width: 4px; }
