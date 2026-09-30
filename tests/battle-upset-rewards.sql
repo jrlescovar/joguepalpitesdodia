@@ -17,6 +17,14 @@ begin
     and left_start_rank_points=80 and right_start_rank_points=300) then
     raise exception 'Matchup patent snapshot missing';
   end if;
+  -- Crossing a patent after the matchup must not change its reward.
+  update public.public_profiles set rank_points=260 where id=low;
+  if not exists(select 1 from public.daily_battles where day_id=d and player_left=low
+    and left_start_rank_points=80 and right_start_rank_points=300
+    and public.battle_win_bonus(left_start_rank_points,right_start_rank_points,'left')=25) then
+    raise exception 'Matchup patent changed after ranking up';
+  end if;
+  update public.public_profiles set rank_points=80 where id=low;
   insert into public.predictions(day_id,slot,title,options,closes_at,status,winning_option_id,settled_at)
     values(d,0,'Teste recompensa patente','[{"id":"1","label":"Sim","rankPoints":50},{"id":"2","label":"Não","rankPoints":10}]',now()-interval '1 hour','settled','1',now());
   insert into public.picks(profile_id,prediction_day,slot,option_id,status) values
