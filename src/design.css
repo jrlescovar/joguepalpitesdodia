@@ -404,9 +404,9 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .profile-overview .profile-identity { grid-column: 1; grid-row: 1; }
   .profile-overview .profile-layout > section:last-child { grid-column: 2; grid-row: 1 / span 2; }
   .profile-overview .achievements-card { grid-column: 1; grid-row: 2; margin-top: 0; }
-  .profile-overview .profile-retrospective { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
+  .profile-overview .profile-retrospective { grid-column: 1 / -1; grid-row: 4; margin-top: 0; }
   .profile-overview .profile-battle-stats { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
-  .profile-overview.has-retrospective .profile-battle-stats { grid-row: 4; }
+  .profile-overview.has-retrospective .profile-battle-stats { grid-row: 3; }
 }
 .my-rank > strong { font-variant-numeric: tabular-nums; }
 .my-rank > span.muted { font-size: .875rem; }
