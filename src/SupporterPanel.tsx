@@ -37,7 +37,7 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
       <div className="pass-heading"><SupporterEmblem/><div><span className="pass-offer-eyebrow">SEJA UM APOIADOR</span><h2>Evolua mais rápido. Jogue com seu estilo.</h2></div></div>
       <ul className="pass-offer-benefits">
         <li><Zap size={23} aria-hidden="true"/><div><strong>+50% de XP</strong><span>Em todos os ganhos.</span></div></li>
-        <li><Box size={23} aria-hidden="true"/><div><strong>5 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
+        <li><Box size={23} aria-hidden="true"/><div><strong>7 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
         <li><Crown size={23} aria-hidden="true"/><div><strong>Emblema de apoiador</strong><span>Seu apoio em destaque no perfil.</span></div></li>
       </ul>
     </div>
