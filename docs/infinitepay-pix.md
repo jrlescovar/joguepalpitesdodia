@@ -3,6 +3,10 @@
 A assinatura mensal de Apoiador continua na Stripe. Cada pacote de caixas tem
 um único botão, com ícone e preço, que usa `infinitepay-checkout`.
 
+Pacotes de personalização: 3 por R$ 3,21; 7 por R$ 5,67; 11 por R$ 9,17.
+Pacotes de Halloween: 2 por R$ 3,21; 6 por R$ 5,67; 10 por R$ 9,17.
+Pacotes de fontes: 1 por R$ 3,21; 3 por R$ 5,67.
+
 Configuração do servidor: `INFINITEPAY_HANDLE=jrlescovar` nos secrets do projeto
 Supabase. Na conta InfinitePay, habilitar Checkout Integrado e desativar a etapa
 de endereço para produtos digitais. Não é necessária uma chave da conta no cliente.
