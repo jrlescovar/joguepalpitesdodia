@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box, Zap, Crown, LoaderCircle, QrCode } from 'lucide-react';
+import { Zap, Crown, LoaderCircle, QrCode } from 'lucide-react';
 import { call, errorMessage, passRedirect } from './backend';
 import { ErrorNotice } from './components';
 import type { PassStatus, Profile } from './types';
 import './supporter.css';
 import SupporterEmblem from './SupporterEmblem';
+import ChestIcon from './ChestIcon';
 
 export default function SupporterPanel({ profile, refreshTick, onChanged }: { profile: Profile; refreshTick: number; onChanged: () => void }) {
   const pixEnabled = import.meta.env.VITE_PIX_ENABLED === 'true';
@@ -36,7 +37,7 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
       <div className="pass-heading"><SupporterEmblem/><div><span className="pass-offer-eyebrow">SEJA UM APOIADOR</span><h2>Evolua mais rápido. Jogue com seu estilo.</h2></div></div>
       <ul className="pass-offer-benefits">
         <li><Zap size={23} aria-hidden="true"/><div><strong>+50% de XP</strong><span>Em todos os ganhos.</span></div></li>
-        <li><Box size={23} aria-hidden="true"/><div><strong>7 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
+        <li><ChestIcon size={28}/><div><strong>7 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
         <li><SupporterEmblem/><div><strong>Emblema de apoiador</strong><span>Seu apoio em destaque no perfil.</span></div></li>
       </ul>
     </div>
