@@ -215,7 +215,6 @@
 .pass-player-preview { display: grid; grid-template-columns: 54px minmax(0,1fr) 38px; gap: 10px; align-items: center; }
 .pass-player-preview .avatar { width: 54px; height: 54px; }
 .pass-player-preview > strong { min-width: 0; overflow-wrap: anywhere; font-size: 1.15rem; line-height: 1.5; }
-.pass-player-preview > span:last-child { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: .75rem; }
 .pass-offer-price { margin: 6px 0 0; text-align: center; font-size: 2rem; font-weight: 800; color: #f5d580; }
 .pass-offer-price > span { font-size: .9rem; font-weight: 500; color: var(--muted); margin-left: 4px; }
 .pass-offer-purchase .pass-billing-note { text-align: center; font-size: .75rem; color: var(--muted); }
@@ -231,7 +230,6 @@
   .pass-panel .pass-player-preview { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
   .pass-panel .pass-player-preview > strong { flex: 0 1 auto; max-width: calc(100% - 120px); }
   .pass-panel .pass-player-preview > .supporter-emblem { flex: 0 0 38px; }
-  .pass-panel .pass-player-preview > span:last-child { flex: 0 0 100%; margin-top: 4px; }
   .pass-panel .pass-heading { align-items: flex-start; }
   .pass-panel .pass-heading > .supporter-emblem { margin-top: 28px; flex-shrink: 0; }
   .pass-panel .pass-heading h2 { max-width: 620px; }
