@@ -15,7 +15,7 @@ const itemTabs: { kind: BoxKind; label: string }[] = [
 export default function BoxHelp({ open, onOpenChange, theme='classic', profile }: { open: boolean; onOpenChange: (value: boolean) => void; theme?:'classic'|'halloween'|'font'; profile?:Profile }) {
   const themed=theme==='halloween';
   const [kind,setKind]=useState<BoxKind>(theme==='font'?'font':'name');
-  const catalog=(theme==='font'?fontBoxCatalog:themed?halloweenCatalog:boxCatalog).filter(item=>item.kind===kind);
+  const catalog=(theme==='font'?fontBoxCatalog:themed?halloweenCatalog:boxCatalog).filter(item=>item.kind===kind).sort((a,b)=>boxRarities.findIndex(tier=>tier.id===a.rarity)-boxRarities.findIndex(tier=>tier.id===b.rarity));
   const previewName=profile?.username??'SeuNome';
   return <Modal open={open} onOpenChange={onOpenChange} title={theme==='font'?'Caixa de Fontes':themed?'Caixa de Halloween':'Caixa de Personalização'} className="box-catalog-dialog"><div className="box-help-content">
     <p>{theme==='font'?'Cada caixa contém uma fonte de nome. Fontes de Halloween não participam. Fonte repetida vira XP.':themed?'Cada caixa contém um item exclusivo de Halloween. Item repetido vira XP.':'Cada caixa contém uma cor de nome, moldura ou fonte. Item repetido vira XP.'}</p>
