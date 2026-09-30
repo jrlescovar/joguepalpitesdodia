@@ -3,6 +3,7 @@ import { Bell } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { ErrorNotice } from './components';
 import './notificationSettings.css';
+import { activePushRegistration } from './pushRegistration';
 
 type Settings = { available: boolean };
 const publicKey = 'BCwXAReGx9Q3QMUu_cEJzZw1eL1I6zvwjxK6OHLaediGm5bS3C0S57fE5ihoJerNjOuGPGT5vxS5q3kMKOc4x1E';
@@ -30,7 +31,7 @@ export default function NotificationSettings({ inDialog = false }: { inDialog?: 
       .catch(cause => { if (active) setError(errorMessage(cause)); });
     if (supported()) void navigator.serviceWorker.getRegistration('/push-sw.js')
       .then(registration => registration?.pushManager.getSubscription())
-      .then(subscription => { if (active) setDeviceActive(Boolean(subscription)); }).catch(() => {});
+      .then(subscription => { if (active) setDeviceActive(Boolean(subscription) && Notification.permission === 'granted'); }).catch(() => {});
     return () => { active = false; };
   }, [retry]);
 
@@ -39,7 +40,7 @@ export default function NotificationSettings({ inDialog = false }: { inDialog?: 
     if (!supported()) throw new Error('Este navegador não oferece avisos. No iPhone, adicione o site à Tela de Início e abra pelo ícone.');
     const permission = await Notification.requestPermission();
     if (permission !== 'granted') throw new Error('Permita as notificações nas configurações do navegador para receber avisos.');
-    const registration = await navigator.serviceWorker.register('/push-sw.js');
+    const registration = await activePushRegistration(navigator.serviceWorker);
     const subscription = await registration.pushManager.getSubscription() ?? await registration.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: applicationServerKey() });
     const keys = subscription.toJSON().keys;
     if (!keys?.p256dh || !keys.auth) throw new Error('Não foi possível ativar os avisos neste aparelho.');
@@ -78,8 +79,9 @@ export default function NotificationSettings({ inDialog = false }: { inDialog?: 
     {!settings && !error && <p className="muted" role="status">Carregando avisos…</p>}
     {settings && <>
       <div className="notification-options"><div className="notification-option"><div><strong>Novos Palpites</strong><small>{detail}</small></div><button type="button" role="switch" aria-label="Novos Palpites" aria-checked={settings.available} className={`toggle ${settings.available ? 'on' : ''}`} disabled={busy} onClick={() => void toggle()}><span/></button></div></div>
-      {settings.available && !deviceActive && <button type="button" className="secondary-button notification-reconnect" disabled={busy} onClick={() => void reconnect()}>Ativar neste aparelho</button>}
-      {(!supported() || needsHomeScreen()) && <p className="notification-help">No iPhone, adicione o site à Tela de Início e abra pelo ícone para receber avisos com o navegador fechado.</p>}
+      {settings.available && deviceActive && <p className="notification-help" role="status">Avisos ativados neste aparelho.</p>}
+      {settings.available && !deviceActive && <button type="button" className="secondary-button notification-reconnect" disabled={busy} onClick={() => void reconnect()}>{busy ? 'Ativando avisos…' : 'Ativar neste aparelho'}</button>}
+      {needsHomeScreen() ? <p className="notification-help">No iPhone, adicione o site à Tela de Início e abra pelo ícone para receber avisos com o navegador fechado.</p> : !supported() && <p className="notification-help">Este navegador não oferece avisos. Tente em um navegador compatível.</p>}
     </>}
   </section>;
 }

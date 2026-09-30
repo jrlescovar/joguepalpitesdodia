@@ -948,3 +948,6 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 
 .global-ranking-page .rank-progress-card { margin-bottom: 12px; }
 .global-ranking-page .daily-battle-card { margin-top: 12px; }
+
+/* Preserve the row alignment while protecting tall font glyphs from vertical clipping. */
+.global-rank-player strong { padding-block: 2px; margin-block: -2px; }

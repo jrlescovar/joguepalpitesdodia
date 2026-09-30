@@ -25,6 +25,8 @@ function BoxArt({opening=false,halloween=false}:{opening?:boolean;halloween?:boo
 export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCheckout=false,theme='classic'}:{profile:Profile;onChanged:()=>void;refreshTick?:number;refreshAfterCheckout?:boolean;theme?:'classic'|'halloween'}){
   const themed=theme==='halloween';
   const catalog=themed?halloweenCatalog:boxCatalog;
+  const [loadRetry,setLoadRetry]=useState(0);
+  const [loadError,setLoadError]=useState('');
   const [state,setState]=useState<BoxState|null>(null);
   const [opening,setOpening]=useState<BoxOpening|null>(null);
   const [helpOpen,setHelpOpen]=useState(false);
@@ -38,7 +40,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
   const trackRef=useRef<HTMLDivElement>(null);
   const animationRef=useRef<Animation|null>(null);
 
-  useEffect(()=>{let active=true;call<BoxState>(themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick,themed]);
+  useEffect(()=>{let active=true;setLoadError('');call<BoxState>(themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setLoadError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick,themed,loadRetry]);
   useEffect(()=>{
     if(!refreshAfterCheckout)return;
     let active=true;
@@ -131,6 +133,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
 
   function close(){animationRef.current?.cancel();setOpening(null);setPhase('result');}
   return <>
+    {loadError&&<ErrorNotice message={loadError} retry={()=>setLoadRetry(value=>value+1)}/>}
     {(themed || (state?.balance ?? 0) > 0 || pending) && <section className={`card box-panel${themed?' box-panel-halloween':''}`} aria-label={themed?'Caixa de Halloween':'Caixa de Personalização'}>
     <div className="box-panel-heading"><div className="box-topline"><h2>{themed?'Caixa de Halloween':'Caixa de Personalização'}</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
     {themed&&<p className="box-halloween-description">Cores de nome, molduras e fontes exclusivas do evento.</p>}

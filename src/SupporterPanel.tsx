@@ -12,6 +12,11 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   useEffect(() => {
+    const reset = () => setBusy(false);
+    window.addEventListener('pageshow', reset);
+    return () => window.removeEventListener('pageshow', reset);
+  }, []);
+  useEffect(() => {
     let current = true;
     call<PassStatus>('getPassStatus').then(status => {
       if (current) { setPass(status); }
@@ -46,6 +51,6 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
       <button type="button" className="secondary-button" disabled={busy} onClick={() => void redirect('pass-pix')}>{busy ? <LoaderCircle className="spin" size={18}/> : <QrCode size={18}/>} Pagar 30 dias com Pix</button></>}
       {pass.status !== 'none' && <button type="button" className="text-button" disabled={busy} onClick={() => void redirect('pass-portal')}>Gerenciar assinatura anterior</button>}
     </> : <p className="muted text-sm">Carregando assinatura…</p>}
-    {error && <ErrorNotice message={error}/>}
+    {error && <ErrorNotice message={error} retry={onChanged}/>}
   </section>;
 }

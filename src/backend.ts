@@ -152,17 +152,27 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
 }
 
 export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween' }) {
-  const { data, error } = await supabase.functions.invoke<{ url?: string; error?: string }>(destination, body ? { body } : undefined);
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), 20000);
+  let response;
+  try {
+    response = await supabase.functions.invoke<{ url?: string; error?: string }>(destination, { ...(body ? { body } : {}), signal: controller.signal });
+    if (controller.signal.aborted) throw new Error('A conexão com o pagamento demorou. Tente novamente.');
+  } catch (cause) {
+    if (controller.signal.aborted) throw new Error('A conex\u00e3o com o pagamento demorou. Tente novamente.');
+    throw cause;
+  } finally { window.clearTimeout(timer); }
+  const { data, error } = response;
   if (error) {
     const response = (error as { context?: unknown }).context;
     if (response instanceof Response) {
       const body = await response.clone().json().catch(() => null) as { error?: unknown } | null;
       if (typeof body?.error === 'string') throw new Error(body.error);
-      throw new Error(`Não foi possível abrir a assinatura (HTTP ${response.status}).`);
+      throw new Error(`Não foi possível abrir o pagamento (HTTP ${response.status}).`);
     }
     throw error;
   }
-  if (!data?.url) throw new Error(data?.error || 'Não foi possível abrir a assinatura.');
+  if (!data?.url) throw new Error(data?.error || 'Não foi possível abrir o pagamento.');
   const target = new URL(data.url);
   if (target.protocol !== 'https:' || (target.hostname !== 'checkout.stripe.com' && target.hostname !== 'billing.stripe.com')) {
     throw new Error('Destino de pagamento inválido.');

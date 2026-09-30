@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, CircleHelp, LoaderCircle, Sparkles } from 'lucide-react';
 import { errorMessage, passRedirect } from './backend';
 import { ErrorNotice } from './components';
@@ -13,6 +13,11 @@ export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'h
   const [busy, setBusy] = useState<number | null>(null);
   const [error, setError] = useState('');
   const [help, setHelp] = useState(false);
+  useEffect(() => {
+    const reset = () => setBusy(null);
+    window.addEventListener('pageshow', reset);
+    return () => window.removeEventListener('pageshow', reset);
+  }, []);
   async function buy(quantity: number) {
     setBusy(quantity); setError('');
     try { await passRedirect('box-checkout', { quantity, theme, requestId: crypto.randomUUID() }); }
