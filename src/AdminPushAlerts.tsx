@@ -20,7 +20,7 @@ export default function AdminPushAlerts({ predictions, selectedDay, today, serve
   }
   if (selectedDay !== today) return null;
   return <section className="card admin-push-alerts"><h2><BellRing size={18}/> Avisar jogadores</h2><p className="muted text-sm">Envie um aviso sobre um palpite aberto apenas a quem ativou “Novos palpites” e ainda não respondeu.</p>
-    {available.length === 0 ? <p className="muted text-sm">Nenhum palpite disponível para avisar agora.</p> : <div className="admin-push-list">{available.map(game => <div key={game.slot}><span>{game.slot === 0 ? 'Palpite do Dia' : `Extra ${game.slot}`}: {game.title}</span><button type="button" className="secondary-button" disabled={sending !== null} onClick={() => void send(game.slot)}>{sending === game.slot ? 'Enviando…' : 'Enviar aviso'}</button></div>)}</div>}
+    {available.length === 0 ? <div className="admin-push-empty"><p className="muted text-sm">Nenhum palpite disponível para avisar agora. O botão será liberado quando houver um palpite aberto.</p><button type="button" className="secondary-button" disabled>Enviar aviso</button></div> : <div className="admin-push-list">{available.map(game => <div key={game.slot}><span>{game.slot === 0 ? 'Palpite do Dia' : `Extra ${game.slot}`}: {game.title}</span><button type="button" className="secondary-button" disabled={sending !== null} onClick={() => void send(game.slot)}>{sending === game.slot ? 'Enviando…' : 'Enviar aviso'}</button></div>)}</div>}
     {message && <p className="success-message" role="status">{message}</p>}{error && <ErrorNotice message={error}/>}
   </section>;
 }
