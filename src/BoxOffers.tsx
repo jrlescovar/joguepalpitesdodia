@@ -25,7 +25,6 @@ export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'h
   }
   return <section className={`card box-offers${themed?' box-offers-halloween':''}`} aria-label={themed?'Caixas de Halloween':'Oferta de Lançamento de Personalização'}>
     <div className="box-offers-heading"><div><span className="box-offers-eyebrow"><Sparkles size={13} aria-hidden="true"/> NOVIDADE NA LOJA</span><h2>{themed?'Caixas de Halloween':'Oferta de Lançamento de Personalização'}</h2></div><button type="button" className="box-help-button" aria-label="Sobre os pacotes de caixas" onClick={() => setHelp(true)}><CircleHelp size={21}/></button></div>
-    {themed&&<p className="box-offers-choice">Itens exclusivos de Halloween · Evento</p>}
     <div className="box-offers-grid">{packs.map(pack => <article className={`box-offer${pack.quantity === packs[1].quantity ? ' box-offer-best' : ''}`} key={pack.quantity}>
       <div className="box-offer-tag">{pack.quantity === packs[1].quantity ? 'Em Alta' : null}</div>
       <div className="box-offer-art" aria-hidden="true"><ChestIcon halloween={themed}/><span>×{pack.quantity}</span></div>

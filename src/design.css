@@ -1010,7 +1010,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 
 @media (min-width: 1200px) {
   .shop-layout > .box-offers { align-self: stretch; display: flex; flex-direction: column; }
-  .shop-layout > .box-offers .box-offers-view-items { margin-top: auto; padding-top: 19px; }
+  .shop-layout > .box-offers .box-offers-view-items { margin-top: 10px; padding-top: 7px; }
 }
 
 @media (min-width: 1200px) {

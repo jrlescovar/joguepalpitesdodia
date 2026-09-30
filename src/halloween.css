@@ -11,7 +11,6 @@
 .box-panel-halloween .box-topline h2 { color:#ffd09a; }
 .box-panel-halloween .primary-button { background:#ed8c38;color:#201223;border-color:#efac65; }
 .box-halloween-description { margin:8px 0 0;color:#f1c9ad;font-size:13px; }
-.box-offers-choice { margin:10px 0 18px;color:#b8c8da;font-size:13px; }
 .halloween-catalog { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin-top:18px;font-size:12px;color:#e4c6ad; }
 .halloween-catalog h3 { grid-column:1/-1;margin:0 0 4px;color:#ffd09a; }
 @media(prefers-reduced-motion:reduce){.pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist{animation:none}}
