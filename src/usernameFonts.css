@@ -121,3 +121,55 @@
 .username-font-preview-fugazone{font-family:'Fugaz One',sans-serif!important;font-weight:400!important;}
 .username-text[class*="username-font-preview-"]{display:inline-block;padding:.12em .18em .16em!important;line-height:1.5!important;vertical-align:middle;}
 .profile-style-group .font-style-options .pass-name-preview:has([class*="username-font-preview-"]){height:auto;min-height:32px;line-height:1.5;overflow:visible;}
+
+/* Additional owner-only font previews. */
+@font-face{font-family:'Reggae One';src:url('/fonts/preview-reggaeone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-reggaeone{font-family:'Reggae One',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Akronim';src:url('/fonts/preview-akronim.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-akronim{font-family:'Akronim',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Alfa Slab One';src:url('/fonts/preview-alfaslabone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-alfaslabone{font-family:'Alfa Slab One',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Allerta Stencil';src:url('/fonts/preview-allertastencil.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-allertastencil{font-family:'Allerta Stencil',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Arbutus';src:url('/fonts/preview-arbutus.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-arbutus{font-family:'Arbutus',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Arizonia';src:url('/fonts/preview-arizonia.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-arizonia{font-family:'Arizonia',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Asset';src:url('/fonts/preview-asset.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-asset{font-family:'Asset',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Barrio';src:url('/fonts/preview-barrio.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-barrio{font-family:'Barrio',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Bigelow Rules';src:url('/fonts/preview-bigelowrules.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-bigelowrules{font-family:'Bigelow Rules',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'BioRhyme Expanded';src:url('/fonts/preview-biorhymeexpanded.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-biorhymeexpanded{font-family:'BioRhyme Expanded',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Bokor';src:url('/fonts/preview-bokor.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-bokor{font-family:'Bokor',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Bowlby One SC';src:url('/fonts/preview-bowlbyonesc.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-bowlbyonesc{font-family:'Bowlby One SC',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Bungee Shade';src:url('/fonts/preview-bungeeshade.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-bungeeshade{font-family:'Bungee Shade',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Caesar Dressing';src:url('/fonts/preview-caesardressing.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-caesardressing{font-family:'Caesar Dressing',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Changa One';src:url('/fonts/preview-changaone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-changaone{font-family:'Changa One',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Kirang Haerang';src:url('/fonts/preview-kiranghaerang.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-kiranghaerang{font-family:'Kirang Haerang',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Diplomata';src:url('/fonts/preview-diplomata.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-diplomata{font-family:'Diplomata',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Diplomata SC';src:url('/fonts/preview-diplomatasc.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-diplomatasc{font-family:'Diplomata SC',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Fascinate Inline';src:url('/fonts/preview-fascinateinline.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-fascinateinline{font-family:'Fascinate Inline',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Finger Paint';src:url('/fonts/preview-fingerpaint.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-fingerpaint{font-family:'Finger Paint',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Fredericka the Great';src:url('/fonts/preview-frederickathegreat.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-frederickathegreat{font-family:'Fredericka the Great',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Henny Penny';src:url('/fonts/preview-hennypenny.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-hennypenny{font-family:'Henny Penny',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Lacquer';src:url('/fonts/preview-lacquer.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-lacquer{font-family:'Lacquer',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Rubik Beastly';src:url('/fonts/preview-rubikbeastly.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-rubikbeastly{font-family:'Rubik Beastly',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Rubik Moonrocks';src:url('/fonts/preview-rubikmoonrocks.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-rubikmoonrocks{font-family:'Rubik Moonrocks',sans-serif!important;font-weight:400!important;}

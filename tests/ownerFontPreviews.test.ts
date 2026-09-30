@@ -5,9 +5,9 @@ import {usernameFonts} from '../src/usernameFonts';
 import {boxCatalog,fontBoxCatalog,halloweenCatalog,fontRarity} from '../src/boxCatalog';
 
 describe('private font previews',()=>{
- it('provides ten distinct private fonts outside every loot pool',()=>{
-  expect(ownerFontPreviews).toHaveLength(10);
-  expect(new Set(ownerFontPreviews.map(([,label])=>label)).size).toBe(10);
+ it('provides thirty-five distinct private fonts outside every loot pool',()=>{
+  expect(ownerFontPreviews).toHaveLength(35);
+  expect(new Set(ownerFontPreviews.map(([,label])=>label)).size).toBe(35);
   for(const [id,label] of ownerFontPreviews){
    expect(isOwnerPreviewFont(id)).toBe(true);
    expect(usernameFonts.filter(([font])=>font===id)).toHaveLength(1);
