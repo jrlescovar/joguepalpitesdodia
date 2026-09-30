@@ -13,12 +13,14 @@ import GreenMedalEmblem from './GreenMedalEmblem';
 import BattleMedalEmblem from './BattleMedalEmblem';
 import BetaTesterEmblem from './BetaTesterEmblem';
 import ArenaMedalEmblem from './ArenaMedalEmblem';
+import SupporterMedalEmblem from './SupporterMedalEmblem';
+import './supporter.css';
 import type { Profile, PublicProfile } from './types';
 import './halloween.css';
 
 type OverviewProfile = Profile | PublicProfile;
 type BattleStats = { wins: number; losses: number; draws: number };
-type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number };
+type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number; supporterMonths: number };
 
 function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; label: string; value: number | string; tone: string; hint?: string }) {
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
@@ -35,19 +37,22 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   const [globalPosition, setGlobalPosition] = useState<number | null>(null);
   const [battleStats, setBattleStats] = useState<BattleStats | null>(null);
   const [arenaWins, setArenaWins] = useState(0);
+  const [supporterMonths, setSupporterMonths] = useState(0);
   useEffect(() => {
     let active = true;
     setGlobalPosition(null);
     setBattleStats(null);
     setArenaWins(0);
+    setSupporterMonths(0);
     void call<OverviewMeta | null>('getProfileOverviewMeta', { uid: profile.uid })
       .then(meta => {
         if (!active) return;
         setGlobalPosition(typeof meta?.globalPosition === 'number' ? meta.globalPosition : null);
         setBattleStats(meta?.battleStats ?? null);
         setArenaWins(meta?.arenaWins ?? 0);
+        setSupporterMonths(meta?.supporterMonths ?? 0);
       })
-      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); } });
+      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); setSupporterMonths(0); } });
     return () => { active = false; };
   }, [profile.uid, profile.rankPoints, refreshTick]);
   const numberOrDash = (value: number | undefined) => typeof value === 'number' ? value : '—';
@@ -111,7 +116,12 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         <ArenaMedalEmblem/>
         <strong className="medal-name">{arenaWins}</strong>
       </div>}
-      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
+      {supporterMonths>0&&<div className="medal-tile supporter-medal-tile" role="img" aria-label={`Apoiador, ${supporterMonths} ${supporterMonths===1?'mês':'meses'} pagos`}>
+        <span className="medal-level">Apoiador</span>
+        <SupporterMedalEmblem/>
+        <strong className="medal-name">{supporterMonths} {supporterMonths===1?'mês':'meses'}</strong>
+      </div>}
+      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&supporterMonths===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
   </section></div>;
 }
