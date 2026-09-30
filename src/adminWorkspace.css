@@ -14,3 +14,8 @@
 .admin-push-empty p { margin: 0; }
 .admin-push-empty button { width: 100%; }
 @media (max-width: 420px) { .admin-push-list > div { align-items: flex-start; flex-direction: column; } }
+
+.profile-admin-footer { margin-top:20px; }
+.profile-admin-footer:empty { display:none; }
+.profile-admin-footer .profile-admin-button { margin-bottom:0; }
+@media(min-width:1200px){.profile-admin-footer { grid-column:1 / -1; grid-row:5; margin-top:0; }}

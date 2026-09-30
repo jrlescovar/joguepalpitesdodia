@@ -74,7 +74,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Maior sequência de reds', numberOrDash(profile.redStreakMax)],
     ['Dias consecutivos', daily],
   ];
-  return <div className={`profile-overview${showRetrospective ? ' has-retrospective' : ''}`}><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/><div className="profile-layout">
+  return <div className={`profile-overview${showRetrospective ? ' has-retrospective' : ''}`}><div className="profile-layout">
     <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
@@ -123,6 +123,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
       </div>}
       {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&supporterMonths===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
-  </section></div>;
+  </section><div className="profile-admin-footer"><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/></div></div>;
 }
 
