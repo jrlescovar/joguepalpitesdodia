@@ -105,7 +105,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
     {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
       <div className="podium-grid">{podium.map(({ player, position }) => <button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} key={player.uid} className={`podium-place place-${position}`} onClick={() => openPlayer(player, position)} aria-label={`Abrir perfil de ${player.username}, posição ${position}`}>
         <span className="podium-medal"><Medal size={21}/>#{position}</span>
-        <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></strong><small>{player.green}</small>
+        <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><strong><UsernameText name={player.username} font={player.usernameFont} className={`pass-name-${player.passNameStyle ?? 'none'}`}/></strong><small>{player.green}</small>
       </button>)}</div>
     </section>}
     <div className="card ranking-card ranking-continuation" aria-busy={loading}>
@@ -115,7 +115,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
           {players.slice(3).map((player, index) => { const position = index + 4; return <li key={player.uid} className={player.uid === profile.uid ? 'is-me' : ''}><button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} className="rank-player-button" aria-label={`Abrir perfil de ${player.username}, posição ${position}`} onClick={() => openPlayer(player, position)}>
             <span className={`rank-number rank-${position}`}>#{position}</span>
             <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/>
-            <div className="rank-name"><strong><span className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></span></strong></div>
+            <div className="rank-name"><strong><UsernameText name={player.username} font={player.usernameFont} className={`pass-name-${player.passNameStyle ?? 'none'}`}/></strong></div>
             <strong className="rank-greens">{player.green}<Check size={13}/></strong>
           </button></li>; })}
         </ol>
