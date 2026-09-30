@@ -1,4 +1,4 @@
-// Seven palette pairs for each owner-only effect family. IDs retain the lab
+// Owner-only palette pairs. IDs retain the lab
 // prefix so profile visibility and box-catalog exclusion share the same rule.
 export const ownerStyleVariants = [
   ['lab-blue-4-rose-quartz','Quartzo Rosa',4,'#f26eb0','#ff72b8','#fff1f8','#ffbd47'],
@@ -8,13 +8,13 @@ export const ownerStyleVariants = [
   ['lab-blue-4-garnet','Granada',4,'#fb6c8a','#ff6887','#fff1f2','#ffc15c'],
   ['lab-blue-4-vivid-topaz','Topázio Vivo',4,'#ef9d39','#ffac3e','#fff7ed','#ffeb42'],
   ['lab-blue-4-obsidian','Obsidiana',4,'#9babcc','#a9bbdf','#ffffff','#8be0ff'],
-  ['lab-blue-6-violet-haze','Bruma Violeta',6,'#ba82f8','#bd80ff','#faf5ff','#ff87d3'],
-  ['lab-blue-6-coral-cloud','Nuvem Coral',6,'#ee8b6c','#ff9772','#fff4ee','#ffd65a'],
-  ['lab-blue-6-emerald-veil','Véu Esmeralda',6,'#3fcd8a','#43e295','#f0fff5','#b3ef45'],
-  ['lab-blue-6-daybreak','Alvorada',6,'#e977a4','#ff7cac','#fff7de','#ffc647'],
-  ['lab-blue-6-golden-mirage','Miragem Dourada',6,'#eabe4b','#ffd14f','#ffffef','#ff9d40'],
-  ['lab-blue-6-crimson-silk','Seda Carmim',6,'#f1729f','#ff74a6','#fff1f6','#fba8f5'],
-  ['lab-blue-6-moonlight','Luar',6,'#90c0d8','#9dd4ec','#ffffff','#91a7ff'],
+  ['lab-blue-6-violet-haze','Bruma Violeta',6,'#b777fc','#bd82fe','#faf5ff','#d1a9fd'],
+  ['lab-blue-6-coral-cloud','Nuvem Coral',6,'#fa6732','#fd7443','#fff4ee','#fca586'],
+  ['lab-blue-6-emerald-veil','Véu Esmeralda',6,'#06e177','#02e477','#f0fff5','#06e177'],
+  ['lab-blue-6-daybreak','Alvorada',6,'#fb5b95','#fd6aa0','#fff7de','#fd9fc1'],
+  ['lab-blue-6-golden-mirage','Miragem Dourada',6,'#e1a806','#e4a902','#ffffef','#edb006'],
+  ['lab-blue-6-crimson-silk','Seda Carmim',6,'#fb5b94','#fd6a9f','#fff1f6','#fd9fc0'],
+  ['lab-blue-6-moonlight','Luar',6,'#069ee1','#02a7ee','#ffffff','#4ec6fa'],
   ['lab-blue-7-acid-pulse','Pulso Ácido',7,'#a9de2c','#b8f52e','#f7ffe1','#4ee5a4'],
   ['lab-blue-7-ruby-laser','Laser Rubi',7,'#fd6a90','#ff688e','#fff1f5','#ffb35f'],
   ['lab-blue-7-lilac-code','Código Lilás',7,'#b284ff','#b084ff','#faf5ff','#ee8fff'],
@@ -27,13 +27,11 @@ export const ownerStyleVariants = [
   ['lab-blue-9-magenta-satellite','Satélite Magenta',9,'#de6ef3','#e975ff','#fdf4ff','#91b9ff'],
   ['lab-blue-9-gravity','Gravidade',9,'#9c8ff0','#a799ff','#f5f3ff','#80e4f2'],
   ['lab-blue-9-meteorite','Meteorito',9,'#ea8958','#ff9961','#fff7ed','#ffdb49'],
-  ['lab-blue-9-amber-cosmos','Cosmos Âmbar',9,'#dcb546','#efc84f','#fff9e6','#ff974e'],
   ['lab-blue-9-crimson-star','Estrela Carmesim',9,'#f56f9c','#ff709f','#fff1f8','#ffa75e'],
   ['lab-blue-10-red-aurora','Aurora Rubra',10,'#f96b9d','#ff659a','#fff1f7','#ffba48'],
   ['lab-blue-10-jade-sky','Céu de Jade',10,'#42d0a0','#48e6b0','#f0fff9','#46ddeb'],
   ['lab-blue-10-borealis','Borealis',10,'#a18ef2','#b099ff','#faf5ff','#58e4b6'],
   ['lab-blue-10-pink-horizon','Horizonte Rosa',10,'#e578af','#f583be','#fff1f8','#b395ff'],
-  ['lab-blue-10-tropical-light','Luz Tropical',10,'#99da47','#a9ef4c','#ffffe8','#ffc844'],
   ['lab-blue-10-indigo-vortex','Vórtice Índigo',10,'#8b94f2','#939eff','#f1f5ff','#e28cff'],
   ['lab-blue-10-golden-galaxy','Galáxia Dourada',10,'#ebc159','#ffd564','#fffbea','#f08cde'],
 ] as const;

@@ -20,9 +20,9 @@ describe('owner palette variants',()=>{
       return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;
     }).reduce((sum,value,i)=>sum+value*[.2126,.7152,.0722][i],0);
     const background=luminance(rgb('#242a35'));
-    for(const [id,, ,dark,mid,,accent] of ownerStyleVariants){
+    for(const [id,,family,dark,mid,,accent] of ownerStyleVariants){
       const base=rgb(mid),sweep=rgb(accent);
-      expect(Math.hypot(...base.map((channel,i)=>channel-sweep[i])),id+' colored sweep').toBeGreaterThan(45);
+      if(family!==6) expect(Math.hypot(...base.map((channel,i)=>channel-sweep[i])),id+' colored sweep').toBeGreaterThan(45);
       const stops=[rgb(dark),base,sweep,base,rgb(dark)];
       for(let segment=0;segment<stops.length-1;segment++){
         for(let step=0;step<=20;step++){
@@ -33,14 +33,15 @@ describe('owner palette variants',()=>{
       }
     }
   });
-  it('has seven pairs per approved family and no reused display names',()=>{
-    expect(ownerStyleVariants).toHaveLength(35);
-    for(const family of [4,6,7,9,10]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(7);
+  it('keeps the remaining pairs without retired styles or reused display names',()=>{
+    expect(ownerStyleVariants).toHaveLength(33);
+    for(const family of [4,6,7,9,10]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(family===9||family===10?6:7);
     const ids=ownerStyleVariants.map(row=>row[0]);
-    expect(new Set(ids).size).toBe(35);
+    expect(new Set(ids).size).toBe(33);
+    expect(passStyleOptions.some(([id])=>['lab-blue-9-amber-cosmos','lab-blue-10-tropical-light'].includes(id))).toBe(false);
     const normalize=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
     const labels=ownerStyleVariants.map(row=>normalize(row[1]));
-    expect(new Set(labels).size).toBe(35);
+    expect(new Set(labels).size).toBe(33);
     const existing=[...passStyleOptions.filter(([id])=>!ids.includes(id as typeof ids[number])).map(([,label])=>normalize(label)),...usernameFonts.map(([,label])=>normalize(label))];
     expect(labels.some(label=>existing.includes(label))).toBe(false);
   });

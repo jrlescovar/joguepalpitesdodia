@@ -3,11 +3,11 @@
   color:var(--lab-mid); background:linear-gradient(var(--lab-angle),var(--lab-dark) 0%,var(--lab-mid) 30%,var(--lab-accent) 43%,var(--lab-accent) 52%,var(--lab-mid) 65%,var(--lab-dark) 100%); background-size:250% 250%; background-position:0% 0%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
 }
 [class*="pass-name-lab-blue-4-"] { --lab-angle:116deg; animation:lab-palette-ice 3.4s ease-in-out infinite; }
-[class*="pass-name-lab-blue-6-"] { --lab-angle:174deg; filter:brightness(1.2); animation:lab-palette-mist 4.1s ease-in-out infinite; }
+[class*="pass-name-lab-blue-6-"] { --lab-angle:174deg; background-image:linear-gradient(var(--lab-angle),var(--lab-dark),var(--lab-mid),var(--lab-accent),var(--lab-mid),var(--lab-dark)); animation:lab-palette-mist 4.1s ease-in-out infinite; }
 [class*="pass-name-lab-blue-7-"] { --lab-angle:203deg; animation:lab-palette-scan 4.45s ease-in-out infinite; }
 [class*="pass-name-lab-blue-9-"] { --lab-angle:261deg; animation:lab-palette-orbit 5.15s ease-in-out infinite; }
 [class*="pass-name-lab-blue-10-"] { --lab-angle:290deg; animation:lab-palette-aurora 5.5s ease-in-out infinite; }
-@keyframes lab-palette-mist {50%{filter:brightness(1.2) drop-shadow(0 0 2px var(--lab-accent));background-position:100% 100%}}
+@keyframes lab-palette-mist {0%,100%{filter:drop-shadow(0 0 1px var(--lab-mid))}50%{filter:drop-shadow(0 0 5px var(--lab-mid))}}
 @keyframes lab-palette-ice {50%{background-position:100% 100%}}
 @keyframes lab-palette-scan {25%{background-position:0% 100%}50%{background-position:100% 100%}75%{background-position:100% 0%}}
 @keyframes lab-palette-orbit {50%{background-position:100% 100%;filter:drop-shadow(0 0 2px var(--lab-accent))}}
@@ -21,13 +21,13 @@
 .pass-name-lab-blue-4-garnet, .pass-border-lab-blue-4-garnet { --lab-dark:#fb6c8a; --lab-mid:#ff6887; --lab-light:#fff1f2; --lab-accent:#ffc15c; }
 .pass-name-lab-blue-4-vivid-topaz, .pass-border-lab-blue-4-vivid-topaz { --lab-dark:#ef9d39; --lab-mid:#ffac3e; --lab-light:#fff7ed; --lab-accent:#ffeb42; }
 .pass-name-lab-blue-4-obsidian, .pass-border-lab-blue-4-obsidian { --lab-dark:#9babcc; --lab-mid:#a9bbdf; --lab-light:#ffffff; --lab-accent:#8be0ff; }
-.pass-name-lab-blue-6-violet-haze, .pass-border-lab-blue-6-violet-haze { --lab-dark:#ba82f8; --lab-mid:#bd80ff; --lab-light:#faf5ff; --lab-accent:#ff87d3; }
-.pass-name-lab-blue-6-coral-cloud, .pass-border-lab-blue-6-coral-cloud { --lab-dark:#ee8b6c; --lab-mid:#ff9772; --lab-light:#fff4ee; --lab-accent:#ffd65a; }
-.pass-name-lab-blue-6-emerald-veil, .pass-border-lab-blue-6-emerald-veil { --lab-dark:#3fcd8a; --lab-mid:#43e295; --lab-light:#f0fff5; --lab-accent:#b3ef45; }
-.pass-name-lab-blue-6-daybreak, .pass-border-lab-blue-6-daybreak { --lab-dark:#e977a4; --lab-mid:#ff7cac; --lab-light:#fff7de; --lab-accent:#ffc647; }
-.pass-name-lab-blue-6-golden-mirage, .pass-border-lab-blue-6-golden-mirage { --lab-dark:#eabe4b; --lab-mid:#ffd14f; --lab-light:#ffffef; --lab-accent:#ff9d40; }
-.pass-name-lab-blue-6-crimson-silk, .pass-border-lab-blue-6-crimson-silk { --lab-dark:#f1729f; --lab-mid:#ff74a6; --lab-light:#fff1f6; --lab-accent:#fba8f5; }
-.pass-name-lab-blue-6-moonlight, .pass-border-lab-blue-6-moonlight { --lab-dark:#90c0d8; --lab-mid:#9dd4ec; --lab-light:#ffffff; --lab-accent:#91a7ff; }
+.pass-name-lab-blue-6-violet-haze, .pass-border-lab-blue-6-violet-haze { --lab-dark:#b777fc; --lab-mid:#bd82fe; --lab-light:#faf5ff; --lab-accent:#d1a9fd; }
+.pass-name-lab-blue-6-coral-cloud, .pass-border-lab-blue-6-coral-cloud { --lab-dark:#fa6732; --lab-mid:#fd7443; --lab-light:#fff4ee; --lab-accent:#fca586; }
+.pass-name-lab-blue-6-emerald-veil, .pass-border-lab-blue-6-emerald-veil { --lab-dark:#06e177; --lab-mid:#02e477; --lab-light:#f0fff5; --lab-accent:#06e177; }
+.pass-name-lab-blue-6-daybreak, .pass-border-lab-blue-6-daybreak { --lab-dark:#fb5b95; --lab-mid:#fd6aa0; --lab-light:#fff7de; --lab-accent:#fd9fc1; }
+.pass-name-lab-blue-6-golden-mirage, .pass-border-lab-blue-6-golden-mirage { --lab-dark:#e1a806; --lab-mid:#e4a902; --lab-light:#ffffef; --lab-accent:#edb006; }
+.pass-name-lab-blue-6-crimson-silk, .pass-border-lab-blue-6-crimson-silk { --lab-dark:#fb5b94; --lab-mid:#fd6a9f; --lab-light:#fff1f6; --lab-accent:#fd9fc0; }
+.pass-name-lab-blue-6-moonlight, .pass-border-lab-blue-6-moonlight { --lab-dark:#069ee1; --lab-mid:#02a7ee; --lab-light:#ffffff; --lab-accent:#4ec6fa; }
 .pass-name-lab-blue-7-acid-pulse, .pass-border-lab-blue-7-acid-pulse { --lab-dark:#a9de2c; --lab-mid:#b8f52e; --lab-light:#f7ffe1; --lab-accent:#4ee5a4; }
 .pass-name-lab-blue-7-ruby-laser, .pass-border-lab-blue-7-ruby-laser { --lab-dark:#fd6a90; --lab-mid:#ff688e; --lab-light:#fff1f5; --lab-accent:#ffb35f; }
 .pass-name-lab-blue-7-lilac-code, .pass-border-lab-blue-7-lilac-code { --lab-dark:#b284ff; --lab-mid:#b084ff; --lab-light:#faf5ff; --lab-accent:#ee8fff; }
@@ -40,13 +40,11 @@
 .pass-name-lab-blue-9-magenta-satellite, .pass-border-lab-blue-9-magenta-satellite { --lab-dark:#de6ef3; --lab-mid:#e975ff; --lab-light:#fdf4ff; --lab-accent:#91b9ff; }
 .pass-name-lab-blue-9-gravity, .pass-border-lab-blue-9-gravity { --lab-dark:#9c8ff0; --lab-mid:#a799ff; --lab-light:#f5f3ff; --lab-accent:#80e4f2; }
 .pass-name-lab-blue-9-meteorite, .pass-border-lab-blue-9-meteorite { --lab-dark:#ea8958; --lab-mid:#ff9961; --lab-light:#fff7ed; --lab-accent:#ffdb49; }
-.pass-name-lab-blue-9-amber-cosmos, .pass-border-lab-blue-9-amber-cosmos { --lab-dark:#dcb546; --lab-mid:#efc84f; --lab-light:#fff9e6; --lab-accent:#ff974e; }
 .pass-name-lab-blue-9-crimson-star, .pass-border-lab-blue-9-crimson-star { --lab-dark:#f56f9c; --lab-mid:#ff709f; --lab-light:#fff1f8; --lab-accent:#ffa75e; }
 .pass-name-lab-blue-10-red-aurora, .pass-border-lab-blue-10-red-aurora { --lab-dark:#f96b9d; --lab-mid:#ff659a; --lab-light:#fff1f7; --lab-accent:#ffba48; }
 .pass-name-lab-blue-10-jade-sky, .pass-border-lab-blue-10-jade-sky { --lab-dark:#42d0a0; --lab-mid:#48e6b0; --lab-light:#f0fff9; --lab-accent:#46ddeb; }
 .pass-name-lab-blue-10-borealis, .pass-border-lab-blue-10-borealis { --lab-dark:#a18ef2; --lab-mid:#b099ff; --lab-light:#faf5ff; --lab-accent:#58e4b6; }
 .pass-name-lab-blue-10-pink-horizon, .pass-border-lab-blue-10-pink-horizon { --lab-dark:#e578af; --lab-mid:#f583be; --lab-light:#fff1f8; --lab-accent:#b395ff; }
-.pass-name-lab-blue-10-tropical-light, .pass-border-lab-blue-10-tropical-light { --lab-dark:#99da47; --lab-mid:#a9ef4c; --lab-light:#ffffe8; --lab-accent:#ffc844; }
 .pass-name-lab-blue-10-indigo-vortex, .pass-border-lab-blue-10-indigo-vortex { --lab-dark:#8b94f2; --lab-mid:#939eff; --lab-light:#f1f5ff; --lab-accent:#e28cff; }
 .pass-name-lab-blue-10-golden-galaxy, .pass-border-lab-blue-10-golden-galaxy { --lab-dark:#ebc159; --lab-mid:#ffd564; --lab-light:#fffbea; --lab-accent:#f08cde; }
 /* Frame glints stay colored, except the requested Halo (6) and Orbit (9). */
