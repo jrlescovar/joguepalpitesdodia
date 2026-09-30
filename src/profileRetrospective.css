@@ -1,0 +1,24 @@
+.profile-retrospective { margin-top: 24px; padding: 20px; }
+.retrospective-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.retrospective-header h2 { margin: 0; font-size: 1.2rem; }
+.retrospective-header p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.retrospective-period { display: flex; flex-shrink: 0; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 10px; background: #121924; }
+.retrospective-period button { padding: 7px 9px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); font-size: 11px; font-weight: 700; cursor: pointer; }
+.retrospective-period button.active { background: #325c91; color: #fff; }
+.retrospective-period button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.retrospective-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; margin-top: 20px; }
+.retrospective-chart { min-width: 0; }
+.retrospective-chart-heading, .retrospective-dates { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.retrospective-chart-heading { font-size: 13px; }
+.retrospective-chart-heading span { color: #8fbfff; font-weight: 700; white-space: nowrap; }
+.retrospective-greens .retrospective-chart-heading span { color: #4ade80; }
+.retrospective-bars { display: grid; align-items: end; height: 82px; gap: 2px; margin-top: 12px; border-bottom: 1px solid #40506a; }
+.retrospective-bar { display: block; min-width: 0; border-radius: 3px 3px 0 0; background: #6daaff; }
+.retrospective-greens .retrospective-bar { background: #4ade80; }
+.retrospective-bar.is-empty { background: #586477; }
+.retrospective-dates { margin-top: 6px; color: var(--muted); font-size: 10px; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) {
+  .profile-retrospective { padding: 17px; }
+  .retrospective-header { flex-wrap: wrap; }
+  .retrospective-charts { grid-template-columns: 1fr; gap: 20px; }
+}

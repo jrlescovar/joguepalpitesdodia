@@ -1,5 +1,6 @@
 import UsernameText from './UsernameText';
 import ProfileBattle from './ProfileBattle';
+import ProfileRetrospective from './ProfileRetrospective';
 import ProfileAdminPanel from './ProfileAdminPanel';
 import { useEffect, useState } from 'react';
 import { Check, Crown, Target, Trophy, X } from 'lucide-react';
@@ -23,11 +24,11 @@ function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; la
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
 }
 
-export default function ProfileOverview({ profile, lastClosedPrediction, today, supporterActive = false, refreshTick = 0 }: {
+export default function ProfileOverview({ profile, lastClosedPrediction, today, showRetrospective = false, supporterActive = false, refreshTick = 0 }: {
   profile: OverviewProfile;
   lastClosedPrediction: string | null;
   today: string;
-  showBalance?: boolean;
+  showRetrospective?: boolean;
   supporterActive?: boolean;
   refreshTick?: number;
 }) {
@@ -70,7 +71,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Maior sequência de reds', numberOrDash(profile.redStreakMax)],
     ['Dias consecutivos', daily],
   ];
-  return <div className="profile-overview"><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/><div className="profile-layout">
+  return <div className={`profile-overview${showRetrospective ? ' has-retrospective' : ''}`}><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/><div className="profile-layout">
     <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
@@ -86,7 +87,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
       <div className="score-grid profile-score-grid"><Stat icon={Check} label="Greens" value={profile.green} tone="green"/><Stat icon={X} label="Reds" value={numberOrDash(profile.red)} tone="red"/><Stat icon={Target} label="% de Acerto" value={rate===null?'—':`${rate}%`} tone="accuracy"/></div>
       <div className="card profile-stats">{rows.map(([label, value]) => <div className="streak-row" key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
     </section>
-  </div><section className="profile-battle-stats" aria-label="Estatísticas da Batalha do Dia">
+  </div>{showRetrospective && <ProfileRetrospective refreshTick={refreshTick}/>}<section className="profile-battle-stats" aria-label="Estatísticas da Batalha do Dia">
     <h2>Batalha do Dia</h2>
     <div className="score-grid profile-score-grid"><Stat icon={Trophy} label="Vitórias" value={battleStats?.wins ?? '—'} tone="battle-wins"/><Stat icon={X} label="Derrotas" value={battleStats?.losses ?? '—'} tone="red"/><Stat icon={Target} label="% de vitória" value={battleWinRate} tone="accuracy"/></div>
     <ProfileBattle key={profile.uid} uid={profile.uid} refreshTick={refreshTick}/>

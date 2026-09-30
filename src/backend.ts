@@ -93,6 +93,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getProfileDailyBattles': return rpc<T>('get_profile_daily_battles', { p_profile_id: data.uid });
     case 'getBattleProfileStats': return rpc<T>('get_battle_profile_stats', { p_profile_id: data.uid });
     case 'getProfileOverviewMeta': return rpc<T>('get_profile_overview_meta', { p_profile_id: data.uid });
+    case 'getMyRetrospective': return rpc<T>('get_my_retrospective');
     case 'getMyRank': return rpc<T>('get_my_rank');
     case 'getTournamentRankingPage': return rpc<T>('get_tournament_ranking_page');
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });
