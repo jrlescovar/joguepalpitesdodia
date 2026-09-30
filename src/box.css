@@ -73,3 +73,20 @@
 
 .box-art-chest { position: relative; overflow: visible; filter: drop-shadow(0 8px 16px #0006); }
 .box-art-chest .chest-lid { transform-box: fill-box; transform-origin: left bottom; }
+
+@media (min-width: 1200px) {
+  .dialog-content.box-opening-dialog { width: min(820px, calc(100vw - 80px)); max-width: 820px; }
+  .box-opening-dialog .box-opening-stage, .box-opening-dialog .box-opening-stage .box-art { height: 320px; }
+  .box-opening-dialog .box-opening-stage .box-art-chest { width: 270px; height: 270px; }
+  .box-opening-dialog .box-reel-window { height: 240px; }
+  .box-opening-dialog .box-reel-track { padding-left: calc(50% - 100px); }
+  .box-opening-dialog .box-reel-item { width: 200px; height: 206px; gap: 9px; padding: 14px; }
+  .box-opening-dialog .box-reel-item .avatar { width: 82px; height: 82px; }
+  .box-opening-dialog .box-reel-item .box-name-preview { font-size: 1.15rem; }
+  .box-opening-dialog .box-reel-item > span:not(.avatar) { font-size: .95rem; }
+  .box-opening-dialog .box-reel-item small { font-size: .85rem; }
+  .box-opening-dialog .box-result { min-height: 290px; justify-content: center; padding: 36px 24px; gap: 12px; }
+  .box-opening-dialog .box-result .avatar { width: 125px; height: 125px; }
+  .box-opening-dialog .box-result .box-name-preview { font-size: 2rem; }
+  .box-opening-dialog .box-result > strong:not(.box-name-preview) { font-size: 1.3rem; }
+}
