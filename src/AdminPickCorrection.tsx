@@ -48,7 +48,9 @@ export default function AdminPickCorrection({ profile, onCorrect }: { profile: P
       ]);
       setPicks(rows);
       setSelected(null);
-      setSuccess('Palpite salvo. Resultado e pontos do jogador atualizados.');
+      setSuccess(selected.pick.predictionStatus === 'settled'
+        ? 'Palpite salvo. Resultado e pontos do jogador atualizados.'
+        : 'Palpite salvo. Os pontos serão calculados quando sair o resultado.');
     } catch (cause) { setError(errorMessage(cause)); } finally { setBusy(false); }
   }
 
@@ -62,14 +64,14 @@ export default function AdminPickCorrection({ profile, onCorrect }: { profile: P
     <input id="admin-pick-day" type="date" value={day} max={today()} onChange={event => setDay(event.target.value)}/>
     {picks.length === 0 && !error && <p className="muted">Nenhuma aposta disponível nessa data.</p>}
     {picks.map(pick => {
-      const closed = Date.parse(pick.closesAt) <= Date.now() && pick.predictionStatus !== 'settling';
+      const canEdit = pick.predictionStatus !== 'settling' && (!pick.optionId || Date.parse(pick.closesAt) <= Date.now());
       return <div className="admin-pick-row" key={`${pick.dayId}-${pick.slot}`}>
         <div><strong>{pick.slot === 0 ? 'Palpites do Dia' : `Palpite Extra ${pick.slot}`}: {pick.title}</strong>
           <span>Palpite: {optionLabel(pick, pick.optionId)} · {pick.status === 'green' ? 'Green' : pick.status === 'red' ? 'Red' : pick.optionId ? 'Em jogo' : 'Sem palpite'}</span>
           {pick.winningOptionId && <span>Resultado: {optionLabel(pick, pick.winningOptionId)}</span>}
         </div>
-        <button type="button" className="secondary-button" disabled={!closed || busy} onClick={() => setSelected({ pick, optionId: pick.optionId??pick.options[0]?.id??'' })}>
-          {closed ? pick.optionId?'Corrigir':'Adicionar' : 'Aguarde o fim'}
+        <button type="button" className="secondary-button" disabled={!canEdit || busy} onClick={() => setSelected({ pick, optionId: pick.optionId??pick.options[0]?.id??'' })}>
+          {canEdit ? pick.optionId?'Corrigir':'Adicionar' : 'Aguarde o fim'}
         </button>
       </div>;
     })}
