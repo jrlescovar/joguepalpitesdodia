@@ -1,7 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2';
 import webpush from 'npm:web-push@3.6.7';
 
-type Kind = 'available' | 'reminder' | 'result';
+type Kind = 'available';
 type Game = { day_id: string; slot: number; title: string; status: string; closes_at: string; settled_at: string | null };
 type Recipient = { profile_id: string; endpoint: string; p256dh: string; auth_secret: string };
 
@@ -24,8 +24,8 @@ function json(body: unknown, status = 200, origin = '') {
 function notification(kind: Kind, game: Game) {
   const label = game.slot === 0 ? 'Palpite do Dia' : `Palpite Extra ${game.slot}`;
   return JSON.stringify({
-    title: kind === 'result' ? 'Resultado disponível' : kind === 'reminder' ? 'Seu palpite termina em breve' : 'Novo palpite disponível',
-    body: kind === 'result' ? `O resultado de ${label} saiu. Confira no app.` : kind === 'reminder' ? `${label} fecha em menos de 30 minutos. Faça seu palpite.` : `${label} está disponível. Escolha antes do prazo.`,
+    title: 'Novo palpite disponível',
+    body: `${label} está disponível. Escolha antes do prazo.`,
     url: '/#inicio', tag: `${kind}-${game.day_id}-${game.slot}`,
   });
 }
@@ -71,23 +71,6 @@ Deno.serve(async request => {
   if (!vapidPublic || !vapidPrivate) return json({ error: 'Notificações indisponíveis.' }, 503, origin);
   const input = await request.json().catch(() => null);
   if (!input || typeof input !== 'object') return json({ error: 'Pedido inválido.' }, 400, origin);
-
-  if (input.mode === 'scheduled') {
-    const expected = Deno.env.get('PUSH_DISPATCH_SECRET');
-    if (!expected || request.headers.get('x-push-schedule-secret') !== expected) return json({ error: 'Acesso negado.' }, 403, origin);
-    const { data, error } = await admin.rpc('get_push_games_today');
-    if (error) return json({ error: 'Não foi possível consultar os palpites.' }, 500, origin);
-    let sent = 0, failed = 0;
-    const now = Date.now();
-    for (const game of (data ?? []) as Game[]) {
-      let kind: Kind | null = null;
-      const remaining = Date.parse(game.closes_at) - now;
-      if (game.status === 'open' && remaining > 0 && remaining <= 30 * 60_000) kind = 'reminder';
-      else if (game.status === 'settled' && game.settled_at && now - Date.parse(game.settled_at) < 60 * 60_000) kind = 'result';
-      if (kind) { const outcome = await dispatch(kind, game); sent += outcome.sent; failed += outcome.failed; }
-    }
-    return json({ sent, failed }, 200, origin);
-  }
 
   if (input.mode !== 'available' || typeof input.dayId !== 'string' || !Number.isInteger(input.slot) || input.slot < 0 || input.slot > 9)
     return json({ error: 'Pedido inválido.' }, 400, origin);

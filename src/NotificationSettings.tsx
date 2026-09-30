@@ -4,14 +4,9 @@ import { call, errorMessage } from './backend';
 import { ErrorNotice } from './components';
 import './notificationSettings.css';
 
-type Settings = { available: boolean; reminder: boolean; result: boolean };
-type Kind = keyof Settings;
+type Settings = { available: boolean };
 const publicKey = 'BCwXAReGx9Q3QMUu_cEJzZw1eL1I6zvwjxK6OHLaediGm5bS3C0S57fE5ihoJerNjOuGPGT5vxS5q3kMKOc4x1E';
-const choices: { kind: Kind; label: string; detail: string }[] = [
-  { kind: 'available', label: 'Novos palpites', detail: 'O admin avisa quando houver um palpite aberto que você ainda não fez.' },
-  { kind: 'reminder', label: 'Perto do prazo', detail: 'Aviso até 30 minutos antes de fechar, se você ainda não palpitou.' },
-  { kind: 'result', label: 'Resultados', detail: 'Aviso quando o resultado do palpite sair.' },
-];
+const detail = 'Aviso quando houver novos palpites abertos que você ainda não fez.';
 
 function applicationServerKey() {
   const padded = (publicKey + '='.repeat((4 - publicKey.length % 4) % 4)).replace(/-/g, '+').replace(/_/g, '/');
@@ -52,15 +47,15 @@ export default function NotificationSettings({ inDialog = false }: { inDialog?: 
     setDeviceActive(true);
   }
 
-  async function toggle(kind: Kind) {
+  async function toggle() {
     if (!settings || busy) return;
     setBusy(true); setError('');
     try {
-      const next = { ...settings, [kind]: !settings[kind] };
-      if (next[kind]) await activateDevice();
+      const next = { available: !settings.available };
+      if (next.available) await activateDevice();
       const saved = await call<Settings>('setMyPushSettings', next);
       setSettings(saved);
-      if (!saved.available && !saved.reminder && !saved.result && supported()) {
+      if (!saved.available && supported()) {
         const registration = await navigator.serviceWorker.getRegistration('/push-sw.js');
         const subscription = await registration?.pushManager.getSubscription();
         if (subscription) { await call('removeMyPushSubscription', { endpoint: subscription.endpoint }); await subscription.unsubscribe(); }
@@ -78,12 +73,12 @@ export default function NotificationSettings({ inDialog = false }: { inDialog?: 
   }
 
   return <section className={inDialog ? 'notification-settings-dialog' : 'card profile-notifications'} aria-label="Avisos no celular">
-    {inDialog ? <p className="notification-intro">Escolha quais avisos quer receber. Todos começam desligados.</p> : <div className="notification-heading"><Bell size={19}/><div><h2>Avisos no celular</h2><p>Escolha quais avisos quer receber. Todos começam desligados.</p></div></div>}
+    {inDialog ? <p className="notification-intro">Ative o aviso de novos palpites quando quiser recebê-lo neste aparelho.</p> : <div className="notification-heading"><Bell size={19}/><div><h2>Avisos no celular</h2><p>Ative o aviso de novos palpites quando quiser recebê-lo neste aparelho.</p></div></div>}
     {error && <ErrorNotice message={error} retry={() => { setError(''); setRetry(value => value + 1); }}/>}
     {!settings && !error && <p className="muted" role="status">Carregando avisos…</p>}
     {settings && <>
-      <div className="notification-options">{choices.map(({ kind, label, detail }) => <div className="notification-option" key={kind}><div><strong>{label}</strong><small>{detail}</small></div><button type="button" role="switch" aria-label={label} aria-checked={settings[kind]} className={`toggle ${settings[kind] ? 'on' : ''}`} disabled={busy} onClick={() => void toggle(kind)}><span/></button></div>)}</div>
-      {(settings.available || settings.reminder || settings.result) && !deviceActive && <button type="button" className="secondary-button notification-reconnect" disabled={busy} onClick={() => void reconnect()}>Ativar neste aparelho</button>}
+      <div className="notification-options"><div className="notification-option"><div><strong>Novos Palpites</strong><small>{detail}</small></div><button type="button" role="switch" aria-label="Novos Palpites" aria-checked={settings.available} className={`toggle ${settings.available ? 'on' : ''}`} disabled={busy} onClick={() => void toggle()}><span/></button></div></div>
+      {settings.available && !deviceActive && <button type="button" className="secondary-button notification-reconnect" disabled={busy} onClick={() => void reconnect()}>Ativar neste aparelho</button>}
       {(!supported() || needsHomeScreen()) && <p className="notification-help">No iPhone, adicione o site à Tela de Início e abra pelo ícone para receber avisos com o navegador fechado.</p>}
     </>}
   </section>;

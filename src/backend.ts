@@ -103,7 +103,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getProfileOverviewMeta': return rpc<T>('get_profile_overview_meta', { p_profile_id: data.uid });
     case 'getMyRetrospective': return rpc<T>('get_my_retrospective');
     case 'getMyPushSettings': return rpc<T>('get_my_push_settings');
-    case 'setMyPushSettings': return rpc<T>('set_my_push_settings', { p_available: data.available, p_reminder: data.reminder, p_result: data.result });
+    case 'setMyPushSettings': return rpc<T>('set_my_push_settings', { p_available: data.available, p_reminder: false, p_result: false });
     case 'saveMyPushSubscription': return rpc<T>('save_my_push_subscription', { p_endpoint: data.endpoint, p_p256dh: data.p256dh, p_auth: data.auth });
     case 'removeMyPushSubscription': return rpc<T>('remove_my_push_subscription', { p_endpoint: data.endpoint });
     case 'sendAvailablePush': {
