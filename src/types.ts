@@ -1,6 +1,7 @@
+import type { PrivateStyle } from './privateCollection';
 import type { UsernameFont } from './usernameFonts';
 export type DateValue={toMillis():number;toDate():Date};
-export type PassNameStyle='none'|'gold'|'blood'|'purple'|'green'|'dark-blue'|'orange'|'pink'|'sunset'|'ember'|'rose-purple'|'midnight-electric'|'green-gold'|'lilac-silver'|'wine-rose'|'ice-blue'|'navy-pink'|'graphite-silver'|'rainbow'|'royal-sapphire'|'sunset-ocean'|'neon-circuit'|'coral-lilac'|'legend-nebula'|'legend-abyss'|'legend-prism'|'legend-solar'|'legend-ruby-eclipse'|'myth-petroleum-bronze'|'myth-burgundy-sand'|'myth-cerulean-rust'|'myth-plum-copper'|'myth-jade-mauve'|'myth-olive-rose-graphite'|'myth-fuchsia-petroleum'|'rare-plum-beige'|'halloween-pumpkin'|'halloween-bloodmoon'|'halloween-mist';
+export type PassNameStyle=PrivateStyle|'none'|'gold'|'blood'|'purple'|'green'|'dark-blue'|'orange'|'pink'|'sunset'|'ember'|'rose-purple'|'midnight-electric'|'green-gold'|'lilac-silver'|'wine-rose'|'ice-blue'|'navy-pink'|'graphite-silver'|'rainbow'|'royal-sapphire'|'sunset-ocean'|'neon-circuit'|'coral-lilac'|'legend-nebula'|'legend-abyss'|'legend-prism'|'legend-solar'|'legend-ruby-eclipse'|'myth-petroleum-bronze'|'myth-burgundy-sand'|'myth-cerulean-rust'|'myth-plum-copper'|'myth-jade-mauve'|'myth-olive-rose-graphite'|'myth-fuchsia-petroleum'|'rare-plum-beige'|'halloween-pumpkin'|'halloween-bloodmoon'|'halloween-mist';
 export type PassBorderStyle=PassNameStyle;
 export type PassStatus={active:boolean;status:string;periodEndsAt:string|null;cancelAtPeriodEnd:boolean;freeActive?:boolean;freeEndsAt?:string|null;prepaidActive?:boolean;prepaidEndsAt?:string|null;borderStyle:PassBorderStyle;nameStyle:PassNameStyle};
 export type BoxRarity='common'|'rare'|'epic'|'mythic'|'legendary';
