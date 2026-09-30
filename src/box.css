@@ -90,3 +90,6 @@
   .box-opening-dialog .box-result .box-name-preview { font-size: 2rem; }
   .box-opening-dialog .box-result > strong:not(.box-name-preview) { font-size: 1.3rem; }
 }
+
+.box-catalog-font .box-catalog-item { min-height: 76px; padding: 6px 5px; gap: 3px; }
+.box-catalog-font .box-catalog-preview { min-height: 28px; }

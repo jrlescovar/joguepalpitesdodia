@@ -259,3 +259,5 @@
   .pass-offer-purchase .pass-current { font-size: .78rem; }
   .pass-offer-purchase .primary-button, .pass-offer-purchase .secondary-button { min-height: 44px; padding-block: 10px; }
 }
+
+.profile-style-group .font-style-options .pass-style-option { min-height: 64px; padding-block: 5px; gap: 2px; }
