@@ -57,8 +57,8 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ? visibleDaily(profile.dailyStreakCurrent, profile.lastPlayedPrediction, lastClosedPrediction, today)
     : '—';
   const rate = hitRate(profile.green, profile.red);
-  const battleTotal = battleStats ? battleStats.wins + battleStats.losses + battleStats.draws : 0;
-  const battleWinRate = battleStats && battleTotal > 0 ? `${Math.round(100 * battleStats.wins / battleTotal)}%` : battleStats ? '0%' : '—';
+  const decidedBattles = battleStats ? battleStats.wins + battleStats.losses : 0;
+  const battleWinRate = battleStats && decidedBattles > 0 ? `${Math.round(100 * battleStats.wins / decidedBattles)}%` : battleStats ? '0%' : '—';
   const medal = greenMedalProgress(profile.green);
   const battleMedal = battleStats ? battleMedalProgress(battleStats.wins) : null;
   const publicSupporterActive = 'supporterActive' in profile && profile.supporterActive === true;
