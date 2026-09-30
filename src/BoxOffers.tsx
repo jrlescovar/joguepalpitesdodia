@@ -13,7 +13,6 @@ export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'h
   const [busy, setBusy] = useState<number | null>(null);
   const [error, setError] = useState('');
   const [help, setHelp] = useState(false);
-  const [returned] = useState(() => new URLSearchParams(location.search).get('boxes'));
   async function buy(quantity: number) {
     setBusy(quantity); setError('');
     try { await passRedirect('box-checkout', { quantity, theme, requestId: crypto.randomUUID() }); }
@@ -29,7 +28,6 @@ export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'h
       <button type="button" className="box-offer-buy" disabled={busy !== null} onClick={() => void buy(pack.quantity)} aria-label={`Comprar ${pack.quantity} caixas por R$ ${pack.price}`}>{busy === pack.quantity ? <LoaderCircle size={17} className="spin"/> : <Box size={17} aria-hidden="true"/>} R$ {pack.price}</button>
     </article>)}</div>
     <button type="button" className="box-offers-view-items" onClick={()=>setHelp(true)}>Ver itens possíveis</button>
-    {returned === 'paid' && <p className="box-offers-status" role="status">Aguardando confirmação do pagamento. Suas caixas aparecem assim que ele for confirmado.</p>}
     {error && <ErrorNotice message={error}/>}
     <BoxHelp open={help} onOpenChange={setHelp} theme={theme} profile={profile}/>
   </section>;

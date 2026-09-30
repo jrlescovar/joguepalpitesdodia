@@ -22,7 +22,7 @@ function BoxArt({opening=false,halloween=false}:{opening?:boolean;halloween?:boo
   return <div className={`box-art ${halloween?'box-art-halloween':'box-art-classic'}${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} halloween={halloween}/></div>;
 }
 
-export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic'}:{profile:Profile;onChanged:()=>void;refreshTick?:number;theme?:'classic'|'halloween'}){
+export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCheckout=false,theme='classic'}:{profile:Profile;onChanged:()=>void;refreshTick?:number;refreshAfterCheckout?:boolean;theme?:'classic'|'halloween'}){
   const themed=theme==='halloween';
   const catalog=themed?halloweenCatalog:boxCatalog;
   const [state,setState]=useState<BoxState|null>(null);
@@ -40,7 +40,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
 
   useEffect(()=>{let active=true;call<BoxState>(themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick,themed]);
   useEffect(()=>{
-    if(new URLSearchParams(location.search).get('boxes')!=='paid')return;
+    if(!refreshAfterCheckout)return;
     let active=true;
     let attempts=0;
     const timer=window.setInterval(()=>{
@@ -49,7 +49,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
       if(attempts>=6)window.clearInterval(timer);
     },5000);
     return()=>{active=false;window.clearInterval(timer);};
-  },[profile.uid,themed]);
+  },[profile.uid,themed,refreshAfterCheckout]);
   useEffect(()=>()=>animationRef.current?.cancel(),[]);
 
   useEffect(()=>{
