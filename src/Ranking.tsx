@@ -83,6 +83,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
   </div>;
 
   return <>
+    <div className="tournament-top">
     <div className="page-heading">
       <div>
         <h1>Torneio Edição Beta<span>.</span></h1>
@@ -99,6 +100,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
           <span className="muted text-sm">{error ? 'Posição indisponível' : 'Sua posição global'}</span>
         </div>
       </div>
+    </div>
     </div>
     {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
       <div className="podium-grid">{podium.map(({ player, position }) => <button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} key={player.uid} className={`podium-place place-${position}`} onClick={() => openPlayer(player, position)} aria-label={`Abrir perfil de ${player.username}, posição ${position}`}>
