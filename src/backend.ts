@@ -107,7 +107,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'saveMyPushSubscription': return rpc<T>('save_my_push_subscription', { p_endpoint: data.endpoint, p_p256dh: data.p256dh, p_auth: data.auth });
     case 'removeMyPushSubscription': return rpc<T>('remove_my_push_subscription', { p_endpoint: data.endpoint });
     case 'sendAvailablePush': {
-      const { data: result, error } = await supabase.functions.invoke('push-dispatch', { body: { mode: 'available', dayId: data.dayId, slot: data.slot } });
+      const { data: result, error } = await supabase.functions.invoke('push-dispatch', { body: { mode: 'available-all' } });
       if (error) throw error;
       if (result?.error) throw new Error(result.error);
       return result as T;
