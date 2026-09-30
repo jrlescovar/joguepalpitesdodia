@@ -1,0 +1,49 @@
+import {describe,it,expect} from 'vitest';
+import {readFileSync,existsSync} from 'node:fs';
+import {releasedUsernameFonts} from '../src/releasedUsernameFonts';
+import {usernameFonts} from '../src/usernameFonts';
+import {boxCatalog,fontBoxCatalog,halloweenCatalog,fontRarity,boxStyleLabel,isHalloweenFont} from '../src/boxCatalog';
+
+const expectedRarities={
+ rubikglitch:'mythic',rubikwetpaint:'mythic',rubikdirt:'epic',rampartone:'mythic',tiltprism:'mythic',shojumaru:'epic',tradewinds:'epic',sedgwickavedisplay:'legendary',
+ fugazone:'rare',reggaeone:'epic',akronim:'mythic',alfaslabone:'rare',allertastencil:'epic',arbutus:'rare',arizonia:'legendary',barrio:'epic',bigelowrules:'mythic',bungeeshade:'epic',
+ caesardressing:'mythic',kiranghaerang:'mythic',fascinateinline:'mythic',fingerpaint:'mythic',frederickathegreat:'mythic',hennypenny:'legendary',lacquer:'epic',rubikbeastly:'epic',
+ rubikmoonrocks:'epic',ewert:'epic',sancreek:'mythic',megrim:'mythic',geostarfill:'epic',kumaroneoutline:'mythic',miltoniantattoo:'rare',rubikvinyl:'legendary',
+};
+const expectedLabels={sedgwickavedisplay:'HipHop',caesardressing:'Noruega',frederickathegreat:'Darkness',hennypenny:'Magic',rubikmoonrocks:'moon',ewert:'Monster',rubikvinyl:'ghost'};
+const removed=['diplomatasc','yatraone','asset','biorhymeexpanded','bokor','bowlbyonesc','changaone','diplomata','geostar','rubikspraypaint'];
+describe('reviewed font release',()=>{
+ it('applies every requested rarity and routes only renamed fonts to Halloween',()=>{
+  expect(releasedUsernameFonts).toHaveLength(34);
+  expect(Object.fromEntries(releasedUsernameFonts.map(([id])=>[id,fontRarity(id)]))).toEqual(expectedRarities);
+  for(const [id,,family,,,] of releasedUsernameFonts){
+   expect(usernameFonts.filter(([key])=>key===id)).toHaveLength(1);
+   expect(usernameFonts.find(([key])=>key===id)?.[2]).toBe(family);
+   const event=id in expectedLabels;
+   expect(isHalloweenFont(id)).toBe(event);
+   expect(halloweenCatalog.filter(item=>item.style===id)).toHaveLength(event?1:0);
+   expect(boxCatalog.filter(item=>item.style===id)).toHaveLength(event?0:1);
+   expect(fontBoxCatalog.filter(item=>item.style===id)).toHaveLength(event?0:1);
+  }
+  for(const [id,label] of Object.entries(expectedLabels))expect(boxStyleLabel(id)).toBe(label);
+  expect(fontRarity('bebasneue')).toBe('rare');
+  expect(isHalloweenFont('creepster')).toBe(true);
+ });
+ it('keeps exact requested size changes and valid font assets',()=>{
+  expect(Object.fromEntries(releasedUsernameFonts.filter(row=>row[5]!==0).map(row=>[row[0],row[5]]))).toEqual({tiltprism:1,shojumaru:-3,akronim:3,arbutus:-1,arizonia:4,bigelowrules:4,bungeeshade:-3,kiranghaerang:3,fascinateinline:-1,frederickathegreat:1,megrim:1,kumaroneoutline:-2});
+  for(const [id] of releasedUsernameFonts){
+   const bytes=readFileSync(new URL('../public/fonts/'+id+'.woff2',import.meta.url));
+   expect(bytes.toString('ascii',0,4)).toBe('wOF2');
+   expect(bytes.readUInt32BE(8)).toBe(bytes.length);
+   expect(readFileSync(new URL('../public/fonts/'+id+'-OFL.txt',import.meta.url),'utf8')).toContain('SIL OPEN FONT LICENSE');
+  }
+ });
+ it('removes the ten retired fonts and old preview aliases from active registries',()=>{
+  for(const id of removed){
+   expect(usernameFonts.some(([key])=>key===id||key==='preview-'+id)).toBe(false);
+   expect([...boxCatalog,...halloweenCatalog].some(item=>item.style===id||item.style==='preview-'+id)).toBe(false);
+   expect(existsSync(new URL('../public/fonts/preview-'+id+'.woff2',import.meta.url))).toBe(false);
+  }
+  for(const [id] of releasedUsernameFonts)expect(usernameFonts.some(([key])=>key==='preview-'+id)).toBe(false);
+ });
+});

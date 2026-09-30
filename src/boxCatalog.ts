@@ -1,5 +1,6 @@
 import { commonPassStyles, passStyleOptions } from './passStyleOptions';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
+import { releasedUsernameFonts } from './releasedUsernameFonts';
 import type { BoxItem, BoxRarity, PassNameStyle } from './types';
 
 const epic = new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
@@ -17,12 +18,13 @@ export function boxRarity(style:PassNameStyle):BoxRarity {
   if(epic.has(style))return 'epic';
   return commonPassStyles.has(style)?'common':'rare';
 }
-export function fontRarity(font:UsernameFont):BoxRarity|null {const rarities:Partial<Record<UsernameFont,BoxRarity>>={"marckscript":"legendary","unifrakturcook":"mythic","quantico":"rare","blackopsone":"rare","audiowide":"rare","bebasneue":"epic","orbitron":"epic","luckiestguy":"epic","creepster":"epic","eater":"legendary","butcherman":"mythic","metalmania":"epic","frijole":"mythic","rye":"mythic","amaticsc":"mythic","kalam":"mythic","permanentmarker":"mythic","specialelite":"mythic","monocraft":"legendary","dancingscript":"legendary"};return rarities[font]??null;}
+export function fontRarity(font:UsernameFont):BoxRarity|null {const rarities:Partial<Record<UsernameFont,BoxRarity>>={"marckscript":"legendary","unifrakturcook":"mythic","quantico":"rare","blackopsone":"rare","audiowide":"rare","bebasneue":"rare","orbitron":"epic","luckiestguy":"epic","creepster":"epic","eater":"legendary","butcherman":"mythic","metalmania":"epic","frijole":"mythic","rye":"mythic","amaticsc":"mythic","kalam":"mythic","permanentmarker":"mythic","specialelite":"mythic","monocraft":"legendary","dancingscript":"legendary"};return rarities[font]??releasedUsernameFonts.find(([id])=>id===font)?.[3]??null;}
+export const isHalloweenFont=(font:string)=>['creepster','eater','butcherman'].includes(font)||releasedUsernameFonts.some(([id,,,,theme])=>id===font&&theme==='halloween');
 export const halloweenStyles = ['halloween-pumpkin','halloween-bloodmoon','halloween-mist','lab-blue-9','lab-blue-10-jade-sky'] as const;
 export const isHalloweenStyle=(style:string)=>halloweenStyles.some(item=>item===style);
 export const halloweenRarities=boxRarities.filter(tier=>['epic','mythic','legendary'].includes(tier.id)).map(tier=>({...tier,chance:tier.id==='epic'?60:tier.id==='mythic'?30:10}));
-export const halloweenCatalog:BoxItem[]=[...halloweenStyles.flatMap(style=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),{kind:'font',style:'creepster',rarity:'epic'},{kind:'font',style:'eater',rarity:'legendary'},{kind:'font',style:'butcherman',rarity:'mythic'}];
-export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none'&&!style.startsWith('lab-blue-')&&!halloweenStyles.includes(style as typeof halloweenStyles[number])).flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>fontRarity(font)!==null&&!['creepster','eater','butcherman'].includes(font)).map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
+export const halloweenCatalog:BoxItem[]=[...halloweenStyles.flatMap(style=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>isHalloweenFont(font)).map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
+export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none'&&!style.startsWith('lab-blue-')&&!halloweenStyles.includes(style as typeof halloweenStyles[number])).flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>fontRarity(font)!==null&&!isHalloweenFont(font)).map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
 export function boxStyleLabel(style:PassNameStyle|UsernameFont|string){return passStyleOptions.find(([id])=>id===style)?.[1]??usernameFonts.find(([id])=>id===style)?.[1]??style;}
 
 export const fontBoxCatalog:BoxItem[]=boxCatalog.filter(item=>item.kind==='font');
