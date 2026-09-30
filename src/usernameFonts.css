@@ -97,3 +97,27 @@
 .global-rank-player strong:has(.username-font-unifrakturcook),
 .rank-name > strong:has(.username-font-unifrakturcook),
 .podium-place > strong:has(.username-font-unifrakturcook) { overflow:visible; clip-path:inset(-.4em -.18em); }
+
+/* New owner-only previews: real font files, loaded on demand. */
+@font-face{font-family:'Rubik Glitch';src:url('/fonts/preview-rubikglitch.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-rubikglitch{font-family:'Rubik Glitch',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Rubik Wet Paint';src:url('/fonts/preview-rubikwetpaint.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-rubikwetpaint{font-family:'Rubik Wet Paint',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Rubik Dirt';src:url('/fonts/preview-rubikdirt.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-rubikdirt{font-family:'Rubik Dirt',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Rampart One';src:url('/fonts/preview-rampartone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-rampartone{font-family:'Rampart One',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Tilt Prism';src:url('/fonts/preview-tiltprism.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-tiltprism{font-family:'Tilt Prism',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Shojumaru';src:url('/fonts/preview-shojumaru.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-shojumaru{font-family:'Shojumaru',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Trade Winds';src:url('/fonts/preview-tradewinds.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-tradewinds{font-family:'Trade Winds',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Sedgwick Ave Display';src:url('/fonts/preview-sedgwickavedisplay.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-sedgwickavedisplay{font-family:'Sedgwick Ave Display',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Yatra One';src:url('/fonts/preview-yatraone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-yatraone{font-family:'Yatra One',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Fugaz One';src:url('/fonts/preview-fugazone.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-preview-fugazone{font-family:'Fugaz One',sans-serif!important;font-weight:400!important;}
+.username-text[class*="username-font-preview-"]{display:inline-block;padding:.12em .18em .16em!important;line-height:1.5!important;vertical-align:middle;}
+.profile-style-group .font-style-options .pass-name-preview:has([class*="username-font-preview-"]){height:auto;min-height:32px;line-height:1.5;overflow:visible;}

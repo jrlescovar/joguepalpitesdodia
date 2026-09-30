@@ -1,6 +1,7 @@
 import { boxRarities, fontRarity, isHalloweenStyle } from './boxCatalog';
 import UsernameText from './UsernameText';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
+import { isOwnerPreviewFont } from './ownerFontPreviews';
 import { useEffect,useState,type FormEvent } from 'react';
 import { Check, LoaderCircle, LockKeyhole } from 'lucide-react';
 import { call,errorMessage } from './backend';
@@ -12,6 +13,7 @@ import './ownerStyleVariants.css';
 const epicStyles=new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
 const styleCategory=(style:PassNameStyle)=>style==='lab-blue-9'?'legend':style==='lab-blue-10-jade-sky'?'myth':style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
 const categoryName={rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
+const fontTierOrder=(font:UsernameFont)=>isOwnerPreviewFont(font)?boxRarities.length:boxRarities.findIndex(tier=>tier.id===fontRarity(font));
 export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:()=>void;onShop?:()=>void;supporterActive?:boolean}) {
   const [username,setUsername]=useState(profile?.username||'');const [color,setColor]=useState(profile&&avatarColors.includes(profile.avatarColor)?profile.avatarColor:avatarColors[0]);
   const [useGoogleAvatar,setUseGoogleAvatar]=useState(profile?.useGoogleAvatar!==false);
@@ -29,7 +31,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
   const [loadedFonts,setLoadedFonts]=useState<Set<UsernameFont>>(()=>new Set(['normal']));
   useEffect(()=>{
     let active=true;
-    const available=usernameFonts.filter(([font])=>font!=='normal'&&(allStylesUnlocked||box?.inventory.some(item=>item.kind==='font'&&item.style===font)));
+    const available=usernameFonts.filter(([font])=>font!=='normal'&&(!isOwnerPreviewFont(font)||allStylesUnlocked)&&(allStylesUnlocked||box?.inventory.some(item=>item.kind==='font'&&item.style===font)));
     for(const [font,,family] of available){
       void document.fonts.load('400 16px "'+family+'"').then(faces=>{
         if(active&&faces.length)setLoadedFonts(current=>new Set([...current,font]));
@@ -59,7 +61,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     {styleTab!=='font'&&!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
     {styleTab!=='font'&&canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
     <div className={'pass-style-options'+(styleTab==='frame'?' frame-style-options':styleTab==='font'?' font-style-options':'')}>
-      {styleTab==='font'?usernameFonts.filter(([font])=>(font==='normal'||allStylesUnlocked||unlockedFonts.has(font))).sort(([a],[b])=>boxRarities.findIndex(tier=>tier.id===fontRarity(a))-boxRarities.findIndex(tier=>tier.id===fontRarity(b))).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(font==='eater'||font==='butcherman'?' halloween-item':'')+(fontRarity(font)===null||fontRarity(font)==='common'?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':fontRarity(font)==='rare'?'rare':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle} style={{visibility:loadedFonts.has(font)?'visible':'hidden'}}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{(font==='eater'||font==='butcherman')&&<small> · Evento</small>}</span></button>):styleTab==='name'?
+      {styleTab==='font'?usernameFonts.filter(([font])=>(!isOwnerPreviewFont(font)||allStylesUnlocked)&&(font==='normal'||allStylesUnlocked||unlockedFonts.has(font))).sort(([a],[b])=>fontTierOrder(a)-fontTierOrder(b)).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(font==='eater'||font==='butcherman'?' halloween-item':'')+(isOwnerPreviewFont(font)?' style-category-lab':fontRarity(font)===null||fontRarity(font)==='common'?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':fontRarity(font)==='rare'?'rare':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle} style={{visibility:loadedFonts.has(font)?'visible':'hidden'}}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{(font==='eater'||font==='butcherman')&&<small> · Evento</small>}</span></button>):styleTab==='name'?
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);

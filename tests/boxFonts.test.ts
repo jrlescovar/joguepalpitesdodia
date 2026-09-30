@@ -5,7 +5,7 @@ describe('font catalog',()=>{
  it('contains each custom font exactly once with the configured rarity, excludes Normal',()=>{
  const fonts=[...boxCatalog,...halloweenCatalog].filter(item=>item.kind==='font');
  expect(fonts.map(item=>item.style).sort()).toEqual(usernameFonts.filter(([id])=>fontRarity(id)!==null).map(([id])=>id).sort());
- expect(Object.fromEntries(fonts.map(item=>[item.style,item.rarity]))).toEqual({marckscript:'mythic',unifrakturcook:'mythic',monocraft:'legendary',dancingscript:'legendary',bebasneue:'epic',amaticsc:'mythic',kalam:'mythic',orbitron:'epic',permanentmarker:'mythic',blackopsone:'rare',audiowide:'rare',specialelite:'mythic',luckiestguy:'epic',creepster:'epic',eater:'legendary',butcherman:'mythic',metalmania:'epic',frijole:'mythic',rye:'mythic',quantico:'rare'});
+ expect(Object.fromEntries(fonts.map(item=>[item.style,item.rarity]))).toEqual({marckscript:'legendary',unifrakturcook:'mythic',monocraft:'legendary',dancingscript:'legendary',bebasneue:'epic',amaticsc:'mythic',kalam:'mythic',orbitron:'epic',permanentmarker:'mythic',blackopsone:'rare',audiowide:'rare',specialelite:'mythic',luckiestguy:'epic',creepster:'epic',eater:'legendary',butcherman:'mythic',metalmania:'epic',frijole:'mythic',rye:'mythic',quantico:'rare'});
  expect(fonts.every(item=>boxStyleLabel(item.style)!==item.style)).toBe(true);
  expect(halloweenCatalog.filter(item=>item.kind==='font').map(item=>item.style).sort()).toEqual(['butcherman','creepster','eater']);
  });

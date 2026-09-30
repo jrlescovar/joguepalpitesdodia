@@ -17,7 +17,7 @@ export function boxRarity(style:PassNameStyle):BoxRarity {
   if(epic.has(style))return 'epic';
   return commonPassStyles.has(style)?'common':'rare';
 }
-export function fontRarity(font:UsernameFont):BoxRarity|null {const rarities:Partial<Record<UsernameFont,BoxRarity>>={"marckscript":"mythic","unifrakturcook":"mythic","quantico":"rare","blackopsone":"rare","audiowide":"rare","bebasneue":"epic","orbitron":"epic","luckiestguy":"epic","creepster":"epic","eater":"legendary","butcherman":"mythic","metalmania":"epic","frijole":"mythic","rye":"mythic","amaticsc":"mythic","kalam":"mythic","permanentmarker":"mythic","specialelite":"mythic","monocraft":"legendary","dancingscript":"legendary"};return rarities[font]??null;}
+export function fontRarity(font:UsernameFont):BoxRarity|null {const rarities:Partial<Record<UsernameFont,BoxRarity>>={"marckscript":"legendary","unifrakturcook":"mythic","quantico":"rare","blackopsone":"rare","audiowide":"rare","bebasneue":"epic","orbitron":"epic","luckiestguy":"epic","creepster":"epic","eater":"legendary","butcherman":"mythic","metalmania":"epic","frijole":"mythic","rye":"mythic","amaticsc":"mythic","kalam":"mythic","permanentmarker":"mythic","specialelite":"mythic","monocraft":"legendary","dancingscript":"legendary"};return rarities[font]??null;}
 export const halloweenStyles = ['halloween-pumpkin','halloween-bloodmoon','halloween-mist','lab-blue-9','lab-blue-10-jade-sky'] as const;
 export const isHalloweenStyle=(style:string)=>halloweenStyles.some(item=>item===style);
 export const halloweenRarities=boxRarities.filter(tier=>['epic','mythic','legendary'].includes(tier.id)).map(tier=>({...tier,chance:tier.id==='epic'?60:tier.id==='mythic'?30:10}));
