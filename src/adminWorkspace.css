@@ -18,4 +18,4 @@
 .profile-admin-footer { margin-top:20px; }
 .profile-admin-footer:empty { display:none; }
 .profile-admin-footer .profile-admin-button { margin-bottom:0; }
-@media(min-width:1200px){.profile-admin-footer { grid-column:1 / -1; grid-row:5; margin-top:0; }}
+@media(min-width:1200px){.profile-admin-footer { grid-column:1 / -1; grid-row:4; margin-top:0; }}

@@ -1,6 +1,5 @@
 import UsernameText from './UsernameText';
 import ProfileBattle from './ProfileBattle';
-import ProfileRetrospective from './ProfileRetrospective';
 import ProfileAdminPanel from './ProfileAdminPanel';
 import { useEffect, useState } from 'react';
 import { Check, Target, Trophy, X } from 'lucide-react';
@@ -26,11 +25,10 @@ function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; la
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
 }
 
-export default function ProfileOverview({ profile, lastClosedPrediction, today, showRetrospective = false, supporterActive = false, refreshTick = 0 }: {
+export default function ProfileOverview({ profile, lastClosedPrediction, today, supporterActive = false, refreshTick = 0 }: {
   profile: OverviewProfile;
   lastClosedPrediction: string | null;
   today: string;
-  showRetrospective?: boolean;
   supporterActive?: boolean;
   refreshTick?: number;
 }) {
@@ -74,7 +72,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Maior sequência de reds', numberOrDash(profile.redStreakMax)],
     ['Dias consecutivos', daily],
   ];
-  return <div className={`profile-overview${showRetrospective ? ' has-retrospective' : ''}`}><div className="profile-layout">
+  return <div className="profile-overview"><div className="profile-layout">
     <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
@@ -93,7 +91,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     <h2>Batalha do Dia</h2>
     <div className="score-grid profile-score-grid"><Stat icon={Trophy} label="Vitórias" value={battleStats?.wins ?? '—'} tone="battle-wins"/><Stat icon={X} label="Derrotas" value={battleStats?.losses ?? '—'} tone="red"/><Stat icon={Target} label="% de vitória" value={battleWinRate} tone="accuracy"/></div>
     <ProfileBattle key={profile.uid} uid={profile.uid} refreshTick={refreshTick}/>
-  </section>{showRetrospective && <ProfileRetrospective refreshTick={refreshTick}/>}<section className="card achievements-card" aria-label="Medalhas e marcas">
+  </section><section className="card achievements-card" aria-label="Medalhas e marcas">
     <div className="achievements-heading"><span className="eyebrow">MEDALHAS E MARCAS</span></div>
     <div className="medals-grid">
       {medal.level>0&&<div className="medal-tile" role="img" aria-label={`Colecionador de Greens, nível ${medal.level}`}>
