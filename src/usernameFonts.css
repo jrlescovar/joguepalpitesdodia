@@ -80,3 +80,11 @@
 @media (min-width: 1200px) {
   :root { --username-desktop-increase: 2px; }
 }
+
+/* Dancing Script's initial J and descenders extend beyond the normal text box. */
+.username-text.username-font-dancingscript {
+  display: inline-block;
+  padding: .14em .25em .18em .4em !important;
+  line-height: 1.5 !important;
+  vertical-align: middle;
+}
