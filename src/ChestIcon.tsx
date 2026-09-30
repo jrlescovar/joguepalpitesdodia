@@ -19,45 +19,67 @@ export default function ChestIcon({ size = 64, className, opening = false, hallo
       <path d="M10 33h60" stroke="#ffd478" strokeWidth="3"/>
     </g>
   </svg>;
+  if(graffiti)return <svg className={className} width={size} height={size*(opening?96:72)/80} viewBox={opening?'0 -24 80 96':'0 0 80 72'} fill="none" aria-hidden="true">
+    <defs>
+      <linearGradient id={gold} x1="10" y1="8" x2="68" y2="66" gradientUnits="userSpaceOnUse"><stop stopColor="#ffffff"/><stop offset=".45" stopColor="#dce1eb"/><stop offset="1" stopColor="#7b849e"/></linearGradient>
+      <linearGradient id={wood} x1="14" y1="12" x2="66" y2="61" gradientUnits="userSpaceOnUse"><stop stopColor="#272334"/><stop offset="1" stopColor="#101019"/></linearGradient>
+      <clipPath id={`street-body-${id}`}><path d="M12 35h56v21l-4 7H16l-4-7V35Z"/></clipPath>
+      <clipPath id={`street-lid-${id}`}><path d="M12 31v-8C12 13 23 9 40 9s28 4 28 14v8H12Z"/></clipPath>
+    </defs>
+    <path d="M8 32h64v26l-5 9H13l-5-9V32Z" fill="#101019" stroke="#080910" strokeWidth="3" strokeLinejoin="round"/>
+    <path d="M12 35h56v21l-4 7H16l-4-7V35Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3" strokeLinejoin="round"/>
+    <g clipPath={`url(#street-body-${id})`}>
+      <path d="m7 40 17-9 8 9-11 8 14 8-10 13H6Z" fill="#ff327c"/>
+      <path d="m47 31 8 14 17-10 7 16-20 16-12-6 9-11-15-6Z" fill="#26dce8"/>
+      <path d="m11 56 18-13-8 13 11-3-13 13" fill="#ffe743" stroke="#11121d" strokeWidth="1.6" strokeLinejoin="round"/>
+      <path d="m58 39 3 7 8-3-5 7 5 3-8 1-4 9-2-9-7-3 8-4Z" fill="#c8ff45" stroke="#11121d" strokeWidth="1.4"/>
+      <path d="M17 40v11m4-13v6m38 9v11m4-13v5" stroke="#ff327c" strokeWidth="2" strokeLinecap="round"/>
+      <g stroke="#090b14" strokeWidth="7" strokeLinecap="square" strokeLinejoin="miter"><path d="m27 56 8-11 3 13m-9-6 7-1m6 4c-1-6 9-9 8-2l-1 5m0-6c-8-1-10 9-1 5"/></g>
+      <g stroke="#ffffff" strokeWidth="3" strokeLinecap="square" strokeLinejoin="miter"><path d="m27 56 8-11 3 13m-9-6 7-1m6 4c-1-6 9-9 8-2l-1 5m0-6c-8-1-10 9-1 5"/></g>
+      <path d="m25 61 26-3" stroke="#ffe743" strokeWidth="1.7" strokeLinecap="round"/>
+      <g fill="#fff"><circle cx="17" cy="38" r="1"/><circle cx="62" cy="59" r="1.1"/><circle cx="53" cy="39" r=".7"/><path d="m18 46 1-3 1 3 3 1-3 1-1 3-1-3-3-1Z"/></g>
+    </g>
+    <path d="M9 36h8v8H9Zm54 0h8v8h-8ZM11 55h9v8h-7Zm49 0h9l-3 8h-6Z" fill={`url(#${gold})`} stroke="#34374b" strokeWidth="1.5" strokeLinejoin="round"/>
+    <path d="M20 65h11v4H18Zm29 0h11l2 4H49Z" fill="#50566d"/>
+    <g className="chest-lid">
+      <path d="M8 34V23C8 11 20 5 40 5s32 6 32 18v11H8Z" fill="#101019" stroke="#080910" strokeWidth="3"/>
+      <path d="M12 31v-8C12 13 23 9 40 9s28 4 28 14v8H12Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3"/>
+      <g clipPath={`url(#street-lid-${id})`}>
+        <path d="m6 28 22-21 9 7-16 22Z" fill="#26dce8"/>
+        <path d="m33 7 19 4-9 11 24-5 8 16H31l11-10-16 2Z" fill="#ff327c"/>
+        <path d="m60 9-7 11 10-2-7 13 18-13Z" fill="#c8ff45" stroke="#11121d" strokeWidth="1.4"/>
+        <g transform="rotate(-8 40 22)" strokeLinecap="square" strokeLinejoin="miter">
+          <path d="m22 27 2-12h9m-10 6h7m5 6 2-12 5 12 2-12m3 0h9m-5 0-2 12" stroke="#090b14" strokeWidth="7"/>
+          <path d="m22 27 2-12h9m-10 6h7m5 6 2-12 5 12 2-12m3 0h9m-5 0-2 12" stroke="#fff" strokeWidth="3"/>
+        </g>
+        <path d="m32 29 19-2" stroke="#ffe743" strokeWidth="1.6" strokeLinecap="round"/>
+        <g fill="#fff"><circle cx="16" cy="23" r=".8"/><circle cx="61" cy="28" r="1"/><circle cx="36" cy="12" r=".7"/></g>
+      </g>
+      <path d="M9 31h62v6H9Z" fill={`url(#${gold})`} stroke="#34374b" strokeWidth="1.5"/>
+      <path d="M34 32h12v11l-6 4-6-4V32Z" fill="#171824" stroke="#e8edf6" strokeWidth="1.8" strokeLinejoin="round"/>
+      <path d="m37 36 6 0m-5 3 4 0m-3 0v4" stroke="#ffe743" strokeWidth="1.6" strokeLinecap="round"/>
+    </g>
+  </svg>;
   return <svg className={className} width={size} height={size * (opening ? 96 : 72) / 80} viewBox={opening ? '0 -24 80 96' : '0 0 80 72'} fill="none" aria-hidden="true">
     <defs>
-      <pattern id={`chest-paint-${id}`} width="48" height="44" patternUnits="userSpaceOnUse" patternTransform="rotate(-12)">
-        <rect width="48" height="44" fill="#e4ddc6"/>
-        <g stroke="#152727" strokeWidth="1.1" strokeLinejoin="round" strokeLinecap="round">
-          <path d="M-4 4 6-3l7 5-2 10-7 4-9-4Z" fill="#ed6655"/>
-          <path d="m8 2 4 6-6-1 1 5-5-5" fill="none"/>
-          <path d="M17-3c-9 5-6 14 1 13l-4 6 6 2 6-9-5-3 6-3Z" fill="#63b9cc"/>
-          <path d="m18 1 3 2-4 3m2 6-1 2" fill="none" stroke="#eef2da"/>
-          <path d="m31-3 6 8 10-5 4 11-7 7-12-4-6-8Z" fill="#7ab78c"/>
-          <path d="m34 3 2 7m5-6 2 5m-8 4 7-1" fill="none"/>
-          <path d="M-5 22c4-10 13-10 17-3l-5 4c-5-5-8 1-3 2 15 0 12 17 0 17-5 0-9-3-10-6l6-4c1 6 10 4 7 1-2-2-15 0-12-11Z" fill="#f3b65e"/>
-          <path d="M18 23 17 17l6 4 4-5 3 7 6-1-2 6 4 4-8 1-3 8-5-6-7 2 2-8-4-4Z" fill="#dc675f"/>
-          <path d="m22 25 1 7m5-8-2 6m-3 3 4 1" fill="none" stroke="#f7d5a0"/>
-          <path d="M39 21c9-3 14 7 8 12l2 10-11-3-3-8Z" fill="#c5d9ce"/>
-          <ellipse cx="40" cy="29" rx="2" ry="3" fill="#fff8df"/><ellipse cx="46" cy="28" rx="2" ry="3" fill="#fff8df"/>
-          <path d="m40 29 0 1m6-3v1m-7 8 6-1-2 3Z" fill="#152727"/>
-          <path d="m11 39 2 4m17-3 5 2M5 15l-2 2m29 0 2 3" fill="none"/>
-        </g>
-        <g fill="#fff7dc"><circle cx="12" cy="14" r=".8"/><circle cx="30" cy="36" r=".7"/><path d="m36 19 1-3 1 3 3 1-3 1-1 3-1-3-3-1Z"/></g>
-      </pattern>
-      <linearGradient id={gold} x1="9" y1="7" x2="68" y2="66" gradientUnits="userSpaceOnUse"><stop stopColor={graffiti?'#ffffff':'#ffe8a0'}/><stop offset=".47" stopColor={graffiti?'#d3dcd9':'#e5a836'}/><stop offset="1" stopColor={graffiti?'#788d89':'#a65f1f'}/></linearGradient>
+      <linearGradient id={gold} x1="9" y1="7" x2="68" y2="66" gradientUnits="userSpaceOnUse"><stop stopColor="#ffe8a0"/><stop offset=".47" stopColor="#e5a836"/><stop offset="1" stopColor="#a65f1f"/></linearGradient>
       <linearGradient id={wood} x1="16" y1="18" x2="65" y2="62" gradientUnits="userSpaceOnUse"><stop stopColor="#526b84"/><stop offset=".48" stopColor="#30445f"/><stop offset="1" stopColor="#1b2b43"/></linearGradient>
     </defs>
-    <path d="M8 32h64v26l-5 9H13l-5-9V32Z" fill="#17253a" stroke={graffiti?'#425451':'#80501f'} strokeWidth="3" strokeLinejoin="round"/>
-    <path d="M12 35h56v21l-4 7H16l-4-7V35Z" fill={`url(#${graffiti?`chest-paint-${id}`:wood})`} stroke={`url(#${gold})`} strokeWidth="3" strokeLinejoin="round"/>
-    <path d="M13 54h54M25 36v26m30-26v26" stroke={graffiti?'#718780':'#b77726'} strokeWidth="2.7"/>
-    <path d="M24 38v17m32-17v17" stroke={graffiti?'#f5f6e9':'#ffe29a'} strokeWidth="1.5"/>
-    <path d="M9 36h9v8H9Zm53 0h9v8h-9ZM11 55h10v8h-8Zm48 0h10l-3 8h-7Z" fill={`url(#${gold})`} stroke={graffiti?'#3c504d':'#754817'} strokeWidth="1.6" strokeLinejoin="round"/>
-    <path d="M20 65h11v4H18Zm29 0h11l2 4H49Z" fill={graffiti?'#607770':'#9e6125'}/>
+    <path d="M8 32h64v26l-5 9H13l-5-9V32Z" fill="#17253a" stroke="#80501f" strokeWidth="3" strokeLinejoin="round"/>
+    <path d="M12 35h56v21l-4 7H16l-4-7V35Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3" strokeLinejoin="round"/>
+    <path d="M13 54h54M25 36v26m30-26v26" stroke="#b77726" strokeWidth="2.7"/>
+    <path d="M24 38v17m32-17v17" stroke="#ffe29a" strokeWidth="1.5"/>
+    <path d="M9 36h9v8H9Zm53 0h9v8h-9ZM11 55h10v8h-8Zm48 0h10l-3 8h-7Z" fill={`url(#${gold})`} stroke="#754817" strokeWidth="1.6" strokeLinejoin="round"/>
+    <path d="M20 65h11v4H18Zm29 0h11l2 4H49Z" fill="#9e6125"/>
     <g className="chest-lid">
-      <path d="M8 34V23C8 11 20 5 40 5s32 6 32 18v11H8Z" fill="#15253b" stroke={graffiti?'#425451':'#80501f'} strokeWidth="3"/>
-      <path d="M12 31v-8C12 13 23 9 40 9s28 4 28 14v8H12Z" fill={`url(#${graffiti?`chest-paint-${id}`:wood})`} stroke={`url(#${gold})`} strokeWidth="3"/>
-      <path d="M23 12c-2 6-3 13-3 20m37-20c2 6 3 13 3 20" stroke={graffiti?'#718780':'#a56822'} strokeWidth="5"/>
-      <path d="M24 12c-2 6-3 13-3 20m35-20c2 6 3 13 3 20" stroke={graffiti?'#f1f4ea':'#f9d580'} strokeWidth="1.7"/>
-      <path d="M9 31h62v6H9Z" fill={`url(#${gold})`} stroke={graffiti?'#3c504d':'#754817'} strokeWidth="1.5"/>
-      <path d="M34 32h12v14l-6 4-6-4V32Z" fill={`url(#${gold})`} stroke={graffiti?'#3c504d':'#754817'} strokeWidth="2" strokeLinejoin="round"/>
-      <path d="M37 38c0-3 6-3 6 0 0 2-3 2-3 4" stroke={graffiti?'#253d38':'#3e2a1d'} strokeWidth="2" strokeLinecap="round"/><circle cx="40" cy="45" r="1.1" fill={graffiti?'#253d38':'#3e2a1d'}/>
-      <path d="M16 21h5v5h-5Zm43 0h5v5h-5Z" fill={graffiti?'#dce5dc':'#e7b454'} stroke={graffiti?'#536a61':'#85501e'} strokeWidth="1"/>
+      <path d="M8 34V23C8 11 20 5 40 5s32 6 32 18v11H8Z" fill="#15253b" stroke="#80501f" strokeWidth="3"/>
+      <path d="M12 31v-8C12 13 23 9 40 9s28 4 28 14v8H12Z" fill={`url(#${wood})`} stroke={`url(#${gold})`} strokeWidth="3"/>
+      <path d="M23 12c-2 6-3 13-3 20m37-20c2 6 3 13 3 20" stroke="#a56822" strokeWidth="5"/>
+      <path d="M24 12c-2 6-3 13-3 20m35-20c2 6 3 13 3 20" stroke="#f9d580" strokeWidth="1.7"/>
+      <path d="M9 31h62v6H9Z" fill={`url(#${gold})`} stroke="#754817" strokeWidth="1.5"/>
+      <path d="M34 32h12v14l-6 4-6-4V32Z" fill={`url(#${gold})`} stroke="#754817" strokeWidth="2" strokeLinejoin="round"/>
+      <path d="M37 38c0-3 6-3 6 0 0 2-3 2-3 4" stroke="#3e2a1d" strokeWidth="2" strokeLinecap="round"/><circle cx="40" cy="45" r="1.1" fill="#3e2a1d"/>
+      <path d="M16 21h5v5h-5Zm43 0h5v5h-5Z" fill="#e7b454" stroke="#85501e" strokeWidth="1"/>
     </g>
   </svg>;
 }
