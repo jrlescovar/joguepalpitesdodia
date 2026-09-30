@@ -26,6 +26,8 @@
 .box-catalog-tabs button[aria-pressed="true"] { background: #263346; color: #f4f7fb; box-shadow: 0 0 0 1px #93c5fd88; }
 .box-catalog-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 12px; }
 .box-catalog-item { display: flex; min-width: 0; min-height: 102px; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 9px 5px; border: 1px solid var(--tier-color); border-radius: 12px; background: #222832; text-align: center; }
+.box-catalog-name .box-catalog-item { min-height: 76px; padding: 6px 5px; gap: 3px; }
+.box-catalog-name .box-catalog-preview { min-height: 28px; }
 .box-catalog-preview { display: grid; width: 100%; min-height: 38px; place-items: center; }
 .box-catalog-preview > strong { display: block; max-width: 100%; overflow: hidden; font-size: .9rem; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
 .box-catalog-preview .avatar { width: 36px; height: 36px; font-size: 1rem; }
