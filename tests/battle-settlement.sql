@@ -1,4 +1,5 @@
--- Run inside a transaction after the migration; always ROLLBACK afterwards.
+-- This fixture must never leave its synthetic date or players in the live database.
+begin;
 -- A separate date and temporary profiles exercise the real admin RPC and triggers.
 create or replace function public.battle_today() returns date language sql stable as $$ select date '2070-01-01'; $$;
 do $$
@@ -57,3 +58,4 @@ begin
   if not blocked then raise exception 'Allowed publication after finalization'; end if;
 end;
 $$;
+rollback;

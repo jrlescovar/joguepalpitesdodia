@@ -1,7 +1,8 @@
 import UsernameText from './UsernameText';
 import { useEffect, useState } from 'react';
-import { Swords } from 'lucide-react';
-import { Avatar } from './components';
+import { ListChecks, Swords } from 'lucide-react';
+import { Avatar, ErrorNotice, Modal } from './components';
+import { call, errorMessage } from './backend';
 import RankEmblem from './RankEmblem';
 import type { PublicProfile } from './types';
 import './dailyBattle.css';
@@ -11,6 +12,7 @@ type Fighter = Pick<PublicProfile, 'uid' | 'username' | 'avatarColor' | 'avatarU
   globalPosition: number;
 };
 type ReelCandidate = Omit<Fighter, 'rankPoints' | 'globalPosition'>;
+type BattlePickComparison = { slot: number; title: string; correctOption: string | null; myOption: string | null; theirOption: string | null; myPoints: number; theirPoints: number };
 export type Battle = {
   dayId: string; preview: boolean; protected: boolean; historical?: boolean;
   result?: 'open' | 'left' | 'right' | 'draw' | 'no_contest';
@@ -44,6 +46,9 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
   const alreadyShown = () => instant || Boolean(battle.historical || localStorage.getItem(key)) || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const [reveal, setReveal] = useState(alreadyShown);
   const [finished, setFinished] = useState(alreadyShown);
+  const [comparisonOpen, setComparisonOpen] = useState(false);
+  const [comparison, setComparison] = useState<BattlePickComparison[] | null>(null);
+  const [comparisonError, setComparisonError] = useState('');
   const opponent = battle.opponent;
   useEffect(() => {
     if (!opponent) return;
@@ -53,6 +58,14 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
     const end = window.setTimeout(() => { setFinished(true); localStorage.setItem(key, '1'); }, 2300);
     return () => { clearTimeout(start); clearTimeout(end); };
   }, [key, opponent?.uid, instant]);
+  useEffect(() => {
+    if (!comparisonOpen || comparison || !battle.me) return;
+    let active = true;
+    call<BattlePickComparison[] | null>('getBattlePickComparison', { dayId: battle.dayId, uid: battle.me.uid })
+      .then(rows => { if (active) { if (rows) setComparison(rows); else setComparisonError('Comparação indisponível para esta batalha.'); } })
+      .catch(cause => { if (active) setComparisonError(errorMessage(cause)); });
+    return () => { active = false; };
+  }, [comparisonOpen, comparison, battle.dayId, battle.me?.uid]);
 
   const candidates = battle.reelCandidates ?? [];
   const entries = [0, 1, 2, 3].map(index => candidates[index % candidates.length] ?? opponent!).concat(opponent ? [opponent] : []);
@@ -81,6 +94,23 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
         </div>
       </div>
       {battle.result === 'no_contest' && <p className="battle-outcome">Sem adversário nesta rodada</p>}
+      {outcome && <button type="button" className="battle-comparison-open" onClick={() => setComparisonOpen(true)}><ListChecks size={17}/> Comparar palpites</button>}
     </> : <div className="battle-waiting">{battle.result === 'no_contest' ? 'Sem adversário nesta rodada.' : battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
+    <Modal open={comparisonOpen} onOpenChange={open => { setComparisonOpen(open); if (!open) { setComparison(null); setComparisonError(''); } }} title={`Palpites da Batalha ${battleDate}`} className="battle-comparison-dialog">
+      {comparisonError && <ErrorNotice message={comparisonError} retry={() => { setComparisonError(''); setComparison(null); }}/>}
+      {!comparison && !comparisonError && <p role="status" className="muted">Carregando palpites…</p>}
+      {comparison && <div className="battle-comparison-list">{(() => {
+        let myTotal = 0; let theirTotal = 0;
+        return comparison.map(row => {
+          myTotal += row.myPoints; theirTotal += row.theirPoints;
+          return <section className="battle-comparison-row" key={row.slot}>
+            <div className="battle-comparison-heading"><strong>{row.slot === 0 ? 'Palpite do Dia' : `Extra ${row.slot}`}</strong><span>{myTotal} × {theirTotal}</span></div>
+            <p>{row.title}</p>
+            <div className="battle-comparison-choices"><div><small>{battle.me?.username}</small><strong>{row.myOption ?? 'Sem palpite'}</strong><span className={row.myPoints > 0 ? 'is-green' : ''}>+{row.myPoints} pts</span></div><div><small>{opponent?.username}</small><strong>{row.theirOption ?? 'Sem palpite'}</strong><span className={row.theirPoints > 0 ? 'is-green' : ''}>+{row.theirPoints} pts</span></div></div>
+            <small className="battle-comparison-answer">Resultado: {row.correctOption ?? 'Não informado'}</small>
+          </section>;
+        });
+      })()}</div>}
+    </Modal>
   </section>;
 }

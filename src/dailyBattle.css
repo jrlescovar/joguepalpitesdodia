@@ -42,6 +42,21 @@
 .battle-reel-track.is-revealed { transform: translateY(-656px); transition: transform 2.15s cubic-bezier(0.23, 1, 0.32, 1); }
 .battle-outcome { margin: -4px 22px 16px; color: var(--accent); text-align: center; font-size: .82rem; }
 .battle-waiting { padding: 25px 22px; text-align: center; color: var(--muted); font-size: .88rem; }
+.battle-comparison-open { display: flex; align-items: center; justify-content: center; gap: 8px; width: calc(100% - 36px); margin: 0 18px 16px; padding: 10px; border: 1px solid #455a77; border-radius: 12px; background: #222b39; color: #a8cfff; font-size: 13px; font-weight: 700; cursor: pointer; }
+.battle-comparison-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.battle-comparison-dialog { width: min(540px, calc(100vw - 28px)); max-height: min(82dvh, 760px); overflow-y: auto; }
+.battle-comparison-list { display: grid; gap: 10px; margin-top: 18px; }
+.battle-comparison-row { padding: 12px; border: 1px solid #3d4b60; border-radius: 14px; background: #1b222d; }
+.battle-comparison-heading { display: flex; justify-content: space-between; gap: 12px; color: #a8cfff; font-size: 12px; }
+.battle-comparison-heading span { color: #f4f7fb; font-variant-numeric: tabular-nums; }
+.battle-comparison-row p { margin: 7px 0 11px; font-size: 13px; font-weight: 650; }
+.battle-comparison-choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.battle-comparison-choices > div { display: grid; min-width: 0; gap: 3px; padding: 9px; border: 1px solid #364457; border-radius: 10px; }
+.battle-comparison-choices small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: #aab2c0; }
+.battle-comparison-choices strong { overflow-wrap: anywhere; font-size: 12px; }
+.battle-comparison-choices span { color: #aeb8c8; font-size: 12px; font-weight: 700; }
+.battle-comparison-choices span.is-green { color: #4ade80; }
+.battle-comparison-answer { display: block; margin-top: 9px; color: #aab2c0; font-size: 11px; }
 @media (max-width: 420px) {
   .battle-heading { padding: 15px 17px; }
   .battle-heading > span { font-size: .7rem; letter-spacing: .02em; gap: 5px; }
