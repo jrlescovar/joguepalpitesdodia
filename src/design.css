@@ -986,3 +986,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .shop-layout > * { min-width: 0; }
   .shop-layout > .card { margin: 0; }
 }
+
+@media (min-width: 1200px) {
+  .medals-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 436px; }
+}
