@@ -31,7 +31,9 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
   const [boxQuantity,setBoxQuantity]=useState('1');
   const [halloweenBoxBalance,setHalloweenBoxBalance]=useState<number|null>(null);
   const [halloweenBoxQuantity,setHalloweenBoxQuantity]=useState('1');
-  const [boxGrantReview,setBoxGrantReview]=useState<'classic'|'halloween'|null>(null);
+  const [fontBoxBalance,setFontBoxBalance]=useState<number|null>(null);
+  const [fontBoxQuantity,setFontBoxQuantity]=useState('1');
+  const [boxGrantReview,setBoxGrantReview]=useState<'classic'|'halloween'|'font'|null>(null);
   const [grantDays, setGrantDays] = useState('30');
   const [grantReview, setGrantReview] = useState<'activate' | 'disable' | null>(null);
   const [busy, setBusy] = useState(false);
@@ -43,12 +45,12 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
   }
   useEffect(() => { if (initialSearch) void loadPlayer(initialSearch); }, [initialSearch]);
   async function loadPlayer(query: string) {
-    setBusy(true); setError(''); setSuccess(''); setProfile(null); setFields(null); setReview(null); setPassGrant(null); setBoxBalance(null); setHalloweenBoxBalance(null);
+    setBusy(true); setError(''); setSuccess(''); setProfile(null); setFields(null); setReview(null); setPassGrant(null); setBoxBalance(null); setHalloweenBoxBalance(null);setFontBoxBalance(null);
     try {
       const found = await call<Profile>('getAdminProfile', { search: query });
       setProfile(found); setFields(fieldsFrom(found));
-      const [grant,balance,halloweenBalance]=await Promise.all([call<AdminPassGrant>('getAdminPassGrant', { uid: found.uid }),call<number>('getAdminBoxBalance',{uid:found.uid}),call<number>('getAdminHalloweenBoxBalance',{uid:found.uid})]);
-      setPassGrant(grant);setBoxBalance(balance);setHalloweenBoxBalance(halloweenBalance);
+      const [grant,balance,halloweenBalance,fontBalance]=await Promise.all([call<AdminPassGrant>('getAdminPassGrant', { uid: found.uid }),call<number>('getAdminBoxBalance',{uid:found.uid}),call<number>('getAdminHalloweenBoxBalance',{uid:found.uid}),call<number>('getAdminFontBoxBalance',{uid:found.uid})]);
+      setPassGrant(grant);setBoxBalance(balance);setHalloweenBoxBalance(halloweenBalance);setFontBoxBalance(fontBalance);
     } catch (cause) { setError(errorMessage(cause)); } finally { setBusy(false); }
   }
 
@@ -93,9 +95,10 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
     setBusy(true);setError('');setSuccess('');
     try{
       const themed=boxGrantReview==='halloween';
-      const quantity=Number(themed?halloweenBoxQuantity:boxQuantity);
-      const balance=await call<number>(themed?'grantHalloweenBoxes':'grantBoxes',{uid:profile.uid,quantity});
-      if(themed)setHalloweenBoxBalance(balance);else setBoxBalance(balance);
+      const fonts=boxGrantReview==='font';
+      const quantity=Number(fonts?fontBoxQuantity:themed?halloweenBoxQuantity:boxQuantity);
+      const balance=await call<number>(fonts?'grantFontBoxes':themed?'grantHalloweenBoxes':'grantBoxes',{uid:profile.uid,quantity});
+      if(fonts)setFontBoxBalance(balance);else if(themed)setHalloweenBoxBalance(balance);else setBoxBalance(balance);
       setBoxGrantReview(null);
       setSuccess(`${quantity} ${quantity===1?'caixa concedida':'caixas concedidas'} ${themed?'de Halloween ':''}a ${profile.username}.`);
     }catch(cause){setError(errorMessage(cause));}finally{setBusy(false);}
@@ -153,6 +156,7 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
       </section>}
       {profile&&boxBalance!==null&&<section className="admin-pass-card" aria-label="Caixas do jogador"><div className="admin-pass-heading"><Box size={19}/><strong>Caixas de Personalização</strong></div><p>Saldo disponível: <strong>{boxBalance}</strong></p><label className="field-label" htmlFor="admin-box-quantity">Quantidade para conceder</label><div className="admin-pass-actions"><input id="admin-box-quantity" type="number" min="1" max="100" step="1" value={boxQuantity} onChange={event=>setBoxQuantity(event.target.value)}/><button type="button" className="secondary-button" disabled={busy||!Number.isInteger(Number(boxQuantity))||Number(boxQuantity)<1||Number(boxQuantity)>100} onClick={()=>setBoxGrantReview('classic')}>Conceder caixas</button></div><p className="muted text-xs">A concessão fica registrada. Cada abertura consome uma caixa.</p></section>}
       {profile&&halloweenBoxBalance!==null&&<section className="admin-pass-card admin-halloween-boxes" aria-label="Caixas de Halloween do jogador"><div className="admin-pass-heading"><Box size={19}/><strong>Caixas de Halloween</strong></div><p>Saldo disponível: <strong>{halloweenBoxBalance}</strong></p><label className="field-label" htmlFor="admin-halloween-box-quantity">Quantidade para conceder</label><div className="admin-pass-actions"><input id="admin-halloween-box-quantity" type="number" min="1" max="100" step="1" value={halloweenBoxQuantity} onChange={event=>setHalloweenBoxQuantity(event.target.value)}/><button type="button" className="secondary-button" disabled={busy||!Number.isInteger(Number(halloweenBoxQuantity))||Number(halloweenBoxQuantity)<1||Number(halloweenBoxQuantity)>100} onClick={()=>setBoxGrantReview('halloween')}>Conceder caixas de Halloween</button></div><p className="muted text-xs">Estas caixas abrem somente itens do evento.</p></section>}
+      {profile&&fontBoxBalance!==null&&<section className="admin-pass-card admin-font-boxes" aria-label="Caixas de Fontes do jogador"><div className="admin-pass-heading"><Box size={19}/><strong>Caixas de Fontes</strong></div><p>Saldo disponível: <strong>{fontBoxBalance}</strong></p><label className="field-label" htmlFor="admin-font-box-quantity">Quantidade para conceder</label><div className="admin-pass-actions"><input id="admin-font-box-quantity" type="number" min="1" max="100" step="1" value={fontBoxQuantity} onChange={event=>setFontBoxQuantity(event.target.value)}/><button type="button" className="secondary-button" disabled={busy||!Number.isInteger(Number(fontBoxQuantity))||Number(fontBoxQuantity)<1||Number(fontBoxQuantity)>100} onClick={()=>setBoxGrantReview('font')}>Conceder caixas de Fontes</button></div><p className="muted text-xs">Estas caixas abrem somente fontes de nome.</p></section>}
       {error && !review && <ErrorNotice message={error}/>}
       {success && <p className="success-message" role="status"><Check size={18}/>{success}</p>}
     </div>
@@ -169,7 +173,7 @@ export default function AdminProfileEditor({ initialSearch }: { initialSearch?: 
       {error&&<ErrorNotice message={error}/>}
       <div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void setFreePremium()} disabled={busy}>{busy?'Salvando…':grantReview === 'disable'?'Desativar':'Confirmar Premium'}</button></div>
     </Modal>
-    <Modal className="admin-dialog" open={Boolean(boxGrantReview)} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(null);}} title={boxGrantReview==='halloween'?'Conceder caixas de Halloween?':'Conceder caixas?'} description={`Adicionar ${boxGrantReview==='halloween'?halloweenBoxQuantity:boxQuantity} ${Number(boxGrantReview==='halloween'?halloweenBoxQuantity:boxQuantity)===1?'caixa':'caixas'} ${boxGrantReview==='halloween'?'de Halloween ':''}ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
+    <Modal className="admin-dialog" open={Boolean(boxGrantReview)} onOpenChange={open=>{if(!open&&!busy)setBoxGrantReview(null);}} title={boxGrantReview==='font'?'Conceder caixas de fontes?':boxGrantReview==='halloween'?'Conceder caixas de Halloween?':'Conceder caixas?'} description={`Adicionar ${boxGrantReview==='font'?fontBoxQuantity:boxGrantReview==='halloween'?halloweenBoxQuantity:boxQuantity} ${Number(boxGrantReview==='font'?fontBoxQuantity:boxGrantReview==='halloween'?halloweenBoxQuantity:boxQuantity)===1?'caixa':'caixas'} ${boxGrantReview==='font'?'de fontes ':boxGrantReview==='halloween'?'de Halloween ':''}ao saldo de ${profile?.username??'jogador'}.`}><p className="confirm-selection">{profile?.username} · #{profile?.playerId}</p>{error&&<ErrorNotice message={error}/>}<div className="admin-review-actions"><button type="button" className="secondary-button" onClick={()=>setBoxGrantReview(null)} disabled={busy}>Voltar</button><button type="button" className="primary-button" onClick={()=>void grantBoxes()} disabled={busy}>{busy?'Concedendo…':'Confirmar concessão'}</button></div></Modal>
   </section>;
 }
 
