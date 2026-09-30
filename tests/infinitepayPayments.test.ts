@@ -23,7 +23,7 @@ function load(name:string, { saved={...order},fetcher=vi.fn(async()=>Response.js
 }
 const payment={order_nsu:id,transaction_nsu:'transaction-1',invoice_slug:'invoice-1'};
 describe('Pix InfinitePay',()=>{
-  it.each([['classic',3,321],['classic',7,567],['classic',11,917],['font',1,321],['font',3,567],['halloween',2,321],['halloween',6,567],['halloween',10,917],['supporter',1,497]])('define o preço de %s/%i no servidor',async(kind,quantity,amount)=>{
+  it.each([['classic',3,321],['classic',7,567],['classic',11,917],['font',1,321],['font',3,567],['font',5,917],['halloween',2,321],['halloween',6,567],['halloween',10,917],['supporter',1,497]])('define o preço de %s/%i no servidor',async(kind,quantity,amount)=>{
     const fetcher=vi.fn(async()=>Response.json({url:'https://checkout.infinitepay.io/jrlescovar?lenc=test'}));
     const app=load('infinitepay-checkout',{fetcher});
     expect((await app.request({kind,quantity,amount:1,profileId:otherId,requestId:otherId})).status).toBe(200);
@@ -52,7 +52,7 @@ describe('Pix InfinitePay',()=>{
     expect(JSON.parse(app.fetcher.mock.calls[0][1].body)).toEqual({handle:'jrlescovar',order_nsu:id,transaction_nsu:'transaction-1',slug:'invoice-1'});
     expect(app.rpc).toHaveBeenCalledWith('settle_infinitepay_order',{p_order_id:id,p_transaction_nsu:'transaction-1',p_invoice_slug:'invoice-1',p_amount_cents:321,p_capture_method:'pix'});
   });
-  it.each([['classic',11],['halloween',10]])('confirma o pacote maior %s/%i somente pelo valor reservado',async(kind,quantity)=>{
+  it.each([['classic',11],['halloween',10],['font',5]])('confirma o pacote maior %s/%i somente pelo valor reservado',async(kind,quantity)=>{
     const app=load('infinitepay-webhook',{saved:{...order,kind,quantity,amount_cents:917},fetcher:vi.fn(async()=>Response.json({success:true,paid:true,amount:917,paid_amount:917,capture_method:'pix'}))});
     expect((await app.request({...payment,amount:1,quantity:100},false)).status).toBe(200);
     expect(app.rpc).toHaveBeenCalledWith('settle_infinitepay_order',expect.objectContaining({p_order_id:id,p_amount_cents:917}));

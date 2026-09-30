@@ -7,7 +7,7 @@ export type Order = { id: string; profile_id: string; handle: string; kind: stri
 export function product(kind: unknown, quantity: unknown) {
   if (typeof quantity !== 'number' || !Number.isInteger(quantity)) return null;
   const packs: Record<string, Record<number, number>> = {
-    classic: { 3: 321, 7: 567, 11: 917 }, halloween: { 2: 321, 6: 567, 10: 917 }, font: { 1: 321, 3: 567 }, supporter: { 1: 497 },
+    classic: { 3: 321, 7: 567, 11: 917 }, halloween: { 2: 321, 6: 567, 10: 917 }, font: { 1: 321, 3: 567, 5: 917 }, supporter: { 1: 497 },
   };
   if (typeof kind !== 'string' || !Object.hasOwn(packs, kind) || !packs[kind][quantity]) return null;
   const names: Record<string, string> = { classic: 'de Personalização', halloween: 'de Halloween', font: 'de Fontes' };

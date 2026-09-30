@@ -7,11 +7,13 @@ declare
   purchase public.infinitepay_orders;
   before_classic integer;
   before_halloween integer;
+  before_font integer;
 begin
   select id into strict player from public.public_profiles order by player_id desc limit 1;
   select coalesce((select balance from public.box_balances where profile_id=player),0) into before_classic;
   select coalesce((select balance from public.halloween_box_balances where profile_id=player),0) into before_halloween;
-  for pack in select * from (values ('classic',3,321),('classic',7,567),('classic',11,917),('halloween',2,321),('halloween',6,567),('halloween',10,917),('font',1,321),('font',3,567),('supporter',1,497)) as allowed(kind,quantity,amount)
+  select coalesce((select balance from public.font_box_balances where profile_id=player),0) into before_font;
+  for pack in select * from (values ('classic',3,321),('classic',7,567),('classic',11,917),('halloween',2,321),('halloween',6,567),('halloween',10,917),('font',1,321),('font',3,567),('font',5,917),('supporter',1,497)) as allowed(kind,quantity,amount)
   loop
     insert into public.infinitepay_orders(profile_id,request_id,handle,kind,quantity,amount_cents)
       values(player,gen_random_uuid(),'jrlescovar',pack.kind,pack.quantity,pack.amount) returning * into purchase;
@@ -31,6 +33,9 @@ begin
   end if;
   if (select balance from public.halloween_box_balances where profile_id=player) <> before_halloween+10 then
     raise exception 'Entrega incorreta ou duplicada das 10 caixas de Halloween.';
+  end if;
+  if (select balance from public.font_box_balances where profile_id=player) <> before_font+5 then
+    raise exception 'Entrega incorreta ou duplicada das 5 caixas de fontes.';
   end if;
   for pack in select * from (values ('classic',10),('halloween',11),('font',11)) as invalid(kind,quantity)
   loop
