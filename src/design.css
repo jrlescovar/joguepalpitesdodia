@@ -858,6 +858,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .global-ranking-list button:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; }
 .global-rank-position { color: #c8d2e0; font-weight: 750; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
 .global-rank-player { min-width: 0; display: block; }
+.global-ranking-page .global-rank-player { margin-left: 3px; }
 .global-rank-player strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: calc(.94rem + 2px); }
 .global-rank-points { justify-self: end; white-space: nowrap; font-size: 1.13rem; font-variant-numeric: tabular-nums; }
 .global-rank-points small { color: var(--muted); font-size: .7rem; font-weight: 500; }

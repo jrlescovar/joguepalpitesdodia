@@ -1,5 +1,3 @@
-import { isPrivateCosmetic } from './privateCollection';
-import './privateCollection.css';
 import { fontRarity } from './boxCatalog';
 import UsernameText from './UsernameText';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
@@ -11,8 +9,8 @@ import { Avatar,ErrorNotice } from './components';
 import { commonPassStyles, passStyleOptions } from './passStyleOptions';
 import './halloween.css';
 const epicStyles=new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
-const styleCategory=(style:PassNameStyle)=>isPrivateCosmetic(style)?'preview':style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
-const categoryName={preview:'Teste',rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
+const styleCategory=(style:PassNameStyle)=>style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
+const categoryName={rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
 export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:()=>void;onShop?:()=>void;supporterActive?:boolean}) {
   const [username,setUsername]=useState(profile?.username||'');const [color,setColor]=useState(profile&&avatarColors.includes(profile.avatarColor)?profile.avatarColor:avatarColors[0]);
   const [useGoogleAvatar,setUseGoogleAvatar]=useState(profile?.useGoogleAvatar!==false);
@@ -30,7 +28,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
   const [loadedFonts,setLoadedFonts]=useState<Set<UsernameFont>>(()=>new Set(['normal']));
   useEffect(()=>{
     let active=true;
-    const available=usernameFonts.filter(([font])=>font!=='normal'&&(!isPrivateCosmetic(font)||allStylesUnlocked)&&(allStylesUnlocked||box?.inventory.some(item=>item.kind==='font'&&item.style===font)));
+    const available=usernameFonts.filter(([font])=>font!=='normal'&&(allStylesUnlocked||box?.inventory.some(item=>item.kind==='font'&&item.style===font)));
     for(const [font,,family] of available){
       void document.fonts.load('400 16px "'+family+'"').then(faces=>{
         if(active&&faces.length)setLoadedFonts(current=>new Set([...current,font]));
@@ -38,8 +36,8 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     }
     return()=>{active=false;};
   },[allStylesUnlocked,box]);
-  const visibleNameStyles=passStyleOptions.filter(([style])=>(!isPrivateCosmetic(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedNames.has(style)));
-  const visibleFrameStyles=passStyleOptions.filter(([style])=>(!isPrivateCosmetic(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedFrames.has(style)));
+  const visibleNameStyles=passStyleOptions.filter(([style])=>(style==='none'||allStylesUnlocked||unlockedNames.has(style)));
+  const visibleFrameStyles=passStyleOptions.filter(([style])=>(style==='none'||allStylesUnlocked||unlockedFrames.has(style)));
   useEffect(()=>{if(!profile)return;let active=true;call<PassStatus>('getPassStatus').then(status=>{if(active){setPass(status);setNameStyle(current=>current===profile.passNameStyle?status.nameStyle:current);setBorderStyle(current=>current===profile.passBorderStyle?status.borderStyle:current);}}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
   useEffect(()=>{if(!profile)return;let active=true;call<BoxState>('getBoxState').then(state=>{if(active)setBox(state);}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
   const [availability,setAvailability]=useState<'idle'|'checking'|'available'|'taken'|'invalid'|'error'>('idle');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
@@ -60,7 +58,7 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     {styleTab!=='font'&&!canStyle&&<p className="pass-style-locked-note"><LockKeyhole size={14} aria-hidden="true"/> Abra caixas na Loja para desbloquear estilos.</p>}
     {styleTab!=='font'&&canStyle&&!allStylesUnlocked&&<p className="pass-style-locked-note">Seus estilos desbloqueados</p>}
     <div className={'pass-style-options'+(styleTab==='frame'?' frame-style-options':styleTab==='font'?' font-style-options':'')}>
-      {styleTab==='font'?usernameFonts.filter(([font])=>(!isPrivateCosmetic(font)||allStylesUnlocked)&&(font==='normal'||allStylesUnlocked||unlockedFonts.has(font))).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(font==='eater'||font==='butcherman'?' halloween-item':'')+(isPrivateCosmetic(font)?' style-category-preview':fontRarity(font)===null||fontRarity(font)==='common'?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':fontRarity(font)==='rare'?'rare':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle} style={{visibility:loadedFonts.has(font)?'visible':'hidden'}}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{(font==='eater'||font==='butcherman')&&<small> · Evento</small>}</span></button>):styleTab==='name'?
+      {styleTab==='font'?usernameFonts.filter(([font])=>(font==='normal'||allStylesUnlocked||unlockedFonts.has(font))).map(([font,label])=><button key={font} type="button" className={'pass-style-option'+(font==='eater'||font==='butcherman'?' halloween-item':'')+(fontRarity(font)===null||fontRarity(font)==='common'?'':' style-category-'+(fontRarity(font)==='legendary'?'legend':fontRarity(font)==='mythic'?'myth':fontRarity(font)==='rare'?'rare':'epic'))} aria-pressed={usernameFont===font} aria-label={'Fonte '+label} onClick={()=>setUsernameFont(font)}><span className={'pass-name-preview pass-name-'+nameStyle} style={{visibility:loadedFonts.has(font)?'visible':'hidden'}}><UsernameText name={username||'Nome'} font={font}/></span><span className="pass-style-option-label">{label}{(font==='eater'||font==='butcherman')&&<small> · Evento</small>}</span></button>):styleTab==='name'?
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);

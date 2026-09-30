@@ -69,23 +69,10 @@
 
 
 
-@font-face{font-family:'Teko';src:url('/fonts/preview-teko.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-teko{font-family:'Teko',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Oxanium';src:url('/fonts/preview-oxanium.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-oxanium{font-family:'Oxanium',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Chakra Petch';src:url('/fonts/preview-chakra.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-chakra{font-family:'Chakra Petch',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Exo 2';src:url('/fonts/preview-exo.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-exo{font-family:'Exo 2',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Satisfy';src:url('/fonts/preview-satisfy.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-satisfy{font-family:'Satisfy',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Marck Script';src:url('/fonts/preview-marck.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-marck{font-family:'Marck Script',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'UnifrakturCook';src:url('/fonts/preview-gothic.woff2?v=2') format('woff2');font-style:normal;font-weight:700;font-display:swap}
-.username-font-preview-gothic{font-family:'UnifrakturCook',sans-serif!important;font-weight:700!important;}
-@font-face{font-family:'Graduate';src:url('/fonts/preview-graduate.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-graduate{font-family:'Graduate',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Londrina Solid';src:url('/fonts/preview-londrina.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-londrina{font-family:'Londrina Solid',sans-serif!important;font-weight:400!important;}
-@font-face{font-family:'Faster One';src:url('/fonts/preview-faster.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
-.username-font-preview-faster{font-family:'Faster One',sans-serif!important;font-weight:400!important;}
+@font-face{font-family:'Marck Script';src:url('/fonts/marckscript.woff2?v=2') format('woff2');font-style:normal;font-weight:400;font-display:swap}
+.username-font-marckscript{font-family:'Marck Script',sans-serif!important;font-weight:400!important;padding-inline:.18em;}
+@font-face{font-family:'UnifrakturCook';src:url('/fonts/unifrakturcook.woff2?v=2') format('woff2');font-style:normal;font-weight:700;font-display:swap}
+.username-font-unifrakturcook{font-family:'UnifrakturCook',sans-serif!important;font-weight:700!important;padding-inline:.18em;}
+/* Give the taller glyphs space inside the gradient preview's clipping area. */
+.profile-style-group .pass-name-preview:has(.username-font-unifrakturcook),
+.profile-style-group .pass-name-preview:has(.username-font-marckscript){display:flex;align-items:center;justify-content:center;height:40px;line-height:1.4;}

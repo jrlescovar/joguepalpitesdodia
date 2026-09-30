@@ -1,4 +1,3 @@
-import { privateStyles } from './privateCollection';
 import type { PassNameStyle } from './types';
 
 export const commonPassStyles = new Set<PassNameStyle>(['none','blood','purple','green','dark-blue','pink']);
@@ -32,5 +31,4 @@ export const passStyleOptions: [PassNameStyle, string][] = [
   ['legend-nebula', 'Nebulosa'], ['legend-abyss', 'Abismo'],
   ['legend-prism', 'Prisma'], ['legend-solar', 'Solar'],
   ['legend-ruby-eclipse', 'Eclipse Rubro'],
-  ...privateStyles.map(([id,label]): [PassNameStyle,string] => [id,label]),
 ];
