@@ -996,3 +996,10 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .desktop-header-date { display: inline-flex; align-items: center; gap: 8px; margin-right: 14px; white-space: nowrap; }
   .home-heading { display: none; }
 }
+
+@media (min-width: 1200px) {
+  .shop-layout > .pass-panel { grid-column: 1 / -1; order: 0; }
+  .shop-layout > .box-offers { order: 1; }
+  .shop-layout > .box-panel { order: 2; }
+  .shop-layout > .error-notice { order: 2; }
+}
