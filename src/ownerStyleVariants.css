@@ -3,11 +3,11 @@
   color:var(--lab-mid); background:linear-gradient(var(--lab-angle),var(--lab-dark) 0%,var(--lab-mid) 30%,var(--lab-accent) 43%,var(--lab-accent) 52%,var(--lab-mid) 65%,var(--lab-dark) 100%); background-size:250% 250%; background-position:0% 0%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
 }
 [class*="pass-name-lab-blue-4-"] { --lab-angle:116deg; animation:lab-palette-ice 3.4s ease-in-out infinite; }
-[class*="pass-name-lab-blue-6-"] { --lab-angle:174deg; animation:lab-palette-mist 4.1s ease-in-out infinite; }
+[class*="pass-name-lab-blue-6-"] { --lab-angle:174deg; filter:brightness(1.2); animation:lab-palette-mist 4.1s ease-in-out infinite; }
 [class*="pass-name-lab-blue-7-"] { --lab-angle:203deg; animation:lab-palette-scan 4.45s ease-in-out infinite; }
 [class*="pass-name-lab-blue-9-"] { --lab-angle:261deg; animation:lab-palette-orbit 5.15s ease-in-out infinite; }
 [class*="pass-name-lab-blue-10-"] { --lab-angle:290deg; animation:lab-palette-aurora 5.5s ease-in-out infinite; }
-@keyframes lab-palette-mist {50%{filter:drop-shadow(0 0 3px var(--lab-accent));background-position:100% 100%}}
+@keyframes lab-palette-mist {50%{filter:brightness(1.2) drop-shadow(0 0 2px var(--lab-accent));background-position:100% 100%}}
 @keyframes lab-palette-ice {50%{background-position:100% 100%}}
 @keyframes lab-palette-scan {25%{background-position:0% 100%}50%{background-position:100% 100%}75%{background-position:100% 0%}}
 @keyframes lab-palette-orbit {50%{background-position:100% 100%;filter:drop-shadow(0 0 2px var(--lab-accent))}}
