@@ -19,7 +19,6 @@
 .arena-position.arena-third { color: #cd9968; }
 .arena-player { position: relative; margin-left: 5px; transform: translateY(-4px); }
 .arena-player small { position: absolute; top: 100%; left: 0; display: block; font-size: 10px; line-height: 12px; color: #aab2c0; }
-.profile-arena-crown { display: flex; justify-content: center; gap: 6px; align-items: center; color: #f4cb72; font-size: 12px; margin: 8px 0; }
 .arena-history { display: grid; gap: 12px; margin-top: 12px; }
 .arena-history h2 { margin: 0; font-size: 20px; }
 .arena-history-empty { margin: 0; color: #aab2c0; font-size: 14px; }

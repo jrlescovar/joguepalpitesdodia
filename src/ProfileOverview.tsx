@@ -3,7 +3,7 @@ import ProfileBattle from './ProfileBattle';
 import ProfileRetrospective from './ProfileRetrospective';
 import ProfileAdminPanel from './ProfileAdminPanel';
 import { useEffect, useState } from 'react';
-import { Check, Crown, Target, Trophy, X } from 'lucide-react';
+import { Check, Target, Trophy, X } from 'lucide-react';
 import { call } from './backend';
 import { battleMedalProgress, greenMedalProgress, hitRate, visibleDaily } from './domain';
 import { Avatar, XpBar } from './components';
@@ -33,8 +33,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   refreshTick?: number;
 }) {
   const [globalPosition, setGlobalPosition] = useState<number | null>(null);
-  const [arenaKing, setArenaKing] = useState(false);
-  useEffect(() => { let active = true; setArenaKing(false); void call<boolean>('getArenaKing', { uid: profile.uid }).then(value => { if (active) setArenaKing(value); }).catch(() => {}); return () => { active = false; }; }, [profile.uid, refreshTick]);
   const [battleStats, setBattleStats] = useState<BattleStats | null>(null);
   const [arenaWins, setArenaWins] = useState(0);
   useEffect(() => {
@@ -77,7 +75,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
       <h2 className={`pass-name-${profile.passNameStyle ?? 'none'}`}><UsernameText name={profile.username} font={profile.usernameFont}/></h2>
       <span className="muted text-sm">#{profile.playerId}</span>
-      {arenaKing && <span className="profile-arena-crown"><Crown size={16}/>Rei da Arena</span>}
       {typeof profile.level === 'number' && typeof profile.xp === 'number'
         ? <><div className="profile-level-mark">{hasSupporterEmblem&&<SupporterEmblem className="profile-supporter-emblem"/>}<span className="level-badge">Nível {profile.level}</span></div><XpBar profile={{ level: profile.level, xp: profile.xp }} showRemaining={false}/></>
         : <span className="muted text-sm profile-data-pending">Progresso indisponível no momento</span>}
