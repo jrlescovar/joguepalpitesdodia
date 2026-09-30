@@ -8,7 +8,6 @@ import SupporterEmblem from './SupporterEmblem';
 import ChestIcon from './ChestIcon';
 
 export default function SupporterPanel({ profile, refreshTick, onChanged }: { profile: Profile; refreshTick: number; onChanged: () => void }) {
-  const pixEnabled = import.meta.env.VITE_PIX_ENABLED === 'true';
   const [pass, setPass] = useState<PassStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -26,7 +25,10 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
   }, [profile.uid, refreshTick]);
   async function redirect(destination: 'pass-checkout'|'pass-portal'|'pass-pix') {
     setBusy(true); setError('');
-    try { await passRedirect(destination); } catch (cause) { setError(errorMessage(cause)); setBusy(false); }
+    try {
+      if (destination === 'pass-pix') await passRedirect('infinitepay-checkout', {kind:'supporter',quantity:1,requestId:crypto.randomUUID()});
+      else await passRedirect(destination);
+    } catch (cause) { setError(errorMessage(cause)); setBusy(false); }
   }
   const paidActive = Boolean(pass?.status === 'active' && pass.periodEndsAt && Date.parse(pass.periodEndsAt) > Date.now());
   const prepaidActive = Boolean(pass?.prepaidActive && pass.prepaidEndsAt && Date.parse(pass.prepaidEndsAt) > Date.now());
@@ -45,13 +47,13 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
     <div className="pass-offer-purchase">
       <p className="pass-offer-price">R$ 4,97<span>/mês</span></p>
     {pass?.active ? <>
-      <p className={`pass-current${!paidActive && !prepaidActive ? ' pass-current-free' : ''}`} role="status">{!paidActive && !prepaidActive ? (date ? `Termina em ${date}` : null) : <>{paidActive ? 'Assinatura ativa' : 'Premium por Pix ativo'}{date ? ` · ${paidActive && !pass.cancelAtPeriodEnd ? 'Próxima renovação em' : 'Termina em'} ${date}` : ''}</>}</p>
+      <p className={`pass-current${!paidActive && !prepaidActive ? ' pass-current-free' : ''}`} role="status">{!paidActive && !prepaidActive ? (date ? `Termina em ${date}` : null) : <>{paidActive ? 'Assinatura ativa' : 'Apoiador por Pix ativo'}{date ? ` · ${paidActive && !pass.cancelAtPeriodEnd ? 'Próxima renovação em' : 'Termina em'} ${date}` : ''}</>}</p>
       {paidActive && <button type="button" className="text-button" disabled={busy} onClick={() => void redirect('pass-portal')}>Gerenciar ou cancelar assinatura</button>}
     </> : pass ? <>
       <button type="button" className="primary-button" disabled={busy} onClick={() => void redirect('pass-checkout')}>{busy ? <LoaderCircle className="spin" size={18}/> : <Crown size={18}/>} Quero ser Apoiador</button>
       <p className="pass-billing-note">R$ 4,97 cobrados ao assinar, com renovação mensal automática. Cancele a qualquer momento.</p>
-      {pixEnabled && <><p className="pass-billing-note">Ou pague R$ 4,97 por Pix e tenha Premium por 30 dias, sem renovação automática. O acesso começa após a confirmação do pagamento.</p>
-      <button type="button" className="secondary-button" disabled={busy} onClick={() => void redirect('pass-pix')}>{busy ? <LoaderCircle className="spin" size={18}/> : <QrCode size={18}/>} Pagar 30 dias com Pix</button></>}
+      <p className="pass-billing-note">Ou pague R$ 4,97 por Pix e seja Apoiador por 30 dias, sem renovação automática. O acesso e as caixas são liberados após a confirmação.</p>
+      <button type="button" className="secondary-button" disabled={busy} onClick={() => void redirect('pass-pix')}>{busy ? <LoaderCircle className="spin" size={18}/> : <QrCode size={18}/>} Pagar 30 dias com Pix</button>
       {pass.status !== 'none' && <button type="button" className="text-button" disabled={busy} onClick={() => void redirect('pass-portal')}>Gerenciar assinatura anterior</button>}
     </> : <p className="muted text-sm">Carregando assinatura…</p>}
     </div>

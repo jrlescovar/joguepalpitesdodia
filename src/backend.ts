@@ -154,7 +154,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
   }
 }
 
-export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font' }) {
+export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout' | 'infinitepay-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font'; kind?: 'classic'|'halloween'|'font'|'supporter' }) {
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), 20000);
   let response;
@@ -177,10 +177,25 @@ export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' 
   }
   if (!data?.url) throw new Error(data?.error || 'Não foi possível abrir o pagamento.');
   const target = new URL(data.url);
-  if (target.protocol !== 'https:' || (target.hostname !== 'checkout.stripe.com' && target.hostname !== 'billing.stripe.com')) {
+  const hosts = destination === 'infinitepay-checkout' ? ['checkout.infinitepay.io','buy.infinitepay.io'] : ['checkout.stripe.com','billing.stripe.com'];
+  if (target.protocol !== 'https:' || target.username || target.password || target.port || !hosts.includes(target.hostname)) {
     throw new Error('Destino de pagamento inválido.');
   }
   window.location.assign(target.href);
+}
+
+export async function infinitePayStatus(body: { order_nsu: string; transaction_nsu?: string; slug?: string }) {
+  const { data, error } = await supabase.functions.invoke<{ paid?: boolean; error?: string }>('infinitepay-status', { body, signal: AbortSignal.timeout(15000) });
+  if (error) {
+    const context = (error as { context?: unknown }).context;
+    if (context instanceof Response) {
+      const response = await context.clone().json().catch(() => null);
+      if (typeof response?.error === 'string') throw new Error(response.error);
+    }
+    throw error;
+  }
+  if (data?.error) throw new Error(data.error);
+  return Boolean(data?.paid);
 }
 
 export function errorMessage(error: unknown): string {

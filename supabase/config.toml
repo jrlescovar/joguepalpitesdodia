@@ -15,3 +15,12 @@ verify_jwt = true
 
 [functions.push-dispatch]
 verify_jwt = false
+
+[functions.infinitepay-checkout]
+verify_jwt = true
+
+[functions.infinitepay-status]
+verify_jwt = true
+
+[functions.infinitepay-webhook]
+verify_jwt = false
