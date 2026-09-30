@@ -293,7 +293,7 @@
 @keyframes frame-blue-aurora {to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar.avatar[class*="pass-border-lab-blue-"]::before,.avatar.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
 
-/* Legendary frames use the two counter-rotating Aurora layers in their original palette. */
-.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"])::before { background:var(--supporter-ring) border-box; animation:frame-blue-aurora 7s linear infinite; }
-.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"])::after { background:var(--supporter-ring) border-box; opacity:.65; animation:frame-blue-aurora 5.5s linear infinite reverse; }
-@media(prefers-reduced-motion:reduce){.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"])::before,.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"])::after{animation:none!important;}}
+/* Legendary and mythic frames use the two counter-rotating Aurora layers in their original palette. */
+.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::before { background:var(--supporter-ring) border-box; animation:frame-blue-aurora 7s linear infinite; }
+.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::after { background:var(--supporter-ring) border-box; opacity:.65; animation:frame-blue-aurora 5.5s linear infinite reverse; }
+@media(prefers-reduced-motion:reduce){.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::before,.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::after{animation:none!important;}}
