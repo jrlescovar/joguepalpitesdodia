@@ -43,6 +43,7 @@
 .battle-outcome { margin: -4px 22px 16px; color: var(--accent); text-align: center; font-size: .82rem; }
 .battle-waiting { padding: 25px 22px; text-align: center; color: var(--muted); font-size: .88rem; }
 .battle-comparison-open { display: flex; align-items: center; justify-content: center; gap: 8px; width: calc(100% - 36px); margin: 0 18px 16px; padding: 10px; border: 1px solid #455a77; border-radius: 12px; background: #222b39; color: #a8cfff; font-size: 13px; font-weight: 700; cursor: pointer; }
+.battle-comparison-open.is-locked { border-color: #3a4351; background: #20252e; color: #8f9aaa; cursor: default; opacity: 1; }
 .battle-comparison-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .battle-comparison-dialog { width: min(540px, calc(100vw - 28px)); max-height: min(82dvh, 760px); overflow-y: auto; }
 .battle-comparison-list { display: grid; gap: 10px; margin-top: 18px; }

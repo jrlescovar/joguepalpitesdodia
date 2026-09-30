@@ -1,6 +1,6 @@
 import UsernameText from './UsernameText';
 import { useEffect, useState } from 'react';
-import { ListChecks, Swords } from 'lucide-react';
+import { ListChecks, Lock, Swords } from 'lucide-react';
 import { Avatar, ErrorNotice, Modal } from './components';
 import { call, errorMessage } from './backend';
 import RankEmblem from './RankEmblem';
@@ -94,7 +94,7 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
         </div>
       </div>
       {battle.result === 'no_contest' && <p className="battle-outcome">Sem adversário nesta rodada</p>}
-      {outcome && <button type="button" className="battle-comparison-open" onClick={() => setComparisonOpen(true)}><ListChecks size={17}/> Comparar palpites</button>}
+      {battle.result !== 'no_contest' && <button type="button" className={`battle-comparison-open${outcome ? '' : ' is-locked'}`} disabled={!outcome} aria-label={outcome ? 'Comparar palpites' : 'Comparar palpites, disponível após o último resultado do dia'} onClick={() => setComparisonOpen(true)}>{outcome ? <ListChecks size={17}/> : <Lock size={16}/>} Comparar palpites</button>}
     </> : <div className="battle-waiting">{battle.result === 'no_contest' ? 'Sem adversário nesta rodada.' : battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
     <Modal open={comparisonOpen} onOpenChange={open => { setComparisonOpen(open); if (!open) { setComparison(null); setComparisonError(''); } }} title={`Palpites da Batalha ${battleDate}`} className="battle-comparison-dialog">
       {comparisonError && <ErrorNotice message={comparisonError} retry={() => { setComparisonError(''); setComparison(null); }}/>}
