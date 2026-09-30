@@ -14,6 +14,7 @@
 .arena-position.arena-second { color: #c8d2e0; }
 .arena-position.arena-third { color: #cd9968; }
 .arena-player { position: relative; margin-left: 5px; }
+.arena-player strong { transform: translateY(2px); }
 .arena-player small { position: absolute; top: 100%; left: 0; display: block; font-size: 10px; line-height: 12px; color: #aab2c0; }
 .profile-arena-crown { display: flex; justify-content: center; gap: 6px; align-items: center; color: #f4cb72; font-size: 12px; margin: 8px 0; }
 .arena-history { display: grid; gap: 12px; margin-top: 12px; }
@@ -23,8 +24,8 @@
 .arena-history-card { display: grid; grid-template-columns: 44px 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; color: #f4f7fb; text-align: left; cursor: pointer; }
 .arena-history-card .avatar { width: 42px; height: 42px; }
 .arena-history-date { color: #f4f7fb; font-size: 12px; font-weight: 700; transform: translateX(-3px); }
-.arena-history-player { display: grid; min-width: 0; gap: 3px; }
-.arena-history-player strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
+.arena-history-player { display: grid; min-width: 0; gap: 0; }
+.arena-history-player strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; transform: translateY(2px); }
 .arena-history-player small { color: #aab2c0; font-size: 12px; }
 .arena-history-score { display: grid; justify-items: end; gap: 2px; color: #f4cb72; font-size: 13px; white-space: nowrap; }
 .arena-history-more { justify-self: center; }
