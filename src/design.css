@@ -640,6 +640,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .home-edit-profile { position: absolute; bottom: 3px; left: 24px; right: 24px; border: 0; padding: 0; background: transparent; color: var(--muted); font-size: 9px; line-height: 14px; text-align: center; cursor: pointer; }
 .bottom-nav a[aria-disabled="true"] { cursor: default; }
 .player-summary-identity h2 { margin-bottom: 2px; }
+.player-summary-identity > span { transform: translateY(-3px); }
 .player-summary-rank { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: auto; }
 .player-summary-rank .rank-emblem { width: 32px; height: 36px; }
 .player-summary .level-badge { margin-left: 0; }
