@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Box, Zap, Crown, LoaderCircle, QrCode } from 'lucide-react';
 import { call, errorMessage, passRedirect } from './backend';
-import { Avatar, ErrorNotice } from './components';
+import { ErrorNotice } from './components';
 import type { PassStatus, Profile } from './types';
 import './supporter.css';
 import SupporterEmblem from './SupporterEmblem';
-import UsernameText from './UsernameText';
 
 export default function SupporterPanel({ profile, refreshTick, onChanged }: { profile: Profile; refreshTick: number; onChanged: () => void }) {
   const pixEnabled = import.meta.env.VITE_PIX_ENABLED === 'true';
@@ -38,11 +37,10 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
       <ul className="pass-offer-benefits">
         <li><Zap size={23} aria-hidden="true"/><div><strong>+50% de XP</strong><span>Em todos os ganhos.</span></div></li>
         <li><Box size={23} aria-hidden="true"/><div><strong>7 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
-        <li><Crown size={23} aria-hidden="true"/><div><strong>Emblema de apoiador</strong><span>Seu apoio em destaque no perfil.</span></div></li>
+        <li><SupporterEmblem/><div><strong>Emblema de apoiador</strong><span>Seu apoio em destaque no perfil.</span></div></li>
       </ul>
     </div>
     <div className="pass-offer-purchase">
-      <div className="pass-player-preview" aria-label="Prévia do seu perfil como apoiador"><Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.useGoogleAvatar===false?null:profile.avatarUrl} borderStyle={profile.passBorderStyle}/><strong className={`pass-name-${profile.passNameStyle ?? 'none'}`}><UsernameText name={profile.username} font={profile.usernameFont}/></strong><SupporterEmblem/></div>
       <p className="pass-offer-price">R$ 4,97<span>/mês</span></p>
     {pass?.active ? <>
       <p className={`pass-current${!paidActive && !prepaidActive ? ' pass-current-free' : ''}`} role="status">{!paidActive && !prepaidActive ? (date ? `Termina em ${date}` : null) : <>{paidActive ? 'Assinatura ativa' : 'Premium por Pix ativo'}{date ? ` · ${paidActive && !pass.cancelAtPeriodEnd ? 'Próxima renovação em' : 'Termina em'} ${date}` : ''}</>}</p>
