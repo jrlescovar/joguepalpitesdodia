@@ -40,14 +40,14 @@ describe('owner palette variants',()=>{
     }
   });
   it('keeps the remaining pairs without retired styles or reused display names',()=>{
-    expect(ownerStyleVariants).toHaveLength(33);
-    for(const family of [4,6,7,9,10]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(family===9||family===10?6:7);
+    expect(ownerStyleVariants).toHaveLength(30);
+    for(const [family,count] of [[4,5],[6,6],[7,7],[9,6],[10,6]]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(count);
     const ids=ownerStyleVariants.map(row=>row[0]);
-    expect(new Set(ids).size).toBe(33);
-    expect(passStyleOptions.some(([id])=>['lab-blue-9-amber-cosmos','lab-blue-10-tropical-light'].includes(id))).toBe(false);
+    expect(new Set(ids).size).toBe(30);
+    expect(passStyleOptions.some(([id])=>['lab-blue-9-amber-cosmos','lab-blue-10-tropical-light','lab-blue-4-polar-amber','lab-blue-4-vivid-topaz','lab-blue-6-golden-mirage'].includes(id))).toBe(false);
     const normalize=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
     const labels=ownerStyleVariants.map(row=>normalize(row[1]));
-    expect(new Set(labels).size).toBe(33);
+    expect(new Set(labels).size).toBe(30);
     const existing=[...passStyleOptions.filter(([id])=>!ids.includes(id as typeof ids[number])).map(([,label])=>normalize(label)),...usernameFonts.map(([,label])=>normalize(label))];
     expect(labels.some(label=>existing.includes(label))).toBe(false);
   });

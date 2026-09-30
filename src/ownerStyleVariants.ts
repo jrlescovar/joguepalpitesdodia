@@ -2,17 +2,14 @@
 // prefix so profile visibility and box-catalog exclusion share the same rule.
 export const ownerStyleVariants = [
   ['lab-blue-4-rose-quartz','Quartzo Rosa',4,'#f26eb0','#ff72b8','#fff1f8','#ffbd47'],
-  ['lab-blue-4-polar-amber','Âmbar Polar',4,'#eaa623','#ffb92b','#fff8dc','#fff047'],
   ['lab-blue-4-tourmaline','Turmalina',4,'#35d096','#39e8a3','#ecfff5','#b8f542'],
   ['lab-blue-4-glacial-opal','Opala Glacial',4,'#77aaef','#80b7ff','#f7f5ff','#d58bff'],
   ['lab-blue-4-garnet','Granada',4,'#fb6c8a','#ff6887','#fff1f2','#ffc15c'],
-  ['lab-blue-4-vivid-topaz','Topázio Vivo',4,'#ef9d39','#ffac3e','#fff7ed','#ffeb42'],
   ['lab-blue-4-obsidian','Obsidiana',4,'#9babcc','#a9bbdf','#ffffff','#8be0ff'],
   ['lab-blue-6-violet-haze','Bruma Violeta',6,'#b777fc','#bd82fe','#faf5ff','#d1a9fd'],
   ['lab-blue-6-coral-cloud','Nuvem Coral',6,'#fa6732','#fd7443','#fff4ee','#fca586'],
   ['lab-blue-6-emerald-veil','Véu Esmeralda',6,'#06e177','#02e477','#f0fff5','#06e177'],
   ['lab-blue-6-daybreak','Alvorada',6,'#fb5b95','#fd6aa0','#fff7de','#fd9fc1'],
-  ['lab-blue-6-golden-mirage','Miragem Dourada',6,'#e1a806','#e4a902','#ffffef','#edb006'],
   ['lab-blue-6-crimson-silk','Seda Carmim',6,'#fb5b94','#fd6a9f','#fff1f6','#fd9fc0'],
   ['lab-blue-6-moonlight','Luar',6,'#069ee1','#02a7ee','#ffffff','#4ec6fa'],
   ['lab-blue-7-acid-pulse','Pulso Ácido',7,'#a9de2c','#b8f52e','#f7ffe1','#4ee5a4'],
