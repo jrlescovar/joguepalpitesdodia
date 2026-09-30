@@ -242,3 +242,20 @@
 @media (prefers-reduced-motion: reduce) { .supporter-medal-emblem::after { animation: none; } }
 
 .pass-offer-benefits .supporter-emblem { width: 23px; height: 26px; flex: none; }
+
+@media (max-width: 640px) {
+  .card.pass-panel { padding: 14px; gap: 12px; }
+  .pass-panel .pass-heading { gap: 8px; }
+  .pass-panel .pass-heading > .supporter-emblem { width: 27px; height: 30px; }
+  .pass-offer-eyebrow { margin-bottom: 4px; font-size: .6rem; }
+  .pass-panel .pass-heading h2 { font-size: 1.15rem; line-height: 1.2; }
+  .pass-offer-benefits { margin-top: 12px; gap: 6px; }
+  .pass-offer-benefits li { padding: 9px 10px; gap: 10px; border-radius: 10px; }
+  .pass-offer-benefits strong { font-size: .85rem; }
+  .pass-offer-benefits span { margin-top: 1px; font-size: .72rem; line-height: 1.35; }
+  .pass-offer-purchase { padding: 12px; gap: 8px; border-radius: 12px; }
+  .pass-offer-price { margin: 0; font-size: 1.65rem; }
+  .pass-offer-purchase .pass-billing-note { font-size: .7rem; line-height: 1.4; }
+  .pass-offer-purchase .pass-current { font-size: .78rem; }
+  .pass-offer-purchase .primary-button, .pass-offer-purchase .secondary-button { min-height: 44px; padding-block: 10px; }
+}
