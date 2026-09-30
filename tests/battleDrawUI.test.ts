@@ -23,6 +23,8 @@ describe('Batalha do Dia empatada', () => {
     expect(html).toContain('EMPATE');
     expect(html).toContain('+0 pts');
     expect(html).toContain('battle-rank-delta battle-tone-draw');
+    expect(html).toContain('battle-center has-score battle-score-draw');
+    expect(html).toContain('class="battle-points battle-tone-draw">108</span>');
     expect(html).not.toContain('battle-prediction-progress');
     vi.unstubAllGlobals();
   });

@@ -33,6 +33,7 @@
 .battle-center-mark { position: relative; display: flex; flex-direction: column; align-items: center; line-height: 1; }
 .battle-center-mark small { position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%); color: #a9bbd4; font-size: .67rem; font-weight: 700; letter-spacing: .02em; }
 .battle-x { color: #f4f7fb; font-size: 1.15rem; font-weight: 800; text-align: center; }
+.battle-score-draw .battle-x { color: #aeb8c8; }
 .battle-center.has-score .battle-x { font-size: 1.3rem; }
 .battle-points { color: #eef4ff; font-size: 1.2rem; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1; }
 .battle-reel-window { min-width: 0; height: 164px; overflow: visible; clip-path: inset(0 -12px 0 0); }

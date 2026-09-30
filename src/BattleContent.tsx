@@ -67,11 +67,11 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
     {opponent && battle.me ? <>
       <div className="battle-versus">
         <FighterTile fighter={battle.me} side="me" onOpenProfile={onOpenProfile}/>
-        <div className={`battle-center${showScore ? ' has-score' : ''}`} role={showScore ? 'status' : undefined} aria-label={showScore ? `${resultLabel ? `${resultLabel}. ` : ''}Placar: ${battle.myPoints ?? 0} pontos a ${battle.theirPoints ?? 0} pontos${outcome && deltaLabel ? `. Ranking: ${deltaLabel}` : ''}` : undefined}>
+        <div className={`battle-center${showScore ? ' has-score' : ''}${outcome === 'draw' ? ' battle-score-draw' : ''}`} role={showScore ? 'status' : undefined} aria-label={showScore ? `${resultLabel ? `${resultLabel}. ` : ''}Placar: ${battle.myPoints ?? 0} pontos a ${battle.theirPoints ?? 0} pontos${outcome && deltaLabel ? `. Ranking: ${deltaLabel}` : ''}` : undefined}>
           {showScore && outcome && <strong className={`battle-result-label battle-tone-${outcome}`}>{resultLabel}</strong>}
           {showScore && <span className={`battle-points${outcome ? ` battle-tone-${outcome}` : ''}`}>{battle.myPoints ?? 0}</span>}
           <span className="battle-center-mark">{showScore && <small aria-hidden="true">pts</small>}<span className="battle-x" aria-hidden="true">X</span></span>
-          {showScore && <span className="battle-points">{battle.theirPoints ?? 0}</span>}
+          {showScore && <span className={`battle-points${outcome === 'draw' ? ' battle-tone-draw' : ''}`}>{battle.theirPoints ?? 0}</span>}
         </div>
         <div className="battle-reel-window">
           <span className="battle-sr" role="status">{finished ? `Adversário: ${opponent.username}` : 'Revelando adversário'}</span>
