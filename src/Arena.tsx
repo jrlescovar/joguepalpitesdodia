@@ -69,7 +69,7 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
         <div className="arena-columns global-ranking-heading"><span>JOGADOR</span><span>PTS DO DIA</span></div>
         <ol className="global-ranking-list">{data.players.map((player, index) => <li key={player.uid} className={player.uid === ownUid ? 'arena-is-me is-me' : ''}><button onClick={() => openProfile(player)} aria-label={`Abrir perfil de ${player.username}, ${player.points} pontos na Arena`}><span className={`arena-position global-rank-position${index === 0 ? ' arena-first' : index === 1 ? ' arena-second' : index === 2 ? ' arena-third' : ''}`}>{player.uid === data.winnerId ? <Crown size={19}/> : `#${index + 1}`}</span><Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><span className="arena-player global-rank-player"><strong className={`pass-name-${player.passNameStyle ?? 'none'}`}><UsernameText name={player.username} font={player.usernameFont}/></strong><small>{player.greens} greens{player.uid === data.winnerId ? ' · Campeão' : ''}</small></span><strong className="arena-points global-rank-points">{player.points}</strong></button></li>)}</ol>
       </section>
-      <p className="arena-qualification">{data.qualified ? 'Você está classificado para a Arena!' : 'Você não está classificado para a Arena'}{!data.qualified && <small>Acompanhe os dez classificados e a disputa pela coroa.</small>}</p>
+      <p className="arena-qualification">{data.qualified ? 'Você está classificado para a Arena!' : 'Você não está classificado para a Arena'}</p>
     </>}
     <section className="arena-history" aria-label="Histórico da Arena">
       <h2>Histórico da Arena</h2>
