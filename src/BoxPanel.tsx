@@ -138,7 +138,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,theme='classic
     <div className="box-panel-actions"><button className="primary-button" type="button" disabled={busy||(!pending&&(state?.balance??0)<1)} onClick={()=>void openBox()}>{busy?<LoaderCircle className="spin" size={18}/>:pending||(state?.balance??0)>0?<Sparkles size={18}/>:<Box size={18}/>} {busy?'Preparando abertura…':pending?'Retomar abertura':state===null?'Carregando…':state.balance>0?'Abrir caixa':'Indisponível'}</button></div>
     {error&&!opening&&<ErrorNotice message={error}/>}
     </section>}
-    <BoxHelp open={helpOpen} onOpenChange={setHelpOpen} theme={theme}/>
+    <BoxHelp open={helpOpen} onOpenChange={setHelpOpen} theme={theme} profile={profile}/>
     <Modal open={Boolean(opening)} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
       {opening&&<div className="box-reveal">
         {phase==='box'?<div className="box-opening-stage"><BoxArt opening halloween={themed}/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}${themed?' halloween-item':''}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}{themed?' · Evento':''}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':'Moldura'}</small>}</div>)}</div></div>:

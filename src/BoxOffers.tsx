@@ -4,9 +4,10 @@ import { errorMessage, passRedirect } from './backend';
 import { ErrorNotice } from './components';
 import BoxHelp from './BoxHelp';
 import ChestIcon from './ChestIcon';
+import type { Profile } from './types';
 import './box-offers.css';
 
-export default function BoxOffers({theme='classic'}:{theme?:'classic'|'halloween'}) {
+export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'halloween';profile?:Profile}) {
   const themed=theme==='halloween';
   const packs=themed?[{quantity:2,price:'3,21'},{quantity:6,price:'5,67'}]:[{quantity:3,price:'3,21'},{quantity:7,price:'5,67'}];
   const [busy, setBusy] = useState<number | null>(null);
@@ -27,8 +28,9 @@ export default function BoxOffers({theme='classic'}:{theme?:'classic'|'halloween
       <h3>{pack.quantity} caixas</h3><p>{themed?'de Halloween':'de personalização'}</p>
       <button type="button" className="box-offer-buy" disabled={busy !== null} onClick={() => void buy(pack.quantity)} aria-label={`Comprar ${pack.quantity} caixas por R$ ${pack.price}`}>{busy === pack.quantity ? <LoaderCircle size={17} className="spin"/> : <Box size={17} aria-hidden="true"/>} R$ {pack.price}</button>
     </article>)}</div>
+    <button type="button" className="box-offers-view-items" onClick={()=>setHelp(true)}>Ver itens possíveis</button>
     {returned === 'paid' && <p className="box-offers-status" role="status">Aguardando confirmação do pagamento. Suas caixas aparecem assim que ele for confirmado.</p>}
     {error && <ErrorNotice message={error}/>}
-    <BoxHelp open={help} onOpenChange={setHelp} theme={theme}/>
+    <BoxHelp open={help} onOpenChange={setHelp} theme={theme} profile={profile}/>
   </section>;
 }

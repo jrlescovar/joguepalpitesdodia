@@ -1,8 +1,35 @@
-import { Modal } from './components';
-import { boxRarities, halloweenRarities, halloweenCatalog, boxStyleLabel } from './boxCatalog';
+import { useState } from 'react';
+import { Avatar, Modal } from './components';
+import UsernameText from './UsernameText';
+import { boxCatalog, boxRarities, halloweenCatalog, halloweenRarities, boxStyleLabel } from './boxCatalog';
+import type { BoxKind, Profile } from './types';
 import './box.css';
+import './halloween.css';
 
-export default function BoxHelp({ open, onOpenChange, theme='classic' }: { open: boolean; onOpenChange: (value: boolean) => void; theme?:'classic'|'halloween' }) {
+const itemTabs: { kind: BoxKind; label: string }[] = [
+  { kind: 'name', label: 'Cor nome' },
+  { kind: 'frame', label: 'Moldura' },
+  { kind: 'font', label: 'Fonte' },
+];
+
+export default function BoxHelp({ open, onOpenChange, theme='classic', profile }: { open: boolean; onOpenChange: (value: boolean) => void; theme?:'classic'|'halloween'; profile?:Profile }) {
   const themed=theme==='halloween';
-  return <Modal open={open} onOpenChange={onOpenChange} title={themed?'Caixa de Halloween':'Como funcionam as caixas'}><div className="box-help-content"><p>{themed?'Use uma caixa de Halloween para receber uma cor de nome, moldura ou fonte exclusiva do evento. Item repetido vira XP.':'Cada abertura entrega um item: nome colorido, moldura de perfil ou fonte. Se você já tiver o mesmo item, recebe XP.'}</p><div className="box-odds"><h3>Chances por raridade</h3><div>{(themed?halloweenRarities:boxRarities).map(tier => <span key={tier.id} className={`box-tier box-tier-${tier.id}`}><b>{tier.label}</b><strong>{tier.chance}%</strong><small>Repetido: +{tier.duplicateXp} XP</small></span>)}</div></div>{themed&&<div className="halloween-catalog"><h3>Itens possíveis</h3>{halloweenCatalog.map(item=><span key={`${item.kind}-${item.style}`}>{item.kind==='name'?'Nome':item.kind==='frame'?'Moldura':'Fonte'} · {boxStyleLabel(item.style)} · Evento</span>)}</div>}</div></Modal>;
+  const [kind,setKind]=useState<BoxKind>('name');
+  const catalog=(themed?halloweenCatalog:boxCatalog).filter(item=>item.kind===kind);
+  const previewName=profile?.username??'SeuNome';
+  return <Modal open={open} onOpenChange={onOpenChange} title={themed?'Caixa de Halloween':'Caixa de Personalização'} className="box-catalog-dialog"><div className="box-help-content">
+    <p>{themed?'Cada caixa contém um item exclusivo de Halloween. Item repetido vira XP.':'Cada caixa contém uma cor de nome, moldura ou fonte. Item repetido vira XP.'}</p>
+    <section className="box-catalog" aria-label="Itens possíveis nesta caixa">
+      <h3>Itens possíveis</h3>
+      <div className="box-catalog-tabs" role="group" aria-label="Tipo de item">{itemTabs.map(tab=><button key={tab.kind} type="button" aria-pressed={kind===tab.kind} onClick={()=>setKind(tab.kind)}>{tab.label}</button>)}</div>
+      <div className={`box-catalog-grid box-catalog-${kind}`}>{catalog.map(item=><div key={`${item.kind}-${item.style}`} className={`box-catalog-item box-tier-${item.rarity}`}>
+        <span className="box-catalog-preview">{item.kind==='frame'
+          ? <Avatar name={previewName} color={profile?.avatarColor??'#3b82f6'} imageUrl={profile?.useGoogleAvatar===false?null:profile?.avatarUrl} borderStyle={item.style}/>
+          : <strong className={`pass-name-${item.kind==='name'?item.style:profile?.passNameStyle??'none'}`}><UsernameText name={previewName} font={item.kind==='font'?item.style:profile?.usernameFont??'normal'}/></strong>}</span>
+        <span className="box-catalog-label">{boxStyleLabel(item.style)}{themed&&<small> · Evento</small>}</span>
+        <small className="box-catalog-rarity">{boxRarities.find(tier=>tier.id===item.rarity)?.label}</small>
+      </div>)}</div>
+    </section>
+    <div className="box-odds"><h3>Chances por raridade</h3><div>{(themed?halloweenRarities:boxRarities).map(tier => <span key={tier.id} className={`box-tier box-tier-${tier.id}`}><b>{tier.label}</b><strong>{tier.chance}%</strong><small>Repetido: +{tier.duplicateXp} XP</small></span>)}</div></div>
+  </div></Modal>;
 }

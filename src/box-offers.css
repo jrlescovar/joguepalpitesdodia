@@ -16,6 +16,9 @@
 .box-offer-buy:hover { filter: brightness(1.08); }
 .box-offer-buy:disabled { opacity: .65; cursor: wait; }
 .box-offers-status { font-size: 13px; color: #86efac; line-height: 1.5; }
+.box-offers-view-items { display: block; min-height: 40px; margin: 12px auto 0; padding: 7px 12px; border: 0; background: transparent; color: #a8cfff; font-size: 13px; font-weight: 700; cursor: pointer; }
+.box-offers-view-items:hover { color: #d6e8ff; }
+.box-offers-view-items:focus-visible { outline: 2px solid #93c5fd; outline-offset: 2px; border-radius: 6px; }
 @media (max-width: 640px) {
   .box-offers { padding: 16px; }
   .box-offers-heading h2 { font-size: 1rem; }
