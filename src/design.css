@@ -917,6 +917,14 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .admin-option-row { grid-template-columns: minmax(0,1fr) 92px; gap: 8px; }
   .pick-options.options-2 .option-copy { align-items: center; }
 }
+@media (max-width: 640px) and (display-mode: standalone) {
+  .bottom-nav {
+    transform: translate3d(-50%, 0, 0);
+    -webkit-transform: translate3d(-50%, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
 
 /* Patentes e guia de pontuação */
 .rank-emblem-emerald { --rank-color: #35db98; --rank-glow: #35db9833; }

@@ -82,7 +82,7 @@ export default function PlayerApp({user}:{user:AppUser}) {
     return()=>{active=false;if(timer!==undefined)clearTimeout(timer);};
   },[profile?.uid,session?.dayId,streakScan]);
   async function leave(){setLogoutBusy(true);try{await logout();}catch(e){setError(errorMessage(e));setLogoutBusy(false);}}
-  function navigate(id:Tab){location.hash=id;setTab(id);setAdmin(false);setFromTournament(false);window.scrollTo({top:0,behavior:'instant'});}
+  function navigate(id:Tab){history.replaceState(null,'',`${location.pathname}${location.search}#${id}`);setTab(id);setAdmin(false);setFromTournament(false);window.scrollTo({top:0,behavior:'instant'});}
   function openOwnFromTournament(){tournamentScroll.current=window.scrollY;navigate('perfil');setFromTournament(true);}
   function backToTournament(){setRestoreTournamentScroll(tournamentScroll.current);navigate('torneio');}
   if(profile===undefined||!session) {if(!error)return <LoadingScreen label="Carregando seu perfil…"/>;return <div className="setup-shell"><Brand/><ErrorNotice message={error} retry={()=>setRetry(r=>r+1)}/><button className="secondary-button" onClick={leave} disabled={logoutBusy}>Sair da conta</button></div>;}
