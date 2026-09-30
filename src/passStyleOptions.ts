@@ -35,4 +35,5 @@ export const passStyleOptions: [PassNameStyle, string][] = [
   ['lab-blue-6', 'Azul 6'],
   ['lab-blue-7', 'Azul 7'],
   ['lab-blue-9', 'Azul 9'],
+  ['lab-blue-10', 'Azul 10'],
 ];

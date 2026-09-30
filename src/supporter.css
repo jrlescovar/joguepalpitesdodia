@@ -297,3 +297,9 @@
 .avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::before { background:var(--supporter-ring) border-box; animation:frame-blue-aurora 7s linear infinite; }
 .avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::after { background:var(--supporter-ring) border-box; opacity:.65; animation:frame-blue-aurora 5.5s linear infinite reverse; }
 @media(prefers-reduced-motion:reduce){.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::before,.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::after{animation:none!important;}}
+
+/* Restore the original owner-only Aurora name and frame. */
+.pass-name-lab-blue-10 {color:#a5b4fc;background:linear-gradient(290deg,#1e40af,#a5b4fc,#ecfeff,#a5b4fc,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-aurora 5.5s ease-in-out infinite;}
+@keyframes lab-aurora {50%{filter:hue-rotate(30deg);background-position:100% 100%}}
+.avatar.avatar.pass-border-lab-blue-10::before { background:conic-gradient(#312e81,#60a5fa,#a5b4fc,#22d3ee,#312e81) border-box; animation:frame-blue-aurora 7s linear infinite; }
+.avatar.avatar.pass-border-lab-blue-10::after { background:conic-gradient(transparent,#c7d2fe88,transparent,#67e8f988,transparent) border-box; animation:frame-blue-aurora 5.5s linear infinite reverse; }
