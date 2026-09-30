@@ -25,4 +25,7 @@
   .login-redesign .google-button { min-height: 56px; }
   .login-redesign .how-it-works { gap: 20px; }
 }
+@media (max-width: 700px) and (display-mode: standalone) {
+  .login-redesign .public-header { height: calc(76px + env(safe-area-inset-top, 0px)); }
+}
 @media (max-width: 350px) { .login-redesign .login-copy h1 { font-size: 43px; } }
