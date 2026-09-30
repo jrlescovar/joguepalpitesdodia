@@ -951,3 +951,18 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 
 /* Preserve the row alignment while protecting tall font glyphs from vertical clipping. */
 .global-rank-player strong { padding-block: 2px; margin-block: -2px; }
+
+/* Desktop ranking: personal progress and battle beside the leaderboard. */
+@media (min-width: 1200px) {
+  .global-ranking-dashboard { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 28px; max-width: 1200px; align-items: start; }
+  .global-ranking-summary, .global-ranking-results { min-width: 0; }
+  .global-ranking-dashboard .rank-progress-card { margin: 0 0 16px; padding: 18px; }
+  .global-ranking-dashboard .rank-progress-track-row { grid-template-columns: 66px minmax(0, 1fr) 66px; gap: 12px; }
+  .global-ranking-dashboard .daily-battle-card { margin: 0 0 12px; }
+  .global-ranking-dashboard .battle-heading { padding: 15px 16px; }
+  .global-ranking-dashboard .battle-heading > span { font-size: .75rem; letter-spacing: .025em; }
+  .global-ranking-dashboard .battle-versus { padding-inline: 12px; }
+  .global-ranking-dashboard .global-ranking-results > .page-heading { min-height: 48px; margin-bottom: 18px; }
+  .global-ranking-dashboard .global-ranking-results h1 { font-size: 1.9rem; }
+  .global-ranking-dashboard .global-ranking-list button { padding-inline: 16px; grid-template-columns: 32px 42px minmax(0, 1fr) 32px 54px; gap: 10px; }
+}
