@@ -944,3 +944,6 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .rank-guide-row strong { font-size: 14px; }
 .rank-guide-row > span:last-child { font-size: 12px; color: var(--muted); }
 
+
+.global-ranking-page .rank-progress-card { margin-bottom: 12px; }
+.global-ranking-page .daily-battle-card { margin-top: 12px; }
