@@ -99,18 +99,23 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
     <Modal open={comparisonOpen} onOpenChange={open => { setComparisonOpen(open); if (!open) { setComparison(null); setComparisonError(''); } }} title={`Palpites da Batalha ${battleDate}`} className="battle-comparison-dialog">
       {comparisonError && <ErrorNotice message={comparisonError} retry={() => { setComparisonError(''); setComparison(null); }}/>}
       {!comparison && !comparisonError && <p role="status" className="muted">Carregando palpites…</p>}
-      {comparison && <div className="battle-comparison-list">{(() => {
-        let myTotal = 0; let theirTotal = 0;
-        return comparison.map(row => {
-          myTotal += row.myPoints; theirTotal += row.theirPoints;
-          return <section className="battle-comparison-row" key={row.slot}>
-            <div className="battle-comparison-heading"><strong>{row.slot === 0 ? 'Palpite do Dia' : `Extra ${row.slot}`}</strong><span>{myTotal} × {theirTotal}</span></div>
+      {battle.me && opponent && <div className="comparison-matchup">
+        {[battle.me, opponent].map(fighter => <div className="comparison-player" key={fighter.uid}><Avatar name={fighter.username} color={fighter.avatarColor} imageUrl={fighter.avatarUrl} borderStyle={fighter.passBorderStyle}/><strong className={`pass-name-${fighter.passNameStyle ?? 'none'}`}><UsernameText name={fighter.username} font={fighter.usernameFont}/></strong></div>)}
+        <div className={`comparison-final-score battle-tone-${outcome ?? 'draw'}`}><span>{resultLabel}</span><strong>{battle.myPoints ?? 0} <small>×</small> {battle.theirPoints ?? 0}</strong><small>Pontos do dia</small></div>
+      </div>}
+      {comparison && <>
+        <div className="battle-comparison-list">{comparison.map(row => {
+          const difference = (row.myPoints > 0) !== (row.theirPoints > 0);
+          return <section className={`battle-comparison-row${difference ? ' comparison-difference' : ''}`} key={row.slot}>
+            <div className="battle-comparison-heading"><strong>{row.slot === 0 ? 'Palpite do Dia' : `Extra ${row.slot}`}</strong>{difference && <span className="comparison-difference-label">Fez diferença</span>}</div>
             <p>{row.title}</p>
-            <div className="battle-comparison-choices"><div><small>{battle.me?.username}</small><strong>{row.myOption ?? 'Sem palpite'}</strong><span className={row.myPoints > 0 ? 'is-green' : ''}>+{row.myPoints} pts</span></div><div><small>{opponent?.username}</small><strong>{row.theirOption ?? 'Sem palpite'}</strong><span className={row.theirPoints > 0 ? 'is-green' : ''}>+{row.theirPoints} pts</span></div></div>
-            <small className="battle-comparison-answer">Resultado: {row.correctOption ?? 'Não informado'}</small>
+            <small className="battle-comparison-answer">Resultado correto: <strong>{row.correctOption ?? 'Não informado'}</strong></small>
+            <div className="battle-comparison-choices">{[{name:battle.me?.username,option:row.myOption,points:row.myPoints},{name:opponent?.username,option:row.theirOption,points:row.theirPoints}].map((choice,index)=><div className={choice.points>0?'comparison-choice-green':''} key={index}><small>{choice.name}</small><strong>{choice.option ?? 'Sem palpite'}</strong><span className={choice.points>0?'is-green':''}>{choice.points>0?'Green':'Sem pontos'} · +{choice.points} pts</span></div>)}</div>
           </section>;
-        });
-      })()}</div>}
+        })}</div>
+        <div className="comparison-summary"><strong>Resumo da batalha</strong><span>{comparison.filter(row=>row.myPoints>0).length} greens × {comparison.filter(row=>row.theirPoints>0).length} greens</span><small>Placar final: {battle.myPoints ?? 0} × {battle.theirPoints ?? 0} pts · {resultLabel === 'GANHOU' ? 'Vitória' : resultLabel === 'PERDEU' ? 'Derrota' : 'Empate'}</small></div>
+      </>}
+
     </Modal>
   </section>;
 }

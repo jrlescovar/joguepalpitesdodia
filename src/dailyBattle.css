@@ -88,3 +88,25 @@
 @media (prefers-reduced-motion: reduce) { .battle-page { transition: none; } }
 
 .battle-prediction-progress { margin-left: auto; flex-shrink: 0; color: #fff; font-size: 1rem; font-weight: 800; letter-spacing: 0; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.dialog-content.battle-comparison-dialog { max-width: 760px; }
+.comparison-matchup { display: grid; grid-template-columns: minmax(0,1fr) minmax(100px,auto) minmax(0,1fr); align-items: center; gap: 12px; margin: 20px 0; padding: 18px 12px; border: 1px solid #425570; border-radius: 16px; background: #19212d; }
+.comparison-player { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 9px; text-align: center; }
+.comparison-player:nth-child(2) { grid-column: 3; grid-row: 1; }
+.comparison-player > strong { max-width: 100%; overflow-wrap: anywhere; font-size: 1rem; line-height: 1.5; }
+.comparison-player .avatar { width: 58px; height: 58px; }
+.comparison-final-score { grid-column: 2; grid-row: 1; display: grid; gap: 6px; text-align: center; }
+.comparison-final-score > span { font-size: .65rem; font-weight: 800; letter-spacing: .07em; }
+.comparison-final-score > strong { font-size: 1.4rem; white-space: nowrap; }
+.comparison-final-score > strong small { font-size: 1rem; color: #aeb8c8; }
+.comparison-final-score > small { font-size: .65rem; color: #aeb8c8; }
+.comparison-difference { border-color: #709ccd; background: #202c3a; }
+.battle-comparison-heading .comparison-difference-label { color: #acd1ff; font-size: .65rem; }
+.battle-comparison-answer { margin: 0 0 12px; line-height: 1.5; }
+.battle-comparison-answer > strong { color: #d8e9fa; }
+.battle-comparison-choices .comparison-choice-green { border-color: #4ade8055; background: #4ade8009; }
+.comparison-summary { display: grid; gap: 7px; margin-top: 14px; padding: 16px; border-radius: 12px; background: #151c26; text-align: center; }
+.comparison-summary > span { color: #91dbaa; font-size: .85rem; }
+.comparison-summary > small { color: #b5bdca; line-height: 1.5; }
+@media (min-width: 1200px) { .battle-comparison-dialog { width: min(760px, calc(100vw - 80px)); } .battle-comparison-row { padding: 18px; } .battle-comparison-row p { font-size: 15px; } .battle-comparison-choices strong { font-size: 14px; } .comparison-player .avatar { width: 72px; height: 72px; } }
+@media (max-width: 380px) { .comparison-matchup { gap: 6px; padding-inline: 6px; grid-template-columns: minmax(0,1fr) 90px minmax(0,1fr); } .comparison-player > strong { font-size: .8rem; } .comparison-player .avatar { width: 46px; height: 46px; } .comparison-final-score > strong { font-size: 1.15rem; } }
