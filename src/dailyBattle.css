@@ -11,8 +11,10 @@
 .battle-heading .battle-rank-delta { margin-left: auto; flex-shrink: 0; font-size: .82rem; font-weight: 800; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .battle-tone-win { color: #4ade80; }
 .battle-tone-loss { color: #f87171; }
+.battle-tone-draw { color: #aeb8c8; }
 .battle-points.battle-tone-win { color: #4ade80; }
 .battle-points.battle-tone-loss { color: #f87171; }
+.battle-points.battle-tone-draw { color: #aeb8c8; }
 .battle-result-label { position: absolute; bottom: calc(100% + 25px); left: 50%; transform: translateX(-50%); font-size: .65rem; font-weight: 800; letter-spacing: .04em; line-height: 1.2; }
 .battle-versus { display: grid; grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr); align-items: center; gap: 9px; padding: 10px 18px 8px; }
 .battle-preview .battle-versus { padding-bottom: 8px; }

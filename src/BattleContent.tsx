@@ -58,12 +58,12 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
   const entries = [0, 1, 2, 3].map(index => candidates[index % candidates.length] ?? opponent!).concat(opponent ? [opponent] : []);
   const battleDate = formatBattleDate(battle.dayId);
   const showScore = !battle.preview && battle.scoreVisible;
-  const outcome = !battle.preview && battle.myResult === 'win' ? 'win' : !battle.preview && battle.myResult === 'loss' ? 'loss' : null;
-  const resultLabel = outcome === 'win' ? 'GANHOU' : outcome === 'loss' ? 'PERDEU' : '';
+  const outcome = !battle.preview && battle.myResult === 'win' ? 'win' : !battle.preview && battle.myResult === 'loss' ? 'loss' : !battle.preview && battle.myResult === 'draw' ? 'draw' : null;
+  const resultLabel = outcome === 'win' ? 'GANHOU' : outcome === 'loss' ? 'PERDEU' : outcome === 'draw' ? 'EMPATE' : '';
   const delta = battle.myRankDelta;
-  const deltaLabel = typeof delta === 'number' ? `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} pts` : null;
+  const deltaLabel = outcome === 'draw' ? '+0 pts' : typeof delta === 'number' ? `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} pts` : null;
   return <section className={`card daily-battle-card${battle.preview ? ' battle-preview' : ''}`} aria-label="Batalha do Dia">
-    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}{!battle.preview&&Number(battle.settledPredictions)>0&&Number(battle.totalPredictions)>0&&<small className="battle-prediction-progress" aria-label={String(battle.settledPredictions)+' de '+battle.totalPredictions+' apostas finalizadas'}>{battle.settledPredictions}/{battle.totalPredictions}</small>}</div>
+    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}{!battle.preview&&battle.result==='open'&&Number(battle.settledPredictions)>0&&Number(battle.totalPredictions)>0&&<small className="battle-prediction-progress" aria-label={String(battle.settledPredictions)+' de '+battle.totalPredictions+' apostas finalizadas'}>{battle.settledPredictions}/{battle.totalPredictions}</small>}</div>
     {opponent && battle.me ? <>
       <div className="battle-versus">
         <FighterTile fighter={battle.me} side="me" onOpenProfile={onOpenProfile}/>
@@ -84,4 +84,3 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
     </> : <div className="battle-waiting">{battle.result === 'no_contest' ? 'Sem adversário nesta rodada.' : battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
   </section>;
 }
-
