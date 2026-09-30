@@ -88,3 +88,12 @@
   line-height: 1.5 !important;
   vertical-align: middle;
 }
+
+/* Reserve ink space for the blackletter capitals and descenders. */
+.username-text.username-font-unifrakturcook { display:inline-block; padding:.12em .18em .16em!important; line-height:1.5!important; vertical-align:middle; }
+.profile-style-group .font-style-options .pass-name-preview:has(.username-font-unifrakturcook) { height:auto; min-height:32px; line-height:1.5; overflow:visible; }
+.box-catalog-preview > strong:has(.username-font-unifrakturcook),
+.box-name-preview:has(.username-font-unifrakturcook),
+.global-rank-player strong:has(.username-font-unifrakturcook),
+.rank-name > strong:has(.username-font-unifrakturcook),
+.podium-place > strong:has(.username-font-unifrakturcook) { overflow:visible; clip-path:inset(-.4em -.18em); }
