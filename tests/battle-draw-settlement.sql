@@ -1,4 +1,6 @@
 begin;
+-- This fixture tests only the battle; Arena awards are verified separately.
+alter table public.predictions disable trigger arena_prediction_changed;
 create or replace function public.battle_today() returns date language sql stable as $$
   select date '2070-01-03';
 $$;
