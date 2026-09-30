@@ -1,5 +1,5 @@
-// Owner-only palette pairs. IDs retain the lab
-// prefix so profile visibility and box-catalog exclusion share the same rule.
+// Palette pairs for the owner's effect families. Promoted event styles are
+// explicitly listed in the Halloween catalog; other lab styles remain private.
 export const ownerStyleVariants = [
   ['lab-blue-4-rose-quartz','Quartzo Rosa',4,'#f26eb0','#ff72b8','#fff1f8','#ffbd47'],
   ['lab-blue-4-tourmaline','Turmalina',4,'#35d096','#39e8a3','#ecfff5','#b8f542'],

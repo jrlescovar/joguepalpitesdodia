@@ -5,9 +5,10 @@ begin
  select id into strict other_id from public.public_profiles where player_id<>1000001 order by player_id limit 1;
  foreach variant_style in array styles loop
   if not public.box_style_allowed(owner_id,'name',variant_style) or not public.box_style_allowed(owner_id,'frame',variant_style) then raise exception 'Owner cannot use %',variant_style; end if;
-  if public.box_style_allowed(other_id,'name',variant_style) or public.box_style_allowed(other_id,'frame',variant_style) then raise exception 'Other player can use %',variant_style; end if;
+  if variant_style<>'lab-blue-10-jade-sky' and (public.box_style_allowed(other_id,'name',variant_style) or public.box_style_allowed(other_id,'frame',variant_style)) then raise exception 'Other player can use private %',variant_style; end if;
   if public.box_style_allowed(owner_id,'font',variant_style) then raise exception 'Color accepted as font %',variant_style; end if;
   update public.public_profiles set pass_name_style=variant_style,pass_border_style=variant_style where id=owner_id;
+  if variant_style<>'lab-blue-10-jade-sky' then
   begin
    update public.public_profiles set pass_name_style=variant_style where id=other_id;
    raise exception 'Other player bypassed name check';
@@ -16,7 +17,8 @@ begin
    update public.public_profiles set pass_border_style=variant_style where id=other_id;
    raise exception 'Other player bypassed frame check';
   exception when check_violation then null; end;
-  if exists(select 1 from public.box_style_catalog where box_style_catalog.style=variant_style) then raise exception 'Variant entered loot pool %',variant_style; end if;
+  end if;
+  if variant_style<>'lab-blue-10-jade-sky' and exists(select 1 from public.box_style_catalog where box_style_catalog.style=variant_style) then raise exception 'Private variant entered loot pool %',variant_style; end if;
  end loop;
  if public.box_style_allowed(owner_id,'name','lab-blue-1') or public.box_style_allowed(owner_id,'frame','lab-blue-4-unknown') then raise exception 'Unknown variant allowed'; end if;
  if not public.box_style_allowed(owner_id,'name','lab-blue-10') or not public.box_style_allowed(owner_id,'frame','lab-blue-4') then raise exception 'Existing previews unavailable'; end if;

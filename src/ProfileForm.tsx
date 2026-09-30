@@ -1,4 +1,4 @@
-import { boxRarities, fontRarity } from './boxCatalog';
+import { boxRarities, fontRarity, isHalloweenStyle } from './boxCatalog';
 import UsernameText from './UsernameText';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
 import { useEffect,useState,type FormEvent } from 'react';
@@ -37,8 +37,8 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     }
     return()=>{active=false;};
   },[allStylesUnlocked,box]);
-  const visibleNameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedNames.has(style)));
-  const visibleFrameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedFrames.has(style)));
+  const visibleNameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||isHalloweenStyle(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedNames.has(style)));
+  const visibleFrameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||isHalloweenStyle(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedFrames.has(style)));
   useEffect(()=>{if(!profile)return;let active=true;call<PassStatus>('getPassStatus').then(status=>{if(active){setPass(status);setNameStyle(current=>current===profile.passNameStyle?status.nameStyle:current);setBorderStyle(current=>current===profile.passBorderStyle?status.borderStyle:current);}}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
   useEffect(()=>{if(!profile)return;let active=true;call<BoxState>('getBoxState').then(state=>{if(active)setBox(state);}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
   const [availability,setAvailability]=useState<'idle'|'checking'|'available'|'taken'|'invalid'|'error'>('idle');const [busy,setBusy]=useState(false);const [error,setError]=useState('');
@@ -63,9 +63,9 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
         visibleNameStyles.map(([style,label])=>{
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
-          return <button type="button" key={style} className={'pass-style-option '+(style.startsWith('halloween-')?'halloween-item ':'')+(category?'style-category-'+category+' ':style.startsWith('lab-blue-')?'style-category-lab ':'')+(locked?'is-locked':'')} aria-pressed={nameStyle===style} aria-label={'Nome '+(category?categoryName[category]+' · ':'')+label+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setNameStyle(style)}>
+          return <button type="button" key={style} className={'pass-style-option '+(isHalloweenStyle(style)?'halloween-item ':'')+(category?'style-category-'+category+' ':style.startsWith('lab-blue-')?'style-category-lab ':'')+(locked?'is-locked':'')} aria-pressed={nameStyle===style} aria-label={'Nome '+(category?categoryName[category]+' · ':'')+label+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setNameStyle(style)}>
             <span className={'pass-name-preview '+(locked?'':'pass-name-'+style)}><UsernameText name={username||'Nome'} font={usernameFont}/></span>
-            <span className="pass-style-option-label">{label}{style.startsWith('halloween-')&&<small> · Evento</small>}</span>
+            <span className="pass-style-option-label">{label}{isHalloweenStyle(style)&&<small> · Evento</small>}</span>
             {locked&&<LockKeyhole size={15} aria-hidden="true"/>}
           </button>;
         }):
@@ -73,9 +73,9 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
           const locked=!canStyle&&style!=='none';
           const category=styleCategory(style);
           const frameLabel=style==='none'?'Sem moldura':label;
-          return <button type="button" key={style} className={'pass-style-option frame-option '+(style.startsWith('halloween-')?'halloween-item ':'')+(category?'style-category-'+category+' ':style.startsWith('lab-blue-')?'style-category-lab ':'')+(locked?'is-locked':'')} aria-pressed={borderStyle===style} aria-label={'Moldura '+(category?categoryName[category]+' · ':'')+frameLabel+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setBorderStyle(style)}>
+          return <button type="button" key={style} className={'pass-style-option frame-option '+(isHalloweenStyle(style)?'halloween-item ':'')+(category?'style-category-'+category+' ':style.startsWith('lab-blue-')?'style-category-lab ':'')+(locked?'is-locked':'')} aria-pressed={borderStyle===style} aria-label={'Moldura '+(category?categoryName[category]+' · ':'')+frameLabel+(locked?', exclusivo Premium':'')} disabled={locked} onClick={()=>setBorderStyle(style)}>
             <Avatar name={username||'?'} color={color} imageUrl={useGoogleAvatar?profile.avatarUrl:null} borderStyle={locked?'none':style}/>
-            <span className="pass-style-option-label">{frameLabel}{style.startsWith('halloween-')&&<small> · Evento</small>}</span>
+            <span className="pass-style-option-label">{frameLabel}{isHalloweenStyle(style)&&<small> · Evento</small>}</span>
             {locked&&<LockKeyhole size={15} aria-hidden="true"/>}
           </button>;
         })}

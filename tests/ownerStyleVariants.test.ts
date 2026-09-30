@@ -1,20 +1,24 @@
 import { describe, it, expect } from 'vitest';
 import { ownerStyleVariants } from '../src/ownerStyleVariants';
 import { passStyleOptions } from '../src/passStyleOptions';
-import { boxCatalog, halloweenCatalog, fontBoxCatalog, boxRarity } from '../src/boxCatalog';
+import { boxCatalog, halloweenCatalog, fontBoxCatalog, boxRarity, isHalloweenStyle } from '../src/boxCatalog';
 import { usernameFonts } from '../src/usernameFonts';
 
 describe('owner palette variants',()=>{
-  it('classifies promoted owner styles without adding them to any box',()=>{
+  it('keeps the promoted styles exclusive to Halloween with their intended rarities',()=>{
     expect(passStyleOptions.find(([style])=>style==='lab-blue-9')?.[1]).toBe('Órbita Azul');
     expect(boxRarity('lab-blue-9')).toBe('legendary');
-    expect([...boxCatalog,...halloweenCatalog,...fontBoxCatalog].some(item=>item.style==='lab-blue-9')).toBe(false);
+    expect(halloweenCatalog.filter(item=>item.style==='lab-blue-9')).toEqual([{kind:'name',style:'lab-blue-9',rarity:'legendary'},{kind:'frame',style:'lab-blue-9',rarity:'legendary'}]);
     const position=passStyleOptions.findIndex(([style])=>style==='lab-blue-9');
     expect(position).toBeGreaterThan(passStyleOptions.findIndex(([style])=>style==='legend-ruby-eclipse'));
     expect(position).toBeLessThan(passStyleOptions.findIndex(([style])=>style==='lab-blue-4'));
     const jade='lab-blue-10-jade-sky';
     expect(boxRarity(jade)).toBe('mythic');
-    expect([...boxCatalog,...halloweenCatalog,...fontBoxCatalog].some(item=>item.style===jade)).toBe(false);
+    expect(halloweenCatalog.filter(item=>item.style===jade)).toEqual([{kind:'name',style:jade,rarity:'mythic'},{kind:'frame',style:jade,rarity:'mythic'}]);
+    for(const style of ['lab-blue-9',jade]){
+      expect(isHalloweenStyle(style)).toBe(true);
+      expect([...boxCatalog,...fontBoxCatalog].some(item=>item.style===style)).toBe(false);
+    }
     const jadePosition=passStyleOptions.findIndex(([style])=>style===jade);
     expect(jadePosition).toBeGreaterThan(passStyleOptions.findIndex(([style])=>style==='myth-fuchsia-petroleum'));
     expect(jadePosition).toBeLessThan(passStyleOptions.findIndex(([style])=>style==='gold'));
@@ -51,10 +55,11 @@ describe('owner palette variants',()=>{
     const existing=[...passStyleOptions.filter(([id])=>!ids.includes(id as typeof ids[number])).map(([,label])=>normalize(label)),...usernameFonts.map(([,label])=>normalize(label))];
     expect(labels.some(label=>existing.includes(label))).toBe(false);
   });
-  it('keeps every new palette outside purchasable box pools',()=>{
+  it('keeps private palettes outside box pools except the promoted Halloween event style',()=>{
     for(const [style,label] of ownerStyleVariants){
       expect(passStyleOptions.filter(([id])=>id===style)).toEqual([[style,label]]);
-      expect([...boxCatalog,...halloweenCatalog,...fontBoxCatalog].some(item=>item.style===style)).toBe(false);
+      expect([...boxCatalog,...fontBoxCatalog].some(item=>item.style===style)).toBe(false);
+      expect(halloweenCatalog.some(item=>item.style===style)).toBe(style==='lab-blue-10-jade-sky');
     }
   });
 });

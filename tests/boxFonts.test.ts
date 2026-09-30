@@ -16,7 +16,7 @@ describe('font catalog',()=>{
  expect(boxRarities.find(item=>item.id==='legendary')).toMatchObject({chance:5,duplicateXp:500});
  });
  it('keeps Halloween items in their own box with every rarity available',()=>{
-   expect(halloweenCatalog).toHaveLength(9);
+    expect(halloweenCatalog).toHaveLength(13);
    expect(halloweenRarities.map(tier=>tier.chance)).toEqual([60,30,10]);
    for(const tier of halloweenRarities)expect(halloweenCatalog.some(item=>item.rarity===tier.id)).toBe(true);
    for(const item of halloweenCatalog)expect(boxCatalog.some(other=>other.kind===item.kind&&other.style===item.style)).toBe(false);
