@@ -1019,5 +1019,5 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 }
 
 @media (min-width: 1200px) {
-  .global-ranking-dashboard > .global-ranking-summary { padding-top: 16px; }
+  .global-ranking-dashboard > .global-ranking-summary { padding-top: 32px; }
 }
