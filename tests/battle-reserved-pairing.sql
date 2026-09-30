@@ -25,6 +25,7 @@ begin
     join public.public_profiles l on l.id=b.player_left
     join public.public_profiles r on r.id=b.player_right
     where b.day_id=date '2026-09-27' and not public.battle_compatible(l.rank_points,r.rank_points)
+      and abs(l.rank_points-r.rank_points)>400
   ) then raise exception 'Compatibility changed'; end if;
   select jsonb_agg(to_jsonb(b) order by id) into first_round from public.daily_battles b where day_id=date '2026-09-27';
   perform public.ensure_daily_battle_round(date '2026-09-27');
