@@ -27,7 +27,7 @@ export default function BoxHelp({ open, onOpenChange, theme='classic', profile }
         <span className="box-catalog-preview">{item.kind==='frame'
           ? <Avatar name={previewName} color={profile?.avatarColor??'#3b82f6'} imageUrl={profile?.useGoogleAvatar===false?null:profile?.avatarUrl} borderStyle={item.style}/>
           : <strong className={`pass-name-${item.kind==='name'?item.style:profile?.passNameStyle??'none'}`}><UsernameText name={previewName} font={item.kind==='font'?item.style:profile?.usernameFont??'normal'}/></strong>}</span>
-        <span className="box-catalog-label">{boxStyleLabel(item.style)}{themed&&<small> · Evento</small>}</span>
+        <span className="box-catalog-label">{boxStyleLabel(item.style)}</span>
         <small className="box-catalog-rarity">{boxRarities.find(tier=>tier.id===item.rarity)?.label}</small>
       </div>)}</div>
     </section>
