@@ -23,7 +23,7 @@ const needsHomeScreen = () => /iPad|iPhone|iPod/.test(navigator.userAgent)
   && !window.matchMedia('(display-mode: standalone)').matches
   && !(navigator as Navigator & { standalone?: boolean }).standalone;
 
-export default function NotificationSettings() {
+export default function NotificationSettings({ inDialog = false }: { inDialog?: boolean }) {
   const [settings, setSettings] = useState<Settings | null>(null);
   const [deviceActive, setDeviceActive] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -77,8 +77,8 @@ export default function NotificationSettings() {
     finally { setBusy(false); }
   }
 
-  return <section className="card profile-notifications" aria-label="Avisos no celular">
-    <div className="notification-heading"><Bell size={19}/><div><h2>Avisos no celular</h2><p>Escolha quais avisos quer receber. Todos começam desligados.</p></div></div>
+  return <section className={inDialog ? 'notification-settings-dialog' : 'card profile-notifications'} aria-label="Avisos no celular">
+    {inDialog ? <p className="notification-intro">Escolha quais avisos quer receber. Todos começam desligados.</p> : <div className="notification-heading"><Bell size={19}/><div><h2>Avisos no celular</h2><p>Escolha quais avisos quer receber. Todos começam desligados.</p></div></div>}
     {error && <ErrorNotice message={error} retry={() => { setError(''); setRetry(value => value + 1); }}/>}
     {!settings && !error && <p className="muted" role="status">Carregando avisos…</p>}
     {settings && <>

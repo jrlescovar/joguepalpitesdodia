@@ -67,6 +67,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .app-header, .public-header, .auth-loading-header { border-color: #2b303a; }
 .app-main { padding-top: 42px; }
 .page-heading { margin-bottom: 30px; }
+.profile-heading-actions { display: flex; align-items: center; gap: 8px; }
+.profile-heading-actions .icon-button { flex: none; }
 .home-heading { margin-bottom: 18px; }
 .home-heading .date-label { margin-left: auto; }
 @media (max-width: 800px) { .home-heading { display: none; } }
@@ -403,9 +405,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .profile-overview .profile-layout > section:last-child { grid-column: 2; grid-row: 1 / span 2; }
   .profile-overview .achievements-card { grid-column: 1; grid-row: 2; margin-top: 0; }
   .profile-overview .profile-retrospective { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
-  .profile-overview .profile-notifications { grid-column: 1 / -1; grid-row: 4; margin-top: 0; }
   .profile-overview .profile-battle-stats { grid-column: 1 / -1; grid-row: 3; margin-top: 0; }
-  .profile-overview.has-retrospective .profile-battle-stats { grid-row: 5; }
+  .profile-overview.has-retrospective .profile-battle-stats { grid-row: 4; }
 }
 .my-rank > strong { font-variant-numeric: tabular-nums; }
 .my-rank > span.muted { font-size: .875rem; }
@@ -580,6 +581,11 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .daily-skeleton { min-height: 370px; padding: 25px 18px; }
 }
 @media (max-width: 350px) {
+  .profile-page-heading { gap: 8px; }
+  .profile-page-heading h1 { font-size: 1.45rem; }
+  .profile-heading-actions { gap: 5px; }
+  .profile-heading-actions .icon-button { width: 40px; min-height: 40px; }
+  .profile-heading-actions .secondary-button { padding-inline: 9px; }
   .page-heading { margin-bottom: 10px; }
   .daily-header { padding: 10px 16px; }
   .prediction-content { padding-top: 15px; }
