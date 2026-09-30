@@ -1051,3 +1051,12 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   overflow: visible;
   clip-path: inset(-8px -4px -8px -8px);
 }
+
+/* Cover the iPhone status-bar safe area while a dialog is open. */
+.dialog-overlay { -webkit-backdrop-filter: blur(5px); }
+@media (max-width: 640px) {
+  .dialog-overlay { top: calc(0px - env(safe-area-inset-top, 0px)); bottom: calc(0px - env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .dialog-overlay { -webkit-backdrop-filter: none; }
+}
