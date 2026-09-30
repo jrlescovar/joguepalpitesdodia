@@ -19,6 +19,7 @@ export default function BoxHelp({ open, onOpenChange, theme='classic', profile }
   const previewName=profile?.username??'SeuNome';
   return <Modal open={open} onOpenChange={onOpenChange} title={themed?'Caixa de Halloween':'Caixa de Personalização'} className="box-catalog-dialog"><div className="box-help-content">
     <p>{themed?'Cada caixa contém um item exclusivo de Halloween. Item repetido vira XP.':'Cada caixa contém uma cor de nome, moldura ou fonte. Item repetido vira XP.'}</p>
+    <div className="box-odds"><h3>Chances por raridade</h3><div>{(themed?halloweenRarities:boxRarities).map(tier => <span key={tier.id} className={`box-tier box-tier-${tier.id}`}><b>{tier.label}</b><strong>{tier.chance}%</strong><small>Repetido: +{tier.duplicateXp} XP</small></span>)}</div></div>
     <section className="box-catalog" aria-label="Itens possíveis nesta caixa">
       <h3>Itens possíveis</h3>
       <div className="box-catalog-tabs" role="group" aria-label="Tipo de item">{itemTabs.map(tab=><button key={tab.kind} type="button" aria-pressed={kind===tab.kind} onClick={()=>setKind(tab.kind)}>{tab.label}</button>)}</div>
@@ -30,6 +31,5 @@ export default function BoxHelp({ open, onOpenChange, theme='classic', profile }
         <small className="box-catalog-rarity">{boxRarities.find(tier=>tier.id===item.rarity)?.label}</small>
       </div>)}</div>
     </section>
-    <div className="box-odds"><h3>Chances por raridade</h3><div>{(themed?halloweenRarities:boxRarities).map(tier => <span key={tier.id} className={`box-tier box-tier-${tier.id}`}><b>{tier.label}</b><strong>{tier.chance}%</strong><small>Repetido: +{tier.duplicateXp} XP</small></span>)}</div></div>
   </div></Modal>;
 }

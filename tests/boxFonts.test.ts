@@ -7,7 +7,7 @@ describe('font catalog',()=>{
  expect(fonts.map(item=>item.style).sort()).toEqual(usernameFonts.filter(([id])=>fontRarity(id)!==null).map(([id])=>id).sort());
  expect(Object.fromEntries(fonts.map(item=>[item.style,item.rarity]))).toEqual({monocraft:'legendary',dancingscript:'legendary',bebasneue:'epic',amaticsc:'mythic',kalam:'mythic',orbitron:'epic',permanentmarker:'mythic',blackopsone:'rare',audiowide:'rare',specialelite:'mythic',luckiestguy:'epic',creepster:'epic',eater:'legendary',butcherman:'mythic',metalmania:'epic',frijole:'mythic',rye:'mythic',quantico:'rare'});
  expect(fonts.every(item=>boxStyleLabel(item.style)!==item.style)).toBe(true);
- expect(halloweenCatalog.filter(item=>item.kind==='font').map(item=>item.style).sort()).toEqual(['butcherman','eater']);
+ expect(halloweenCatalog.filter(item=>item.kind==='font').map(item=>item.style).sort()).toEqual(['butcherman','creepster','eater']);
  });
  it('keeps owner preview fonts unclassified and outside boxes',()=>{for(const [id] of usernameFonts.filter(([font])=>font!=='normal'&&fontRarity(font)===null)){expect(fontRarity(id)).toBeNull();expect(boxCatalog.some(item=>item.style===id)).toBe(false);}});
  it('keeps color/frame pairs separate and total rarity odds unchanged',()=>{
@@ -16,7 +16,7 @@ describe('font catalog',()=>{
  expect(boxRarities.find(item=>item.id==='legendary')).toMatchObject({chance:5,duplicateXp:500});
  });
  it('keeps Halloween items in their own box with every rarity available',()=>{
-   expect(halloweenCatalog).toHaveLength(8);
+   expect(halloweenCatalog).toHaveLength(9);
    expect(halloweenRarities.map(tier=>tier.chance)).toEqual([60,30,10]);
    for(const tier of halloweenRarities)expect(halloweenCatalog.some(item=>item.rarity===tier.id)).toBe(true);
    for(const item of halloweenCatalog)expect(boxCatalog.some(other=>other.kind===item.kind&&other.style===item.style)).toBe(false);
