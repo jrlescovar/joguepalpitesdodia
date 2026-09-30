@@ -201,3 +201,26 @@
 
 /* Keep font previews steady while their self-hosted font finishes loading. */
 .profile-style-group .font-style-options .pass-name-preview { height: 32px; line-height: 32px; flex-shrink: 0; }
+
+.pass-offer-copy { min-width: 0; }
+.pass-offer-eyebrow { display: block; margin-bottom: 8px; color: #f2d18f; font-size: .68rem; letter-spacing: .12em; font-weight: 750; }
+.pass-panel .pass-heading h2 { font-size: clamp(1.35rem, 2vw, 1.8rem); line-height: 1.2; max-width: 510px; }
+.pass-offer-benefits { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
+.pass-offer-benefits li { display: flex; align-items: center; gap: 14px; padding: 14px; background: #efc76e08; border: 1px solid #eac57128; border-radius: 14px; }
+.pass-offer-benefits li > svg { color: #f2cd7e; flex: none; }
+.pass-offer-benefits strong, .pass-offer-benefits span { display: block; }
+.pass-offer-benefits strong { font-size: 1rem; }
+.pass-offer-benefits span { font-size: .8rem; line-height: 1.5; color: var(--muted); margin-top: 3px; }
+.pass-offer-purchase { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 0; padding: 20px; border-radius: 18px; border: 1px solid #eac57128; background: #efc76e08; }
+.pass-player-preview { display: grid; grid-template-columns: 54px minmax(0,1fr) 38px; gap: 10px; align-items: center; }
+.pass-player-preview .avatar { width: 54px; height: 54px; }
+.pass-player-preview > strong { min-width: 0; overflow-wrap: anywhere; font-size: 1.15rem; line-height: 1.5; }
+.pass-player-preview > span:last-child { grid-column: 1 / -1; text-align: center; color: var(--muted); font-size: .75rem; }
+.pass-offer-price { margin: 6px 0 0; text-align: center; font-size: 2rem; font-weight: 800; color: #f5d580; }
+.pass-offer-price > span { font-size: .9rem; font-weight: 500; color: var(--muted); margin-left: 4px; }
+.pass-offer-purchase .pass-billing-note { text-align: center; font-size: .75rem; color: var(--muted); }
+.pass-offer-purchase .pass-current { text-align: center; font-size: .85rem; }
+@media (min-width: 1200px) {
+  .pass-panel { grid-template-columns: minmax(0,1.35fr) minmax(280px, .85fr); gap: 28px; align-items: center; }
+  .pass-panel > .error-notice { grid-column: 1 / -1; }
+}

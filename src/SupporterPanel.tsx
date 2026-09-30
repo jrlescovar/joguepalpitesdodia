@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Check, Clock3, Crown, LoaderCircle, QrCode } from 'lucide-react';
+import { Box, Zap, Crown, LoaderCircle, QrCode } from 'lucide-react';
 import { call, errorMessage, passRedirect } from './backend';
-import { ErrorNotice } from './components';
+import { Avatar, ErrorNotice } from './components';
 import type { PassStatus, Profile } from './types';
 import './supporter.css';
 import SupporterEmblem from './SupporterEmblem';
+import UsernameText from './UsernameText';
 
 export default function SupporterPanel({ profile, refreshTick, onChanged }: { profile: Profile; refreshTick: number; onChanged: () => void }) {
   const pixEnabled = import.meta.env.VITE_PIX_ENABLED === 'true';
@@ -32,25 +33,28 @@ export default function SupporterPanel({ profile, refreshTick, onChanged }: { pr
   const endsAt = paidActive ? pass?.periodEndsAt : prepaidActive ? pass?.prepaidEndsAt : pass?.freeEndsAt;
   const date = endsAt ? new Date(endsAt).toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' }) : null;
   return <section className="card pass-panel" aria-label="Seja um Apoiador">
-    <div className="pass-heading"><SupporterEmblem/><div><h2>Seja um Apoiador</h2><p>R$ 4,97 por mês</p></div></div>
-    <ul className="pass-benefits">
-      <li><Check size={17} aria-hidden="true"/><span>XP 1,5× em todos os ganhos.</span></li>
-      <li><Check size={17} aria-hidden="true"/><span>Emblema de apoiador.</span></li>
-      <li><Check size={17} aria-hidden="true"/><span>5x Caixa de Personalização.</span></li>
-      <li><Clock3 size={17} aria-hidden="true"/><span>Personalização exclusiva do fundo de perfil <small>— em breve.</small></span></li>
-      <li><Clock3 size={17} aria-hidden="true"/><span>Isento de taxa na criação de torneios personalizados <small>— em breve.</small></span></li>
-      <li><Clock3 size={17} aria-hidden="true"/><span>Outras novidades em breve.</span></li>
-    </ul>
+    <div className="pass-offer-copy">
+      <div className="pass-heading"><SupporterEmblem/><div><span className="pass-offer-eyebrow">SEJA UM APOIADOR</span><h2>Evolua mais rápido. Jogue com seu estilo.</h2></div></div>
+      <ul className="pass-offer-benefits">
+        <li><Zap size={23} aria-hidden="true"/><div><strong>+50% de XP</strong><span>Em todos os ganhos.</span></div></li>
+        <li><Box size={23} aria-hidden="true"/><div><strong>5 caixas de personalização</strong><span>Ao assinar e em toda renovação.</span></div></li>
+        <li><Crown size={23} aria-hidden="true"/><div><strong>Emblema de apoiador</strong><span>Seu apoio em destaque no perfil.</span></div></li>
+      </ul>
+    </div>
+    <div className="pass-offer-purchase">
+      <div className="pass-player-preview" aria-label="Prévia do seu perfil como apoiador"><Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.useGoogleAvatar===false?null:profile.avatarUrl} borderStyle={profile.passBorderStyle}/><strong className={`pass-name-${profile.passNameStyle ?? 'none'}`}><UsernameText name={profile.username} font={profile.usernameFont}/></strong><SupporterEmblem/><span>Seu estilo de Apoiador</span></div>
+      <p className="pass-offer-price">R$ 4,97<span>/mês</span></p>
     {pass?.active ? <>
       <p className={`pass-current${!paidActive && !prepaidActive ? ' pass-current-free' : ''}`} role="status">{!paidActive && !prepaidActive ? (date ? `Termina em ${date}` : null) : <>{paidActive ? 'Assinatura ativa' : 'Premium por Pix ativo'}{date ? ` · ${paidActive && !pass.cancelAtPeriodEnd ? 'Próxima renovação em' : 'Termina em'} ${date}` : ''}</>}</p>
       {paidActive && <button type="button" className="text-button" disabled={busy} onClick={() => void redirect('pass-portal')}>Gerenciar ou cancelar assinatura</button>}
     </> : pass ? <>
-      <p className="pass-billing-note">A cobrança de R$ 4,97 começa ao assinar e se renova mensalmente. Cancele a assinatura a qualquer momento.</p>
-      <button type="button" className="primary-button" disabled={busy} onClick={() => void redirect('pass-checkout')}>{busy ? <LoaderCircle className="spin" size={18}/> : <Crown size={18}/>} Assinar por R$ 4,97/mês</button>
+      <button type="button" className="primary-button" disabled={busy} onClick={() => void redirect('pass-checkout')}>{busy ? <LoaderCircle className="spin" size={18}/> : <Crown size={18}/>} Quero ser Apoiador</button>
+      <p className="pass-billing-note">R$ 4,97 cobrados ao assinar, com renovação mensal automática. Cancele a qualquer momento.</p>
       {pixEnabled && <><p className="pass-billing-note">Ou pague R$ 4,97 por Pix e tenha Premium por 30 dias, sem renovação automática. O acesso começa após a confirmação do pagamento.</p>
       <button type="button" className="secondary-button" disabled={busy} onClick={() => void redirect('pass-pix')}>{busy ? <LoaderCircle className="spin" size={18}/> : <QrCode size={18}/>} Pagar 30 dias com Pix</button></>}
       {pass.status !== 'none' && <button type="button" className="text-button" disabled={busy} onClick={() => void redirect('pass-portal')}>Gerenciar assinatura anterior</button>}
     </> : <p className="muted text-sm">Carregando assinatura…</p>}
+    </div>
     {error && <ErrorNotice message={error} retry={onChanged}/>}
   </section>;
 }
