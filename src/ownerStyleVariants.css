@@ -1,59 +1,61 @@
-/* Keep each palette's hue across the animation; white is only a brief glint. */
+/* Colored sweeps keep the effect visible without bleaching the username. */
 [class*="pass-name-lab-blue-4-"], [class*="pass-name-lab-blue-6-"], [class*="pass-name-lab-blue-7-"], [class*="pass-name-lab-blue-9-"], [class*="pass-name-lab-blue-10-"] {
-  --lab-ink-shadow:color-mix(in srgb,var(--lab-mid) 70%,var(--lab-dark)); --lab-ink-accent:color-mix(in srgb,var(--lab-mid) 85%,var(--lab-accent));
-  color:var(--lab-mid); background:linear-gradient(var(--lab-angle),var(--lab-ink-shadow),var(--lab-mid),var(--lab-ink-accent),var(--lab-mid),var(--lab-ink-shadow)); background-size:250% 250%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  color:var(--lab-mid); background:linear-gradient(var(--lab-angle),var(--lab-dark) 0%,var(--lab-mid) 30%,var(--lab-accent) 43%,var(--lab-accent) 52%,var(--lab-mid) 65%,var(--lab-dark) 100%); background-size:250% 250%; background-position:0% 0%; -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
 }
-[class*="pass-name-lab-blue-4-"] { --lab-angle:116deg; background-image:linear-gradient(var(--lab-angle),var(--lab-mid) 0%,var(--lab-mid) 46%,var(--lab-light) 50%,var(--lab-mid) 54%,var(--lab-mid) 100%); animation:lab-palette-ice 3.4s ease-in-out infinite; }
+[class*="pass-name-lab-blue-4-"] { --lab-angle:116deg; animation:lab-palette-ice 3.4s ease-in-out infinite; }
 [class*="pass-name-lab-blue-6-"] { --lab-angle:174deg; animation:lab-palette-mist 4.1s ease-in-out infinite; }
-[class*="pass-name-lab-blue-7-"] { --lab-angle:203deg; animation:lab-scan 4.45s ease-in-out infinite; }
-[class*="pass-name-lab-blue-9-"] { --lab-angle:261deg; animation:lab-deep 5.15s ease-in-out infinite; }
-[class*="pass-name-lab-blue-10-"] { --lab-angle:290deg; animation:lab-aurora 5.5s ease-in-out infinite; }
-@keyframes lab-palette-mist {50%{filter:drop-shadow(0 0 5px var(--lab-accent));background-position:50% 100%}}
-@keyframes lab-palette-ice {50%{filter:brightness(1.12);background-position:100% 100%}}
+[class*="pass-name-lab-blue-7-"] { --lab-angle:203deg; animation:lab-palette-scan 4.45s ease-in-out infinite; }
+[class*="pass-name-lab-blue-9-"] { --lab-angle:261deg; animation:lab-palette-orbit 5.15s ease-in-out infinite; }
+[class*="pass-name-lab-blue-10-"] { --lab-angle:290deg; animation:lab-palette-aurora 5.5s ease-in-out infinite; }
+@keyframes lab-palette-mist {50%{filter:drop-shadow(0 0 3px var(--lab-accent));background-position:100% 100%}}
+@keyframes lab-palette-ice {50%{background-position:100% 100%}}
+@keyframes lab-palette-scan {25%{background-position:0% 100%}50%{background-position:100% 100%}75%{background-position:100% 0%}}
+@keyframes lab-palette-orbit {50%{background-position:100% 100%;filter:drop-shadow(0 0 2px var(--lab-accent))}}
+@keyframes lab-palette-aurora {50%{background-position:100% 100%;filter:drop-shadow(0 0 3px var(--lab-mid))}}
 
 /* Named palettes for both the username and matching frame. */
-.pass-name-lab-blue-4-rose-quartz, .pass-border-lab-blue-4-rose-quartz { --lab-dark:#9d386b; --lab-mid:#fb85ba; --lab-light:#fff1f8; --lab-accent:#f9b9db; }
-.pass-name-lab-blue-4-polar-amber, .pass-border-lab-blue-4-polar-amber { --lab-dark:#a16207; --lab-mid:#fbbf24; --lab-light:#fff8dc; --lab-accent:#fde68a; }
-.pass-name-lab-blue-4-tourmaline, .pass-border-lab-blue-4-tourmaline { --lab-dark:#287b66; --lab-mid:#4adeb1; --lab-light:#ecfff5; --lab-accent:#a7f3d0; }
-.pass-name-lab-blue-4-glacial-opal, .pass-border-lab-blue-4-glacial-opal { --lab-dark:#597ab8; --lab-mid:#b4c7ff; --lab-light:#f7f5ff; --lab-accent:#c4b5fd; }
-.pass-name-lab-blue-4-garnet, .pass-border-lab-blue-4-garnet { --lab-dark:#a93852; --lab-mid:#ff748b; --lab-light:#fff1f2; --lab-accent:#fda4af; }
-.pass-name-lab-blue-4-vivid-topaz, .pass-border-lab-blue-4-vivid-topaz { --lab-dark:#b76825; --lab-mid:#ffad55; --lab-light:#fff7ed; --lab-accent:#fed7aa; }
-.pass-name-lab-blue-4-obsidian, .pass-border-lab-blue-4-obsidian { --lab-dark:#687187; --lab-mid:#b9c4d6; --lab-light:#ffffff; --lab-accent:#e2e8f0; }
-.pass-name-lab-blue-6-violet-haze, .pass-border-lab-blue-6-violet-haze { --lab-dark:#7951aa; --lab-mid:#c69afa; --lab-light:#faf5ff; --lab-accent:#e9d5ff; }
-.pass-name-lab-blue-6-coral-cloud, .pass-border-lab-blue-6-coral-cloud { --lab-dark:#b06156; --lab-mid:#ffa993; --lab-light:#fff4ee; --lab-accent:#fed7c6; }
-.pass-name-lab-blue-6-emerald-veil, .pass-border-lab-blue-6-emerald-veil { --lab-dark:#308264; --lab-mid:#89e5ad; --lab-light:#f0fff5; --lab-accent:#bbf7d0; }
-.pass-name-lab-blue-6-daybreak, .pass-border-lab-blue-6-daybreak { --lab-dark:#9c6489; --lab-mid:#ffb4d2; --lab-light:#fff7de; --lab-accent:#fde68a; }
-.pass-name-lab-blue-6-golden-mirage, .pass-border-lab-blue-6-golden-mirage { --lab-dark:#9e7c3d; --lab-mid:#f5d88c; --lab-light:#ffffef; --lab-accent:#fef3c7; }
-.pass-name-lab-blue-6-crimson-silk, .pass-border-lab-blue-6-crimson-silk { --lab-dark:#9c4661; --lab-mid:#fda4ba; --lab-light:#fff1f6; --lab-accent:#fecdd3; }
-.pass-name-lab-blue-6-moonlight, .pass-border-lab-blue-6-moonlight { --lab-dark:#607891; --lab-mid:#b9dae8; --lab-light:#ffffff; --lab-accent:#e0f2fe; }
-.pass-name-lab-blue-7-acid-pulse, .pass-border-lab-blue-7-acid-pulse { --lab-dark:#738c23; --lab-mid:#c8ff45; --lab-light:#f7ffe1; --lab-accent:#e0ff99; }
-.pass-name-lab-blue-7-ruby-laser, .pass-border-lab-blue-7-ruby-laser { --lab-dark:#b12c53; --lab-mid:#ff527b; --lab-light:#fff1f5; --lab-accent:#fda4af; }
-.pass-name-lab-blue-7-lilac-code, .pass-border-lab-blue-7-lilac-code { --lab-dark:#7742bf; --lab-mid:#b277ff; --lab-light:#faf5ff; --lab-accent:#ddd6fe; }
-.pass-name-lab-blue-7-solar-pixel, .pass-border-lab-blue-7-solar-pixel { --lab-dark:#ac7a0a; --lab-mid:#ffe134; --lab-light:#ffffed; --lab-accent:#fef08a; }
-.pass-name-lab-blue-7-turquoise-beat, .pass-border-lab-blue-7-turquoise-beat { --lab-dark:#198c90; --lab-mid:#25ece0; --lab-light:#efffff; --lab-accent:#99f6e4; }
-.pass-name-lab-blue-7-pink-tuning, .pass-border-lab-blue-7-pink-tuning { --lab-dark:#a935a2; --lab-mid:#f66ee8; --lab-light:#fff1ff; --lab-accent:#f5b8f1; }
-.pass-name-lab-blue-7-white-signal, .pass-border-lab-blue-7-white-signal { --lab-dark:#727d8e; --lab-mid:#d4e1f4; --lab-light:#ffffff; --lab-accent:#f1f5f9; }
-.pass-name-lab-blue-9-copper-orbit, .pass-border-lab-blue-9-copper-orbit { --lab-dark:#a65b39; --lab-mid:#ffaf7d; --lab-light:#fff7ee; --lab-accent:#fed7aa; }
-.pass-name-lab-blue-9-green-comet, .pass-border-lab-blue-9-green-comet { --lab-dark:#31855e; --lab-mid:#6ee7a4; --lab-light:#f0fff6; --lab-accent:#a7f3d0; }
-.pass-name-lab-blue-9-magenta-satellite, .pass-border-lab-blue-9-magenta-satellite { --lab-dark:#9433a2; --lab-mid:#eb7bf9; --lab-light:#fdf4ff; --lab-accent:#f5d0fe; }
-.pass-name-lab-blue-9-gravity, .pass-border-lab-blue-9-gravity { --lab-dark:#5f55a3; --lab-mid:#b5a6ff; --lab-light:#f5f3ff; --lab-accent:#ddd6fe; }
-.pass-name-lab-blue-9-meteorite, .pass-border-lab-blue-9-meteorite { --lab-dark:#a05239; --lab-mid:#ff936b; --lab-light:#fff7ed; --lab-accent:#fdba74; }
-.pass-name-lab-blue-9-amber-cosmos, .pass-border-lab-blue-9-amber-cosmos { --lab-dark:#997028; --lab-mid:#edc765; --lab-light:#fff9e6; --lab-accent:#fde68a; }
-.pass-name-lab-blue-9-crimson-star, .pass-border-lab-blue-9-crimson-star { --lab-dark:#a33c63; --lab-mid:#fb83ac; --lab-light:#fff1f8; --lab-accent:#fbcfe8; }
-.pass-name-lab-blue-10-red-aurora, .pass-border-lab-blue-10-red-aurora { --lab-dark:#9c3660; --lab-mid:#ff668e; --lab-light:#fff1f7; --lab-accent:#ffbd80; }
-.pass-name-lab-blue-10-jade-sky, .pass-border-lab-blue-10-jade-sky { --lab-dark:#2e8169; --lab-mid:#72e6b1; --lab-light:#f0fff9; --lab-accent:#83e8ef; }
-.pass-name-lab-blue-10-borealis, .pass-border-lab-blue-10-borealis { --lab-dark:#6764bf; --lab-mid:#b5a9ff; --lab-light:#faf5ff; --lab-accent:#86efdb; }
-.pass-name-lab-blue-10-pink-horizon, .pass-border-lab-blue-10-pink-horizon { --lab-dark:#ad507b; --lab-mid:#f8a1ca; --lab-light:#fff1f8; --lab-accent:#d3b0ff; }
-.pass-name-lab-blue-10-tropical-light, .pass-border-lab-blue-10-tropical-light { --lab-dark:#629135; --lab-mid:#b7f35c; --lab-light:#ffffe8; --lab-accent:#ffca6c; }
-.pass-name-lab-blue-10-indigo-vortex, .pass-border-lab-blue-10-indigo-vortex { --lab-dark:#6262b7; --lab-mid:#a2b6ff; --lab-light:#f1f5ff; --lab-accent:#e0a4ff; }
-.pass-name-lab-blue-10-golden-galaxy, .pass-border-lab-blue-10-golden-galaxy { --lab-dark:#a57a31; --lab-mid:#ffdb81; --lab-light:#fffbea; --lab-accent:#f7a9dd; }
+.pass-name-lab-blue-4-rose-quartz, .pass-border-lab-blue-4-rose-quartz { --lab-dark:#f26eb0; --lab-mid:#ff72b8; --lab-light:#fff1f8; --lab-accent:#ffbd47; }
+.pass-name-lab-blue-4-polar-amber, .pass-border-lab-blue-4-polar-amber { --lab-dark:#eaa623; --lab-mid:#ffb92b; --lab-light:#fff8dc; --lab-accent:#fff047; }
+.pass-name-lab-blue-4-tourmaline, .pass-border-lab-blue-4-tourmaline { --lab-dark:#35d096; --lab-mid:#39e8a3; --lab-light:#ecfff5; --lab-accent:#b8f542; }
+.pass-name-lab-blue-4-glacial-opal, .pass-border-lab-blue-4-glacial-opal { --lab-dark:#77aaef; --lab-mid:#80b7ff; --lab-light:#f7f5ff; --lab-accent:#d58bff; }
+.pass-name-lab-blue-4-garnet, .pass-border-lab-blue-4-garnet { --lab-dark:#fb6c8a; --lab-mid:#ff6887; --lab-light:#fff1f2; --lab-accent:#ffc15c; }
+.pass-name-lab-blue-4-vivid-topaz, .pass-border-lab-blue-4-vivid-topaz { --lab-dark:#ef9d39; --lab-mid:#ffac3e; --lab-light:#fff7ed; --lab-accent:#ffeb42; }
+.pass-name-lab-blue-4-obsidian, .pass-border-lab-blue-4-obsidian { --lab-dark:#9babcc; --lab-mid:#a9bbdf; --lab-light:#ffffff; --lab-accent:#8be0ff; }
+.pass-name-lab-blue-6-violet-haze, .pass-border-lab-blue-6-violet-haze { --lab-dark:#ba82f8; --lab-mid:#bd80ff; --lab-light:#faf5ff; --lab-accent:#ff87d3; }
+.pass-name-lab-blue-6-coral-cloud, .pass-border-lab-blue-6-coral-cloud { --lab-dark:#ee8b6c; --lab-mid:#ff9772; --lab-light:#fff4ee; --lab-accent:#ffd65a; }
+.pass-name-lab-blue-6-emerald-veil, .pass-border-lab-blue-6-emerald-veil { --lab-dark:#3fcd8a; --lab-mid:#43e295; --lab-light:#f0fff5; --lab-accent:#b3ef45; }
+.pass-name-lab-blue-6-daybreak, .pass-border-lab-blue-6-daybreak { --lab-dark:#e977a4; --lab-mid:#ff7cac; --lab-light:#fff7de; --lab-accent:#ffc647; }
+.pass-name-lab-blue-6-golden-mirage, .pass-border-lab-blue-6-golden-mirage { --lab-dark:#eabe4b; --lab-mid:#ffd14f; --lab-light:#ffffef; --lab-accent:#ff9d40; }
+.pass-name-lab-blue-6-crimson-silk, .pass-border-lab-blue-6-crimson-silk { --lab-dark:#f1729f; --lab-mid:#ff74a6; --lab-light:#fff1f6; --lab-accent:#fba8f5; }
+.pass-name-lab-blue-6-moonlight, .pass-border-lab-blue-6-moonlight { --lab-dark:#90c0d8; --lab-mid:#9dd4ec; --lab-light:#ffffff; --lab-accent:#91a7ff; }
+.pass-name-lab-blue-7-acid-pulse, .pass-border-lab-blue-7-acid-pulse { --lab-dark:#a9de2c; --lab-mid:#b8f52e; --lab-light:#f7ffe1; --lab-accent:#4ee5a4; }
+.pass-name-lab-blue-7-ruby-laser, .pass-border-lab-blue-7-ruby-laser { --lab-dark:#fd6a90; --lab-mid:#ff688e; --lab-light:#fff1f5; --lab-accent:#ffb35f; }
+.pass-name-lab-blue-7-lilac-code, .pass-border-lab-blue-7-lilac-code { --lab-dark:#b284ff; --lab-mid:#b084ff; --lab-light:#faf5ff; --lab-accent:#ee8fff; }
+.pass-name-lab-blue-7-solar-pixel, .pass-border-lab-blue-7-solar-pixel { --lab-dark:#edcb2c; --lab-mid:#ffe236; --lab-light:#ffffed; --lab-accent:#ffab46; }
+.pass-name-lab-blue-7-turquoise-beat, .pass-border-lab-blue-7-turquoise-beat { --lab-dark:#26d1c5; --lab-mid:#2ae4d4; --lab-light:#efffff; --lab-accent:#c0ed45; }
+.pass-name-lab-blue-7-pink-tuning, .pass-border-lab-blue-7-pink-tuning { --lab-dark:#ed66e2; --lab-mid:#f66aea; --lab-light:#fff1ff; --lab-accent:#ffaa58; }
+.pass-name-lab-blue-7-white-signal, .pass-border-lab-blue-7-white-signal { --lab-dark:#b7c7de; --lab-mid:#cadcf5; --lab-light:#ffffff; --lab-accent:#89b4ff; }
+.pass-name-lab-blue-9-copper-orbit, .pass-border-lab-blue-9-copper-orbit { --lab-dark:#eb9e60; --lab-mid:#ffb16b; --lab-light:#fff7ee; --lab-accent:#ffe147; }
+.pass-name-lab-blue-9-green-comet, .pass-border-lab-blue-9-green-comet { --lab-dark:#45ce8e; --lab-mid:#4ae39c; --lab-light:#f0fff6; --lab-accent:#c8ef43; }
+.pass-name-lab-blue-9-magenta-satellite, .pass-border-lab-blue-9-magenta-satellite { --lab-dark:#de6ef3; --lab-mid:#e975ff; --lab-light:#fdf4ff; --lab-accent:#91b9ff; }
+.pass-name-lab-blue-9-gravity, .pass-border-lab-blue-9-gravity { --lab-dark:#9c8ff0; --lab-mid:#a799ff; --lab-light:#f5f3ff; --lab-accent:#80e4f2; }
+.pass-name-lab-blue-9-meteorite, .pass-border-lab-blue-9-meteorite { --lab-dark:#ea8958; --lab-mid:#ff9961; --lab-light:#fff7ed; --lab-accent:#ffdb49; }
+.pass-name-lab-blue-9-amber-cosmos, .pass-border-lab-blue-9-amber-cosmos { --lab-dark:#dcb546; --lab-mid:#efc84f; --lab-light:#fff9e6; --lab-accent:#ff974e; }
+.pass-name-lab-blue-9-crimson-star, .pass-border-lab-blue-9-crimson-star { --lab-dark:#f56f9c; --lab-mid:#ff709f; --lab-light:#fff1f8; --lab-accent:#ffa75e; }
+.pass-name-lab-blue-10-red-aurora, .pass-border-lab-blue-10-red-aurora { --lab-dark:#f96b9d; --lab-mid:#ff659a; --lab-light:#fff1f7; --lab-accent:#ffba48; }
+.pass-name-lab-blue-10-jade-sky, .pass-border-lab-blue-10-jade-sky { --lab-dark:#42d0a0; --lab-mid:#48e6b0; --lab-light:#f0fff9; --lab-accent:#46ddeb; }
+.pass-name-lab-blue-10-borealis, .pass-border-lab-blue-10-borealis { --lab-dark:#a18ef2; --lab-mid:#b099ff; --lab-light:#faf5ff; --lab-accent:#58e4b6; }
+.pass-name-lab-blue-10-pink-horizon, .pass-border-lab-blue-10-pink-horizon { --lab-dark:#e578af; --lab-mid:#f583be; --lab-light:#fff1f8; --lab-accent:#b395ff; }
+.pass-name-lab-blue-10-tropical-light, .pass-border-lab-blue-10-tropical-light { --lab-dark:#99da47; --lab-mid:#a9ef4c; --lab-light:#ffffe8; --lab-accent:#ffc844; }
+.pass-name-lab-blue-10-indigo-vortex, .pass-border-lab-blue-10-indigo-vortex { --lab-dark:#8b94f2; --lab-mid:#939eff; --lab-light:#f1f5ff; --lab-accent:#e28cff; }
+.pass-name-lab-blue-10-golden-galaxy, .pass-border-lab-blue-10-golden-galaxy { --lab-dark:#ebc159; --lab-mid:#ffd564; --lab-light:#fffbea; --lab-accent:#f08cde; }
 /* Frame glints stay colored, except the requested Halo (6) and Orbit (9). */
-.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,var(--lab-dark) 12deg 30deg,color-mix(in srgb,var(--lab-mid) 80%,var(--lab-accent)) 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::after { background:var(--lab-mid) border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,var(--lab-dark) 12deg 30deg,var(--lab-accent) 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::after { background:var(--lab-accent) border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::before { background:var(--lab-mid) border-box; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::after { background:var(--lab-accent) border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-6-"]::after { background:var(--lab-light) border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,transparent 12deg 22deg) border-box; animation:frame-blue-dashes 8s steps(16,end) infinite; }
-.avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::after { background:repeating-conic-gradient(transparent 0deg 82deg,var(--lab-mid) 82deg 90deg) border-box; animation:frame-blue-dashes 4s steps(8,end) infinite reverse; }
+.avatar.avatar.avatar[class*="pass-border-lab-blue-7-"]::after { background:repeating-conic-gradient(transparent 0deg 82deg,var(--lab-accent) 82deg 90deg) border-box; animation:frame-blue-dashes 4s steps(8,end) infinite reverse; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-dark),var(--lab-mid),var(--lab-dark)) border-box; animation:frame-blue-current 9s linear infinite reverse; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-9-"]::after { background:repeating-conic-gradient(transparent 0deg 100deg,var(--lab-mid) 103deg,var(--lab-light) 110deg,var(--lab-mid) 117deg,transparent 120deg) border-box; animation:frame-blue-satellites 3s linear infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-mid),var(--lab-accent),var(--lab-dark)) border-box; animation:frame-blue-aurora 7s linear infinite; }

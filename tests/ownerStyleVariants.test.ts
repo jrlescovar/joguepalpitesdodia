@@ -5,6 +5,26 @@ import { boxCatalog, halloweenCatalog, fontBoxCatalog } from '../src/boxCatalog'
 import { usernameFonts } from '../src/usernameFonts';
 
 describe('owner palette variants',()=>{
+  it('keeps colored sweeps distinct and readable on dark cards throughout the gradient',()=>{
+    const rgb=(hex:string)=>hex.match(/[a-f0-9]{2}/gi)!.map(value=>parseInt(value,16));
+    const luminance=(channels:number[])=>channels.map(value=>{
+      const c=value/255;
+      return c<=.04045?c/12.92:((c+.055)/1.055)**2.4;
+    }).reduce((sum,value,i)=>sum+value*[.2126,.7152,.0722][i],0);
+    const background=luminance(rgb('#242a35'));
+    for(const [id,, ,dark,mid,,accent] of ownerStyleVariants){
+      const base=rgb(mid),sweep=rgb(accent);
+      expect(Math.hypot(...base.map((channel,i)=>channel-sweep[i])),id+' colored sweep').toBeGreaterThan(45);
+      const stops=[rgb(dark),base,sweep,base,rgb(dark)];
+      for(let segment=0;segment<stops.length-1;segment++){
+        for(let step=0;step<=20;step++){
+          const t=step/20;
+          const sample=stops[segment].map((channel,i)=>channel*(1-t)+stops[segment+1][i]*t);
+          expect((luminance(sample)+.05)/(background+.05),id+' gradient contrast').toBeGreaterThanOrEqual(4.5);
+        }
+      }
+    }
+  });
   it('has seven pairs per approved family and no reused display names',()=>{
     expect(ownerStyleVariants).toHaveLength(35);
     for(const family of [4,6,7,9,10]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(7);
