@@ -30,7 +30,7 @@ export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'h
     <div className={`box-offers-grid${packs.length===3?' box-offers-grid-three':''}`}>{packs.map(pack => <article className={`box-offer${pack.quantity === featuredQuantity ? ' box-offer-best' : ''}`} key={pack.quantity}>
       <div className="box-offer-tag">{pack.quantity === featuredQuantity ? 'Em Alta' : null}</div>
       <div className="box-offer-art" aria-hidden="true"><ChestIcon halloween={themed} graffiti={fonts}/><span>×{pack.quantity}</span></div>
-      <h3>{pack.quantity} {pack.quantity===1?'caixa':'caixas'}</h3><p>{fonts?'de fontes':themed?'de Halloween':'de personalização'}</p>
+      <h3>{pack.quantity} {pack.quantity===1?'caixa':'caixas'}</h3>
       <button type="button" className="box-offer-buy box-offer-buy-pix" disabled={busy !== null} onClick={() => void buy(pack.quantity)} aria-label={`Comprar ${pack.quantity} ${pack.quantity===1?'caixa':'caixas'} por R$ ${pack.price} na InfinitePay`}>{busy === pack.quantity ? <LoaderCircle size={17} className="spin"/> : <QrCode size={17} aria-hidden="true"/>} R$ {pack.price}</button>
     </article>)}</div>
     <button type="button" className="box-offers-view-items" onClick={()=>setHelp(true)}>Ver itens possíveis</button>
