@@ -224,3 +224,15 @@
   .pass-panel { grid-template-columns: minmax(0,1.35fr) minmax(280px, .85fr); gap: 28px; align-items: center; }
   .pass-panel > .error-notice { grid-column: 1 / -1; }
 }
+
+@media (min-width: 1200px) {
+  .pass-panel { align-items: stretch; }
+  .pass-panel .pass-offer-purchase { justify-content: center; gap: 18px; }
+  .pass-panel .pass-player-preview { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 12px; }
+  .pass-panel .pass-player-preview > strong { flex: 0 1 auto; max-width: calc(100% - 120px); }
+  .pass-panel .pass-player-preview > .supporter-emblem { flex: 0 0 38px; }
+  .pass-panel .pass-player-preview > span:last-child { flex: 0 0 100%; margin-top: 4px; }
+  .pass-panel .pass-heading { align-items: flex-start; }
+  .pass-panel .pass-heading > .supporter-emblem { margin-top: 28px; flex-shrink: 0; }
+  .pass-panel .pass-heading h2 { max-width: 620px; }
+}
