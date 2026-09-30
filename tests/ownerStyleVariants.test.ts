@@ -5,13 +5,19 @@ import { boxCatalog, halloweenCatalog, fontBoxCatalog, boxRarity } from '../src/
 import { usernameFonts } from '../src/usernameFonts';
 
 describe('owner palette variants',()=>{
-  it('classifies the original Blue 9 as legendary without adding it to any box',()=>{
+  it('classifies promoted owner styles without adding them to any box',()=>{
     expect(passStyleOptions.find(([style])=>style==='lab-blue-9')?.[1]).toBe('Órbita Azul');
     expect(boxRarity('lab-blue-9')).toBe('legendary');
     expect([...boxCatalog,...halloweenCatalog,...fontBoxCatalog].some(item=>item.style==='lab-blue-9')).toBe(false);
     const position=passStyleOptions.findIndex(([style])=>style==='lab-blue-9');
     expect(position).toBeGreaterThan(passStyleOptions.findIndex(([style])=>style==='legend-ruby-eclipse'));
     expect(position).toBeLessThan(passStyleOptions.findIndex(([style])=>style==='lab-blue-4'));
+    const jade='lab-blue-10-jade-sky';
+    expect(boxRarity(jade)).toBe('mythic');
+    expect([...boxCatalog,...halloweenCatalog,...fontBoxCatalog].some(item=>item.style===jade)).toBe(false);
+    const jadePosition=passStyleOptions.findIndex(([style])=>style===jade);
+    expect(jadePosition).toBeGreaterThan(passStyleOptions.findIndex(([style])=>style==='myth-fuchsia-petroleum'));
+    expect(jadePosition).toBeLessThan(passStyleOptions.findIndex(([style])=>style==='gold'));
   });
   it('keeps colored sweeps distinct and readable on dark cards throughout the gradient',()=>{
     const rgb=(hex:string)=>hex.match(/[a-f0-9]{2}/gi)!.map(value=>parseInt(value,16));

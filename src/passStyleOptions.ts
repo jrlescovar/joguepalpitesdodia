@@ -26,6 +26,7 @@ export const passStyleOptions: [PassNameStyle, string][] = [
   ['myth-jade-mauve', 'Jade'],
   ['myth-olive-rose-graphite', 'Oliva'],
   ['myth-fuchsia-petroleum', 'Fúscia'],
+  ...ownerStyleVariants.filter(([style])=>style==='lab-blue-10-jade-sky').map(([style,label]):[PassNameStyle,string]=>[style,label]),
   ['halloween-bloodmoon', 'Lua Sangrenta'],
   ['halloween-mist', 'Névoa Roxa'],
   ['gold', 'Gold'], ['rainbow', 'Arco-íris'],
@@ -37,5 +38,5 @@ export const passStyleOptions: [PassNameStyle, string][] = [
   ['lab-blue-6', 'Azul 6'],
   ['lab-blue-7', 'Azul 7'],
   ['lab-blue-10', 'Azul 10'],
-  ...ownerStyleVariants.map(([style,label]):[PassNameStyle,string]=>[style,label]),
+  ...ownerStyleVariants.filter(([style])=>style!=='lab-blue-10-jade-sky').map(([style,label]):[PassNameStyle,string]=>[style,label]),
 ];
