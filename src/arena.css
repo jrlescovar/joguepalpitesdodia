@@ -27,7 +27,7 @@
 .arena-history-card .avatar { width: 42px; height: 42px; }
 .arena-history-date { color: #f4f7fb; font-size: 12px; font-weight: 700; transform: translateX(-3px); }
 .arena-history-player { display: grid; min-width: 0; gap: 0; }
-.arena-history-player strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; transform: translateY(2px); }
+.arena-history-player strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; transform: translateY(4px); }
 .arena-history-player small { color: #aab2c0; font-size: 12px; }
 .arena-history-score { display: grid; justify-items: end; gap: 2px; color: #f4cb72; font-size: 13px; white-space: nowrap; }
 .arena-history-more { justify-self: center; }
