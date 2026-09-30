@@ -28,7 +28,7 @@ export default function ProfileBattle({uid,refreshTick}:{uid:string;refreshTick:
     void load();
     return()=>{active=false;clearInterval(timer);document.removeEventListener('visibilitychange',onVisible);};
   },[uid,refreshTick,retry]);
-  if(error)return <ErrorNotice message={'Batalha do Dia: '+error} retry={()=>setRetry(value=>value+1)}/>;
+  if(error)return <ErrorNotice message={'Confronto do Dia: '+error} retry={()=>setRetry(value=>value+1)}/>;
   if(!battles?.today&&!battles?.previous)return null;
   return <BattlePager key={battles.today?.dayId??battles.previous!.dayId} today={battles.today} previous={battles.previous} instant/>;
 }

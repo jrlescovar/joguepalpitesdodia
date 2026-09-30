@@ -34,7 +34,7 @@ export default function DailyBattle({ refreshTick, onSettled, onOpenProfile }: {
     void load();
     return () => { active = false; if (timer !== undefined) clearTimeout(timer); };
   }, [refreshTick, reload]);
-  if (error) return <ErrorNotice message={`Batalha do Dia: ${error}`} retry={() => setReload(value => value + 1)}/>;
-  if (!battle) return <div className="card daily-battle-card battle-waiting" role="status">Preparando Batalha do Dia…</div>;
+  if (error) return <ErrorNotice message={`Confronto do Dia: ${error}`} retry={() => setReload(value => value + 1)}/>;
+  if (!battle) return <div className="card daily-battle-card battle-waiting" role="status">Preparando Confronto do Dia…</div>;
   return <BattlePager key={battle.dayId} today={battle} previous={previousBattle} onOpenProfile={onOpenProfile}/>;
 }

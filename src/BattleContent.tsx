@@ -62,7 +62,7 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
     if (!comparisonOpen || comparison || !battle.me) return;
     let active = true;
     call<BattlePickComparison[] | null>('getBattlePickComparison', { dayId: battle.dayId, uid: battle.me.uid })
-      .then(rows => { if (active) { if (rows) setComparison(rows); else setComparisonError('Comparação indisponível para esta batalha.'); } })
+      .then(rows => { if (active) { if (rows) setComparison(rows); else setComparisonError('Comparação indisponível para este confronto.'); } })
       .catch(cause => { if (active) setComparisonError(errorMessage(cause)); });
     return () => { active = false; };
   }, [comparisonOpen, comparison, battle.dayId, battle.me?.uid]);
@@ -75,8 +75,8 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
   const resultLabel = outcome === 'win' ? 'GANHOU' : outcome === 'loss' ? 'PERDEU' : outcome === 'draw' ? 'EMPATE' : '';
   const delta = battle.myRankDelta;
   const deltaLabel = outcome === 'draw' ? '+0 pts' : typeof delta === 'number' ? `${delta > 0 ? '+' : delta < 0 ? '−' : ''}${Math.abs(delta)} pts` : null;
-  return <section className={`card daily-battle-card${battle.preview ? ' battle-preview' : ''}`} aria-label="Batalha do Dia">
-    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> BATALHA DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}{!battle.preview&&battle.result==='open'&&Number(battle.settledPredictions)>0&&Number(battle.totalPredictions)>0&&<small className="battle-prediction-progress" aria-label={String(battle.settledPredictions)+' de '+battle.totalPredictions+' apostas finalizadas'}>{battle.settledPredictions}/{battle.totalPredictions}</small>}</div>
+  return <section className={`card daily-battle-card${battle.preview ? ' battle-preview' : ''}`} aria-label="Confronto do Dia">
+    <div className="battle-heading"><span><Swords size={19} aria-hidden="true"/> CONFRONTO DO DIA {battleDate}</span>{outcome && deltaLabel && <strong className={`battle-rank-delta battle-tone-${outcome}`} aria-label={`Variação no Ranking: ${deltaLabel}`}>{deltaLabel}</strong>}{!battle.preview&&battle.result==='open'&&Number(battle.settledPredictions)>0&&Number(battle.totalPredictions)>0&&<small className="battle-prediction-progress" aria-label={String(battle.settledPredictions)+' de '+battle.totalPredictions+' apostas finalizadas'}>{battle.settledPredictions}/{battle.totalPredictions}</small>}</div>
     {opponent && battle.me ? <>
       <div className="battle-versus">
         <FighterTile fighter={battle.me} side="me" onOpenProfile={onOpenProfile}/>
@@ -95,8 +95,8 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
       </div>
       {battle.result === 'no_contest' && <p className="battle-outcome">Sem adversário nesta rodada</p>}
       {battle.result !== 'no_contest' && <button type="button" className={`battle-comparison-open${outcome ? '' : ' is-locked'}`} disabled={!outcome} aria-label={outcome ? 'Comparar palpites' : 'Comparar palpites, disponível após o último resultado do dia'} onClick={() => setComparisonOpen(true)}>{outcome ? <ListChecks size={17}/> : <Lock size={16}/>} Comparar palpites</button>}
-    </> : <div className="battle-waiting">{battle.result === 'no_contest' ? 'Sem adversário nesta rodada.' : battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `A Batalha do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar da próxima.`}</div>}
-    <Modal open={comparisonOpen} onOpenChange={open => { setComparisonOpen(open); if (!open) { setComparison(null); setComparisonError(''); } }} title={`Palpites da Batalha ${battleDate}`} className="battle-comparison-dialog">
+    </> : <div className="battle-waiting">{battle.result === 'no_contest' ? 'Sem adversário nesta rodada.' : battle.protected ? 'Proteção ativa. Faça um palpite para voltar ao sorteio.' : battle.preview ? 'Aguardando adversário para amanhã.' : battle.result === 'open' ? 'Aguardando um adversário. Se houver uma vaga, o próximo jogador poderá entrar.' : `O Confronto do Dia ${battleDate} já começou. Aguarde até amanhã, ${formatBattleDate(battle.dayId, 1)}, para participar do próximo.`}</div>}
+    <Modal open={comparisonOpen} onOpenChange={open => { setComparisonOpen(open); if (!open) { setComparison(null); setComparisonError(''); } }} title={`Palpites do Confronto ${battleDate}`} className="battle-comparison-dialog">
       {comparisonError && <ErrorNotice message={comparisonError} retry={() => { setComparisonError(''); setComparison(null); }}/>}
       {!comparison && !comparisonError && <p role="status" className="muted">Carregando palpites…</p>}
       {battle.me && opponent && <div className="comparison-matchup">
@@ -113,7 +113,7 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
             <div className="battle-comparison-choices">{[{name:battle.me?.username,option:row.myOption,points:row.myPoints},{name:opponent?.username,option:row.theirOption,points:row.theirPoints}].map((choice,index)=><div className={choice.points>0?'comparison-choice-green':''} key={index}><small>{choice.name}</small><strong>{choice.option ?? 'Sem palpite'}</strong><span className={choice.points>0?'is-green':''}>{choice.points>0?'Green':'Sem pontos'} · +{choice.points} pts</span></div>)}</div>
           </section>;
         })}</div>
-        <div className="comparison-summary"><strong>Resumo da batalha</strong><span>{comparison.filter(row=>row.myPoints>0).length} greens × {comparison.filter(row=>row.theirPoints>0).length} greens</span><small>Placar final: {battle.myPoints ?? 0} × {battle.theirPoints ?? 0} pts · {resultLabel === 'GANHOU' ? 'Vitória' : resultLabel === 'PERDEU' ? 'Derrota' : 'Empate'}</small></div>
+        <div className="comparison-summary"><strong>Resumo do confronto</strong><span>{comparison.filter(row=>row.myPoints>0).length} greens × {comparison.filter(row=>row.theirPoints>0).length} greens</span><small>Placar final: {battle.myPoints ?? 0} × {battle.theirPoints ?? 0} pts · {resultLabel === 'GANHOU' ? 'Vitória' : resultLabel === 'PERDEU' ? 'Derrota' : 'Empate'}</small></div>
       </>}
 
     </Modal>

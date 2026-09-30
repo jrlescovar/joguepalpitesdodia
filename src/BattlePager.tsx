@@ -19,10 +19,10 @@ export default function BattlePager({today,previous,instant=false,onOpenProfile}
       <div className="battle-page battle-page-previous" aria-hidden={shown!=='previous'} inert={shown!=='previous'}><BattleContent key={previous.dayId+'-'+previous.opponent?.uid} battle={previous} instant onOpenProfile={onOpenProfile}/></div>
       <div className="battle-page battle-page-today" aria-hidden={shown!=='today'} inert={shown!=='today'}><BattleContent key={today.dayId+'-'+today.opponent?.uid} battle={today} instant={instant} onOpenProfile={onOpenProfile}/></div>
     </div>
-    <nav className="battle-day-nav" aria-label="Dias da Batalha do Dia">
-      <button type="button" aria-label={'Ver batalha de ontem, '+formatBattleDate(previous.dayId)} disabled={shown==='previous'} onClick={event=>switchPage('previous',event)}><ChevronLeft size={20} aria-hidden="true"/></button>
+    <nav className="battle-day-nav" aria-label="Dias do Confronto do Dia">
+      <button type="button" aria-label={'Ver confronto de ontem, '+formatBattleDate(previous.dayId)} disabled={shown==='previous'} onClick={event=>switchPage('previous',event)}><ChevronLeft size={20} aria-hidden="true"/></button>
       <span aria-live="polite">{shown==='previous'?'1 / 2':'2 / 2'}</span>
-      <button type="button" aria-label={'Ver batalha de hoje, '+formatBattleDate(today.dayId)} disabled={shown==='today'} onClick={event=>switchPage('today',event)}><ChevronRight size={20} aria-hidden="true"/></button>
+      <button type="button" aria-label={'Ver confronto de hoje, '+formatBattleDate(today.dayId)} disabled={shown==='today'} onClick={event=>switchPage('today',event)}><ChevronRight size={20} aria-hidden="true"/></button>
     </nav>
   </div>;
 }

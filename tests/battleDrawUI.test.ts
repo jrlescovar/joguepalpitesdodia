@@ -3,7 +3,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { BattleContent, type Battle } from '../src/BattleContent';
 
-describe('Batalha do Dia empatada', () => {
+describe('Confronto do Dia empatado', () => {
   it('mostra empate e +0 pts sem progresso de palpites no resultado final', () => {
     vi.stubGlobal('localStorage', { getItem: () => '1' });
     vi.stubGlobal('window', { matchMedia: () => ({ matches: true }) });

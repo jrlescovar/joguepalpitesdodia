@@ -52,7 +52,7 @@ begin
     insert into public.predictions(day_id,slot,title,options,closes_at) values
       (day,2,'Jogo depois do encerramento','[{"id":"1","label":"Sim"},{"id":"2","label":"Não"}]',now());
   exception when raise_exception then
-    if sqlerrm not like 'A Batalha do Dia já foi encerrada.%' then raise; end if;
+    if sqlerrm not like 'O Confronto do Dia já foi encerrado.%' then raise; end if;
     blocked := true;
   end;
   if not blocked then raise exception 'Allowed publication after finalization'; end if;
