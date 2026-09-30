@@ -84,11 +84,11 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
       <div className="score-grid profile-score-grid"><Stat icon={Check} label="Greens" value={profile.green} tone="green"/><Stat icon={X} label="Reds" value={numberOrDash(profile.red)} tone="red"/><Stat icon={Target} label="% de Acerto" value={rate===null?'—':`${rate}%`} tone="accuracy"/></div>
       <div className="card profile-stats">{rows.map(([label, value]) => <div className="streak-row" key={label}><span>{label}</span><strong>{value}</strong></div>)}</div>
     </section>
-  </div>{showRetrospective && <ProfileRetrospective refreshTick={refreshTick}/>}<section className="profile-battle-stats" aria-label="Estatísticas da Batalha do Dia">
+  </div><section className="profile-battle-stats" aria-label="Estatísticas da Batalha do Dia">
     <h2>Batalha do Dia</h2>
     <div className="score-grid profile-score-grid"><Stat icon={Trophy} label="Vitórias" value={battleStats?.wins ?? '—'} tone="battle-wins"/><Stat icon={X} label="Derrotas" value={battleStats?.losses ?? '—'} tone="red"/><Stat icon={Target} label="% de vitória" value={battleWinRate} tone="accuracy"/></div>
     <ProfileBattle key={profile.uid} uid={profile.uid} refreshTick={refreshTick}/>
-  </section><section className="card achievements-card" aria-label="Medalhas e marcas">
+  </section>{showRetrospective && <ProfileRetrospective refreshTick={refreshTick}/>}<section className="card achievements-card" aria-label="Medalhas e marcas">
     <div className="achievements-heading"><span className="eyebrow">MEDALHAS E MARCAS</span></div>
     <div className="medals-grid">
       {medal.level>0&&<div className="medal-tile" role="img" aria-label={`Colecionador de Greens, nível ${medal.level}`}>
