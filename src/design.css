@@ -1019,7 +1019,12 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 }
 
 @media (min-width: 1200px) {
-  .global-ranking-dashboard > .global-ranking-summary { padding-top: 32px; }
+  .global-ranking-dashboard > .global-ranking-summary { padding-top: 64px; }
 }
 
 .medal-tile:has(.arena-medal-emblem) > .medal-name { transform: translateY(4px); }
+
+@media (min-width: 1200px) {
+  .app-main-ranking { padding-top: 20px; }
+  .global-ranking-dashboard .global-ranking-results > .page-heading { height: 46px; min-height: 46px; margin-bottom: 18px; }
+}
