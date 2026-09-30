@@ -265,45 +265,15 @@
 /* Owner-only blue effect previews. */
 .profile-style-group .pass-style-option.style-category-lab {border-color:#4ade80;}
 .pass-name-lab-blue-1 {color:#60a5fa;background:linear-gradient(29deg,#1e40af,#60a5fa,#ecfeff,#60a5fa,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-pulse 2.35s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-1 { --supporter-ring:conic-gradient(#1e3a8a,#60a5fa,#eff6ff,#60a5fa,#1d4ed8);--frame-wave:#60a5fa;}
-.avatar.pass-border-lab-blue-1::before {animation:lab-pulse 2.35s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-1::after {animation:supporter-ring-travel 1.9s linear infinite;}
 .pass-name-lab-blue-2 {color:#38bdf8;background:linear-gradient(58deg,#1e40af,#38bdf8,#ecfeff,#38bdf8,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-sweep 2.7s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-2 { --supporter-ring:conic-gradient(#1e3a8a,#38bdf8,#eff6ff,#38bdf8,#1d4ed8);--frame-wave:#38bdf8;}
-.avatar.pass-border-lab-blue-2::before {animation:lab-sweep 2.7s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-2::after {animation:lab-sweep 2.3s linear infinite;}
 .pass-name-lab-blue-3 {color:#93c5fd;background:linear-gradient(87deg,#1e40af,#93c5fd,#ecfeff,#93c5fd,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-ocean 3.05s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-3 { --supporter-ring:conic-gradient(#1e3a8a,#93c5fd,#eff6ff,#93c5fd,#1d4ed8);--frame-wave:#93c5fd;}
-.avatar.pass-border-lab-blue-3::before {animation:lab-ocean 3.05s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-3::after {animation:supporter-ring-travel 2.7s linear infinite;}
 .pass-name-lab-blue-4 {color:#22d3ee;background:linear-gradient(116deg,#1e40af,#22d3ee,#ecfeff,#22d3ee,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-ice 3.4s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-4 { --supporter-ring:conic-gradient(#1e3a8a,#22d3ee,#eff6ff,#22d3ee,#1d4ed8);--frame-wave:#22d3ee;}
-.avatar.pass-border-lab-blue-4::before {animation:lab-ice 3.4s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-4::after {animation:lab-ice 3.1s linear infinite;}
 .pass-name-lab-blue-5 {color:#818cf8;background:linear-gradient(145deg,#1e40af,#818cf8,#ecfeff,#818cf8,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-electric 3.75s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-5 { --supporter-ring:conic-gradient(#1e3a8a,#818cf8,#eff6ff,#818cf8,#1d4ed8);--frame-wave:#818cf8;}
-.avatar.pass-border-lab-blue-5::before {animation:lab-electric 3.75s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-5::after {animation:supporter-ring-travel 3.5s linear infinite;}
 .pass-name-lab-blue-6 {color:#bfdbfe;background:linear-gradient(174deg,#1e40af,#bfdbfe,#ecfeff,#bfdbfe,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-mist 4.1s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-6 { --supporter-ring:conic-gradient(#1e3a8a,#bfdbfe,#eff6ff,#bfdbfe,#1d4ed8);--frame-wave:#bfdbfe;}
-.avatar.pass-border-lab-blue-6::before {animation:lab-mist 4.1s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-6::after {animation:lab-mist 3.9000000000000004s linear infinite;}
 .pass-name-lab-blue-7 {color:#0ea5e9;background:linear-gradient(203deg,#1e40af,#0ea5e9,#ecfeff,#0ea5e9,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-scan 4.449999999999999s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-7 { --supporter-ring:conic-gradient(#1e3a8a,#0ea5e9,#eff6ff,#0ea5e9,#1d4ed8);--frame-wave:#0ea5e9;}
-.avatar.pass-border-lab-blue-7::before {animation:lab-scan 4.449999999999999s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-7::after {animation:supporter-ring-travel 4.300000000000001s linear infinite;}
 .pass-name-lab-blue-8 {color:#67e8f9;background:linear-gradient(232deg,#1e40af,#67e8f9,#ecfeff,#67e8f9,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-tide 4.8s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-8 { --supporter-ring:conic-gradient(#1e3a8a,#67e8f9,#eff6ff,#67e8f9,#1d4ed8);--frame-wave:#67e8f9;}
-.avatar.pass-border-lab-blue-8::before {animation:lab-tide 4.8s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-8::after {animation:lab-tide 4.7s linear infinite;}
 .pass-name-lab-blue-9 {color:#3b82f6;background:linear-gradient(261deg,#1e40af,#3b82f6,#ecfeff,#3b82f6,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-deep 5.15s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-9 { --supporter-ring:conic-gradient(#1e3a8a,#3b82f6,#eff6ff,#3b82f6,#1d4ed8);--frame-wave:#3b82f6;}
-.avatar.pass-border-lab-blue-9::before {animation:lab-deep 5.15s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-9::after {animation:supporter-ring-travel 5.1s linear infinite;}
 .pass-name-lab-blue-10 {color:#a5b4fc;background:linear-gradient(290deg,#1e40af,#a5b4fc,#ecfeff,#a5b4fc,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-aurora 5.5s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-10 { --supporter-ring:conic-gradient(#1e3a8a,#a5b4fc,#eff6ff,#a5b4fc,#1d4ed8);--frame-wave:#a5b4fc;}
-.avatar.pass-border-lab-blue-10::before {animation:lab-aurora 5.5s ease-in-out infinite;}
-.avatar.pass-border-lab-blue-10::after {animation:lab-aurora 5.5s linear infinite;}
 @keyframes lab-pulse {50%{filter:brightness(1.55);text-shadow:0 0 8px #38bdf877;}}
 @keyframes lab-sweep {from{background-position:0% 50%}to{background-position:100% 50%}}
 @keyframes lab-ocean {50%{background-position:80% 100%;filter:hue-rotate(18deg)}}
@@ -314,4 +284,35 @@
 @keyframes lab-tide {50%{background-position:100% 50%;filter:drop-shadow(0 2px 3px #22d3ee)}}
 @keyframes lab-deep {50%{filter:brightness(.75) saturate(1.8);background-position:70% 50%}}
 @keyframes lab-aurora {50%{filter:hue-rotate(30deg);background-position:100% 100%}}
-@media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar[class*="pass-border-lab-blue-"]::before,.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
+
+/* Each experimental frame has its own texture and motion, independent of name effects. */
+.avatar.avatar[class*="pass-border-lab-blue-"]::before { background:linear-gradient(135deg,#1e40af,#38bdf8,#1e3a8a) border-box; animation:none; }
+.avatar.avatar[class*="pass-border-lab-blue-"]::after { background:none; animation:none; }
+.avatar.avatar.pass-border-lab-blue-1::before { background:#3b82f6 border-box; }
+.avatar.avatar.pass-border-lab-blue-1::after { background:#bae6fd border-box; animation:frame-blue-breathe 2.4s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-2::after { background:conic-gradient(transparent 0deg 285deg,#38bdf8 300deg,#fff 318deg,#38bdf8 336deg,transparent 350deg) border-box; animation:frame-blue-pendulum 2.7s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-3::after { background:repeating-conic-gradient(#075985 0deg 35deg,#7dd3fc 55deg,#e0f2fe 70deg,#075985 90deg) border-box; animation:frame-blue-current 6s linear infinite; }
+.avatar.avatar.pass-border-lab-blue-4::before { background:repeating-conic-gradient(#ecfeff 0deg 12deg,#0ea5e9 12deg 30deg,#bae6fd 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-4::after { background:#e0f2fe border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-5::after { background:repeating-conic-gradient(transparent 0deg 42deg,#a5b4fc 42deg 47deg,#fff 47deg 52deg,transparent 52deg 90deg) border-box; animation:frame-blue-charge 3.75s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-6::before { background:#60a5fa border-box; }
+.avatar.avatar.pass-border-lab-blue-6::after { background:#bfdbfe border-box; animation:frame-blue-halo 4.1s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-7::before { background:repeating-conic-gradient(#0ea5e9 0deg 12deg,transparent 12deg 22deg) border-box; animation:frame-blue-dashes 8s steps(16,end) infinite; }
+.avatar.avatar.pass-border-lab-blue-7::after { background:repeating-conic-gradient(transparent 0deg 82deg,#e0f2fe 82deg 90deg) border-box; animation:frame-blue-dashes 4s steps(8,end) infinite reverse; }
+.avatar.avatar.pass-border-lab-blue-8::after { background:conic-gradient(#67e8f9,transparent 90deg,#67e8f9 180deg,transparent 270deg,#67e8f9) border-box; animation:frame-blue-swell 4.8s ease-in-out infinite; }
+.avatar.avatar.pass-border-lab-blue-9::after { background:repeating-conic-gradient(transparent 0deg 100deg,#3b82f6 103deg,#dbeafe 110deg,#3b82f6 117deg,transparent 120deg) border-box; animation:frame-blue-satellites 3s linear infinite; }
+.avatar.avatar.pass-border-lab-blue-9::before { background:conic-gradient(#172554,#2563eb,#172554,#2563eb,#172554) border-box; animation:frame-blue-current 9s linear infinite reverse; }
+.avatar.avatar.pass-border-lab-blue-10::before { background:conic-gradient(#312e81,#60a5fa,#a5b4fc,#22d3ee,#312e81) border-box; animation:frame-blue-aurora 7s linear infinite; }
+.avatar.avatar.pass-border-lab-blue-10::after { background:conic-gradient(transparent,#c7d2fe88,transparent,#67e8f988,transparent) border-box; animation:frame-blue-aurora 5.5s linear infinite reverse; }
+@keyframes frame-blue-breathe {0%,100%{opacity:.15}50%{opacity:1}}
+@keyframes frame-blue-pendulum {0%,100%{transform:rotate(-100deg)}50%{transform:rotate(100deg)}}
+@keyframes frame-blue-current {to{transform:rotate(-360deg)}}
+@keyframes frame-blue-facets {0%,100%{transform:rotate(-12deg)}50%{transform:rotate(12deg)}}
+@keyframes frame-blue-frost {0%,100%{opacity:0}50%{opacity:.85}}
+@keyframes frame-blue-charge {0%,60%,100%{opacity:.2;transform:rotate(0deg)}70%{opacity:1;transform:rotate(12deg)}80%{opacity:.4;transform:rotate(-12deg)}90%{opacity:.9;transform:rotate(0deg)}}
+@keyframes frame-blue-halo {0%{transform:scale(1);opacity:.85}80%,100%{transform:scale(1.18);opacity:0}}
+@keyframes frame-blue-dashes {to{transform:rotate(360deg)}}
+@keyframes frame-blue-swell {0%,100%{transform:scale(1) rotate(-30deg);opacity:.35}50%{transform:scale(1.06) rotate(30deg);opacity:1}}
+@keyframes frame-blue-satellites {to{transform:rotate(360deg)}}
+@keyframes frame-blue-aurora {to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar.avatar[class*="pass-border-lab-blue-"]::before,.avatar.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
