@@ -118,6 +118,8 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getPassStatus': return rpc<T>('get_pass_status');
     case 'setUsernameFont': return rpc<T>('set_username_font', { p_font: data.font });
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
+    case 'getFontBoxState': return rpc<T>('get_font_box_state');
+    case 'openFontBox': return rpc<T>('open_font_box', { p_request_id: data.requestId });
     case 'getHalloweenBoxState': return rpc<T>('get_halloween_box_state');
     case 'getBoxState': return rpc<T>('get_box_state');
     case 'openBox': return rpc<T>('open_box', { p_request_id: data.requestId });
@@ -151,7 +153,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
   }
 }
 
-export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween' }) {
+export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font' }) {
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), 20000);
   let response;

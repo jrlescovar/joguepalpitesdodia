@@ -1,9 +1,17 @@
 import { useId } from 'react';
 
-export default function ChestIcon({ size = 64, className, opening = false, halloween = false }: { size?: number; className?: string; opening?: boolean; halloween?: boolean }) {
+export default function ChestIcon({ size = 64, className, opening = false, halloween = false, graffiti = false }: { size?: number; className?: string; opening?: boolean; halloween?: boolean; graffiti?: boolean }) {
   const id = useId().replace(/:/g, '');
   const gold = `chest-gold-${id}`;
   const wood = `chest-wood-${id}`;
+  if(graffiti)return <svg className={className} width={size} height={size*(opening?96:72)/80} viewBox={opening?'0 -24 80 96':'0 0 80 72'} fill="none" aria-hidden="true">
+    <defs><linearGradient id={wood} x2="1" y2="1"><stop stopColor="#fff"/><stop offset="1" stopColor="#cbd5e1"/></linearGradient></defs>
+    <path d="M8 32h64v26l-5 9H13l-5-9V32Z" fill={`url(#${wood})`} stroke="#94a3b8" strokeWidth="2"/>
+    <path d="m13 41 16-6 10 12-19 8Z" fill="#f472b6"/><path d="m45 37 20 5-10 19-15-8Z" fill="#38bdf8"/><path d="m19 53 22-10 12 12-26 7Z" fill="#a3e635"/><path d="M25 43v17m33-12v12" stroke="#f472b6" strokeWidth="3" strokeLinecap="round"/>
+    <g className="chest-lid"><path d="M8 34V23C8 11 20 5 40 5s32 6 32 18v11H8Z" fill={`url(#${wood})`} stroke="#94a3b8" strokeWidth="2"/>
+    <path d="m16 21 14-9 16 9-21 8Z" fill="#c084fc"/><path d="m42 11 16 4 8 13-16-3Z" fill="#fbbf24"/><path d="m12 27 23-9 5 9-21 6Z" fill="#38bdf8"/><circle cx="59" cy="21" r="4" fill="#f472b6"/>
+    <path d="M9 31h62v6H9Z" fill="#f8fafc" stroke="#94a3b8"/><path d="M34 32h12v14l-6 4-6-4V32Z" fill="#fff" stroke="#64748b" strokeWidth="2"/><text x="40" y="44" textAnchor="middle" fill="#7c3aed" fontSize="12" fontWeight="900">A</text></g>
+  </svg>;
   if(halloween)return <svg className={className} width={size} height={size*(opening?96:72)/80} viewBox={opening?'0 -24 80 96':'0 0 80 72'} fill="none" aria-hidden="true">
     <defs><linearGradient id={gold} x1="14" y1="10" x2="66" y2="65" gradientUnits="userSpaceOnUse"><stop stopColor="#ffda5b"/><stop offset=".4" stopColor="#ff931f"/><stop offset="1" stopColor="#cc460b"/></linearGradient><linearGradient id={wood} x1="40" y1="34" x2="40" y2="62" gradientUnits="userSpaceOnUse"><stop stopColor="#fff887"/><stop offset="1" stopColor="#ffb000"/></linearGradient></defs>
     <path d="M11 33h58v20c0 10-9 14-16 13H27c-8 1-16-3-16-13V33Z" fill={`url(#${gold})`} stroke="#ffc263" strokeWidth="2"/>

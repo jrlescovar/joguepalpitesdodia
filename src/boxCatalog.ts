@@ -23,3 +23,6 @@ export const halloweenRarities=boxRarities.filter(tier=>['epic','mythic','legend
 export const halloweenCatalog:BoxItem[]=[...halloweenStyles.flatMap(style=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),{kind:'font',style:'creepster',rarity:'epic'},{kind:'font',style:'eater',rarity:'legendary'},{kind:'font',style:'butcherman',rarity:'mythic'}];
 export const boxCatalog: BoxItem[] = [...passStyleOptions.filter(([style])=>style!=='none'&&!halloweenStyles.includes(style as typeof halloweenStyles[number])).flatMap(([style])=>(['name','frame'] as const).map(kind=>({kind,style,rarity:boxRarity(style)}))),...usernameFonts.filter(([font])=>fontRarity(font)!==null&&!['creepster','eater','butcherman'].includes(font)).map(([font])=>({kind:'font' as const,style:font as Exclude<UsernameFont,'normal'>,rarity:fontRarity(font)!}))];
 export function boxStyleLabel(style:PassNameStyle|UsernameFont|string){return passStyleOptions.find(([id])=>id===style)?.[1]??usernameFonts.find(([id])=>id===style)?.[1]??style;}
+
+export const fontBoxCatalog:BoxItem[]=boxCatalog.filter(item=>item.kind==='font');
+export const fontBoxRarities=boxRarities.filter(tier=>tier.id!=='common').map(tier=>({...tier,chance:tier.id==='rare'?45:tier.id==='epic'?35:tier.id==='mythic'?15:5}));

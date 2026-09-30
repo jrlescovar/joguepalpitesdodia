@@ -18,7 +18,7 @@ Deno.serve(async request => {
   const input = await request.json().catch(() => null);
   const theme=input?.theme??'classic';
   const halloweenPacks: typeof packs={'2':{quantity:2,amount:321},'6':{quantity:6,amount:567}};
-  const pack = theme==='halloween'?halloweenPacks[String(input?.quantity)]:theme==='classic'?packs[String(input?.quantity)]:undefined;
+  const pack = theme==='font'?({'1':{quantity:1,amount:321},'3':{quantity:3,amount:567}} as typeof packs)[String(input?.quantity)]:theme==='halloween'?halloweenPacks[String(input?.quantity)]:theme==='classic'?packs[String(input?.quantity)]:undefined;
   if (!pack || typeof input?.requestId !== 'string' || !/^[0-9a-f-]{36}$/i.test(input.requestId)) return json({ error: 'Pacote inválido.' }, 400);
   const stripeKey = Deno.env.get('STRIPE_SECRET_KEY');
   if (!stripeKey) return json({ error: 'Pagamento ainda não configurado.' }, 503);
@@ -40,7 +40,7 @@ Deno.serve(async request => {
     'line_items[0][price_data][product_data][description]': `Compra avulsa de caixas de ${theme==='halloween'?'Halloween':'Personalização'} com cores de nome, molduras ou fontes aleatórias. Itens repetidos se convertem em XP.`,
     'line_items[0][quantity]': '1',
     'metadata[profile_id]': profileId,
-    'metadata[purchase_kind]': theme==='halloween'?'halloween_boxes':'style_boxes',
+    'metadata[purchase_kind]': theme==='font'?'font_boxes':theme==='halloween'?'halloween_boxes':'style_boxes',
     'metadata[box_quantity]': String(pack.quantity),
     client_reference_id: profileId,
     success_url: `${origin}/?boxes=paid#temporada`,

@@ -23,13 +23,13 @@ async function signedEvent() {
   return new Request('https://example.com', { method: 'POST', headers: { 'stripe-signature': `t=${timestamp},v1=${signature}` }, body: payload });
 }
 describe('pagamento dos pacotes de caixas', () => {
-  it.each([[3, '321','classic'], [7, '567','classic'],[2,'321','halloween'],[6,'567','halloween']])('cria compra avulsa de %i caixas com preço definido no servidor', async (quantity, amount, theme) => {
+  it.each([[3, '321','classic'], [7, '567','classic'],[2,'321','halloween'],[6,'567','halloween'],[1,'321','font'],[3,'567','font']])('cria compra avulsa de %i caixas com preço definido no servidor', async (quantity, amount, theme) => {
     let body: URLSearchParams;
     const fetcher = vi.fn(async (_url, init) => { body = init.body as URLSearchParams; return Response.json({ url: 'https://checkout.stripe.com/test' }); });
     const app = load('box-checkout', fetcher as typeof fetch);
     const response = await app.request(new Request('https://example.com', { method: 'POST', headers: { origin, authorization: 'Bearer test' }, body: JSON.stringify({ quantity, theme, amount: 1, requestId: '00000000-0000-4000-8000-000000000002' }) }));
     expect(response.status).toBe(200);
-    expect(body!.get('metadata[purchase_kind]')).toBe(theme==='halloween'?'halloween_boxes':'style_boxes');
+    expect(body!.get('metadata[purchase_kind]')).toBe(theme==='font'?'font_boxes':theme==='halloween'?'halloween_boxes':'style_boxes');
     expect(body!.get('mode')).toBe('payment');
     expect(body!.get('line_items[0][price_data][unit_amount]')).toBe(amount);
     expect(body!.get('metadata[profile_id]')).toBe(profileId);
@@ -54,6 +54,14 @@ describe('pagamento dos pacotes de caixas', () => {
     const app=load('pass-webhook',vi.fn(async()=>Response.json(checkout)),rpc);
     expect((await app.request(await signedEvent())).status).toBe(status);
     if(status===200)expect(rpc).toHaveBeenCalledWith('credit_halloween_box_purchase',{p_profile_id:profileId,p_session_id:'cs_test',p_quantity:quantity,p_amount_cents:amount});
+    else expect(rpc).not.toHaveBeenCalled();
+  });
+  it.each([[1,321,200],[3,567,200],[7,567,400],[3,321,400]])('valida pacote de fontes %i/%i',async(quantity,amount,status)=>{
+    const rpc=vi.fn(async()=>({error:null}));
+    const checkout={id:'cs_test',mode:'payment',payment_status:'paid',currency:'brl',amount_total:amount,client_reference_id:profileId,metadata:{profile_id:profileId,purchase_kind:'font_boxes',box_quantity:String(quantity)}};
+    const app=load('pass-webhook',vi.fn(async()=>Response.json(checkout)),rpc);
+    expect((await app.request(await signedEvent())).status).toBe(status);
+    if(status===200)expect(rpc).toHaveBeenCalledWith('credit_font_box_purchase',{p_profile_id:profileId,p_session_id:'cs_test',p_quantity:quantity,p_amount_cents:amount});
     else expect(rpc).not.toHaveBeenCalled();
   });
   it('recusa webhook sem assinatura válida', async () => {
