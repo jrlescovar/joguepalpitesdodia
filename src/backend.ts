@@ -22,6 +22,14 @@ export async function login() {
 }
 
 export async function logout() {
+  try {
+    const registration = await navigator.serviceWorker?.getRegistration('/push-sw.js');
+    const subscription = await registration?.pushManager.getSubscription();
+    if (subscription) {
+      await rpc('remove_my_push_subscription', { p_endpoint: subscription.endpoint });
+      await subscription.unsubscribe();
+    }
+  } catch { /* Signing out still proceeds if this browser cannot revoke push. */ }
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
@@ -94,6 +102,16 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getBattleProfileStats': return rpc<T>('get_battle_profile_stats', { p_profile_id: data.uid });
     case 'getProfileOverviewMeta': return rpc<T>('get_profile_overview_meta', { p_profile_id: data.uid });
     case 'getMyRetrospective': return rpc<T>('get_my_retrospective');
+    case 'getMyPushSettings': return rpc<T>('get_my_push_settings');
+    case 'setMyPushSettings': return rpc<T>('set_my_push_settings', { p_available: data.available, p_reminder: data.reminder, p_result: data.result });
+    case 'saveMyPushSubscription': return rpc<T>('save_my_push_subscription', { p_endpoint: data.endpoint, p_p256dh: data.p256dh, p_auth: data.auth });
+    case 'removeMyPushSubscription': return rpc<T>('remove_my_push_subscription', { p_endpoint: data.endpoint });
+    case 'sendAvailablePush': {
+      const { data: result, error } = await supabase.functions.invoke('push-dispatch', { body: { mode: 'available', dayId: data.dayId, slot: data.slot } });
+      if (error) throw error;
+      if (result?.error) throw new Error(result.error);
+      return result as T;
+    }
     case 'getMyRank': return rpc<T>('get_my_rank');
     case 'getTournamentRankingPage': return rpc<T>('get_tournament_ranking_page');
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });

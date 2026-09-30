@@ -2,3 +2,11 @@
 .admin-dialog input,.admin-dialog select,.admin-dialog textarea{font-size:16px!important}
 
 .admin-directory-search input{border:1px solid var(--line);background:#111821;border-radius:10px;padding:11px 12px;color:inherit;min-height:46px}
+.admin-push-alerts { margin: 18px 0; padding: 18px; }
+.admin-push-alerts h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 1rem; }
+.admin-push-alerts h2 svg { color: #8bbaff; }
+.admin-push-list { display: grid; gap: 8px; margin-top: 14px; }
+.admin-push-list > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.admin-push-list span { min-width: 0; font-size: 12px; overflow-wrap: anywhere; }
+.admin-push-list button { flex: none; }
+@media (max-width: 420px) { .admin-push-list > div { align-items: flex-start; flex-direction: column; } }

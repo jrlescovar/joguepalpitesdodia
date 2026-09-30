@@ -1,0 +1,13 @@
+.profile-notifications { margin-top: 24px; padding: 20px; }
+.notification-heading { display: flex; align-items: flex-start; gap: 11px; }
+.notification-heading > svg { flex: none; margin-top: 2px; color: #8bbaff; }
+.notification-heading h2 { margin: 0; font-size: 1.2rem; }
+.notification-heading p { margin: 5px 0 0; color: var(--muted); font-size: 12px; }
+.notification-options { display: grid; margin-top: 18px; }
+.notification-option { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+.notification-option > div { display: grid; gap: 4px; }
+.notification-option strong { font-size: 13px; }
+.notification-option small { color: var(--muted); font-size: 11px; line-height: 1.35; }
+.notification-option .toggle { flex: none; }
+.notification-reconnect { margin-top: 12px; }
+.notification-help { margin: 12px 0 0; color: #a8cfff; font-size: 12px; line-height: 1.4; }

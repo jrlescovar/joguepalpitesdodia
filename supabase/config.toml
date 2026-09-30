@@ -12,3 +12,6 @@ verify_jwt = false
 
 [functions.box-checkout]
 verify_jwt = true
+
+[functions.push-dispatch]
+verify_jwt = false
