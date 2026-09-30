@@ -93,3 +93,5 @@
 
 .box-catalog-font .box-catalog-item { min-height: 76px; padding: 6px 5px; gap: 3px; }
 .box-catalog-font .box-catalog-preview { min-height: 28px; }
+
+.box-catalog-font .box-catalog-preview > strong { font-size:calc(.9rem + 1px); }
