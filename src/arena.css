@@ -1,5 +1,9 @@
 .arena-page { display: grid; gap: 18px; }
 .arena-page .page-heading { margin-bottom: 0; }
+.arena-heading-actions { display: flex; align-items: center; gap: 8px; }
+.arena-help { display: grid; gap: 12px; margin-top: 16px; color: #d6dce6; font-size: 14px; line-height: 1.5; }
+.arena-help p { margin: 0; }
+.arena-help strong { color: #f4cb72; }
 .arena-qualification { font-size: 14px; text-align: center; margin: 0; color: #a8cfff; }
 .arena-qualification small { display: block; font-size: 12px; color: #aab2c0; margin-top: 6px; }
 .arena-table { overflow: hidden; padding: 0; width: 100%; }

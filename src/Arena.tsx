@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { ArrowLeft, Crown, RefreshCw, Swords } from 'lucide-react';
+import { ArrowLeft, CircleHelp, Crown, RefreshCw, Swords } from 'lucide-react';
 import { call, errorMessage } from './backend';
-import { Avatar, ErrorNotice } from './components';
+import { Avatar, ErrorNotice, Modal } from './components';
 import UsernameText from './UsernameText';
 import ProfileOverview from './ProfileOverview';
 import type { PublicProfile } from './types';
@@ -15,6 +15,7 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
+  const [showHelp, setShowHelp] = useState(false);
   const [selected, setSelected] = useState<PublicProfile | null>(null);
   const [history, setHistory] = useState<ArenaHistoryEntry[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
@@ -58,7 +59,8 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
   function openProfile(player: PublicProfile) { setSelected(player); window.scrollTo({ top: 0, behavior: 'instant' }); }
   if (selected) return <div className="public-profile-view"><button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar à Arena</button><div className="page-heading"><h1>Perfil público<span>.</span></h1></div><ProfileOverview profile={selected} today={today} lastClosedPrediction={lastClosedPrediction}/></div>;
   return <div className="arena-page global-ranking-page">
-    <div className="page-heading"><h1>Arena<span>.</span></h1><button className="icon-button" disabled={loading} aria-label="Atualizar Arena" onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>
+    <div className="page-heading"><h1>Arena<span>.</span></h1><div className="arena-heading-actions"><button type="button" className="icon-button" aria-label="Como funciona a Arena" onClick={() => setShowHelp(true)}><CircleHelp size={20}/></button><button type="button" className="icon-button" disabled={loading} aria-label="Atualizar Arena" onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div></div>
+    <Modal open={showHelp} onOpenChange={setShowHelp} title="Como funciona a Arena"><div className="arena-help"><p>Os 10 primeiros do Ranking Global na abertura do dia disputam a Arena. Todos podem acompanhar a tabela.</p><p>Os acertos nos palpites do dia somam PontosRank na Arena. Quando o último resultado é confirmado, a classificação é encerrada e os três primeiros recebem, no Ranking Global, <strong>+30, +20 e +10 pontos</strong>, respectivamente.</p><p>Em caso de empate nos pontos da Arena, vence quem tiver mais greens no dia; depois, maior nível. Se ainda houver empate, vale a melhor posição na classificação de entrada.</p><p>O primeiro colocado recebe o título de Rei da Arena até a próxima Arena encerrada.</p></div></Modal>
     {error && <ErrorNotice message={error} retry={() => setReload(value => value + 1)}/>}
     {loading && !data && <p role="status">Carregando Arena…</p>}
     {data && <>
