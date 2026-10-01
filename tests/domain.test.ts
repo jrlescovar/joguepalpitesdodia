@@ -1,10 +1,17 @@
 import { describe,it,expect } from 'vitest';
-import { xpAfter,dayAt,previousDay,dailyAfter,visibleDaily,resultAfter,validUsername,seasonDaysRemaining,hitRate,greenMedalProgress,firstPlayableGameIndex } from '../src/domain';
+import { xpAfter,dayAt,previousDay,dailyAfter,visibleDaily,resultAfter,validUsername,seasonDaysRemaining,hitRate,greenMedalProgress,firstPlayableGameIndex,isDoublePointsDay } from '../src/domain';
 describe('regras do jogo',()=>{
   it('primeiro green chega ao nível 2 com 10/30 XP',()=>expect(xpAfter(1,0,25)).toEqual({level:2,xp:10}));
   it('transfere XP por vários níveis',()=>expect(xpAfter(1,0,100)).toEqual({level:4,xp:10}));
   it('não dá XP a um red e interrompe somente a sequência de greens',()=>expect(resultAfter({level:2,xp:10,green:1,red:0,greenStreakCurrent:1,greenStreakMax:1},false)).toEqual({level:2,xp:10,green:1,red:1,greenStreakCurrent:0,greenStreakMax:1}));
   it('usa o calendário de Brasília na virada de UTC',()=>{expect(dayAt(new Date('2026-09-22T02:59:59Z'))).toBe('2026-09-21');expect(dayAt(new Date('2026-09-22T03:00:00Z'))).toBe('2026-09-22');});
+  it('marca o evento pela quinta-feira do palpite, sem depender do relógio do aparelho',()=>{
+    expect(isDoublePointsDay('2026-10-01')).toBe(true);
+    expect(isDoublePointsDay('2026-10-08')).toBe(true);
+    expect(isDoublePointsDay('2026-09-30')).toBe(false);
+    expect(isDoublePointsDay('2026-10-02')).toBe(false);
+    expect(isDoublePointsDay('')).toBe(false);
+  });
   it('trata meses, anos e dias bissextos',()=>{expect(previousDay('2028-03-01')).toBe('2028-02-29');expect(previousDay('2027-01-01')).toBe('2026-12-31');});
   it('conta somente palpites principais em dias corridos',()=>{
     expect(dailyAfter('2026-09-21',1,'2026-09-22')).toEqual({dailyStreakCurrent:2,lastPlayedDate:'2026-09-22'});

@@ -1,0 +1,62 @@
+.daily-rewards {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.daily-rewards > span { white-space: nowrap; }
+.daily-card-double-points {
+  --accent: #ffad66;
+  --double-points-line: #b77743;
+  background: #211e1b;
+  border-color: var(--double-points-line);
+}
+.daily-card-double-points .daily-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  border-color: #81552f;
+}
+.daily-card-double-points .daily-header > span:first-child { min-width: 0; }
+.daily-card-double-points .daily-header > span:first-child svg { flex-shrink: 0; }
+.double-points-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  padding: 6px 8px;
+  border: 1px solid var(--double-points-line);
+  border-radius: 7px;
+  background: #ff8a1f1a;
+  color: #ffb66e;
+  font-size: .75rem;
+  font-weight: 700;
+}
+.daily-card-double-points .countdown > span {
+  border-color: #815a39;
+  background: #2b211b;
+}
+.daily-card-double-points .countdown small { color: #f4c69f; }
+.daily-card-double-points .xp-pill:not(.xp-pill-premium) { background: #ffad6612; border-color: #ffad6638; }
+.daily-card-double-points .option-copy > small { color: #ffb66e; }
+.daily-card-double-points .pick-options label.selected {
+  border-color: var(--accent);
+  background: #ff9d4216;
+}
+.daily-card-double-points .pick-options label.selected .radio-indicator { border-color: var(--accent); }
+.daily-card-double-points .pick-options label.winner { border-color: var(--accent); color: var(--accent); }
+.daily-card-double-points .deadline.in-play { border-color: #ffad664d; background: #ffad6612; }
+.daily-card-double-points .primary-button {
+  color: #281407;
+  border-color: #ffad66;
+  background: #ffad66;
+}
+.daily-card-double-points .primary-button:hover:not(:disabled) { border-color: #ffc38f; background: #ffc38f; }
+@media (max-width: 380px) {
+  .daily-card-double-points .daily-header > span:first-child { font-size: .75rem; letter-spacing: .025em; gap: 6px; }
+  .daily-card-double-points .daily-rewards { gap: 4px; }
+  .daily-card-double-points .daily-rewards > span { padding-inline: 6px; }
+}
+@media (prefers-contrast: more) {
+  .daily-card-double-points { border-color: #ffd6b3; }
+  .daily-card-double-points .double-points-pill { border-color: #ffd6b3; color: #ffd6b3; }
+}

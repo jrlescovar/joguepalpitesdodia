@@ -12,6 +12,10 @@ export function dayAt(date: Date): string {
 export function previousDay(day: string): string {
   const date = new Date(`${day}T12:00:00Z`); date.setUTCDate(date.getUTCDate()-1); return date.toISOString().slice(0,10);
 }
+/** The Thursday event only marks points already configured by the admin. */
+export function isDoublePointsDay(day: string): boolean {
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) && new Date(`${day}T12:00:00Z`).getUTCDay() === 4;
+}
 export function xpAfter(level: number, xp: number, reward: number) {
   let nextLevel = level; let nextXp = xp + reward;
   while (nextXp >= nextLevel * 15) { nextXp -= nextLevel * 15; nextLevel += 1; }
