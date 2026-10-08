@@ -11,7 +11,7 @@ import { commonPassStyles, passStyleOptions } from './passStyleOptions';
 import './halloween.css';
 import './ownerStyleVariants.css';
 const epicStyles=new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
-const styleCategory=(style:PassNameStyle)=>style==='lab-blue-9'?'legend':style==='lab-blue-10-jade-sky'?'myth':style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
+const styleCategory=(style:PassNameStyle)=>style==='lab-blue-6'||style==='lab-blue-9'?'legend':style==='lab-blue-10-jade-sky'?'myth':style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
 const categoryName={rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
 const fontTierOrder=(font:UsernameFont)=>isOwnerPreviewFont(font)?boxRarities.length:boxRarities.findIndex(tier=>tier.id===fontRarity(font));
 export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:()=>void;onShop?:()=>void;supporterActive?:boolean}) {

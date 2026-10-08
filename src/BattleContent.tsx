@@ -30,9 +30,9 @@ export function formatBattleDate(dayId: string, daysAhead = 0) {
   return battleDateFormatter.format(date);
 }
 
-function FighterTile({ fighter, side, showRank = true, onOpenProfile }: { onOpenProfile?: (uid: string) => void; fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean }) {
+function FighterTile({ fighter, side, showRank = true, onOpenProfile, decorative = false }: { onOpenProfile?: (uid: string) => void; fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean; decorative?: boolean }) {
   const rank = 'rankPoints' in fighter && 'globalPosition' in fighter ? fighter : null;
-  return <div className={`battle-fighter battle-fighter-${side}`} role={onOpenProfile ? 'button' : undefined} tabIndex={onOpenProfile ? 0 : undefined} aria-label={onOpenProfile ? `Abrir perfil de ${fighter.username}` : undefined} onClick={()=>onOpenProfile?.(fighter.uid)} onKeyDown={event=>{if(onOpenProfile&&(event.key==='Enter'||event.key===' ')){event.preventDefault();onOpenProfile(fighter.uid);}}}>
+  return <div className={`battle-fighter battle-fighter-${side}`} aria-hidden={decorative || undefined} role={onOpenProfile ? 'button' : undefined} tabIndex={onOpenProfile ? 0 : undefined} aria-label={onOpenProfile ? `Abrir perfil de ${fighter.username}` : undefined} onClick={()=>onOpenProfile?.(fighter.uid)} onKeyDown={event=>{if(onOpenProfile&&(event.key==='Enter'||event.key===' ')){event.preventDefault();onOpenProfile(fighter.uid);}}}>
     <span className={`battle-rank${showRank ? '' : ' is-concealed'}`}>
       {showRank && rank && <>{side === 'opponent' && <span>#{rank.globalPosition}</span>}<RankEmblem points={rank.rankPoints}/>{side === 'me' && <span>#{rank.globalPosition}</span>}</>}
     </span>
@@ -88,8 +88,8 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
         </div>
         <div className="battle-reel-window">
           <span className="battle-sr" role="status">{finished ? `Adversário: ${opponent.username}` : 'Revelando adversário'}</span>
-          <div className={`battle-reel-track${reveal ? ' is-revealed' : ''}`} aria-hidden="true">
-            {entries.map((fighter, index) => <FighterTile key={`${fighter.uid}-${index}`} fighter={fighter} side="opponent" showRank={finished && index === entries.length - 1} onOpenProfile={finished && index === entries.length - 1 ? onOpenProfile : undefined}/>)}
+          <div className={`battle-reel-track${reveal ? ' is-revealed' : ''}`} aria-hidden={!finished || undefined}>
+            {entries.map((fighter, index) => <FighterTile key={`${fighter.uid}-${index}`} fighter={fighter} side="opponent" decorative={index !== entries.length - 1} showRank={finished && index === entries.length - 1} onOpenProfile={finished && index === entries.length - 1 ? onOpenProfile : undefined}/>)}
           </div>
         </div>
       </div>

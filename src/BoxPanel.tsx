@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Box, CircleHelp, LoaderCircle, Sparkles, Zap } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice, Modal } from './components';
-import { fontBoxCatalog, boxCatalog, halloweenCatalog, boxRarities, boxStyleLabel } from './boxCatalog';
-import type { BoxItem, BoxOpening, BoxState, PassStatus, Profile } from './types';
+import { boxRarities, boxStyleLabel } from './boxCatalog';
+import { boxLabels, boxStateCalls, boxOpenCalls, catalogForBox } from './boxThemes';
+import type { BoxItem, BoxOpening, BoxState, BoxTheme, PassStatus, Profile } from './types';
 import './box.css';
 import BoxHelp from './BoxHelp';
 import ChestIcon from './ChestIcon';
@@ -18,14 +19,13 @@ function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
     : <strong className={`box-name-preview pass-name-${item.kind==='font'?(profile.passNameStyle??'none'):item.style}`}><UsernameText name={profile.username} font={item.kind==='font'?item.style:'normal'}/></strong>;
 }
 
-function BoxArt({opening=false,halloween=false,graffiti=false}:{opening?:boolean;halloween?:boolean;graffiti?:boolean}){
-  return <div className={`box-art ${halloween?'box-art-halloween':'box-art-classic'}${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} halloween={halloween} graffiti={graffiti}/></div>;
+function BoxArt({opening=false,theme='classic'}:{opening?:boolean;theme?:BoxTheme}){
+  return <div className={`box-art box-art-${theme}${theme!=='classic'&&theme!=='halloween'?' box-art-classic':''}${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} halloween={theme==='halloween'} graffiti={theme==='font'}/></div>;
 }
 
-export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCheckout=false,theme='classic'}:{profile:Profile;onChanged:()=>void;refreshTick?:number;refreshAfterCheckout?:boolean;theme?:'classic'|'halloween'|'font'}){
+export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCheckout=false,theme='classic',navigateTo=false,onNavigated,onAvailabilityChange}:{profile:Profile;onChanged:()=>void;refreshTick?:number;refreshAfterCheckout?:boolean;theme?:BoxTheme;navigateTo?:boolean;onNavigated?:()=>void;onAvailabilityChange?:(theme:BoxTheme,available:boolean)=>void}){
   const themed=theme==='halloween';
-  const fonts=theme==='font';
-  const catalog=fonts?fontBoxCatalog:themed?halloweenCatalog:boxCatalog;
+  const catalog=catalogForBox(theme);
   const [loadRetry,setLoadRetry]=useState(0);
   const [loadError,setLoadError]=useState('');
   const [state,setState]=useState<BoxState|null>(null);
@@ -40,19 +40,37 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
   const [pending,setPending]=useState(()=>Boolean(sessionStorage.getItem(pendingKey(profile.uid,theme))));
   const trackRef=useRef<HTMLDivElement>(null);
   const animationRef=useRef<Animation|null>(null);
+  const panelRef=useRef<HTMLElement>(null);
 
-  useEffect(()=>{let active=true;setLoadError('');call<BoxState>(fonts?'getFontBoxState':themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setLoadError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick,themed,fonts,loadRetry]);
+  useEffect(()=>{
+    if(state===null&&!pending&&!loadError)return;
+    onAvailabilityChange?.(theme,(state?.balance??0)>0||pending||Boolean(opening)||busy||Boolean(loadError));
+  },[state?.balance,pending,opening,busy,loadError,theme,onAvailabilityChange]);
+
+  useEffect(()=>{
+    if(!navigateTo||!state||state.balance<1||!panelRef.current)return;
+    const frame=requestAnimationFrame(()=>{
+      const panel=panelRef.current;
+      if(!panel)return;
+      panel.scrollIntoView({block:'center',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+      panel.querySelector<HTMLButtonElement>('.box-panel-actions .primary-button')?.focus({preventScroll:true});
+      onNavigated?.();
+    });
+    return()=>cancelAnimationFrame(frame);
+  },[navigateTo,state,onNavigated]);
+
+  useEffect(()=>{let active=true;setLoadError('');call<BoxState>(boxStateCalls[theme]).then(value=>{if(active)setState(value);}).catch(cause=>{if(active)setLoadError(errorMessage(cause));});return()=>{active=false;};},[profile.uid,refreshTick,theme,loadRetry]);
   useEffect(()=>{
     if(!refreshAfterCheckout)return;
     let active=true;
     let attempts=0;
     const timer=window.setInterval(()=>{
       attempts+=1;
-      void call<BoxState>(fonts?'getFontBoxState':themed?'getHalloweenBoxState':'getBoxState').then(value=>{if(active)setState(value);}).catch(()=>{});
+      void call<BoxState>(boxStateCalls[theme]).then(value=>{if(active)setState(value);}).catch(()=>{});
       if(attempts>=6)window.clearInterval(timer);
     },5000);
     return()=>{active=false;window.clearInterval(timer);};
-  },[profile.uid,themed,fonts,refreshAfterCheckout]);
+  },[profile.uid,theme,refreshAfterCheckout]);
   useEffect(()=>()=>animationRef.current?.cancel(),[]);
 
   useEffect(()=>{
@@ -97,7 +115,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
     sessionStorage.setItem(key,requestId);
     setBusy(true);setError('');
     try{
-      const result=await call<BoxOpening>(fonts?'openFontBox':themed?'openHalloweenBox':'openBox',{requestId});
+      const result=await call<BoxOpening>(boxOpenCalls[theme],{requestId});
       sessionStorage.removeItem(key);setPending(false);
       setState(current=>({balance:result.balance,inventory:result.duplicate?current?.inventory??[]:[...(current?.inventory??[]),result]}));
       const candidates=catalog;
@@ -132,19 +150,20 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
     }catch(cause){setError(errorMessage(cause));}finally{setEquipBusy(false);}
   }
 
-  function close(){animationRef.current?.cancel();setOpening(null);setPhase('result');}
+  function close(){if(phase!=='result'||equipBusy)return;animationRef.current?.cancel();setOpening(null);setPhase('result');}
   return <>
     {loadError&&<ErrorNotice message={loadError} retry={()=>setLoadRetry(value=>value+1)}/>}
-    {((state?.balance ?? 0) > 0 || pending) && <section className={`card box-panel${themed?' box-panel-halloween':''}`} aria-label={fonts?'Caixa de Fontes':themed?'Caixa de Halloween':'Caixa de Personalização'}>
-    <div className="box-panel-heading"><div className="box-topline"><h2>{fonts?'Caixa de Fontes':themed?'Caixa de Halloween':'Caixa de Personalização'}</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
-    <BoxArt halloween={themed} graffiti={fonts}/>
+    {state===null&&!loadError&&onAvailabilityChange&&<p className="muted" role="status">Carregando suas caixas…</p>}
+    {((state?.balance ?? 0) > 0 || pending || Boolean(opening) || busy) && <section ref={panelRef} className={`card box-panel box-panel-${theme}`} aria-label={boxLabels[theme]}>
+    <div className="box-panel-heading"><div className="box-topline"><h2>{boxLabels[theme]}</h2><div className="box-topline-actions"><span className="box-balance"><Box size={16}/>{state===null?'…':state.balance} {state?.balance===1?'caixa':'caixas'}</span><button className="box-help-button" type="button" aria-label="Como funcionam as caixas" onClick={()=>setHelpOpen(true)}><CircleHelp size={21}/></button></div></div></div>
+    <BoxArt theme={theme}/>
     <div className="box-panel-actions"><button className="primary-button" type="button" disabled={busy||(!pending&&(state?.balance??0)<1)} onClick={()=>void openBox()}>{busy?<LoaderCircle className="spin" size={18}/>:pending||(state?.balance??0)>0?<Sparkles size={18}/>:<Box size={18}/>} {busy?'Preparando abertura…':pending?'Retomar abertura':state===null?'Carregando…':state.balance>0?'Abrir caixa':'Indisponível'}</button></div>
     {error&&!opening&&<ErrorNotice message={error}/>}
     </section>}
     <BoxHelp open={helpOpen} onOpenChange={setHelpOpen} theme={theme} profile={profile}/>
-    <Modal className="box-opening-dialog" open={Boolean(opening)} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
+    <Modal className="box-opening-dialog" open={Boolean(opening)} dismissible={phase==='result'&&!equipBusy} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
       {opening&&<div className="box-reveal">
-        {phase==='box'?<div className="box-opening-stage"><BoxArt opening halloween={themed} graffiti={fonts}/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}${themed?' halloween-item':''}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':'Moldura'}</small>}</div>)}</div></div>:
+        {phase==='box'?<div className="box-opening-stage"><BoxArt opening theme={theme}/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}${themed?' halloween-item':''}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':'Moldura'}</small>}</div>)}</div></div>:
           <><div className={`box-result box-tier-${opening.rarity}${themed?' halloween-item':''}`}><span className="box-result-rarity">{boxRarities.find(tier=>tier.id===opening.rarity)?.label}</span><PrizePreview item={opening} profile={profile}/><strong>{boxStyleLabel(opening.style)}</strong><span>{opening.kind==='name'?'Cor de nome':opening.kind==='font'?'Fonte do nome':'Moldura de perfil'}</span>{opening.duplicate&&<span className="box-xp-reward" role="status"><Zap size={18} aria-hidden="true"/> +{opening.xpAwarded} XP</span>}</div>
           {error&&<ErrorNotice message={error}/>}<div className="box-result-actions">{!opening.duplicate&&<button type="button" className="primary-button" disabled={equipBusy} onClick={()=>void equip()}>{equipBusy?<LoaderCircle className="spin" size={18}/>:<Sparkles size={18}/>} Equipar agora</button>}<button type="button" className="secondary-button" onClick={close} disabled={equipBusy}>Fechar</button></div></>}
       </div>}

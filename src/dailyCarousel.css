@@ -1,0 +1,29 @@
+.daily-games-carousel { min-width: 0; }
+.daily-games-rail { align-items: flex-start; }
+.daily-games-page { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+/* Only the page should snap; legacy .mobile-games rules also target its child. */
+.daily-games-carousel .daily-slide { scroll-snap-align: none; }
+.daily-games-carousel .box-carousel-controls { gap: 8px; }
+.daily-games-carousel .box-carousel-dots { flex: 0 1 auto; min-width: 0; gap: 0; }
+.daily-games-carousel .box-carousel-dots button { flex: 0 0 18px; width: 18px; height: 44px; }
+@media (max-width: 1023px) {
+  .daily-games-carousel { --daily-carousel-gutter: 40px; }
+  /* Extend only the scrolling surface, so moving cards paint into the page
+     margins while settled cards keep the same width and position. */
+  .daily-games-carousel .daily-games-rail {
+    align-items: stretch;
+    margin-inline: calc(-1 * var(--daily-carousel-gutter));
+    padding-inline: var(--daily-carousel-gutter);
+    scroll-padding-inline: var(--daily-carousel-gutter);
+    gap: calc(2 * var(--daily-carousel-gutter));
+  }
+  .daily-games-carousel .daily-games-page { display: flex; }
+  .daily-games-carousel .daily-slide { display: flex; flex-direction: column; flex: 1; }
+  .daily-games-carousel .daily-card { flex: 1; }
+}
+@media (max-width: 800px) {
+  .daily-games-carousel { --daily-carousel-gutter: 24px; }
+}
+@media (max-width: 640px) {
+  .daily-games-carousel { --daily-carousel-gutter: 18px; }
+}

@@ -387,6 +387,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .medals-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 324px; justify-content: start; gap: 12px; }
 .medal-tile { width: 100%; min-width: 0; height: 95px; display: grid; grid-template-rows: 14px 32px 28px; justify-items: center; align-content: center; row-gap: 3px; padding: 6px 4px; border: 1px solid #3c4653; border-radius: 12px; background: #75b2ff08; text-align: center; }
 .medal-level { color: #a7c7ef; font-size: .65rem; font-weight: 700; line-height: 14px; white-space: nowrap; }
+.arena-winner-medal-tile > .medal-level { max-width: 100%; white-space: normal; line-height: 11px; align-self: center; }
 .medal-tile > svg { display: block; width: 29px; height: 32px; }
 .medal-tile > .green-medal-emblem { transform: translateY(3px) scale(1.15); }
 .medal-tile > .battle-medal-emblem { transform: translateY(3px) scale(1.15); }
@@ -397,6 +398,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .battle-medal-emblem + .medal-name { margin-top: 5px; }
 .beta-medal-emblem + .medal-name { margin-top: 11px; }
 .arena-medal-emblem + .medal-name { margin-top: 5px; }
+.medal-tile > .tournament-medal-emblem { transform: translateY(3px) scale(1.15); }
+.tournament-medal-emblem + .medal-name { margin-top: 5px; }
 .medals-grid .achievements-empty { grid-column: 1 / -1; }
 @media (min-width: 1024px) {
   .profile-overview { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 20px 24px; align-items: start; }
@@ -514,6 +517,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 @media (max-width: 640px) {
   .app-shell, .login-page, .auth-loading { padding-left: 18px; padding-right: 18px; }
   .app-main { padding-top: 20px; padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
+  /* Short tournament pages must fill the mobile viewport for the fixed tab bar. */
+  .app-shell-tournament { min-height: 100dvh; }
   .page-heading { margin-bottom: 18px; }
   .page-heading h1 { font-size: clamp(1.65rem, 7vw, 2rem); }
   .login-copy h1 { font-size: clamp(2.75rem, 12vw, 3.65rem); }
@@ -715,13 +720,6 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .admin-next-bet strong { color: var(--accent); }
 
 @media (min-width: 1024px) {
-  .desktop-games-rail { display: flex; align-items: flex-start; gap: 20px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; }
-  .desktop-games-rail::-webkit-scrollbar { display: none; }
-  .desktop-games-page { flex: 0 0 100%; scroll-snap-align: start; }
-  .desktop-games-controls { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 14px; color: var(--muted); font-size: .875rem; }
-  .desktop-games-controls button { display: grid; place-items: center; width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: #202630; color: var(--accent); cursor: pointer; }
-  .desktop-games-controls button:disabled { opacity: .35; cursor: default; }
-  .desktop-games-controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .desktop-games { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
   .desktop-games .daily-slide { min-width: 0; }
   .desktop-games .daily-card { height: 100%; }
@@ -755,34 +753,21 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 
 @media (max-width: 1023px) {
   .mobile-games { display: block; overflow: visible; }
-  .mobile-games-rail { display: flex; align-items: flex-start; gap: 12px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-inline: contain; touch-action: pan-y; }
-  .mobile-games-rail::-webkit-scrollbar { display: none; }
-  .mobile-games-rail .daily-slide { flex: 0 0 100%; min-width: 0; scroll-snap-align: start; }
-  .mobile-games-indicator { display: flex; align-items: center; justify-content: center; gap: 7px; padding: 12px 0 2px; }
-  .mobile-games-indicator button { width: 22px; height: 22px; border: 0; padding: 0; background: transparent; display: grid; place-items: center; cursor: pointer; }
-  .mobile-games-indicator button::before { content: ''; width: 8px; height: 8px; border-radius: 99px; background: #718198; transition: width 180ms cubic-bezier(0.23, 1, 0.32, 1), background-color 180ms cubic-bezier(0.23, 1, 0.32, 1); }
-  .mobile-games-indicator button.active::before { width: 18px; background: var(--accent); }
-  .mobile-games-indicator button:focus-visible { outline: 2px solid var(--accent); border-radius: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .mobile-games-rail { scroll-behavior: auto; }
-  .mobile-games-indicator button::before { transition: background-color 180ms ease; }
 }
 
 
 @media (max-width: 640px) {
   .mobile-games .prediction-content h2 { display: flex; align-items: center; justify-content: center; line-height: 1.18; }
-  .mobile-games .prediction-content h2.game-title-long { font-size: 1.125rem; }
+  .mobile-games .prediction-content h2.game-title-long,
+  .mobile-games .prediction-content h2.game-title-compact { font-size: 1.125rem; }
   .mobile-games .prediction-content h2.game-title-very-long { font-size: 1rem; }
   .mobile-games .pick-options label { min-height: 60px; }
 }
 
 
 @media (max-width: 1023px) {
-  .mobile-games-indicator { gap: 2px; }
-  .mobile-games-indicator button { width: 16px; height: 22px; }
-  .mobile-games-indicator button::before { width: 7px; height: 7px; }
-  .mobile-games-indicator button.active::before { width: 14px; }
 }
 
 .admin-option-row { display: grid; grid-template-columns: minmax(0,1fr) 110px; gap: 10px; align-items: end; }
@@ -937,6 +922,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .rank-guide-button:hover { color: #75b2ff; background: #75b2ff12; }
 .rank-progress-caption { padding-right: 36px; }
 .rank-guide-list { display: grid; margin-top: 18px; }
+.rank-guide-explanation { color: #bdcbe0; font-size: 13px; line-height: 1.65; padding: 14px; background: #75afff0a; border: 1px solid #75afff30; border-radius: 12px; margin: 16px 0 0; }
+.rank-guide-explanation strong { color: #e5efff; font-weight: 600; }
 .rank-guide-row { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .rank-guide-row:last-child { border-bottom: 0; }
 .rank-guide-row .rank-emblem { width: 34px; height: 39px; }
@@ -963,6 +950,19 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .global-ranking-dashboard .global-ranking-results > .page-heading { min-height: 48px; margin-bottom: 18px; }
   .global-ranking-dashboard .global-ranking-results h1 { font-size: 1.9rem; }
   .global-ranking-dashboard .global-ranking-list button { padding-inline: 16px; grid-template-columns: 32px 42px minmax(0, 1fr) 32px 54px; gap: 10px; }
+}
+
+.app-header { gap: 8px; }
+.app-header-actions { flex: none; }
+.app-header .header-greens-button[aria-current="page"] { color: var(--accent); background: #6aa9ff14; }
+@media (max-width: 380px) {
+  .app-header .brand { font-size: 18px; gap: 5px; }
+  .app-header .brand img { width: 27px; height: 27px; }
+  .app-header-actions { gap: 4px; }
+}
+@media (max-width: 350px) {
+  .app-header .brand { font-size: 16px; }
+  .app-header .brand img { width: 24px; height: 24px; }
 }
 
 .tournament-top { display: contents; }
@@ -1063,4 +1063,16 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .player-summary-identity h2 { transform: translateY(2px); }
 .player-summary-identity > span { transform: translateY(-5px); }
 .home-edit-profile { bottom: 6px; }
-@media (max-width: 640px) { .player-summary { padding: 10px 18px 20px; } }
+@media (max-width: 640px) {
+  .player-summary { padding: 10px 18px 20px; }
+  .player-summary-identity { flex: 1; min-width: 0; }
+  .player-summary-identity h2 { white-space: nowrap; }
+  .player-summary-identity .username-text {
+    white-space: nowrap;
+    overflow: visible;
+  }
+}
+@media (max-width: 360px) {
+  .player-summary { padding-inline: 14px; }
+  .player-summary > .flex { column-gap: 8px; }
+}

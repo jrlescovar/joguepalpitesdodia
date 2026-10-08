@@ -8,7 +8,7 @@ insert into reviewed_font_expectations values
  ('tiltprism','mythic','classic'),
  ('shojumaru','epic','classic'),
  ('tradewinds','epic','classic'),
- ('sedgwickavedisplay','legendary','halloween'),
+ ('sedgwickavedisplay','legendary','classic'),
  ('fugazone','rare','classic'),
  ('reggaeone','epic','classic'),
  ('akronim','mythic','classic'),

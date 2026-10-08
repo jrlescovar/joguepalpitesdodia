@@ -9,10 +9,10 @@ const otherId='00000000-0000-4000-8000-000000000002';
 const profileId='00000000-0000-4000-8000-000000000003';
 const order={id,profile_id:profileId,handle:'jrlescovar',kind:'font',quantity:1,amount_cents:321,checkout_url:null,paid_at:null};
 
-function load(name:string, { saved={...order},fetcher=vi.fn(async()=>Response.json({success:true,paid:true,amount:321,paid_amount:321,capture_method:'pix'})),user=true,reservationError=null,settlementError=null } : {saved?:typeof order|null;fetcher?:ReturnType<typeof vi.fn>;user?:boolean;reservationError?:unknown;settlementError?:unknown}={}) {
+function load(name:string, { saved={...order},fetcher=vi.fn(async()=>Response.json({success:true,paid:true,amount:321,paid_amount:321,capture_method:'pix'})),user=true,reservationError=null,settlementError=null,tournamentName='Torneio de Finalização',tournamentError=null } : {saved?:typeof order|null;fetcher?:ReturnType<typeof vi.fn>;user?:boolean;reservationError?:unknown;settlementError?:unknown;tournamentName?:string;tournamentError?:unknown}={}) {
   let handler:(request:Request)=>Promise<Response>;
-  const rpc=vi.fn(async(name:string,args:unknown)=>name==='get_or_claim_profile'?{data:{uid:profileId},error:null}:name==='reserve_infinitepay_order'?{data:saved,error:reservationError}:{data:true,error:settlementError});
-  const query:any={select:()=>query,eq:()=>query,maybeSingle:async()=>({data:saved,error:null}),update:()=>query,then:(resolve:any)=>Promise.resolve({error:null}).then(resolve)};
+  const rpc=vi.fn(async(name:string,args:unknown)=>name==='get_or_claim_profile'?{data:{uid:profileId},error:null}:['reserve_infinitepay_order','reserve_tournament_order'].includes(name)?{data:saved,error:reservationError}:{data:true,error:settlementError});
+  const query:any={select:()=>query,eq:()=>query,maybeSingle:async()=>({data:saved,error:null}),single:async()=>({data:{name:tournamentName},error:tournamentError}),update:()=>query,then:(resolve:any)=>Promise.resolve({error:null}).then(resolve)};
   const client=()=>({auth:{getUser:async()=>({data:{user:user?{id:profileId}:null},error:null})},rpc,from:()=>query});
   const shared=readFileSync('supabase/functions/_shared/infinitepay.ts','utf8').replace(/^import.*\r?\n/gm,'').replace(/^export /gm,'');
   const endpoint=readFileSync(`supabase/functions/${name}/index.ts`,'utf8').replace(/^import.*\r?\n/gm,'');
@@ -23,6 +23,37 @@ function load(name:string, { saved={...order},fetcher=vi.fn(async()=>Response.js
 }
 const payment={order_nsu:id,transaction_nsu:'transaction-1',invoice_slug:'invoice-1'};
 describe('Pix InfinitePay',()=>{
+  it('usa o nome e o preço do novo Torneio de Cartões no checkout',async()=>{
+    const fetcher=vi.fn(async()=>Response.json({url:'https://checkout.infinitepay.io/jrlescovar?lenc=cards'}));
+    const app=load('infinitepay-checkout',{saved:{...order,kind:'tournament',amount_cents:333},tournamentName:'Torneio de Cartões',fetcher});
+    expect((await app.request({kind:'tournament',quantity:1,tournamentId:id,requestId:otherId,amount:1,name:'Nome falso'})).status).toBe(200);
+    const payload=JSON.parse(fetcher.mock.calls[0][1].body);
+    expect(payload.items).toEqual([{quantity:1,price:333,description:'Inscrição no Torneio de Cartões'}]);
+  });
+  it('não cria o link de pagamento quando a leitura do torneio falha',async()=>{
+    const app=load('infinitepay-checkout',{saved:{...order,kind:'tournament',amount_cents:333},tournamentError:{code:'08006'}});
+    expect((await app.request({kind:'tournament',quantity:1,tournamentId:id,requestId:otherId})).status).toBe(503);
+    expect(app.fetcher).not.toHaveBeenCalled();
+  });
+  it('reserva inscrição pelo usuário autenticado e usa o preço do banco, ignorando valores enviados pelo cliente',async()=>{
+    const fetcher=vi.fn(async()=>Response.json({url:'https://checkout.infinitepay.io/jrlescovar?lenc=test'}));
+    const app=load('infinitepay-checkout',{saved:{...order,kind:'tournament',amount_cents:267},fetcher});
+    expect((await app.request({kind:'tournament',quantity:1,tournamentId:id,requestId:otherId,amount:1,profileId:otherId})).status).toBe(200);
+    expect(app.rpc).toHaveBeenCalledWith('reserve_tournament_order',{p_profile_id:profileId,p_request_id:otherId,p_handle:'jrlescovar',p_tournament_id:id});
+    const payload=JSON.parse(fetcher.mock.calls[0][1].body);
+    expect(payload.items[0].price).toBe(267);
+    expect(payload.redirect_url).toBe(origin+'/?payment=infinitepay&destination=torneio');
+  });
+  it.each([{quantity:1},{quantity:2,tournamentId:id},{quantity:1,tournamentId:'invalid'}])('recusa inscrição inválida %j',async(input)=>{
+    const app=load('infinitepay-checkout');
+    expect((await app.request({kind:'tournament',requestId:otherId,...input})).status).toBe(400);
+    expect(app.fetcher).not.toHaveBeenCalled();
+  });
+  it('não abre pagamento quando o banco informa inscrição já confirmada ou encerrada',async()=>{
+    const app=load('infinitepay-checkout',{reservationError:{code:'P0001',message:'Você já está inscrito neste torneio.'}});
+    expect((await app.request({kind:'tournament',quantity:1,tournamentId:id,requestId:otherId})).status).toBe(409);
+    expect(app.fetcher).not.toHaveBeenCalled();
+  });
   it.each([['classic',3,321],['classic',7,567],['classic',11,917],['font',1,321],['font',3,567],['font',5,917],['halloween',2,321],['halloween',6,567],['halloween',10,917],['supporter',1,497]])('define o preço de %s/%i no servidor',async(kind,quantity,amount)=>{
     const fetcher=vi.fn(async()=>Response.json({url:'https://checkout.infinitepay.io/jrlescovar?lenc=test'}));
     const app=load('infinitepay-checkout',{fetcher});

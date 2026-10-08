@@ -7,6 +7,10 @@
 .box-help-button:hover { border-color: #8bb9f9; color: #8bb9f9; }
 .box-help-button:focus-visible { outline: 2px solid #8bb9f9; outline-offset: 3px; }
 .box-art { position: relative; display: grid; place-items: center; height: 205px; isolation: isolate; }
+.box-art-name { filter: hue-rotate(118deg); }
+.box-art-frame { filter: hue-rotate(180deg); }
+.box-panel-name { border-color: #469ca6; background: linear-gradient(135deg,#1b3037,#1b222c); }
+.box-panel-frame { border-color: #778fd1; background: linear-gradient(135deg,#242d45,#1b222c); }
 .box-art-glow { position: absolute; width: min(65%,270px); height: 110px; border-radius: 50%; background: #f5aa3a24; filter: blur(35px); transform: translateY(24px); }
 .box-art-classic .box-art-glow { display: none; }
 .box-opening-stage, .box-opening-stage .box-art { height: 245px; }

@@ -3,19 +3,10 @@
 .admin-profile-dialog.dialog-content{width:calc(100% - 32px);max-width:700px;padding:0;background:transparent;border:0;box-shadow:none;overflow-y:auto}.admin-profile-dialog .admin-profile-card{margin:0}.admin-profile-dialog .admin-profile-card>h2{padding-right:64px}.admin-profile-dialog .close-button{z-index:1;top:6px;right:8px}
 
 .admin-directory-search input{border:1px solid var(--line);background:#111821;border-radius:10px;padding:11px 12px;color:inherit;min-height:46px}
-.admin-push-alerts { margin: 18px 0; padding: 18px; }
-.admin-push-alerts h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 1rem; }
-.admin-push-alerts h2 svg { color: #8bbaff; }
-.admin-push-list { display: grid; gap: 8px; margin-top: 14px; }
-.admin-push-list > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
-.admin-push-list span { min-width: 0; font-size: 12px; overflow-wrap: anywhere; }
-.admin-push-list button { flex: none; }
-.admin-push-empty { display: grid; gap: 12px; margin-top: 12px; }
-.admin-push-empty p { margin: 0; }
-.admin-push-empty button { width: 100%; }
-@media (max-width: 420px) { .admin-push-list > div { align-items: flex-start; flex-direction: column; } }
+.admin-directory-pagination { margin:0 0 15px; }
 
 .profile-admin-footer { margin-top:20px; }
 .profile-admin-footer:empty { display:none; }
 .profile-admin-footer .profile-admin-button { margin-bottom:0; }
+@media(max-width:640px){.profile-admin-footer { text-align:center; }}
 @media(min-width:1200px){.profile-admin-footer { grid-column:1 / -1; grid-row:4; margin-top:0; }}

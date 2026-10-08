@@ -11,7 +11,7 @@ describe('graus do Ranking Global', () => {
     [901, 'Esmeralda'], [1200, 'Esmeralda'],
     [1201, 'Safira'], [1500, 'Safira'],
     [1501, 'Lendário'], [1800, 'Lendário'],
-    [1801, 'Elite'], [2099, 'Elite'],
+    [1801, 'Ascendente'], [2099, 'Ascendente'],
     [2100, 'Mestre'], [3000, 'Mestre'],
   ])('classifica %i pontos como %s', (points, name) => {
     expect(rankTier(points).name).toBe(name);

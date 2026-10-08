@@ -1,0 +1,30 @@
+.admin-bots { display:grid; grid-template-columns:minmax(0,1fr); min-width:0; gap:18px; max-width:920px; margin-inline:auto; }
+.admin-bots > .card { min-width:0; padding:20px; }
+.admin-bots h2 { margin:0 0 14px; font-size:1.15rem; }
+.admin-bots-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; }
+.admin-bots-heading h2 { display:flex; align-items:center; gap:9px; margin:0; }
+.admin-bots-heading h2 svg { color:#92b9ee; }
+.admin-bots-activation { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-top:20px; }
+.admin-bots-activation > div { display:grid; gap:5px; min-width:0; }
+.admin-bots-activation span { color:var(--muted); font-size:.8rem; }
+.admin-bots-activation > button { flex:none; min-width:112px; }
+.admin-bots-note,.admin-bots-pending { margin:14px 0 0; font-size:.8rem; line-height:1.5; color:var(--muted); }
+.admin-bots-pending { color:#e5c57f; }
+.admin-bots ul { list-style:none; padding:0; margin:0; }
+.admin-bots-player { display:flex; align-items:center; gap:10px; min-width:0; padding:12px 0; border-bottom:1px solid var(--line); }
+.admin-bots-player:last-child { border-bottom:0; }
+.admin-bots-player > .avatar { flex:none; }
+.admin-bots-player-copy { flex:1; min-width:0; }
+.admin-bots-player-copy strong { display:block; font-size:1rem; overflow-wrap:anywhere; }
+.admin-bots-player-copy small { display:block; margin-top:4px; color:var(--muted); font-size:.7rem; }
+.admin-bots-player > button { flex:none; }
+.admin-bots-picker .admin-directory-search { margin-top:16px; }
+.admin-bots-picker .secondary-button { gap:6px; }
+@media (max-width:480px) {
+ .admin-workspace-tabs button { min-width:0; flex-direction:column; gap:4px; padding:8px 2px; min-height:58px; font-size:12px; }
+ .admin-bots > .card { padding:16px; }
+ .admin-bots-activation { gap:10px; }
+ .admin-bots-activation > button { min-width:100px; padding:10px; }
+ .admin-bots-player > .secondary-button { padding:9px 8px; font-size:12px; }
+ .admin-bots-player-copy small { font-size:10px; }
+}

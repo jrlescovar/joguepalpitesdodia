@@ -10,16 +10,16 @@ const expectedRarities={
  caesardressing:'mythic',kiranghaerang:'mythic',fascinateinline:'mythic',fingerpaint:'mythic',frederickathegreat:'mythic',hennypenny:'legendary',lacquer:'epic',rubikbeastly:'epic',
  rubikmoonrocks:'epic',ewert:'epic',sancreek:'mythic',megrim:'mythic',geostarfill:'epic',kumaroneoutline:'mythic',miltoniantattoo:'rare',rubikvinyl:'legendary',
 };
-const expectedLabels={sedgwickavedisplay:'HipHop',caesardressing:'Noruega',frederickathegreat:'Darkness',hennypenny:'Magic',rubikmoonrocks:'moon',ewert:'Monster',rubikvinyl:'ghost'};
+const expectedLabels={sedgwickavedisplay:'HipHop',caesardressing:'Noruega',frederickathegreat:'Darkness',hennypenny:'Magic',rubikmoonrocks:'Moon',ewert:'Monster',rubikvinyl:'Ghost'};
 const removed=['diplomatasc','yatraone','asset','biorhymeexpanded','bokor','bowlbyonesc','changaone','diplomata','geostar','rubikspraypaint'];
 describe('reviewed font release',()=>{
- it('applies every requested rarity and routes only renamed fonts to Halloween',()=>{
+ it('applies every requested rarity and keeps HipHop in the normal and font boxes',()=>{
   expect(releasedUsernameFonts).toHaveLength(34);
   expect(Object.fromEntries(releasedUsernameFonts.map(([id])=>[id,fontRarity(id)]))).toEqual(expectedRarities);
   for(const [id,,family,,,] of releasedUsernameFonts){
    expect(usernameFonts.filter(([key])=>key===id)).toHaveLength(1);
    expect(usernameFonts.find(([key])=>key===id)?.[2]).toBe(family);
-   const event=id in expectedLabels;
+   const event=id in expectedLabels&&id!=='sedgwickavedisplay';
    expect(isHalloweenFont(id)).toBe(event);
    expect(halloweenCatalog.filter(item=>item.style===id)).toHaveLength(event?1:0);
    expect(boxCatalog.filter(item=>item.style===id)).toHaveLength(event?0:1);
@@ -30,7 +30,7 @@ describe('reviewed font release',()=>{
   expect(isHalloweenFont('creepster')).toBe(true);
  });
  it('keeps exact requested size changes and valid font assets',()=>{
-  expect(Object.fromEntries(releasedUsernameFonts.filter(row=>row[5]!==0).map(row=>[row[0],row[5]]))).toEqual({tiltprism:1,shojumaru:-3,akronim:3,arbutus:-1,arizonia:4,bigelowrules:4,bungeeshade:-3,kiranghaerang:3,fascinateinline:-1,frederickathegreat:1,megrim:1,kumaroneoutline:-2});
+  expect(Object.fromEntries(releasedUsernameFonts.filter(row=>row[5]!==0).map(row=>[row[0],row[5]]))).toEqual({tiltprism:1,shojumaru:-3,akronim:3,arbutus:-1,arizonia:4,bigelowrules:5,bungeeshade:-3,kiranghaerang:3,fascinateinline:-1,frederickathegreat:1,hennypenny:1,megrim:1,kumaroneoutline:-2});
   for(const [id] of releasedUsernameFonts){
    const bytes=readFileSync(new URL('../public/fonts/'+id+'.woff2',import.meta.url));
    expect(bytes.toString('ascii',0,4)).toBe('wOF2');

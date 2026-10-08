@@ -7,7 +7,7 @@ export const rankTiers = [
   { name: 'Esmeralda', key: 'emerald', min: 901 },
   { name: 'Safira', key: 'sapphire', min: 1201 },
   { name: 'Lendário', key: 'legendary', min: 1501 },
-  { name: 'Elite', key: 'elite', min: 1801 },
+  { name: 'Ascendente', key: 'elite', min: 1801 },
   { name: 'Mestre', key: 'master', min: 2100 },
 ] as const;
 

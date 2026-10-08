@@ -4,6 +4,7 @@ import { ArrowLeft, RefreshCw, Shield, CircleHelp } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice, Modal } from './components';
 import ProfileOverview from './ProfileOverview';
+import {usePublicProfileNavigation} from './usePublicProfileNavigation';
 import { rankTier, rankTiers } from './rankTiers';
 import RankEmblem from './RankEmblem';
 import DailyBattle from './DailyBattle';
@@ -14,7 +15,7 @@ type GlobalRankingPage = { players: RankedPlayer[]; ownRank: RankedPlayer | null
 
 function RankProgress({ points, position }: { points: number; position: number | null }) {
   const [showRanks, setShowRanks] = useState(false);
-  const guide = <><button type="button" className="rank-guide-button" aria-label="Ver patentes e pontuações" onClick={() => setShowRanks(true)}><CircleHelp size={22}/></button><Modal open={showRanks} onOpenChange={setShowRanks} title="Patentes do Ranking"><div className="rank-guide-list">{rankTiers.map((item, index) => <div className="rank-guide-row" key={item.key}><RankEmblem points={item.min}/><strong>{item.name}</strong><span>{rankTiers[index + 1] ? `${item.min} a ${rankTiers[index + 1].min - 1} pts` : `${item.min} pts ou mais`}</span></div>)}</div></Modal></>;
+  const guide = <><button type="button" className="rank-guide-button" aria-label="Ver patentes e pontuações" onClick={() => setShowRanks(true)}><CircleHelp size={22}/></button><Modal open={showRanks} onOpenChange={setShowRanks} title="Patentes do Ranking"><p className="rank-guide-explanation">Os pontos de cada palpite refletem seu nível de dificuldade: <strong>quanto mais difícil o palpite acertado, mais pontos você ganha</strong>. Confira o valor de cada opção antes de confirmar sua escolha.</p><div className="rank-guide-list">{rankTiers.map((item, index) => <div className="rank-guide-row" key={item.key}><RankEmblem points={item.min}/><strong>{item.name}</strong><span>{rankTiers[index + 1] ? `${item.min} a ${rankTiers[index + 1].min - 1} pts` : `${item.min} pts ou mais`}</span></div>)}</div></Modal></>;
   const tier = rankTier(points);
   const nextTier = rankTiers[rankTiers.findIndex(item => item.key === tier.key) + 1];
   if (!nextTier) return <section className="card rank-progress-card rank-progress-master" aria-label="Sua patente no Ranking Global">
@@ -50,7 +51,8 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
-  const [selected, setSelected] = useState<RankedPlayer | null>(null);
+  const [selected, setSelected] = useState<PublicProfile | null>(null);
+  const {openPublicProfile,cancelProfileOpen,profileOpenNotice}=usePublicProfileNavigation(setSelected);
   useEffect(() => {
     let current = true;
     setLoading(true); setError('');
@@ -69,15 +71,15 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
   if (selected) return <div className="public-profile-view">
-    <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao Ranking</button>
+    <button className="public-profile-back" onClick={() => {cancelProfileOpen();setSelected(null);}}><ArrowLeft size={18}/>Voltar ao Ranking</button>
     <div className="page-heading"><h1>Perfil público<span>.</span></h1></div>
-    <ProfileOverview profile={selected} lastClosedPrediction={lastClosedPrediction} today={today}/>
+    {profileOpenNotice}<ProfileOverview profile={selected} lastClosedPrediction={lastClosedPrediction} today={today} onOpenProfile={openPublicProfile}/>
   </div>;
   const ownPosition = ownRank?.position ?? players.find(player => player.uid === ownUid)?.position ?? null;
   return <div className="global-ranking-page global-ranking-dashboard">
     <div className="global-ranking-summary">
     <RankProgress points={ownRank?.rankPoints ?? ownPoints} position={ownPosition}/>
-    <DailyBattle onOpenProfile={uid=>{void call<PublicProfile | null>('getPublicProfile',{uid}).then(details=>{if(details){setSelected({...details,rankPoints:details.rankPoints ?? 0,position:details.rankPosition ?? 0});window.scrollTo({top:0,behavior:'instant'});}}).catch(cause=>setError(errorMessage(cause)));}} refreshTick={refreshTick + reload} onSettled={() => { setReload(value => value + 1); onBattleSettled?.(); }}/>
+    {profileOpenNotice}<DailyBattle onOpenProfile={openPublicProfile} refreshTick={refreshTick + reload} onSettled={() => { setReload(value => value + 1); onBattleSettled?.(); }}/>
     </div>
     <div className="global-ranking-results">
     <div className="page-heading"><div><h1>Ranking Global<span>.</span></h1></div><button className="icon-button" aria-label="Atualizar Ranking" aria-busy={loading} disabled={loading} onClick={() => setReload(value => value + 1)}><RefreshCw size={19} className={loading ? 'spin' : ''}/></button></div>

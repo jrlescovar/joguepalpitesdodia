@@ -16,13 +16,13 @@ begin
   end loop;
   update public.public_profiles set battle_protected=false where id=any(players);
 
-  -- Exact boundaries: 200, 300 and 400 are inclusive, 401 stays unmatched.
-  foreach g in array array[200,201,284,300,301,400,401] loop
+  -- Exact boundaries: 200, 300, 400 and 500 are inclusive, 501 stays unmatched.
+  foreach g in array array[200,201,284,300,301,400,401,499,500,501] loop
     delete from public.daily_battles where day_id=d;
     insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],0),(d,players[2],g);
     perform public.pair_waiting_daily_battles(d);
-    if (g<=400 and (select count(*) from public.daily_battles where day_id=d and player_right is not null)<>1)
-      or (g>400 and (select count(*) from public.daily_battles where day_id=d and player_right is null)<>2) then
+    if (g<=500 and (select count(*) from public.daily_battles where day_id=d and player_right is not null)<>1)
+      or (g>500 and (select count(*) from public.daily_battles where day_id=d and player_right is null)<>2) then
       raise exception 'Wrong pairing boundary: %',g;
     end if;
   end loop;
@@ -46,27 +46,32 @@ begin
   select jsonb_agg(to_jsonb(b) order by id) into after_pair from public.daily_battles b where day_id=d;
   if before_pair is distinct from after_pair then raise exception 'Repeated pairing changed the round'; end if;
 
-  -- Keep the original high-rank rule, and use snapshots even after rank gains.
+  -- The 500 ceiling also applies to 900+ ranks. Keep draw snapshots after gains.
   delete from public.daily_battles where day_id=d;
   insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],900),(d,players[2],1500);
   perform public.pair_waiting_daily_battles(d);
-  if (select count(*) from public.daily_battles where day_id=d and player_right is not null)<>1 then raise exception 'High-rank compatibility lost'; end if;
+  if exists(select 1 from public.daily_battles where day_id=d and player_right is not null) then raise exception 'High ranks bypassed the 500 ceiling'; end if;
+  delete from public.daily_battles where day_id=d;
+  insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],900),(d,players[2],1400);
+  perform public.pair_waiting_daily_battles(d);
+  if (select count(*) from public.daily_battles where day_id=d and player_right is not null)<>1 then raise exception 'High-rank 500 boundary failed'; end if;
   delete from public.daily_battles where day_id=d;
   update public.public_profiles set rank_points=1000 where id=players[2];
   insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],110),(d,players[2],394);
   perform public.pair_waiting_daily_battles(d);
   if not exists(select 1 from public.daily_battles where day_id=d and left_start_rank_points=110 and right_start_rank_points=394) then raise exception 'Draw snapshot not retained'; end if;
 
-  -- A late entrant tries 200 before 300/400; a completed bye never reopens.
-  foreach g in array array[200,284,350,401] loop
+  -- A late entrant tries 200 before 300/400/500; completed byes never reopen.
+  foreach g in array array[-501,-500,-401,-300,-200,0,200,284,350,401,500,501] loop
     delete from public.daily_battles where day_id=d;
-    update public.public_profiles set rank_points=0 where id=players[2];
-    insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],g);
+    update public.public_profiles set rank_points=600 where id=players[2];
+    insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],600+g);
     perform public.join_daily_battle_bye(players[2],d);
-    if (g<=400 and not exists(select 1 from public.daily_battles where day_id=d and player_right=players[2]))
-      or (g>400 and exists(select 1 from public.daily_battles where day_id=d and player_right is not null)) then raise exception 'Late entry boundary %',g; end if;
+    if (abs(g)<=500 and not exists(select 1 from public.daily_battles where day_id=d and player_right=players[2]))
+      or (abs(g)>500 and exists(select 1 from public.daily_battles where day_id=d and player_right is not null)) then raise exception 'Late entry boundary %',g; end if;
   end loop;
   delete from public.daily_battles where day_id=d;
+  update public.public_profiles set rank_points=0 where id=players[2];
   insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,players[1],300),(d,players[3],100);
   perform public.join_daily_battle_bye(players[2],d);
   if not exists(select 1 from public.daily_battles where day_id=d and player_left=players[3] and player_right=players[2]) then raise exception 'Late entry skipped 200-point candidate'; end if;

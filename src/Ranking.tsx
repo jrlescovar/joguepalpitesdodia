@@ -5,6 +5,7 @@ import { call, errorMessage } from './backend';
 import type { Profile, PublicProfile } from './types';
 import { Avatar, ErrorNotice } from './components';
 import ProfileOverview from './ProfileOverview';
+import {usePublicProfileNavigation} from './usePublicProfileNavigation';
 
 function RankingSkeleton() {
   return <div className="ranking-skeleton" role="status" aria-label="Carregando jogadores">
@@ -23,6 +24,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
   const [rank, setRank] = useState<number | null>(null);
   const [reload, setReload] = useState(0);
   const [selected, setSelected] = useState<{ player: PublicProfile; position: number } | null>(null);
+  const {openPublicProfile,cancelProfileOpen,profileOpenNotice}=usePublicProfileNavigation(player=>setSelected({player,position:player.rankPosition??0}));
   const rankingScroll = useRef(0);
   const viewReady = useRef(false);
   const lastSelectedUid = useRef<string | null>(null);
@@ -77,18 +79,18 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
     .map(player => ({ player, position: players.indexOf(player) + 1 }));
 
     if (selected) return <div className="public-profile-view">
-    <button className="public-profile-back" onClick={() => setSelected(null)}><ArrowLeft size={18}/>Voltar ao Torneio</button>
+    <button className="public-profile-back" onClick={() => {cancelProfileOpen();setSelected(null);}}><ArrowLeft size={18}/>Voltar ao Top Global de Greens</button>
     <div className="page-heading"><div><h1>Perfil público<span>.</span></h1></div></div>
-    <ProfileOverview profile={selected.player} lastClosedPrediction={lastClosedPrediction} today={today}/>
+    {profileOpenNotice}<ProfileOverview profile={selected.player} lastClosedPrediction={lastClosedPrediction} today={today} onOpenProfile={openPublicProfile}/>
   </div>;
 
   return <>
     <div className="tournament-top">
     <div className="page-heading">
       <div>
-        <h1>Torneio Edição Beta<span>.</span></h1>
+        <h1>Top Global de Greens<span>.</span></h1>
       </div>
-      <button className="icon-button" aria-label={refreshing ? 'Atualizando Torneio' : 'Atualizar Torneio'} aria-busy={refreshing} onClick={() => setReload(value => value + 1)} disabled={refreshing}>
+      <button className="icon-button" aria-label={refreshing ? 'Atualizando Top Global de Greens' : 'Atualizar Top Global de Greens'} aria-busy={refreshing} onClick={() => setReload(value => value + 1)} disabled={refreshing}>
         <RefreshCw size={19} className={refreshing ? 'spin' : ''}/>
       </button>
     </div>
@@ -102,7 +104,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
       </div>
     </div>
     </div>
-    {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros da temporada">
+    {podium.length > 0 && <section className="season-podium" aria-label="Três primeiros do Top Global de Greens">
       <div className="podium-grid">{podium.map(({ player, position }) => <button ref={element => { if (element) rowButtons.current.set(player.uid, element); else rowButtons.current.delete(player.uid); }} key={player.uid} className={`podium-place place-${position}`} onClick={() => openPlayer(player, position)} aria-label={`Abrir perfil de ${player.username}, posição ${position}`}>
         <span className="podium-medal"><Medal size={21}/>#{position}</span>
         <Avatar name={player.username} color={player.avatarColor} imageUrl={player.avatarUrl} borderStyle={player.passBorderStyle}/><strong><UsernameText name={player.username} font={player.usernameFont} className={`pass-name-${player.passNameStyle ?? 'none'}`}/></strong><small>{player.green}</small>
@@ -120,7 +122,7 @@ export default function Ranking({ profile, lastClosedPrediction, today, refreshT
           </button></li>; })}
         </ol>
         {loading && players.length === 0 && <RankingSkeleton/>}
-        {!loading && !error && players.length === 0 && <div className="daily-empty"><Trophy size={34}/><h2>O torneio começa aqui.</h2><p>Os jogadores aparecerão assim que criarem seus perfis.</p></div>}
+        {!loading && !error && players.length === 0 && <div className="daily-empty"><Trophy size={34}/><h2>O Top Global de Greens começa aqui.</h2><p>Os jogadores aparecerão assim que criarem seus perfis.</p></div>}
     </div>
   </>;
 }

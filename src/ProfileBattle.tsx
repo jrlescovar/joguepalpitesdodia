@@ -5,7 +5,7 @@ import type {Battle} from './BattleContent';
 import BattlePager from './BattlePager';
 
 type ProfileBattles={today:Battle|null;previous:Battle|null};
-export default function ProfileBattle({uid,refreshTick}:{uid:string;refreshTick:number}) {
+export default function ProfileBattle({uid,refreshTick,onOpenProfile}:{uid:string;refreshTick:number;onOpenProfile?:(uid:string)=>void}) {
   const [battles,setBattles]=useState<ProfileBattles|null>(null);
   const [error,setError]=useState('');
   const [retry,setRetry]=useState(0);
@@ -30,5 +30,5 @@ export default function ProfileBattle({uid,refreshTick}:{uid:string;refreshTick:
   },[uid,refreshTick,retry]);
   if(error)return <ErrorNotice message={'Confronto do Dia: '+error} retry={()=>setRetry(value=>value+1)}/>;
   if(!battles?.today&&!battles?.previous)return null;
-  return <BattlePager key={battles.today?.dayId??battles.previous!.dayId} today={battles.today} previous={battles.previous} instant/>;
+  return <BattlePager key={battles.today?.dayId??battles.previous!.dayId} today={battles.today} previous={battles.previous} instant onOpenProfile={onOpenProfile}/>;
 }

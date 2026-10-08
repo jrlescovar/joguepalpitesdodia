@@ -12,45 +12,54 @@ import GreenMedalEmblem from './GreenMedalEmblem';
 import BattleMedalEmblem from './BattleMedalEmblem';
 import BetaTesterEmblem from './BetaTesterEmblem';
 import ArenaMedalEmblem from './ArenaMedalEmblem';
+import ArenaChampionEmblem from './ArenaChampionEmblem';
 import SupporterMedalEmblem from './SupporterMedalEmblem';
+import TournamentMedalEmblem from './TournamentMedalEmblem';
 import './supporter.css';
 import type { Profile, PublicProfile } from './types';
 import './halloween.css';
 
 type OverviewProfile = Profile | PublicProfile;
 type BattleStats = { wins: number; losses: number; draws: number };
-type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number; supporterMonths: number };
+type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number; arenaChampionships?:number; supporterMonths: number; finishingTournamentWins?: number };
 
 function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; label: string; value: number | string; tone: string; hint?: string }) {
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
 }
 
-export default function ProfileOverview({ profile, lastClosedPrediction, today, supporterActive = false, refreshTick = 0 }: {
+export default function ProfileOverview({ profile, lastClosedPrediction, today, supporterActive = false, refreshTick = 0, onOpenProfile }: {
   profile: OverviewProfile;
   lastClosedPrediction: string | null;
   today: string;
   supporterActive?: boolean;
   refreshTick?: number;
+  onOpenProfile?: (uid:string)=>void;
 }) {
   const [globalPosition, setGlobalPosition] = useState<number | null>(null);
   const [battleStats, setBattleStats] = useState<BattleStats | null>(null);
   const [arenaWins, setArenaWins] = useState(0);
+  const [arenaChampionships,setArenaChampionships]=useState(0);
   const [supporterMonths, setSupporterMonths] = useState(0);
+  const [finishingTournamentWins, setFinishingTournamentWins] = useState(0);
   useEffect(() => {
     let active = true;
     setGlobalPosition(null);
     setBattleStats(null);
     setArenaWins(0);
+    setArenaChampionships(0);
     setSupporterMonths(0);
+    setFinishingTournamentWins(0);
     void call<OverviewMeta | null>('getProfileOverviewMeta', { uid: profile.uid })
       .then(meta => {
         if (!active) return;
         setGlobalPosition(typeof meta?.globalPosition === 'number' ? meta.globalPosition : null);
         setBattleStats(meta?.battleStats ?? null);
         setArenaWins(meta?.arenaWins ?? 0);
+        setArenaChampionships(meta?.arenaChampionships ?? 0);
         setSupporterMonths(meta?.supporterMonths ?? 0);
+        setFinishingTournamentWins(meta?.finishingTournamentWins ?? 0);
       })
-      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); setSupporterMonths(0); } });
+      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); setArenaChampionships(0); setSupporterMonths(0); setFinishingTournamentWins(0); } });
     return () => { active = false; };
   }, [profile.uid, profile.rankPoints, refreshTick]);
   const numberOrDash = (value: number | undefined) => typeof value === 'number' ? value : '—';
@@ -90,7 +99,7 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   </div><section className="profile-battle-stats" aria-label="Estatísticas do Confronto do Dia">
     <h2>Confronto do Dia</h2>
     <div className="score-grid profile-score-grid"><Stat icon={Trophy} label="Vitórias" value={battleStats?.wins ?? '—'} tone="battle-wins"/><Stat icon={X} label="Derrotas" value={battleStats?.losses ?? '—'} tone="red"/><Stat icon={Target} label="% de vitória" value={battleWinRate} tone="accuracy"/></div>
-    <ProfileBattle key={profile.uid} uid={profile.uid} refreshTick={refreshTick}/>
+    <ProfileBattle key={profile.uid} uid={profile.uid} refreshTick={refreshTick} onOpenProfile={onOpenProfile}/>
   </section><section className="card achievements-card" aria-label="Medalhas e marcas">
     <div className="achievements-heading"><span className="eyebrow">MEDALHAS E MARCAS</span></div>
     <div className="medals-grid">
@@ -109,17 +118,23 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         <BetaTesterEmblem/>
         <strong className="medal-name">Beta Tester</strong>
       </div>}
-      {showArenaMedal&&<div className="medal-tile" role="img" aria-label={`Campeão Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
-        <span className="medal-level">Campeão Arena</span>
+      {showArenaMedal&&<div className="medal-tile arena-winner-medal-tile" role="img" aria-label={`Vencedor Dia Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
+        <span className="medal-level">Vencedor Dia Arena</span>
         <ArenaMedalEmblem/>
         <strong className="medal-name">{arenaWins}</strong>
       </div>}
-      {supporterMonths>0&&<div className="medal-tile supporter-medal-tile" role="img" aria-label={`Apoiador, ${supporterMonths} ${supporterMonths===1?'mês':'meses'} pagos`}>
+      {arenaChampionships>0&&<div className="medal-tile arena-winner-medal-tile" role="img" aria-label={`Campeão da Arena, ${arenaChampionships} ${arenaChampionships===1?'título':'títulos'}`}><span className="medal-level">Campeão da Arena</span><ArenaChampionEmblem/><strong className="medal-name">{arenaChampionships}</strong></div>}
+      {finishingTournamentWins>0&&<div className="medal-tile tournament-medal-tile" role="img" aria-label={`Torneio Finalização, ${finishingTournamentWins} ${finishingTournamentWins===1?'vitória':'vitórias'}`}>
+        <span className="medal-level">Campeão: {finishingTournamentWins}x</span>
+        <TournamentMedalEmblem/>
+        <strong className="medal-name">Torneio<br/>Finalização</strong>
+      </div>}
+      {supporterMonths>0&&<div className="medal-tile supporter-medal-tile" role="img" aria-label={`Apoiador, ${supporterMonths} ${supporterMonths===1?'mês':'meses'} de Apoiador`}>
         <span className="medal-level">Apoiador</span>
         <SupporterMedalEmblem/>
         <strong className="medal-name">{supporterMonths} {supporterMonths===1?'mês':'meses'}</strong>
       </div>}
-      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&supporterMonths===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
+      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&arenaChampionships===0&&supporterMonths===0&&finishingTournamentWins===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
   </section><div className="profile-admin-footer"><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/></div></div>;
 }

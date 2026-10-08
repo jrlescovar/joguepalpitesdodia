@@ -17,6 +17,8 @@ export function App() {
       if (authError) setError(errorMessage(authError));
       setUser(data.session?.user ? toAppUser(data.session.user) : null);
       setLoading(false);
+    }).catch(cause => {
+      if (active) { setError(errorMessage(cause)); setLoading(false); }
     });
     const {data:{subscription}} = supabase.auth.onAuthStateChange((_event, session) => {
       if (active) { setUser(current => current?.uid === session?.user.id ? current : session?.user ? toAppUser(session.user) : null); setLoading(false); }

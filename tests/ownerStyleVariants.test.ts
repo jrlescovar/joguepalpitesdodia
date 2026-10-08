@@ -15,7 +15,10 @@ describe('owner palette variants',()=>{
     const jade='lab-blue-10-jade-sky';
     expect(boxRarity(jade)).toBe('mythic');
     expect(halloweenCatalog.filter(item=>item.style===jade)).toEqual([{kind:'name',style:jade,rarity:'mythic'},{kind:'frame',style:jade,rarity:'mythic'}]);
-    for(const style of ['lab-blue-9',jade]){
+    expect(passStyleOptions.find(([style])=>style==='lab-blue-6')?.[1]).toBe('Luz de Alma');
+    expect(boxRarity('lab-blue-6')).toBe('legendary');
+    expect(halloweenCatalog.filter(item=>item.style==='lab-blue-6')).toEqual([{kind:'name',style:'lab-blue-6',rarity:'legendary'},{kind:'frame',style:'lab-blue-6',rarity:'legendary'}]);
+    for(const style of ['lab-blue-6','lab-blue-9',jade]){
       expect(isHalloweenStyle(style)).toBe(true);
       expect([...boxCatalog,...fontBoxCatalog].some(item=>item.style===style)).toBe(false);
     }

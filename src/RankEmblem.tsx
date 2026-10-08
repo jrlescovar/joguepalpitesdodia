@@ -61,7 +61,7 @@ export default function RankEmblem({ points }: { points: number }) {
         <path className="rank-ghost" d="M32 4 48 16 59 15 54 42 32 60 10 42 5 15l11 1z"/>
         <path className="rank-stroke" d="M32 4 48 16 59 15 54 42 32 60 10 42 5 15l11 1z"/>
         <path className="rank-thin" d="M32 11 45 21l8-1-4 19-17 14-17-14-4-19 8 1z"/>
-        <path className="rank-fill" d="M33 16c2 8-2 10-2 15 4-2 6-5 7-9 8 8 10 18 5 25-3 5-9 8-11 8s-8-3-11-8c-5-8-2-17 4-23 0 6 2 9 4 11 0-7-1-12 4-19z"/>
+        <path className="rank-fill" fillRule="evenodd" clipRule="evenodd" d="M33 17c2 8-5 10-4 16 3-2 5-6 6-9 0 5 5 8 5 14 0 6-4 10-8 12-6-2-9-7-8-12 0-3 2-6 3-8-1 5 1 7 2 8-2-9 0-16 4-21Zm-1 18c2 3 4 5 3 8-.5 2-1.8 3-3 4-3-2-4-5-2-8 0 3 1 3.5 2 4-1-3-1.3-5 0-8Z"/>
       </>}
       {tier.key === 'master' && <>
         <path className="rank-ghost" d="M32 2 43 13l15 2-5 17 5 18-26 12L6 50l5-18-5-17 15-2z"/>

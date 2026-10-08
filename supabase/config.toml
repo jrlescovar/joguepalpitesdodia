@@ -24,3 +24,6 @@ verify_jwt = true
 
 [functions.infinitepay-webhook]
 verify_jwt = false
+
+[functions.auto-results]
+verify_jwt = false

@@ -1,0 +1,24 @@
+.box-carousel { min-width: 0; margin-top: 28px; }
+.box-carousel[hidden], .box-carousel-slide[hidden] { display: none; }
+.box-carousel-title { margin: 0 0 16px; font-size: 1.25rem; }
+.box-carousel-rail { position: relative; display: flex; align-items: stretch; gap: 16px; overflow-x: auto; overflow-y: hidden; scroll-snap-type: x mandatory; overscroll-behavior-x: contain; scrollbar-width: none; padding-bottom: 3px; overflow-anchor: none; }
+.box-carousel-rail::-webkit-scrollbar { display: none; }
+.box-carousel-slide { flex: 0 0 100%; min-width: 0; scroll-snap-stop: always; }
+.box-carousel-slide[data-page-start="true"] { scroll-snap-align: start; }
+.box-carousel-slide > .box-panel { display: flex; flex-direction: column; margin: 0; height: 100%; }
+.box-carousel-slide .box-panel-actions { margin-top: auto; }
+.offers-carousel { margin-top: 24px; }
+.offers-carousel .box-carousel-slide > .box-offers { display: flex; flex-direction: column; margin: 0; height: 100%; }
+.box-carousel-controls { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 12px; }
+.box-carousel-controls > .icon-button { flex: none; width: 44px; min-height: 44px; }
+.box-carousel-dots { display: flex; align-items: center; justify-content: center; gap: 2px; }
+.box-carousel-dots button { display: grid; flex: none; place-items: center; width: 26px; height: 30px; padding: 0; border: 0; background: transparent; }
+.box-carousel-dots span { width: 9px; height: 9px; border-radius: 50%; background: #74849a; }
+.box-carousel-dots .active span { background: var(--accent); }
+@media (min-width: 1200px) {
+  .shop-layout > .box-carousel { grid-column: 1 / -1; order: 2; margin-top: 0; }
+  .shop-layout > .offers-carousel { order: 1; }
+  .offers-carousel .box-offers-view-items { margin-top: 10px; padding-top: 7px; }
+  .box-carousel-rail { gap: 24px; }
+  .box-carousel-slide { flex-basis: calc((100% - 24px) / 2); }
+}

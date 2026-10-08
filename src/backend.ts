@@ -1,5 +1,6 @@
 import { createClient, type User } from '@supabase/supabase-js';
 import type { Pick, Prediction } from './types';
+import { ReadRequests } from './readRequests';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co';
 const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 'placeholder-key';
@@ -7,6 +8,14 @@ export const backendConfigured = Boolean(import.meta.env.VITE_SUPABASE_URL && im
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
+});
+
+const reads = new ReadRequests();
+export function invalidateReads() { reads.clear(); }
+let readUser: string | null = null;
+supabase.auth.onAuthStateChange((_event, session) => {
+  const uid = session?.user.id ?? null;
+  if (uid !== readUser) { readUser = uid; invalidateReads(); }
 });
 
 export type AppUser = { uid: string; email: string | null; raw: User };
@@ -22,14 +31,6 @@ export async function login() {
 }
 
 export async function logout() {
-  try {
-    const registration = await navigator.serviceWorker?.getRegistration('/push-sw.js');
-    const subscription = await registration?.pushManager.getSubscription();
-    if (subscription) {
-      await rpc('remove_my_push_subscription', { p_endpoint: subscription.endpoint });
-      await subscription.unsubscribe();
-    }
-  } catch { /* Signing out still proceeds if this browser cannot revoke push. */ }
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
@@ -56,14 +57,8 @@ function predictions(value: unknown): Prediction[] {
   return Array.isArray(value) ? value.map(prediction).filter((item): item is Prediction => Boolean(item)) : [];
 }
 
-let currentPredictionsRequest: Promise<Prediction[]> | null = null;
 function currentPredictions(): Promise<Prediction[]> {
-  if (currentPredictionsRequest) return currentPredictionsRequest;
-  const request = rpc<unknown>('get_current_predictions').then(predictions);
-  currentPredictionsRequest = request;
-  const clear = () => { if (currentPredictionsRequest === request) currentPredictionsRequest = null; };
-  void request.then(clear, clear);
-  return request;
+  return rpc<unknown>('get_current_predictions').then(predictions);
 }
 
 async function rpc<T>(name: string, args: Record<string, unknown> = {}): Promise<T> {
@@ -73,7 +68,28 @@ async function rpc<T>(name: string, args: Record<string, unknown> = {}): Promise
   return data as T;
 }
 
+// Settlement/claim RPCs are deliberately excluded: they can perform writes.
+const sharedReads = new Set([
+  'getPassStatus', 'getCurrentPredictions', 'getRecentResults', 'getPick', 'getPicksForDay',
+  'getRankingTop10', 'getGlobalRankTop10', 'getMyGlobalRank', 'getGlobalRankingPage',
+  'getArenaHistory', 'getArenaKing', 'getBattlePickComparison', 'getBattleProfileStats',
+  'getProfileOverviewMeta', 'getMyRank', 'getTournamentRankingPage',
+  'getPublicProfile', 'getFontBoxState', 'getNameBoxState', 'getFrameBoxState',
+  'getHalloweenBoxState', 'getBoxState',
+  'getFinishingTournament',
+]);
+
 export async function call<T = unknown>(name: string, payload: unknown = {}): Promise<T> {
+  if (sharedReads.has(name)) {
+    return reads.run(`${name}:${JSON.stringify(payload)}`, () => dispatch<T>(name, payload), name === 'getPassStatus' ? 15000 : name === 'getFinishingTournament' ? 30000 : 0);
+  }
+  const mutation = !name.startsWith('get') && name !== 'checkUsername';
+  if (mutation) invalidateReads();
+  try { return await dispatch<T>(name, payload); }
+  finally { if (mutation) invalidateReads(); }
+}
+
+async function dispatch<T = unknown>(name: string, payload: unknown = {}): Promise<T> {
   const data = payload as Record<string, unknown>;
   switch (name) {
     case 'getPlayerBootstrap': return rpc<T>('get_player_bootstrap');
@@ -101,23 +117,27 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'getProfileDailyBattles': return rpc<T>('get_profile_daily_battles', { p_profile_id: data.uid });
     case 'getBattleProfileStats': return rpc<T>('get_battle_profile_stats', { p_profile_id: data.uid });
     case 'getProfileOverviewMeta': return rpc<T>('get_profile_overview_meta', { p_profile_id: data.uid });
-    case 'getMyPushSettings': return rpc<T>('get_my_push_settings');
-    case 'setMyPushSettings': return rpc<T>('set_my_push_settings', { p_available: data.available, p_reminder: false, p_result: false });
-    case 'saveMyPushSubscription': return rpc<T>('save_my_push_subscription', { p_endpoint: data.endpoint, p_p256dh: data.p256dh, p_auth: data.auth });
-    case 'removeMyPushSubscription': return rpc<T>('remove_my_push_subscription', { p_endpoint: data.endpoint });
-    case 'sendAvailablePush': {
-      const { data: result, error } = await supabase.functions.invoke('push-dispatch', { body: { mode: 'available-all' } });
-      if (error) throw error;
-      if (result?.error) throw new Error(result.error);
-      return result as T;
-    }
     case 'getMyRank': return rpc<T>('get_my_rank');
     case 'getTournamentRankingPage': return rpc<T>('get_tournament_ranking_page');
+    case 'getFinishingTournament': return rpc<Record<string, unknown> | null>('get_finishing_tournament', { p_tournament_id: data.tournamentId ?? null })
+      .then(state => (state ? { ...state, clientReceivedAt: Date.now() } : null) as T);
+    case 'submitTournamentPick': return rpc<Record<string, unknown>>('submit_finishing_tournament_pick', { p_tournament_id: data.tournamentId, p_slot: data.slot, p_option_id: data.optionId })
+      .then(state => ({ ...state, clientReceivedAt: Date.now() }) as T);
+    case 'getAdminFinishingTournament': return rpc<T>('get_admin_finishing_tournament', { p_tournament_id: data.tournamentId ?? null });
+    case 'getAutomaticResultsStatus': return rpc<T>('get_automatic_results_status');
+    case 'settleTournamentPrediction': return rpc<T>('settle_finishing_tournament_prediction', { p_tournament_id: data.tournamentId, p_slot: data.slot, p_home_shots: data.homeShots, p_away_shots: data.awayShots });
+    case 'settleTournamentWinner': return rpc<T>('settle_finishing_tournament_winner', { p_tournament_id: data.tournamentId, p_slot: data.slot, p_winning_option_id: data.winningOptionId });
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });
     case 'getPassStatus': return rpc<T>('get_pass_status');
     case 'setUsernameFont': return rpc<T>('set_username_font', { p_font: data.font });
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
     case 'getFontBoxState': return rpc<T>('get_font_box_state');
+    case 'getNameBoxState': return rpc<T>('get_name_box_state');
+    case 'getFrameBoxState': return rpc<T>('get_frame_box_state');
+    case 'openNameBox': return rpc<T>('open_name_box', { p_request_id: data.requestId });
+    case 'openFrameBox': return rpc<T>('open_frame_box', { p_request_id: data.requestId });
+    case 'getDailyWheelState': return rpc<T>('get_daily_wheel_state');
+    case 'spinDailyWheel': return rpc<T>('spin_daily_wheel', { p_request_id: data.requestId });
     case 'openFontBox': return rpc<T>('open_font_box', { p_request_id: data.requestId });
     case 'getHalloweenBoxState': return rpc<T>('get_halloween_box_state');
     case 'getBoxState': return rpc<T>('get_box_state');
@@ -139,6 +159,10 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
     case 'settlePrediction': return rpc<T>('settle_prediction_for_slot', { p_day_id: data.dayId, p_slot: data.slot, p_winning_option_id: data.winningOptionId });
     case 'getAdminProfile': return rpc<T>('get_admin_profile', { p_search: data.search });
     case 'getAdminPlayers': return rpc<T>('get_admin_players', { p_search: data.search, p_page: data.page });
+    case 'getAdminDailyBots': return rpc<T>('get_admin_daily_bots');
+    case 'setAdminDailyBotsEnabled': return rpc<T>('admin_set_daily_bots_enabled', { p_enabled: data.enabled });
+    case 'addAdminDailyBot': return rpc<T>('admin_add_daily_bot', { p_profile_id: data.uid });
+    case 'removeAdminDailyBot': return rpc<T>('admin_remove_daily_bot', { p_profile_id: data.uid });
     case 'getAdminPicksForDay': return rpc<T>('get_admin_picks_for_day', { p_profile_id: data.uid, p_day_id: data.day });
     case 'adminAddPick': return rpc<T>('admin_add_pick', { p_profile_id: data.uid, p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });
     case 'adminCorrectPick': return rpc<T>('admin_correct_pick', { p_profile_id: data.uid, p_day_id: data.dayId, p_slot: data.slot, p_option_id: data.optionId });
@@ -154,7 +178,7 @@ export async function call<T = unknown>(name: string, payload: unknown = {}): Pr
   }
 }
 
-export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout' | 'infinitepay-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font'; kind?: 'classic'|'halloween'|'font'|'supporter' }) {
+export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout' | 'infinitepay-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font'; kind?: 'classic'|'halloween'|'font'|'supporter'|'tournament'; tournamentId?: string }) {
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), 20000);
   let response;
@@ -185,7 +209,7 @@ export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' 
 }
 
 export async function infinitePayStatus(body: { order_nsu: string; transaction_nsu?: string; slug?: string }) {
-  const { data, error } = await supabase.functions.invoke<{ paid?: boolean; error?: string }>('infinitepay-status', { body, signal: AbortSignal.timeout(15000) });
+  const { data, error } = await supabase.functions.invoke<{ paid?: boolean; kind?: string; error?: string }>('infinitepay-status', { body, signal: AbortSignal.timeout(15000) });
   if (error) {
     const context = (error as { context?: unknown }).context;
     if (context instanceof Response) {
@@ -195,7 +219,7 @@ export async function infinitePayStatus(body: { order_nsu: string; transaction_n
     throw error;
   }
   if (data?.error) throw new Error(data.error);
-  return Boolean(data?.paid);
+  return { paid: Boolean(data?.paid), kind: data?.kind };
 }
 
 export function errorMessage(error: unknown): string {

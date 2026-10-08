@@ -1,0 +1,6 @@
+.automatic-results-status { margin-bottom: 20px; padding: 18px; }
+.automatic-results-status h2 { font-size: 1rem; }
+.automatic-results-status > p:last-child { margin-bottom: 0; }
+.automatic-results-list { list-style: none; margin: 14px 0 0; padding: 0; }
+.automatic-results-list li { display: grid; gap: 5px; padding: 12px 0; border-top: 1px solid var(--line); font-size: .85rem; overflow-wrap: anywhere; }
+.automatic-results-list span { color: var(--muted); }
