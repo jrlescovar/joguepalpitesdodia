@@ -3,7 +3,7 @@ import './login.css';
 
 export default function LoginScreen({ onEnter, busy, error }: { onEnter: () => void; busy: boolean; error: string }) {
   return <div className="login-page login-redesign">
-    <header className="public-header"><a className="brand" href="#conteudo" aria-label="Palpitesdodia, ir para o conteúdo"><img className="brand-mark" src="/favicon.svg?v=brand-3" alt=""/><span>Palpites<span className="brand-light">do</span>dia</span></a><span className="login-beta">VERSÃO BETA</span></header>
+    <header className="public-header"><a className="brand" href="#conteudo" aria-label="Palpitesdodia, ir para o conteúdo"><img className="brand-mark" src="/favicon.svg?v=brand-3" alt=""/><span>Palpites<span className="brand-light">do</span>dia</span></a><span className="login-version">VERSÃO 1.0</span></header>
     <main id="conteudo" className="login-main login-hero">
       <section className="login-copy">
         <div className="eyebrow"><span/> UM NOVO DESAFIO TODOS OS DIAS</div>
