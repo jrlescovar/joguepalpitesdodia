@@ -54,9 +54,9 @@ describe('Pix InfinitePay',()=>{
     expect((await app.request({kind:'tournament',quantity:1,tournamentId:id,requestId:otherId})).status).toBe(409);
     expect(app.fetcher).not.toHaveBeenCalled();
   });
-  it.each([['classic',3,321],['classic',7,567],['classic',11,917],['font',1,321],['font',3,567],['font',5,917],['halloween',2,321],['halloween',6,567],['halloween',10,917],['supporter',1,497]])('define o preço de %s/%i no servidor',async(kind,quantity,amount)=>{
+  it.each([['coins',450,321],['coins',1000,567],['coins',2200,917],['classic',3,321],['classic',7,567],['classic',12,917],['font',1,321],['font',3,567],['font',7,917],['halloween',2,321],['halloween',6,567],['halloween',12,917],['supporter',1,777]])('define o preço de %s/%i no servidor',async(kind,quantity,amount)=>{
     const fetcher=vi.fn(async()=>Response.json({url:'https://checkout.infinitepay.io/jrlescovar?lenc=test'}));
-    const app=load('infinitepay-checkout',{fetcher});
+    const app=load('infinitepay-checkout',{fetcher,saved:{...order,kind,quantity,amount_cents:amount}});
     expect((await app.request({kind,quantity,amount:1,profileId:otherId,requestId:otherId})).status).toBe(200);
     const payload=JSON.parse(fetcher.mock.calls[0][1].body);
     expect(payload.handle).toBe('jrlescovar');expect(payload.items[0].price).toBe(amount);expect(payload.order_nsu).toBe(id);
@@ -68,7 +68,7 @@ describe('Pix InfinitePay',()=>{
     const app=load('infinitepay-checkout',{saved:{...order,checkout_url:'https://checkout.infinitepay.io/jrlescovar?lenc=test'}});
     expect((await app.request({kind:'font',quantity:1,requestId:otherId})).status).toBe(200);expect(app.fetcher).not.toHaveBeenCalled();
   });
-  it.each([['font',7],['font',11],['classic',1],['classic',10],['halloween',3],['halloween',11],['supporter',2],['__proto__',1]])('recusa pacote inválido %s/%i',async(kind,quantity)=>{
+  it.each([['coins',1],['coins',449],['coins',451],['coins',1000.5],['coins',2201],['font',5],['classic',11],['halloween',10],['font',11],['classic',1],['classic',10],['halloween',3],['halloween',11],['supporter',2],['__proto__',1]])('recusa pacote inválido %s/%i',async(kind,quantity)=>{
     const app=load('infinitepay-checkout');expect((await app.request({kind,quantity,requestId:otherId})).status).toBe(400);expect(app.fetcher).not.toHaveBeenCalled();
   });
   it('exige usuário autenticado',async()=>{
@@ -83,7 +83,14 @@ describe('Pix InfinitePay',()=>{
     expect(JSON.parse(app.fetcher.mock.calls[0][1].body)).toEqual({handle:'jrlescovar',order_nsu:id,transaction_nsu:'transaction-1',slug:'invoice-1'});
     expect(app.rpc).toHaveBeenCalledWith('settle_infinitepay_order',{p_order_id:id,p_transaction_nsu:'transaction-1',p_invoice_slug:'invoice-1',p_amount_cents:321,p_capture_method:'pix'});
   });
-  it.each([['classic',11],['halloween',10],['font',5]])('confirma o pacote maior %s/%i somente pelo valor reservado',async(kind,quantity)=>{
+  it.each([[450,321],[1000,567],[2200,917]])('confirma %i moedas pelo pagamento verificado e informa o tipo no retorno',async(quantity,amount)=>{
+    const fetcher=vi.fn(async()=>Response.json({success:true,paid:true,amount,paid_amount:amount,capture_method:'pix'}));
+    const app=load('infinitepay-status',{saved:{...order,kind:'coins',quantity,amount_cents:amount},fetcher});
+    const response=await app.request({...payment,amount:1,quantity:999999});
+    expect(response.status).toBe(200);expect(await response.json()).toEqual({status:200,paid:true,kind:'coins'});
+    expect(app.rpc).toHaveBeenCalledWith('settle_infinitepay_order',expect.objectContaining({p_order_id:id,p_amount_cents:amount}));
+  });
+  it.each([['classic',12],['halloween',12],['font',7],['classic',11],['halloween',10],['font',5]])('confirma pacotes novos e pedidos anteriores %s/%i pelo valor reservado',async(kind,quantity)=>{
     const app=load('infinitepay-webhook',{saved:{...order,kind,quantity,amount_cents:917},fetcher:vi.fn(async()=>Response.json({success:true,paid:true,amount:917,paid_amount:917,capture_method:'pix'}))});
     expect((await app.request({...payment,amount:1,quantity:100},false)).status).toBe(200);
     expect(app.rpc).toHaveBeenCalledWith('settle_infinitepay_order',expect.objectContaining({p_order_id:id,p_amount_cents:917}));

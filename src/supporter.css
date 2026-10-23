@@ -94,7 +94,7 @@
 .avatar.pass-border-coral-lilac { --frame-wave: #f5d0fe; }
 .avatar.pass-border-gold { --supporter-ring: linear-gradient(100deg, #804409 0%, #d79a23 20%, #fff6cf 34%, #f3bd43 42%, #a9680c 57%, #ffe6a0 74%, #bd7711 88%, #804409 100%); }
 .avatar.pass-border-blood { --supporter-ring: linear-gradient(100deg, #69000a, #ff7777, #a50016, #69000a); }
-.avatar.pass-border-purple { --supporter-ring: linear-gradient(100deg, #4b126a, #e8a8ff, #7620a7, #4b126a); }
+.avatar.pass-border-purple { --supporter-ring: linear-gradient(100deg, #61187c, #e8a8ff, #7620a7, #ffffff, #61187c); }
 .avatar.pass-border-green { --supporter-ring: linear-gradient(100deg, #21764e, #b9f7d0, #31c77f, #21764e); }
 .avatar.pass-border-dark-blue { --supporter-ring: linear-gradient(100deg, #142660, #5b79c6, #29479c, #142660); }
 .avatar.pass-border-orange { --supporter-ring: linear-gradient(100deg, #853f17, #e9ad68, #c86a29, #853f17); }
@@ -104,19 +104,19 @@
 .avatar.pass-border-rose-purple { --supporter-ring: linear-gradient(100deg, #ffd1ec, #ec4899, #9333ea, #ffd1ec); }
 .avatar.pass-border-midnight-electric { --supporter-ring: linear-gradient(100deg, #080910, #863de1, #2876ff, #080910); }
 .avatar.pass-border-green-gold { --supporter-ring: linear-gradient(100deg, #14532d, #a3e635, #facc15, #14532d); }
-.avatar.pass-border-lilac-silver { --supporter-ring: linear-gradient(100deg, #c4b5fd, #60a5fa, #e5e7eb, #c4b5fd); }
+.avatar.pass-border-lilac-silver { --supporter-ring: linear-gradient(100deg, #c4b5fd, #60a5fa, #e5e7eb, #474747, #ffffff, #c4b5fd); }
 .avatar.pass-border-wine-rose { --supporter-ring: linear-gradient(100deg, #881337, #db2777, #fbcfe8, #881337); }
 .avatar.pass-border-ice-blue { --supporter-ring: linear-gradient(100deg, #a5f3fc, #fff, #93c5fd, #a5f3fc); }
 .avatar.pass-border-navy-pink { --supporter-ring: linear-gradient(100deg, #1e3a8a, #7c3aed, #ec4899, #1e3a8a); }
-.avatar.pass-border-graphite-silver { --supporter-ring: linear-gradient(100deg, #6b7280, #cbd5e1, #fff, #6b7280); }
-.avatar.pass-border-rainbow { --supporter-ring: linear-gradient(100deg, #ef4444, #f97316, #facc15, #22c55e, #0ea5e9, #8b5cf6, #ef4444); }
+.avatar.pass-border-graphite-silver { --supporter-ring: linear-gradient(100deg, #333333, #5c5c5c, #ffffff, #333333); }
+.avatar.pass-border-rainbow { --supporter-ring: linear-gradient(100deg, #ba0000, #f97316, #fdfd00, #00b604, #0074e6, #9c00fa, #ba0000); }
 .avatar.pass-border-royal-sapphire { --supporter-ring: linear-gradient(100deg, #1d4ed8, #60a5fa, #fbbf24, #1d4ed8); }
 .avatar.pass-border-sunset-ocean { --supporter-ring: linear-gradient(100deg, #f97316, #ec4899, #0ea5e9, #f97316); }
 .avatar.pass-border-neon-circuit { --supporter-ring: linear-gradient(100deg, #a3e635, #22d3ee, #6366f1, #a3e635); }
 .avatar.pass-border-coral-lilac { --supporter-ring: linear-gradient(100deg, #fb7185, #fda4af, #c4b5fd, #fb7185); }
 .pass-name-blood, .pass-name-purple { background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
 .pass-name-blood { background-image: linear-gradient(100deg, #69000a, #ff7777, #a50016, #69000a); }
-.pass-name-purple { background-image: linear-gradient(100deg, #4b126a, #e8a8ff, #7620a7, #4b126a); }
+.pass-name-purple { background-image: linear-gradient(100deg, #61187c, #e8a8ff, #7620a7, #ffffff, #61187c); }
 .pass-name-green, .pass-name-dark-blue, .pass-name-orange, .pass-name-pink, .pass-name-sunset, .pass-name-ember, .pass-name-rose-purple, .pass-name-midnight-electric, .pass-name-green-gold, .pass-name-lilac-silver, .pass-name-wine-rose, .pass-name-ice-blue, .pass-name-navy-pink, .pass-name-graphite-silver, .pass-name-rainbow, .pass-name-royal-sapphire, .pass-name-sunset-ocean, .pass-name-neon-circuit, .pass-name-coral-lilac { background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
 .pass-name-green { background-image: linear-gradient(100deg, #21764e, #b9f7d0, #31c77f, #21764e); }
 .pass-name-dark-blue { background-image: linear-gradient(100deg, #142660, #5b79c6, #29479c, #142660); }
@@ -127,12 +127,12 @@
 .pass-name-rose-purple { background-image: linear-gradient(100deg, #ffd1ec, #ec4899, #9333ea, #ffd1ec); }
 .pass-name-midnight-electric { background-image: linear-gradient(100deg, #343849, #863de1, #2876ff, #343849); }
 .pass-name-green-gold { background-image: linear-gradient(100deg, #14532d, #a3e635, #facc15, #14532d); }
-.pass-name-lilac-silver { background-image: linear-gradient(100deg, #c4b5fd, #60a5fa, #e5e7eb, #c4b5fd); }
+.pass-name-lilac-silver { background-image: linear-gradient(100deg, #c4b5fd, #60a5fa, #e5e7eb, #474747, #ffffff, #c4b5fd); }
 .pass-name-wine-rose { background-image: linear-gradient(100deg, #881337, #db2777, #fbcfe8, #881337); }
 .pass-name-ice-blue { background-image: linear-gradient(100deg, #a5f3fc, #fff, #93c5fd, #a5f3fc); }
 .pass-name-navy-pink { background-image: linear-gradient(100deg, #1e3a8a, #7c3aed, #ec4899, #1e3a8a); }
-.pass-name-graphite-silver { background-image: linear-gradient(100deg, #6b7280, #cbd5e1, #fff, #6b7280); }
-.pass-name-rainbow { background-image: linear-gradient(100deg, #ef4444, #f97316, #facc15, #22c55e, #0ea5e9, #8b5cf6, #ef4444); }
+.pass-name-graphite-silver { background-image: linear-gradient(100deg, #333333, #5c5c5c, #ffffff, #333333); }
+.pass-name-rainbow { background-image: linear-gradient(100deg, #ba0000, #f97316, #fdfd00, #00b604, #0074e6, #9c00fa, #ba0000); }
 .pass-name-royal-sapphire { background-image: linear-gradient(100deg, #1d4ed8, #60a5fa, #fbbf24, #1d4ed8); }
 .pass-name-sunset-ocean { background-image: linear-gradient(100deg, #f97316, #ec4899, #0ea5e9, #f97316); }
 .pass-name-neon-circuit { background-image: linear-gradient(100deg, #a3e635, #22d3ee, #6366f1, #a3e635); }
@@ -141,26 +141,26 @@
 .avatar[class*="pass-border-legend-"], .avatar[class*="pass-border-myth-"], .avatar[class*="pass-border-rare-"] { --frame-wave: #fff; }
 [class*="pass-name-legend-"], [class*="pass-name-myth-"], [class*="pass-name-rare-"] { background-image: var(--trial-gradient); background-size: 200% 100%; background-clip: text; -webkit-background-clip: text; color: transparent; animation: supporter-wave 3s linear infinite; }
 @media (prefers-reduced-motion: reduce) { [class*="pass-name-legend-"], [class*="pass-name-myth-"], [class*="pass-name-rare-"] { animation: none; } }
-.avatar.pass-border-legend-nebula, .pass-name-legend-nebula { --trial-gradient: linear-gradient(100deg, #2b102c, #4b7872, #e8cf91, #152f5b, #2b102c); }
+.avatar.pass-border-legend-nebula, .pass-name-legend-nebula { --trial-gradient: linear-gradient(100deg, #eca6f1, #65e9c7, #ffe19d, #8fb9ff, #2b1c3f, #4b7872, #eca6f1); }
 .avatar.pass-border-legend-nebula { --supporter-ring: var(--trial-gradient); }
-.avatar.pass-border-legend-abyss, .pass-name-legend-abyss { --trial-gradient: linear-gradient(100deg, #061c22, #63efad, #becbd9, #312e81, #061c22); }
+.avatar.pass-border-legend-abyss, .pass-name-legend-abyss { --trial-gradient: linear-gradient(100deg, #3eded5, #52dca1, #d9e6f3, #b57dff, #063422, #63d0ad, #3eded5); }
 .avatar.pass-border-legend-abyss { --supporter-ring: var(--trial-gradient); }
 .avatar.pass-border-legend-prism, .pass-name-legend-prism { --trial-gradient: linear-gradient(100deg, #ff6b5b, #3dd6cb, #9859dc, #f5f5f4, #ff6b5b); }
 .avatar.pass-border-legend-prism { --supporter-ring: var(--trial-gradient); }
-.avatar.pass-border-legend-solar, .pass-name-legend-solar { --trial-gradient: linear-gradient(100deg, #101a2d, #fff4cf, #df8b23, #9edcf0, #101a2d); }
+.avatar.pass-border-legend-solar, .pass-name-legend-solar { --trial-gradient: linear-gradient(100deg, #7c94ff, #fff7df, #ffa33f, #80e6ff, #101a55, #fff4cf, #7c94ff); }
 .avatar.pass-border-legend-solar { --supporter-ring: var(--trial-gradient); }
-.avatar.pass-border-legend-ruby-eclipse, .pass-name-legend-ruby-eclipse { --trial-gradient: linear-gradient(100deg, #250b16, #f2384d, #ffdbd0, #364775, #250b16); }
+.avatar.pass-border-legend-ruby-eclipse, .pass-name-legend-ruby-eclipse { --trial-gradient: linear-gradient(100deg, #f056bb, #ff3277, #ffe2d9, #78b2ff, #4b0b16, #ff3840, #f056bb); }
 .avatar.pass-border-legend-ruby-eclipse { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-legend-arcane-twilight, .pass-name-legend-arcane-twilight { --trial-gradient: linear-gradient(100deg, #eca664, #2b3459, #5bb8cf, #8f3a6b, #8b1c3f, #4b3472, #eca664); }
+.avatar.pass-border-legend-arcane-twilight { --supporter-ring: var(--trial-gradient); }
+.avatar.pass-border-legend-lunar-prism, .pass-name-legend-lunar-prism { --trial-gradient: linear-gradient(100deg, #707070, #3a87fe, #fff1ff, #efcaff, #a7c6ff, #474747, #707070); }
+.avatar.pass-border-legend-lunar-prism { --supporter-ring: var(--trial-gradient); }
 /* Keep the animated names readable throughout the wave, without changing frames. */
-.pass-name-legend-nebula { --trial-gradient: linear-gradient(100deg, #eca6f1, #65e1c7, #ffe19d, #8fb9ff, #eca6f1); }
-.pass-name-legend-abyss { --trial-gradient: linear-gradient(100deg, #62ded5, #52f5a1, #d9e6f3, #b5a1ff, #62ded5); }
-.pass-name-legend-solar { --trial-gradient: linear-gradient(100deg, #83b7ff, #fff7df, #ffb33f, #80e4ff, #83b7ff); }
-.pass-name-legend-ruby-eclipse { --trial-gradient: linear-gradient(100deg, #f08dbb, #ff6377, #ffe2d9, #9fb2ff, #f08dbb); }
 .avatar.pass-border-myth-petroleum-bronze, .pass-name-myth-petroleum-bronze { --trial-gradient: linear-gradient(100deg, #0f4650, #a87943, #2ac9be, #0f4650); }
 .avatar.pass-border-myth-petroleum-bronze { --supporter-ring: var(--trial-gradient); }
 .avatar.pass-border-myth-burgundy-sand, .pass-name-myth-burgundy-sand { --trial-gradient: linear-gradient(100deg, #641b35, #e2c49e, #638498, #641b35); }
 .avatar.pass-border-myth-burgundy-sand { --supporter-ring: var(--trial-gradient); }
-.avatar.pass-border-myth-cerulean-rust, .pass-name-myth-cerulean-rust { --trial-gradient: linear-gradient(100deg, #2d8cba, #b75e3b, #f0e4ce, #2d8cba); }
+.avatar.pass-border-myth-cerulean-rust, .pass-name-myth-cerulean-rust { --trial-gradient: linear-gradient(100deg, #0054b2, #9b5500, #f0e4ce, #0054b2); }
 .avatar.pass-border-myth-cerulean-rust { --supporter-ring: var(--trial-gradient); }
 .avatar.pass-border-myth-plum-copper, .pass-name-myth-plum-copper { --trial-gradient: linear-gradient(100deg, #65345f, #c98775, #dbeefa, #65345f); }
 .avatar.pass-border-myth-plum-copper { --supporter-ring: var(--trial-gradient); }
@@ -207,10 +207,10 @@
 .pass-panel .pass-heading h2 { font-size: clamp(1.35rem, 2vw, 1.8rem); line-height: 1.2; max-width: 510px; }
 .pass-offer-benefits { list-style: none; padding: 0; margin: 24px 0 0; display: grid; gap: 12px; }
 .pass-offer-benefits li { display: flex; align-items: center; gap: 14px; padding: 14px; background: #efc76e08; border: 1px solid #eac57128; border-radius: 14px; }
-.pass-offer-benefits li > svg { color: #f2cd7e; flex: none; }
-.pass-offer-benefits strong, .pass-offer-benefits span { display: block; }
+.pass-offer-benefits li > svg, .pass-offer-benefits li > .customization-case-image { color: #f2cd7e; flex: none; }
+.pass-offer-benefits strong, .pass-offer-benefits li > div > span { display: block; }
 .pass-offer-benefits strong { font-size: 1rem; }
-.pass-offer-benefits span { font-size: .8rem; line-height: 1.5; color: var(--muted); margin-top: 3px; }
+.pass-offer-benefits li > div > span { font-size: .8rem; line-height: 1.5; color: var(--muted); margin-top: 3px; }
 .pass-offer-purchase { display: flex; flex-direction: column; align-items: stretch; gap: 12px; min-width: 0; padding: 20px; border-radius: 18px; border: 1px solid #eac57128; background: #efc76e08; }
 .pass-player-preview { display: grid; grid-template-columns: 54px minmax(0,1fr) 38px; gap: 10px; align-items: center; }
 .pass-player-preview .avatar { width: 54px; height: 54px; }
@@ -242,6 +242,21 @@
 @media (prefers-reduced-motion: reduce) { .supporter-medal-emblem::after { animation: none; } }
 
 .pass-offer-benefits .supporter-emblem { width: 23px; height: 26px; flex: none; }
+@media (min-width: 1024px) {
+ .app-main .shop-layout > .wheel-panel,
+ .app-main .shop-layout > .pass-panel { align-self: stretch; }
+ .app-main .shop-layout > .pass-panel { display: flex; flex-direction: column; padding: 20px; gap: 16px; }
+ .shop-layout .pass-panel .pass-heading { align-items: center; gap: 12px; }
+ .shop-layout .pass-panel .pass-heading > .supporter-emblem { margin-top: 0; width: 34px; height: 38px; }
+ .shop-layout .pass-panel .pass-heading h2 { font-size: 1.5rem; max-width: none; }
+ .shop-layout .pass-panel .pass-offer-benefits { margin-top: 16px; gap: 8px; }
+ .shop-layout .pass-panel .pass-offer-benefits li { padding: 10px 12px; gap: 10px; }
+ .shop-layout .pass-panel .pass-offer-benefits strong { font-size: .9rem; }
+ .shop-layout .pass-panel .pass-offer-benefits li > div > span { font-size: .75rem; margin-top: 2px; }
+ .shop-layout .pass-panel .pass-offer-purchase { margin-top: auto; padding: 12px; gap: 8px; }
+ .shop-layout .pass-panel .pass-offer-price { margin: 0; font-size: 1.8rem; }
+ .shop-layout .pass-panel .pass-current { margin: 0; }
+}
 
 @media (max-width: 640px) {
   .card.pass-panel { padding: 14px; gap: 12px; }
@@ -252,7 +267,7 @@
   .pass-offer-benefits { margin-top: 12px; gap: 6px; }
   .pass-offer-benefits li { padding: 9px 10px; gap: 10px; border-radius: 10px; }
   .pass-offer-benefits strong { font-size: .85rem; }
-  .pass-offer-benefits span { margin-top: 1px; font-size: .72rem; line-height: 1.35; }
+  .pass-offer-benefits li > div > span { margin-top: 1px; font-size: .72rem; line-height: 1.35; }
   .pass-offer-purchase { padding: 12px; gap: 8px; border-radius: 12px; }
   .pass-offer-price { margin: 0; font-size: 1.65rem; }
   .pass-offer-purchase .pass-billing-note { font-size: .7rem; line-height: 1.4; }
@@ -269,7 +284,7 @@
 .pass-name-lab-blue-7 {color:#0ea5e9;background:linear-gradient(203deg,#1e40af,#0ea5e9,#ecfeff,#0ea5e9,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-scan 4.449999999999999s ease-in-out infinite;}
 .pass-name-lab-blue-9 {color:#3b82f6;background:linear-gradient(261deg,#1e40af,#3b82f6,#ecfeff,#3b82f6,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-deep 5.15s ease-in-out infinite;}
 @keyframes lab-ice {50%{filter:brightness(1.8) saturate(.6)}}
-@keyframes lab-mist {50%{filter:drop-shadow(0 0 5px #93c5fd);background-position:50% 100%}}
+@keyframes lab-mist {50%{filter:drop-shadow(0 0 2px #93c5fd80);background-position:50% 100%}}
 @keyframes lab-scan {50%{background-position:0 100%;filter:contrast(1.35)}}
 @keyframes lab-deep {50%{filter:brightness(.75) saturate(1.8);background-position:70% 50%}}
 
@@ -294,12 +309,17 @@
 @media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar.avatar[class*="pass-border-lab-blue-"]::before,.avatar.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
 
 /* Legendary and mythic frames use the two counter-rotating Aurora layers in their original palette. */
-.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::before { background:var(--supporter-ring) border-box; animation:frame-blue-aurora 7s linear infinite; }
-.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::after { background:var(--supporter-ring) border-box; opacity:.65; animation:frame-blue-aurora 5.5s linear infinite reverse; }
-@media(prefers-reduced-motion:reduce){.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::before,.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-bloodmoon,.pass-border-halloween-mist)::after{animation:none!important;}}
+.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-mist)::before { background:var(--supporter-ring) border-box; animation:frame-blue-aurora 7s linear infinite; }
+.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-mist)::after { background:var(--supporter-ring) border-box; opacity:.65; animation:frame-blue-aurora 5.5s linear infinite reverse; }
+@media(prefers-reduced-motion:reduce){.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-mist)::before,.avatar.avatar:is(.pass-border-gold,.pass-border-rainbow,[class*="pass-border-legend-"],[class*="pass-border-myth-"],.pass-border-halloween-mist)::after{animation:none!important;}}
 
 /* Restore the original owner-only Aurora name and frame. */
 .pass-name-lab-blue-10 {color:#a5b4fc;background:linear-gradient(290deg,#1e40af,#a5b4fc,#ecfeff,#a5b4fc,#1d4ed8);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-aurora 5.5s ease-in-out infinite;}
-@keyframes lab-aurora {50%{filter:hue-rotate(30deg);background-position:100% 100%}}
+@keyframes lab-aurora {0%,100%{filter:brightness(.85)}50%{filter:brightness(.85) hue-rotate(30deg);background-position:100% 100%}}
 .avatar.avatar.pass-border-lab-blue-10::before { background:conic-gradient(#312e81,#60a5fa,#a5b4fc,#22d3ee,#312e81) border-box; animation:frame-blue-aurora 7s linear infinite; }
 .avatar.avatar.pass-border-lab-blue-10::after { background:conic-gradient(transparent,#c7d2fe88,transparent,#67e8f988,transparent) border-box; animation:frame-blue-aurora 5.5s linear infinite reverse; }
+
+/* Two identical color cycles keep the name continuous across animation loops. */
+.pass-name-rainbow{background-image:linear-gradient(90deg,#ba0000,#f97316,#fdfd00,#00b604,#0074e6,#9c00fa,#ba0000,#f97316,#fdfd00,#00b604,#0074e6,#9c00fa,#ba0000);background-size:200% 100%;animation:rainbow-flow 6s linear infinite}
+@keyframes rainbow-flow{from{background-position:0% 0}to{background-position:100% 0}}
+@media(prefers-reduced-motion:reduce){.pass-name-rainbow{animation:none}}

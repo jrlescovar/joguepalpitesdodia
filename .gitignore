@@ -25,5 +25,12 @@ rank-preview.png
 rank-logos-v2.png
 rank-logos-v3.png
 
+# Local Graphify index (not shipped with the site)
+graphify-out/
+
 # Private production operations stay local.
 scripts/data-fixes/
+
+# Python runtime cache
+__pycache__/
+*.py[cod]

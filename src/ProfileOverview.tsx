@@ -1,7 +1,7 @@
 import UsernameText from './UsernameText';
 import ProfileBattle from './ProfileBattle';
 import ProfileAdminPanel from './ProfileAdminPanel';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Check, Target, Trophy, X } from 'lucide-react';
 import { call } from './backend';
 import { battleMedalProgress, greenMedalProgress, hitRate, visibleDaily } from './domain';
@@ -14,14 +14,13 @@ import BetaTesterEmblem from './BetaTesterEmblem';
 import ArenaMedalEmblem from './ArenaMedalEmblem';
 import ArenaChampionEmblem from './ArenaChampionEmblem';
 import SupporterMedalEmblem from './SupporterMedalEmblem';
-import TournamentMedalEmblem from './TournamentMedalEmblem';
 import './supporter.css';
 import type { Profile, PublicProfile } from './types';
 import './halloween.css';
 
 type OverviewProfile = Profile | PublicProfile;
 type BattleStats = { wins: number; losses: number; draws: number };
-type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number; arenaChampionships?:number; supporterMonths: number; finishingTournamentWins?: number };
+type OverviewMeta = { globalPosition: number; battleStats: BattleStats; arenaWins: number; arenaChampionships?:number; supporterMonths: number };
 
 function Stat({ icon: Icon, label, value, tone, hint }: { icon: typeof Check; label: string; value: number | string; tone: string; hint?: string }) {
   return <div className={`card stat-card ${tone}`}><span><Icon size={17}/>{label}</span><strong>{value}</strong>{hint&&<small>{hint}</small>}</div>;
@@ -35,12 +34,43 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
   refreshTick?: number;
   onOpenProfile?: (uid:string)=>void;
 }) {
+  const overviewRef = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const root = overviewRef.current;
+    if (!root) return;
+    const media = window.matchMedia('(min-width: 1024px)');
+    let frame = 0;
+    const measure = () => {
+      const left = root.querySelector<HTMLElement>('.profile-stats');
+      const right = root.querySelector<HTMLElement>('.profile-battle-stats .battle-page:not([inert]) .daily-battle-card')
+        ?? root.querySelector<HTMLElement>('.profile-battle-stats .daily-battle-card');
+      if (!left) return;
+      if (!media.matches || !right) {
+        left.style.removeProperty('--profile-battle-offset');
+        left.style.removeProperty('--profile-battle-height');
+        return;
+      }
+      const scale = right.getBoundingClientRect().height / right.offsetHeight;
+      const margin = parseFloat(getComputedStyle(left).marginTop) || 0;
+      const offset = Math.max(0, margin + (right.getBoundingClientRect().top - left.getBoundingClientRect().top) / scale);
+      for (const [key, value] of [['--profile-battle-offset', `${offset.toFixed(2)}px`], ['--profile-battle-height', `${right.offsetHeight}px`]]) {
+        if (left.style.getPropertyValue(key) !== value) left.style.setProperty(key, value);
+      }
+    };
+    const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(measure); };
+    const resize = new ResizeObserver(schedule);
+    resize.observe(root);
+    const mutations = new MutationObserver(schedule);
+    mutations.observe(root, { childList: true, subtree: true, attributes: true, attributeFilter: ['inert'] });
+    window.addEventListener('resize', schedule);
+    measure();
+    return () => { cancelAnimationFrame(frame); resize.disconnect(); mutations.disconnect(); window.removeEventListener('resize', schedule); };
+  }, [profile.uid]);
   const [globalPosition, setGlobalPosition] = useState<number | null>(null);
   const [battleStats, setBattleStats] = useState<BattleStats | null>(null);
   const [arenaWins, setArenaWins] = useState(0);
   const [arenaChampionships,setArenaChampionships]=useState(0);
   const [supporterMonths, setSupporterMonths] = useState(0);
-  const [finishingTournamentWins, setFinishingTournamentWins] = useState(0);
   useEffect(() => {
     let active = true;
     setGlobalPosition(null);
@@ -48,7 +78,6 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     setArenaWins(0);
     setArenaChampionships(0);
     setSupporterMonths(0);
-    setFinishingTournamentWins(0);
     void call<OverviewMeta | null>('getProfileOverviewMeta', { uid: profile.uid })
       .then(meta => {
         if (!active) return;
@@ -57,9 +86,8 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         setArenaWins(meta?.arenaWins ?? 0);
         setArenaChampionships(meta?.arenaChampionships ?? 0);
         setSupporterMonths(meta?.supporterMonths ?? 0);
-        setFinishingTournamentWins(meta?.finishingTournamentWins ?? 0);
       })
-      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); setArenaChampionships(0); setSupporterMonths(0); setFinishingTournamentWins(0); } });
+      .catch(() => { if (active) { setGlobalPosition(null); setBattleStats(null); setArenaWins(0); setArenaChampionships(0); setSupporterMonths(0); } });
     return () => { active = false; };
   }, [profile.uid, profile.rankPoints, refreshTick]);
   const numberOrDash = (value: number | undefined) => typeof value === 'number' ? value : '—';
@@ -81,15 +109,14 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
     ['Maior sequência de reds', numberOrDash(profile.redStreakMax)],
     ['Dias consecutivos', daily],
   ];
-  return <div className="profile-overview"><div className="profile-layout">
+  return <div className="profile-overview" ref={overviewRef}><div className="profile-layout">
     <section className="card profile-identity">
       {typeof profile.rankPoints === 'number' && <div className="profile-rank-badge"><RankEmblem points={profile.rankPoints}/><strong>{profile.rankPoints} pts</strong>{globalPosition !== null && <span className="profile-rank-global" aria-label={`Posição global ${globalPosition}`}>#{globalPosition}</span>}</div>}
       <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.avatarUrl} borderStyle={profile.passBorderStyle} large/>
-      <h2 className={`pass-name-${profile.passNameStyle ?? 'none'}`}><UsernameText name={profile.username} font={profile.usernameFont}/></h2>
-      <span className="muted text-sm">#{profile.playerId}</span>
+      <h2><UsernameText name={profile.username} font={profile.usernameFont} className={`pass-name-${profile.passNameStyle ?? 'none'}`}/></h2>
       {typeof profile.level === 'number' && typeof profile.xp === 'number'
-        ? <><div className="profile-level-mark">{hasSupporterEmblem&&<SupporterEmblem className="profile-supporter-emblem"/>}<span className="level-badge">Nível {profile.level}</span></div><XpBar profile={{ level: profile.level, xp: profile.xp }} showRemaining={false}/></>
-        : <span className="muted text-sm profile-data-pending">Progresso indisponível no momento</span>}
+        ? <><div className="profile-level-mark">{hasSupporterEmblem&&<SupporterEmblem className="profile-supporter-emblem"/>}<div className="profile-level-details"><span className="level-badge">Nível {profile.level}</span><span className="muted profile-player-id">#{profile.playerId}</span></div></div><XpBar profile={{ level: profile.level, xp: profile.xp }} showRemaining={false}/></>
+        : <><span className="muted text-sm">#{profile.playerId}</span><span className="muted text-sm profile-data-pending">Progresso indisponível no momento</span></>}
     </section>
     <section className="profile-picks-stats">
       <h2>Palpites do Dia</h2>
@@ -118,23 +145,18 @@ export default function ProfileOverview({ profile, lastClosedPrediction, today, 
         <BetaTesterEmblem/>
         <strong className="medal-name">Beta Tester</strong>
       </div>}
-      {showArenaMedal&&<div className="medal-tile arena-winner-medal-tile" role="img" aria-label={`Vencedor Dia Arena, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
-        <span className="medal-level">Vencedor Dia Arena</span>
+      {showArenaMedal&&<div className="medal-tile arena-winner-medal-tile" role="img" aria-label={`Liga do Dia, ${arenaWins} ${arenaWins===1?'vitória':'vitórias'}`}>
+        <span className="medal-level">Liga do Dia</span>
         <ArenaMedalEmblem/>
         <strong className="medal-name">{arenaWins}</strong>
       </div>}
-      {arenaChampionships>0&&<div className="medal-tile arena-winner-medal-tile" role="img" aria-label={`Campeão da Arena, ${arenaChampionships} ${arenaChampionships===1?'título':'títulos'}`}><span className="medal-level">Campeão da Arena</span><ArenaChampionEmblem/><strong className="medal-name">{arenaChampionships}</strong></div>}
-      {finishingTournamentWins>0&&<div className="medal-tile tournament-medal-tile" role="img" aria-label={`Torneio Finalização, ${finishingTournamentWins} ${finishingTournamentWins===1?'vitória':'vitórias'}`}>
-        <span className="medal-level">Campeão: {finishingTournamentWins}x</span>
-        <TournamentMedalEmblem/>
-        <strong className="medal-name">Torneio<br/>Finalização</strong>
-      </div>}
+      {arenaChampionships>0&&<div className="medal-tile arena-winner-medal-tile" role="img" aria-label={`Liga da Semana, ${arenaChampionships} ${arenaChampionships===1?'título':'títulos'}`}><span className="medal-level">Liga da Semana</span><ArenaChampionEmblem/><strong className="medal-name">{arenaChampionships}</strong></div>}
       {supporterMonths>0&&<div className="medal-tile supporter-medal-tile" role="img" aria-label={`Apoiador, ${supporterMonths} ${supporterMonths===1?'mês':'meses'} de Apoiador`}>
         <span className="medal-level">Apoiador</span>
         <SupporterMedalEmblem/>
         <strong className="medal-name">{supporterMonths} {supporterMonths===1?'mês':'meses'}</strong>
       </div>}
-      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&arenaChampionships===0&&supporterMonths===0&&finishingTournamentWins===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
+      {medal.level===0&&!(battleMedal&&battleMedal.level>0)&&!profile.betaTester&&!showArenaMedal&&arenaChampionships===0&&supporterMonths===0&&<div className="achievements-empty">Suas medalhas aparecerão aqui.</div>}
     </div>
   </section><div className="profile-admin-footer"><ProfileAdminPanel key={profile.uid} playerId={profile.playerId}/></div></div>;
 }

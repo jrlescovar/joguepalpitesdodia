@@ -13,7 +13,7 @@ export function useCardCarousel<Key extends string>(keys:readonly Key[],options?
   const slides=useRef<Partial<Record<Key,HTMLDivElement>>>({});
   const dragStart=useRef<{x:number;page:number}|null>(null);
   const requested=useRef<number|null>(null);
-  const perPage=options?.perPage??(desktop?2:1);
+  const perPage=options?.perPage??(desktop?3:1);
   const pageCount=boxCarouselPageCount(keys.length,perPage);
   const start=boxCarouselPageStart(keys.length,active,perPage);
   const shown=keys.slice(start,start+perPage);

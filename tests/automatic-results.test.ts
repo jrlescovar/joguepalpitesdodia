@@ -44,3 +44,26 @@ describe('automatic results: explicit match identity and final data', () => {
     expect(evaluate(tournament, fixture, shots(5, 4))?.signature).not.toBe(evaluate(tournament, fixture, shots(6, 4))?.signature);
   });
 });
+
+
+describe('classic Champions tournament', () => {
+  const classic: Target = { ...target, kind: 'tournament', tournamentId: 'champions', metric: 'classic', options: [], competition: 'UEFA Champions League' };
+  it('uses the full-time score even when shot totals favor the other side', () => {
+    for (const [home, away, expected] of [[2,1,'home'],[0,0,'draw'],[0,3,'away']] as const) {
+      const evidence = evaluate(classic, {...fixture,score:{fulltime:{home,away}}},shots(35,0));
+      expect(evidence).toMatchObject({winner:expected,homeValue:home,awayValue:away});
+    }
+  });
+  it('does not require shot statistics and refuses missing goals or live scores', () => {
+    expect(evaluate(classic,fixture)?.winner).toBe('home');
+    expect(evaluate(classic,{...fixture,score:{fulltime:{home:null,away:0}}},shots(9,2))).toBeNull();
+    expect(evaluate(classic,{...fixture,fixture:{...fixture.fixture,status:{short:'2H',elapsed:90}}})).toBeNull();
+  });
+  it('matches Champions identity and kickoff, but rejects other competitions and duplicate fixtures', () => {
+    const game={...fixture,league:{name:'UEFA Champions League',country:'World'}};
+    expect(matchFixture(classic,[game])).toBe(game);
+    expect(matchFixture({...classic,competition:'Champions League'},[game])).toBe(game);
+    expect(matchFixture(classic,[fixture])).toBeNull();
+    expect(matchFixture(classic,[game,structuredClone(game)])).toBeNull();
+  });
+});

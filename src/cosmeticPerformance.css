@@ -1,0 +1,21 @@
+/* Pause only cosmetics; card navigation, countdowns and reward animations keep running. */
+[data-cosmetic-paused],
+[data-cosmetic-paused]::before,
+[data-cosmetic-paused]::after,
+html[data-cosmetics-hidden] [class*="pass-name-"],
+html[data-cosmetics-hidden] .avatar,
+html[data-cosmetics-hidden] .avatar::before,
+html[data-cosmetics-hidden] .avatar::after {
+ animation-play-state:paused!important;
+}
+/* A name's gradient/glow is painted on its parent rather than UsernameText itself. */
+[class*="pass-name-"]:has(>.username-text[data-cosmetic-paused]) { animation-play-state:paused!important; }
+@media(max-width:767px) {
+ html.is-scrolling [class*="pass-name-"],
+ html.is-scrolling .avatar,
+ html.is-scrolling .avatar::before,
+ html.is-scrolling .avatar::after { animation-play-state:paused!important; }
+}
+@media(prefers-reduced-motion:reduce) {
+ [class*="pass-name-"],.avatar,.avatar::before,.avatar::after { animation:none!important; }
+}

@@ -1,37 +1,18 @@
-# Pix com InfinitePay
+# Pagamentos com InfinitePay
 
-A assinatura mensal de Apoiador continua na Stripe. Cada pacote de caixas tem
-um único botão, com ícone e preço, que usa `infinitepay-checkout`.
+Moedas, Apoiador e inscrições em torneios usam a InfinitePay.
+O Apoiador custa R$ 4,97 por 30 dias, sem renovação automática.
 
-Pacotes de personalização: 3 por R$ 3,21; 7 por R$ 5,67; 11 por R$ 9,17.
-Pacotes de Halloween: 2 por R$ 3,21; 6 por R$ 5,67; 10 por R$ 9,17.
-Pacotes de fontes: 1 por R$ 3,21; 3 por R$ 5,67; 5 por R$ 9,17.
+infinitepay-checkout valida sessão, origem, produto, preço e requestId.
+infinitepay-webhook e infinitepay-status consultam payment_check antes de
+executar settle_infinitepay_order. O retorno do navegador sozinho não entrega
+benefícios. Webhook repetido não duplica dias, caixas ou medalha.
 
-Configuração do servidor: `INFINITEPAY_HANDLE=jrlescovar` nos secrets do projeto
-Supabase. Na conta InfinitePay, habilitar Checkout Integrado e desativar a etapa
-de endereço para produtos digitais. Não é necessária uma chave da conta no cliente.
+Apoiador: 30 dias, 7 caixas de personalização e 1 caixa de fontes por compra.
+Pacotes de caixas antigos continuam reconhecidos para concluir pedidos já criados.
+Os novos cartões de caixas usam o saldo de esmeraldas.
 
-O servidor reserva o pedido em `infinitepay_orders`, com jogador, produto e preço
-definidos no servidor. Cada link inclui o endpoint `infinitepay-webhook` e o retorno
-`?payment=infinitepay`. Não configurar o webhook manualmente para cada produto.
+Referência: https://www.infinitepay.io/checkout-documentacao
+Credencial: INFINITEPAY_HANDLE.
 
-Webhook e retorno autenticado (`infinitepay-status`) consultam `payment_check`
-diretamente na InfinitePay usando handle, pedido, transação e fatura. Dados de
-valor, jogador e confirmação vindos do navegador/webhook não liberam itens.
-`settle_infinitepay_order` entrega tudo numa transação, com bloqueio do pedido e
-identificadores únicos para impedir duplicação ou reutilização de pagamento.
-
-O checkout InfinitePay também oferece cartão. Uma compra avulsa já paga por esse
-meio é entregue normalmente; ela não cria assinatura recorrente. A assinatura
-mensal do site continua exclusivamente na Stripe.
-
-Pedidos antigos de Apoiador por Pix continuam sendo confirmados, mas essa opção
-não aparece mais na loja. Esses pedidos concedem 30 dias, 7 caixas normais, 1 caixa de fontes e 1 mês
-na medalha de apoiador. O registro usa prefixo `ip_` na coluna legada
-`pass_prepaid_payments.stripe_session_id`; seus triggers existentes concedem
-caixas e contam o mês pago. Concessão gratuita do admin não entra nesse contador.
-
-Verificação: `npm test -- tests/infinitepayPayments.test.ts tests/boxPayments.test.ts`,
-`tests/infinitepayPayments.sql` (transação com rollback) e a página local
-`/tests/fixtures/payments.html`. A fixture intercepta todas as chamadas de backend
-e não cria pagamentos reais. `?result=pending` permite testar a espera limitada.
+Testes: infinitepayPayments.test.ts, infinitepayPayments.sql e supporterOneTime.sql.

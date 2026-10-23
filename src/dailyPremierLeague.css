@@ -1,0 +1,27 @@
+/* Premier League purple, with the negative lion mark on the dark header. */
+.daily-card[data-competition-theme="premier-league"] {
+ --accent:#d7b8ff;
+ --double-points-line:#ac7fd9;
+ border-color:#9667b8;
+ background:radial-gradient(ellipse at 100% 0,#822da94d,transparent 65%),linear-gradient(145deg,#37003c,#1d102c 80%);
+}
+.daily-card[data-competition-theme="premier-league"] .daily-header { border-color:#c69ce547; background:#ffffff03; }
+.daily-card[data-competition-theme="premier-league"] .daily-header>span:first-child { color:#f8efff; }
+.daily-card[data-competition-theme="premier-league"] .premier-league-icon { flex-shrink:0; color:#fff; }
+.daily-card[data-competition-theme="premier-league"] .prediction-content>p { color:#d8c0e6; }
+.daily-card[data-competition-theme="premier-league"] .deadline { color:#dfc5f5; }
+.daily-card[data-competition-theme="premier-league"] .deadline.in-play,
+.daily-card[data-competition-theme="premier-league"] .daily-header-status { background:#c69ce512; border-color:#c69ce55c; }
+.daily-card[data-competition-theme="premier-league"] .countdown>span { background:#23112f; border-color:#a982c45c; }
+.daily-card[data-competition-theme="premier-league"] .countdown small { color:#d8c0e6; }
+.daily-card[data-competition-theme="premier-league"] .pick-options label:not(.winner) { background:#251430; border-color:#80628f; }
+.daily-card[data-competition-theme="premier-league"] .pick-options label.selected:not(.winner) { background:#a776d233; border-color:#d2a2ff; }
+.daily-card[data-competition-theme="premier-league"] .pick-options label.selected:not(.winner) .option-copy>span { color:#f3e3ff; }
+.daily-card[data-competition-theme="premier-league"] .pick-options label:not(.winner) .option-copy>small { color:#d7b8ff; }
+.daily-card[data-competition-theme="premier-league"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#d7b8ff; }
+.daily-card[data-competition-theme="premier-league"] .xp-pill:not(.xp-pill-premium),
+.daily-card[data-competition-theme="premier-league"] .double-points-pill { background:#c69ce512; border-color:#c69ce55c; color:#e4c8ff; }
+.daily-card[data-competition-theme="premier-league"] .pick-result.pending { background:#21122d80; }
+.daily-card[data-competition-theme="premier-league"] .primary-button:not(:disabled) { color:#220d31; border-color:#e2c8ff; background:linear-gradient(110deg,#cfadff,#e4caff); }
+.daily-card[data-competition-theme="premier-league"] .primary-button:hover:not(:disabled) { background:#ecdaff; border-color:#f5eaff; }
+.daily-card[data-competition-theme="premier-league"] :focus-visible { outline-color:#e4c8ff; }

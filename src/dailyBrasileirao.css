@@ -1,0 +1,27 @@
+/* Brasileirão: the navy and electric lime from the competition reference. */
+.daily-card[data-competition-theme="brasileirao"] {
+ --accent:#caff00;
+ --double-points-line:#b8db45;
+ border-color:#9bbd45;
+ background:radial-gradient(ellipse at 100% 0,#809b202b,transparent 62%),linear-gradient(145deg,#181a30,#111321);
+}
+.daily-card[data-competition-theme="brasileirao"] .daily-header { border-color:#caff0033; background:#caff0005; }
+.daily-card[data-competition-theme="brasileirao"] .daily-header>span:first-child { color:#f4f8e9; }
+.daily-card[data-competition-theme="brasileirao"] .brasileirao-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="brasileirao"] .prediction-content>p { color:#cbd6b5; }
+.daily-card[data-competition-theme="brasileirao"] .deadline { color:#d5f575; }
+.daily-card[data-competition-theme="brasileirao"] .deadline.in-play,
+.daily-card[data-competition-theme="brasileirao"] .daily-header-status { background:#caff000c; border-color:#caff0055; }
+.daily-card[data-competition-theme="brasileirao"] .countdown>span { background:#111625; border-color:#caff003d; }
+.daily-card[data-competition-theme="brasileirao"] .countdown small { color:#cbd6b5; }
+.daily-card[data-competition-theme="brasileirao"] .pick-options label:not(.winner) { background:#121625; border-color:#4f5b46; }
+.daily-card[data-competition-theme="brasileirao"] .pick-options label.selected:not(.winner) { background:#caff001a; border-color:#caff00; }
+.daily-card[data-competition-theme="brasileirao"] .pick-options label.selected:not(.winner) .option-copy>span { color:#edffba; }
+.daily-card[data-competition-theme="brasileirao"] .pick-options label:not(.winner) .option-copy>small { color:#d5f575; }
+.daily-card[data-competition-theme="brasileirao"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#caff00; }
+.daily-card[data-competition-theme="brasileirao"] .xp-pill:not(.xp-pill-premium),
+.daily-card[data-competition-theme="brasileirao"] .double-points-pill { background:#caff000c; border-color:#caff0055; color:#d5f575; }
+.daily-card[data-competition-theme="brasileirao"] .pick-result.pending { background:#11162580; }
+.daily-card[data-competition-theme="brasileirao"] .primary-button:not(:disabled) { color:#141b09; border-color:#d9ff65; background:linear-gradient(110deg,#caff00,#a4d42f); }
+.daily-card[data-competition-theme="brasileirao"] .primary-button:hover:not(:disabled) { background:#dcff6b; border-color:#ebffa6; }
+.daily-card[data-competition-theme="brasileirao"] :focus-visible { outline-color:#dbff71; }

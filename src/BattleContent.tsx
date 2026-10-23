@@ -6,6 +6,7 @@ import { call, errorMessage } from './backend';
 import RankEmblem from './RankEmblem';
 import type { PublicProfile } from './types';
 import './dailyBattle.css';
+import { dailyOptionLabel } from './dailyGameDisplay';
 
 type Fighter = Pick<PublicProfile, 'uid' | 'username' | 'avatarColor' | 'avatarUrl' | 'passBorderStyle' | 'passNameStyle' | 'usernameFont'> & {
   rankPoints: number;
@@ -30,7 +31,7 @@ export function formatBattleDate(dayId: string, daysAhead = 0) {
   return battleDateFormatter.format(date);
 }
 
-function FighterTile({ fighter, side, showRank = true, onOpenProfile, decorative = false }: { onOpenProfile?: (uid: string) => void; fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean; decorative?: boolean }) {
+export function FighterTile({ fighter, side, showRank = true, onOpenProfile, decorative = false }: { onOpenProfile?: (uid: string) => void; fighter: Fighter | ReelCandidate; side: 'me' | 'opponent'; showRank?: boolean; decorative?: boolean }) {
   const rank = 'rankPoints' in fighter && 'globalPosition' in fighter ? fighter : null;
   return <div className={`battle-fighter battle-fighter-${side}`} aria-hidden={decorative || undefined} role={onOpenProfile ? 'button' : undefined} tabIndex={onOpenProfile ? 0 : undefined} aria-label={onOpenProfile ? `Abrir perfil de ${fighter.username}` : undefined} onClick={()=>onOpenProfile?.(fighter.uid)} onKeyDown={event=>{if(onOpenProfile&&(event.key==='Enter'||event.key===' ')){event.preventDefault();onOpenProfile(fighter.uid);}}}>
     <span className={`battle-rank${showRank ? '' : ' is-concealed'}`}>
@@ -109,8 +110,8 @@ export function BattleContent({ battle, onOpenProfile, instant = false }: { batt
           return <section className={`battle-comparison-row${difference ? ' comparison-difference' : ''}`} key={row.slot}>
             <div className="battle-comparison-heading"><strong>{row.slot === 0 ? 'Palpite do Dia' : `Extra ${row.slot}`}</strong>{difference && <span className="comparison-difference-label">Fez diferença</span>}</div>
             <p>{row.title}</p>
-            <small className="battle-comparison-answer">Resultado correto: <strong>{row.correctOption ?? 'Não informado'}</strong></small>
-            <div className="battle-comparison-choices">{[{name:battle.me?.username,option:row.myOption,points:row.myPoints},{name:opponent?.username,option:row.theirOption,points:row.theirPoints}].map((choice,index)=><div className={choice.points>0?'comparison-choice-green':''} key={index}><small>{choice.name}</small><strong>{choice.option ?? 'Sem palpite'}</strong><span className={choice.points>0?'is-green':''}>{choice.points>0?'Green':'Sem pontos'} · +{choice.points} pts</span></div>)}</div>
+            <small className="battle-comparison-answer">Resultado correto: <strong>{row.correctOption ? dailyOptionLabel(row, { label: row.correctOption }) : 'Não informado'}</strong></small>
+            <div className="battle-comparison-choices">{[{name:battle.me?.username,option:row.myOption,points:row.myPoints},{name:opponent?.username,option:row.theirOption,points:row.theirPoints}].map((choice,index)=><div className={choice.points>0?'comparison-choice-green':''} key={index}><small>{choice.name}</small><strong>{choice.option ? dailyOptionLabel(row, { label: choice.option }) : 'Sem palpite'}</strong><span className={choice.points>0?'is-green':''}>{choice.points>0?'Green':'Sem pontos'} · +{choice.points} pts</span></div>)}</div>
           </section>;
         })}</div>
         <div className="comparison-summary"><strong>Resumo do confronto</strong><span>{comparison.filter(row=>row.myPoints>0).length} greens × {comparison.filter(row=>row.theirPoints>0).length} greens</span><small>Placar final: {battle.myPoints ?? 0} × {battle.theirPoints ?? 0} pts · {resultLabel === 'GANHOU' ? 'Vitória' : resultLabel === 'PERDEU' ? 'Derrota' : 'Empate'}</small></div>

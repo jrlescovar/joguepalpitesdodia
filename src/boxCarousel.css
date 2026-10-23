@@ -20,5 +20,14 @@
   .shop-layout > .offers-carousel { order: 1; }
   .offers-carousel .box-offers-view-items { margin-top: 10px; padding-top: 7px; }
   .box-carousel-rail { gap: 24px; }
-  .box-carousel-slide { flex-basis: calc((100% - 24px) / 2); }
+  .box-carousel-slide { flex-basis: calc((100% - 48px) / 3); }
+}
+
+.carousel-page-select { display:none; min-width:0; max-width:190px; min-height:44px; padding:8px 12px; border:1px solid var(--border); border-radius:12px; background:var(--surface, #171c24); color:var(--text, #f4f6fa); }
+.tournament-carousel-controls .box-carousel-dots button { width:44px; height:44px; }
+.tournament-carousel-controls .box-carousel-dots span { width:10px; height:10px; }
+@media(max-width:1023px) {
+ .tournament-carousel-controls.many-pages > .carousel-page-select { display:block; flex:1; }
+ .tournament-carousel-controls.many-pages > .box-carousel-dots { display:none; }
+ .tournament-carousel-controls { gap:4px; }
 }

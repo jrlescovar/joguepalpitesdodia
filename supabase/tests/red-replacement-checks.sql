@@ -1,0 +1,21 @@
+do $$declare denied boolean; result jsonb;begin
+ if (select pass_name_style from public.public_profiles where player_id=9900301)<>'halloween-bloodmoon' or (select pass_border_style from public.public_profiles where player_id=9900301)<>'purple' then raise exception 'Name-only replacement changed frame';end if;
+ if (select pass_border_style from public.public_profiles where player_id=9900302)<>'halloween-bloodmoon' or (select pass_name_style from public.public_profiles where player_id=9900302)<>'green' then raise exception 'Frame-only replacement changed name';end if;
+ if (select count(*) from public.box_inventory where profile_id='33333333-3333-4333-8333-333333333333' and style='halloween-bloodmoon')<>2 then raise exception 'Both replacement duplicated existing frame';end if;
+ if (select acquired_at from public.box_inventory where profile_id='33333333-3333-4333-8333-333333333333' and kind='name')<>now()-interval '2 days' then raise exception 'Original acquisition lost';end if;
+ if (select acquired_at from public.box_inventory where profile_id='33333333-3333-4333-8333-333333333333' and kind='frame')<>now()-interval '3 days' then raise exception 'Existing Lua acquisition changed';end if;
+ if (select count(*) from public.box_inventory where profile_id='44444444-4444-4444-8444-444444444444')<>3 or (select pass_name_style from public.public_profiles where player_id=9900304)<>'none' then raise exception 'Unequipped inventory conversion failed';end if;
+ if exists(select 1 from public.box_inventory where profile_id='55555555-5555-4555-8555-555555555555') then raise exception 'Non-owner granted styles';end if;
+ if (select count(*) from public.player_mail where profile_id='55555555-5555-4555-8555-555555555555')<>1 or (select created_at from public.player_mail where profile_id='55555555-5555-4555-8555-555555555555')<>now()-interval '2 days' then raise exception 'Pending replacement duplicated or expiry renewed';end if;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub','66666666-6666-4666-8666-666666666666')::text,true);
+ perform public.set_pass_styles('halloween-bloodmoon','halloween-bloodmoon');
+ denied:=false;begin perform public.set_pass_styles('blood','blood');exception when others then denied:=true;end;
+ if not denied then raise exception 'Retired Red equip permitted';end if;
+ denied:=false;begin insert into public.box_inventory(profile_id,kind,style) values('55555555-5555-4555-8555-555555555555','name','blood');exception when check_violation then denied:=true;end;
+ if not denied then raise exception 'Retired inventory insert permitted';end if;
+ perform set_config('request.jwt.claims',jsonb_build_object('sub',gen_random_uuid(),'email',(select owner_email from public.app_config where singleton))::text,true);
+ denied:=false;begin perform public.admin_grant_frame_mail('55555555-5555-4555-8555-555555555555','blood');exception when others then if sqlerrm='Moldura inválida.' then denied:=true;else raise;end if;end;
+ if not denied then raise exception 'Admin could grant retired Red';end if;
+end $$;
+select jsonb_build_object('passed',true,'checks','name-only, frame-only, both, unequipped ownership, pre-existing Lua, pending mail expiry, equipment permission, retired grant denial, unchanged XP/profile/history') replacement_test;
+rollback;

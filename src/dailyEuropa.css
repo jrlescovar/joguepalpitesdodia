@@ -1,0 +1,24 @@
+/* Match the Europa tournament palette while preserving prediction layout and results. */
+.daily-card[data-competition-theme="europa"] {
+  --accent:#ffb36b;
+  border-color:#c97b34;
+  background:radial-gradient(ellipse at 100% 0,#a650155c,transparent 65%),linear-gradient(145deg,#24130b,#17191f);
+}
+.daily-card[data-competition-theme="europa"] .daily-header { border-color:#b879435c; }
+.daily-card[data-competition-theme="europa"] .europa-league-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="europa"] .daily-header>span:first-child { color:#fff0de; }
+.daily-card[data-competition-theme="europa"] .prediction-content>p { color:#e5c7a9; }
+.daily-card[data-competition-theme="europa"] .deadline { color:#ffb36b; }
+.daily-card[data-competition-theme="europa"] .deadline.in-play { background:#ed8c2714; border-color:#ed8c2760; }
+.daily-card[data-competition-theme="europa"] .countdown>span { background:#1c1813; border-color:#b879435c; }
+.daily-card[data-competition-theme="europa"] .countdown small { color:#e5c7a9; }
+.daily-card[data-competition-theme="europa"] .pick-options label:not(.winner) { background:#201910; border-color:#806045; }
+.daily-card[data-competition-theme="europa"] .pick-options label.selected:not(.winner) { background:#b85e1833; border-color:#e49547; }
+.daily-card[data-competition-theme="europa"] .pick-options label:not(.winner) .option-copy>small { color:#ffb36b; }
+.daily-card[data-competition-theme="europa"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#ffb36b; }
+
+.daily-card[data-competition-theme="europa"] .xp-pill:not(.xp-pill-premium){background:#ed8c2714;border-color:#ed8c2760}
+.daily-card[data-competition-theme="europa"] .pick-result.pending{background:#1c181380}
+.daily-card[data-competition-theme="europa"] .primary-button:not(:disabled){color:#24130b;border-color:#ffc78d;background:linear-gradient(110deg,#d85a08,#ed8c27)}
+.daily-card[data-competition-theme="europa"] .primary-button:hover:not(:disabled){background:#ffb36b;border-color:#ffd5a7}
+.daily-card[data-competition-theme="europa"] :focus-visible{outline-color:#ed8c27}

@@ -17,9 +17,15 @@ export function wheelSegments(prizes:WheelPrize[]){
       }
     }
   }
+  // Visual sizing only: transfer five percentage points from empty sectors.
+  // Keep server weights/chances intact for the draw and the prize summary.
+  const legendaryWeight=prizes.filter(prize=>prize.kind==='legendary').reduce((sum,prize)=>sum+prize.weight,0);
+  const emptyWeight=prizes.filter(prize=>prize.kind==='empty').reduce((sum,prize)=>sum+prize.weight,0);
+  const visualShift=legendaryWeight>0&&emptyWeight>total*.05?total*.05:0;
   let start=0;
   return ordered.map(prize=>{
-    const end=start+(total>0?prize.weight/total*360:0);
+    const visualWeight=prize.weight*(prize.kind==='legendary'&&legendaryWeight>0?1+visualShift/legendaryWeight:prize.kind==='empty'&&emptyWeight>0?1-visualShift/emptyWeight:1);
+    const end=start+(total>0?visualWeight/total*360:0);
     const segment={...prize,start,end,middle:(start+end)/2};
     start=end;
     return segment;

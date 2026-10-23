@@ -7,12 +7,12 @@ export type Order = { id: string; profile_id: string; handle: string; kind: stri
 export function product(kind: unknown, quantity: unknown) {
   if (typeof quantity !== 'number' || !Number.isInteger(quantity)) return null;
   const packs: Record<string, Record<number, number>> = {
-    classic: { 3: 321, 7: 567, 11: 917 }, halloween: { 2: 321, 6: 567, 10: 917 }, font: { 1: 321, 3: 567, 5: 917 }, supporter: { 1: 497 },
+    classic: { 3: 321, 7: 567, 12: 917 }, halloween: { 2: 321, 6: 567, 12: 917 }, font: { 1: 321, 3: 567, 7: 917 }, supporter: { 1: 777 }, coins: { 450: 321, 1000: 567, 2200: 917 },
   };
   if (typeof kind !== 'string' || !Object.hasOwn(packs, kind) || !packs[kind][quantity]) return null;
   const names: Record<string, string> = { classic: 'de Personalização', halloween: 'de Halloween', font: 'de Fontes' };
-  return { kind, quantity, amount: packs[kind][quantity], description: kind === 'supporter'
-    ? 'Apoiador por 30 dias — +50% de XP, emblema, 7 Caixas de Personalização e 1 Caixa de Fontes. Sem renovação automática.'
+  return { kind, quantity, amount: packs[kind][quantity], description: kind === 'coins' ? `${quantity} moedas Esmeralda — Palpites do Dia` : kind === 'supporter'
+    ? 'Apoiador por 30 dias — XP em dobro, 1.000 moedas, emblema, 7 Caixas de Personalização e 1 Caixa de Fontes. Sem renovação automática.'
     : `${quantity} ${quantity === 1 ? 'Caixa' : 'Caixas'} ${names[kind]}` };
 }
 

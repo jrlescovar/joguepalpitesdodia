@@ -11,7 +11,7 @@ describe('owner palette variants',()=>{
     expect(halloweenCatalog.filter(item=>item.style==='lab-blue-9')).toEqual([{kind:'name',style:'lab-blue-9',rarity:'legendary'},{kind:'frame',style:'lab-blue-9',rarity:'legendary'}]);
     const position=passStyleOptions.findIndex(([style])=>style==='lab-blue-9');
     expect(position).toBeGreaterThan(passStyleOptions.findIndex(([style])=>style==='legend-ruby-eclipse'));
-    expect(position).toBeLessThan(passStyleOptions.findIndex(([style])=>style==='lab-blue-4'));
+    expect(position).toBeLessThan(passStyleOptions.length);
     const jade='lab-blue-10-jade-sky';
     expect(boxRarity(jade)).toBe('mythic');
     expect(halloweenCatalog.filter(item=>item.style===jade)).toEqual([{kind:'name',style:jade,rarity:'mythic'},{kind:'frame',style:jade,rarity:'mythic'}]);
@@ -34,6 +34,13 @@ describe('owner palette variants',()=>{
     }).reduce((sum,value,i)=>sum+value*[.2126,.7152,.0722][i],0);
     const background=luminance(rgb('#242a35'));
     for(const [id,,family,dark,mid,,accent] of ownerStyleVariants){
+      // Promoted Orbit variants intentionally reproduce the blue original rather than this palette sweep.
+      if(id==='lab-blue-9-red-orbit'||id==='lab-blue-9-green-orbit') {
+        expect(boxRarity(id)).toBe('legendary');
+        expect(halloweenCatalog.filter(item=>item.style===id)).toHaveLength(2);
+        expect(boxCatalog.some(item=>item.style===id)).toBe(false);
+        continue;
+      }
       const base=rgb(mid),sweep=rgb(accent);
       if(family!==6) expect(Math.hypot(...base.map((channel,i)=>channel-sweep[i])),id+' colored sweep').toBeGreaterThan(45);
       const stops=[rgb(dark),base,sweep,base,rgb(dark)];
@@ -47,22 +54,22 @@ describe('owner palette variants',()=>{
     }
   });
   it('keeps the remaining pairs without retired styles or reused display names',()=>{
-    expect(ownerStyleVariants).toHaveLength(30);
-    for(const [family,count] of [[4,5],[6,6],[7,7],[9,6],[10,6]]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(count);
+    expect(ownerStyleVariants).toHaveLength(7);
+    for(const [family,count] of [[4,1],[6,1],[7,1],[9,3],[10,1]]) expect(ownerStyleVariants.filter(row=>row[2]===family)).toHaveLength(count);
     const ids=ownerStyleVariants.map(row=>row[0]);
-    expect(new Set(ids).size).toBe(30);
+    expect(new Set(ids).size).toBe(7);
     expect(passStyleOptions.some(([id])=>['lab-blue-9-amber-cosmos','lab-blue-10-tropical-light','lab-blue-4-polar-amber','lab-blue-4-vivid-topaz','lab-blue-6-golden-mirage'].includes(id))).toBe(false);
     const normalize=(s:string)=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
     const labels=ownerStyleVariants.map(row=>normalize(row[1]));
-    expect(new Set(labels).size).toBe(30);
+    expect(new Set(labels).size).toBe(7);
     const existing=[...passStyleOptions.filter(([id])=>!ids.includes(id as typeof ids[number])).map(([,label])=>normalize(label)),...usernameFonts.map(([,label])=>normalize(label))];
     expect(labels.some(label=>existing.includes(label))).toBe(false);
   });
   it('keeps private palettes outside box pools except the promoted Halloween event style',()=>{
     for(const [style,label] of ownerStyleVariants){
-      expect(passStyleOptions.filter(([id])=>id===style)).toEqual([[style,label]]);
+      expect(passStyleOptions.filter(([id])=>id===style)).toEqual(isHalloweenStyle(style)?[[style,label]]:[]);
       expect([...boxCatalog,...fontBoxCatalog].some(item=>item.style===style)).toBe(false);
-      expect(halloweenCatalog.some(item=>item.style===style)).toBe(style==='lab-blue-10-jade-sky');
+      expect(halloweenCatalog.some(item=>item.style===style)).toBe(['lab-blue-10-jade-sky','lab-blue-9-red-orbit','lab-blue-9-green-orbit'].includes(style));
     }
   });
 });

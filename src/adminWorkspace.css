@@ -10,3 +10,8 @@
 .profile-admin-footer .profile-admin-button { margin-bottom:0; }
 @media(max-width:640px){.profile-admin-footer { text-align:center; }}
 @media(min-width:1200px){.profile-admin-footer { grid-column:1 / -1; grid-row:4; margin-top:0; }}
+.admin-date-navigation{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:12px;align-items:center;width:100%;max-width:420px;margin:0 auto 24px}
+.admin-date-navigation>.icon-button{width:48px;height:48px;min-height:48px;touch-action:manipulation}
+.admin-date-navigation>label{display:flex;min-width:0;width:100%;max-width:100%;overflow:hidden}
+.admin-date-navigation input{display:block;box-sizing:border-box;appearance:none;-webkit-appearance:none;flex:1 1 0;width:100%;max-width:100%;min-width:0;min-height:48px;padding:10px 12px;border:1px solid var(--line,#374151);border-radius:14px;background:var(--panel,#171c24);color:var(--text,#f5f5f5);font-size:16px;text-align:center;color-scheme:dark}
+.admin-date-navigation input::-webkit-date-and-time-value{text-align:center}

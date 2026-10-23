@@ -1,6 +1,7 @@
 export type Target = {
   key: string; kind: 'daily' | 'tournament'; day: string; slot: number; tournamentId: string | null;
   home: string; away: string; competition: string; closesAt: string;
+  metric?: 'shots' | 'classic';
   options: { id: string; label: string }[];
 };
 export type Fixture = {
@@ -13,6 +14,8 @@ export type Stats = { team: { id: number }; statistics: { type: string; value: n
 export type Evidence = { fixtureId: number; kickoff: string; homeId: number; awayId: number; winner: string; homeValue: number; awayValue: number; signature: string };
 export const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
 const aliases: Record<string, string> = {
+  bayerndemunique: 'bayernmunich', bayernmunchen: 'bayernmunich',
+  atleticodemadrid: 'atleticomadrid', slaviapraha: 'slaviaprague',
   noruega: 'norway', holanda: 'netherlands', servia: 'serbia', grecia: 'greece', alemanha: 'germany',
   paisdegales: 'wales', dinamarca: 'denmark', irlanda: 'ireland', austria: 'austria', azerbaijao: 'azerbaijan', lituania: 'lithuania',
   franca: 'france', belgica: 'belgium', italia: 'italy', turquia: 'turkey', ucrania: 'ukraine', hungria: 'hungary',
@@ -25,6 +28,7 @@ function competitionMatches(target: string, league: Fixture['league']) {
   const name = normalize(target), actual = normalize(league.name);
   if (['nationsleague', 'ligadasnacoes', 'uefanationsleague'].includes(name)) return ['nationsleague', 'uefanationsleague'].includes(actual);
   if (['brasileirao', 'brasileiraoseriea'].includes(name)) return normalize(league.country) === 'brazil' && actual === 'seriea';
+  if (['championsleague', 'uefachampionsleague', 'ligadoscampeoes'].includes(name)) return ['championsleague', 'uefachampionsleague'].includes(actual);
   return name.length > 0 && name === actual;
 }
 export function matchFixture(target: Target, fixtures: Fixture[]): Fixture | null {
@@ -48,8 +52,9 @@ export function evaluate(target: Target, fixture: Fixture, stats: Stats[] = []):
     const values = teams[0].statistics.filter(stat => stat.type === 'Total Shots');
     return values.length === 1 ? count(values[0].value) : null;
   };
-  const homeValue = target.kind === 'tournament' ? getShots(fixture.teams.home.id) : count(fixture.score.fulltime.home);
-  const awayValue = target.kind === 'tournament' ? getShots(fixture.teams.away.id) : count(fixture.score.fulltime.away);
+  const usesShots = target.kind === 'tournament' && target.metric !== 'classic';
+  const homeValue = usesShots ? getShots(fixture.teams.home.id) : count(fixture.score.fulltime.home);
+  const awayValue = usesShots ? getShots(fixture.teams.away.id) : count(fixture.score.fulltime.away);
   if (homeValue === null || awayValue === null) return null;
   const side = homeValue > awayValue ? 'home' : homeValue < awayValue ? 'away' : 'draw';
   const winner = target.kind === 'tournament' ? side : (() => {

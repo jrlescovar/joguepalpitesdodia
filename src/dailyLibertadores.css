@@ -1,0 +1,24 @@
+/* Match the Libertadores tournament palette while preserving prediction layout and results. */
+.daily-card[data-competition-theme="libertadores"] {
+  --accent:#e4c276;
+  border-color:#95743b;
+  background:radial-gradient(ellipse at 100% 0,#96702c33,transparent 65%),linear-gradient(145deg,#17140d,#101317);
+}
+.daily-card[data-competition-theme="libertadores"] .daily-header { border-color:#b18b444d; }
+.daily-card[data-competition-theme="libertadores"] .libertadores-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="libertadores"] .daily-header>span:first-child { color:#f4e7c9; }
+.daily-card[data-competition-theme="libertadores"] .prediction-content>p { color:#d6c7a5; }
+.daily-card[data-competition-theme="libertadores"] .deadline { color:#e4c276; }
+.daily-card[data-competition-theme="libertadores"] .deadline.in-play { background:#cba35314; border-color:#cba35360; }
+.daily-card[data-competition-theme="libertadores"] .countdown>span { background:#101217; border-color:#b18b444d; }
+.daily-card[data-competition-theme="libertadores"] .countdown small { color:#d6c7a5; }
+.daily-card[data-competition-theme="libertadores"] .pick-options label:not(.winner) { background:#111418; border-color:#716343; }
+.daily-card[data-competition-theme="libertadores"] .pick-options label.selected:not(.winner) { background:#bd913133; border-color:#d7af5b; }
+.daily-card[data-competition-theme="libertadores"] .pick-options label:not(.winner) .option-copy>small { color:#e4c276; }
+.daily-card[data-competition-theme="libertadores"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#e4c276; }
+
+.daily-card[data-competition-theme="libertadores"] .xp-pill:not(.xp-pill-premium){background:#cba35314;border-color:#cba35360}
+.daily-card[data-competition-theme="libertadores"] .pick-result.pending{background:#10121780}
+.daily-card[data-competition-theme="libertadores"] .primary-button:not(:disabled){color:#17140d;border-color:#edcf89;background:linear-gradient(110deg,#bf913d,#eed295)}
+.daily-card[data-competition-theme="libertadores"] .primary-button:hover:not(:disabled){background:#e4c276;border-color:#f4dfa9}
+.daily-card[data-competition-theme="libertadores"] :focus-visible{outline-color:#eed295}

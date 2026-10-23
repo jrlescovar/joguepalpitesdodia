@@ -1,0 +1,27 @@
+/* La Liga: the coral double-L mark over a deep red match card. */
+.daily-card[data-competition-theme="la-liga"] {
+ --accent:#ffb4aa;
+ --double-points-line:#db8178;
+ border-color:#b85e58;
+ background:radial-gradient(ellipse at 100% 0,#b83b3540,transparent 65%),linear-gradient(145deg,#401b24,#21151e 80%);
+}
+.daily-card[data-competition-theme="la-liga"] .daily-header { border-color:#f49b8b40; background:#ff494405; }
+.daily-card[data-competition-theme="la-liga"] .daily-header>span:first-child { color:#fff0ec; }
+.daily-card[data-competition-theme="la-liga"] .la-liga-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="la-liga"] .prediction-content>p { color:#e9c1ba; }
+.daily-card[data-competition-theme="la-liga"] .deadline { color:#ffc0b5; }
+.daily-card[data-competition-theme="la-liga"] .deadline.in-play,
+.daily-card[data-competition-theme="la-liga"] .daily-header-status { background:#ff958712; border-color:#f49b8b5c; }
+.daily-card[data-competition-theme="la-liga"] .countdown>span { background:#2c1821; border-color:#be82795c; }
+.daily-card[data-competition-theme="la-liga"] .countdown small { color:#e9c1ba; }
+.daily-card[data-competition-theme="la-liga"] .pick-options label:not(.winner) { background:#2a1921; border-color:#926a68; }
+.daily-card[data-competition-theme="la-liga"] .pick-options label.selected:not(.winner) { background:#ff65532b; border-color:#ff9587; }
+.daily-card[data-competition-theme="la-liga"] .pick-options label.selected:not(.winner) .option-copy>span { color:#ffe5df; }
+.daily-card[data-competition-theme="la-liga"] .pick-options label:not(.winner) .option-copy>small { color:#ffb4aa; }
+.daily-card[data-competition-theme="la-liga"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#ffb4aa; }
+.daily-card[data-competition-theme="la-liga"] .xp-pill:not(.xp-pill-premium),
+.daily-card[data-competition-theme="la-liga"] .double-points-pill { background:#ff958712; border-color:#f49b8b5c; color:#ffc0b5; }
+.daily-card[data-competition-theme="la-liga"] .pick-result.pending { background:#29182180; }
+.daily-card[data-competition-theme="la-liga"] .primary-button:not(:disabled) { color:#30121b; border-color:#ffc1b5; background:linear-gradient(110deg,#ff9484,#ffb6a6); }
+.daily-card[data-competition-theme="la-liga"] .primary-button:hover:not(:disabled) { background:#ffd0c4; border-color:#ffe4dc; }
+.daily-card[data-competition-theme="la-liga"] :focus-visible { outline-color:#ffc7bc; }

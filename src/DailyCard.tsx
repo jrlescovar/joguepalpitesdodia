@@ -5,11 +5,28 @@ import { isDoublePointsDay } from './domain';
 import type { Pick, Prediction, Session } from './types';
 import { ErrorNotice } from './components';
 import './doublePoints.css';
+import './dailyChampions.css';
+import './dailyStatus.css';
+import { teamNameDisplay } from './teamNameDisplay';
 import DailyGamesCarousel from './DailyGamesCarousel';
-import { dailyGameLabel as gameLabel, orderDailyGames } from './dailyGameDisplay';
+import ChampionsBallIcon from './ChampionsBallIcon';
+import LibertadoresIcon from './LibertadoresIcon';
+import EuropaLeagueIcon from './EuropaLeagueIcon';
+import BrasileiraoIcon from './BrasileiraoIcon';
+import PremierLeagueIcon from './PremierLeagueIcon';
+import LaLigaIcon from './LaLigaIcon';
+import BundesligaIcon from './BundesligaIcon';
+import SerieAIcon from './SerieAIcon';
+import './dailyBrasileirao.css';
+import './dailyPremierLeague.css';
+import './dailyLaLiga.css';
+import './dailyBundesliga.css';
+import './dailySerieA.css';
+import './dailyEuropa.css';
+import './dailyLibertadores.css';
+import { dailyGameLabel as gameLabel, dailyCompetitionLabel, dailyOptionLabel, orderDailyGames } from './dailyGameDisplay';
 
 const gameKey = (game: Prediction) => `${game.dayId}-${game.slot}`;
-const competitionLabel = (description: string) => description.split(/[·\r\n]/, 1)[0].trim();
 
 function gameTitle(title: string) {
   const questionEnd = title.indexOf('?');
@@ -63,21 +80,29 @@ function GameCard({ prediction, instanceId, pick, selected, now, offset, countdo
   onSelect: (optionId: string) => void;
   onSubmit: () => void;
 }) {
+  const title = teamNameDisplay(prediction.title);
   const expired = prediction.closesAt.toMillis() <= now || prediction.status !== 'open';
   const doublePoints = isDoublePointsDay(prediction.dayId);
-  const showXp = supporterActive || (!expired && !pick);
-  return <section className={`card daily-card${doublePoints ? ' daily-card-double-points' : ''}`}><div className="daily-header"><span><Goal size={18} /> {gameLabel(prediction).toUpperCase()}</span>{(doublePoints || showXp) && <div className="daily-rewards">{doublePoints && <span className="double-points-pill" aria-label="Evento: dobro de pontos">X2 pts</span>}{showXp && <span className={`xp-pill${supporterActive ? ' xp-pill-premium' : ''}`}><Zap size={14} aria-hidden="true"/> +{supporterActive ? 8 : 5} XP</span>}</div>}</div>
-    {pick === undefined ? <DailySkeleton /> : <div className="prediction-content"><h2 className={prediction.title.length > 65 ? 'game-title-very-long' : prediction.title.length > 32 ? 'game-title-long' : prediction.slot === 8 ? 'game-title-compact' : undefined}>{gameTitle(prediction.title)}</h2><p className="muted text-sm">{competitionLabel(prediction.description)}</p>
-      <span className={`deadline ${expired ? 'in-play' : ''}`}><Clock3 size={14} />{prediction.status === 'settled' ? 'RESULTADO CONFIRMADO' : expired ? 'EM JOGO' : 'PALPITES ENCERRAM EM'}</span>
-      {!expired && <Countdown until={prediction.closesAt.toMillis()} offset={offset} active={countdownActive} />}
+  const showXp = !expired && pick === null;
+  const competition=dailyCompetitionLabel(prediction.description);
+  const brasileirao=competition==='Brasileirão';
+  const premier=competition==='Premier League';
+  const laLiga=competition==='La Liga';
+  const bundesliga=competition==='Bundesliga';
+  const serieA=competition==='Serie A';
+  const libertadores=/^(?:(?:Copa|CONMEBOL)\s+)?Libertadores$/iu.test(competition);
+  const europa=/^(?:UEFA\s+)?(?:Europa\s+League|Liga\s+Europa)$/iu.test(competition);
+  return <section className={`card daily-card${doublePoints ? ' daily-card-double-points' : ''}`} data-competition-theme={competition==='Liga dos Campeões'?'champions':libertadores?'libertadores':europa?'europa':brasileirao?'brasileirao':premier?'premier-league':laLiga?'la-liga':bundesliga?'bundesliga':serieA?'serie-a':undefined}><div className="daily-header"><span>{competition==='Liga dos Campeões'?<ChampionsBallIcon/>:libertadores?<LibertadoresIcon/>:europa?<EuropaLeagueIcon/>:brasileirao?<BrasileiraoIcon/>:premier?<PremierLeagueIcon/>:laLiga?<LaLigaIcon/>:bundesliga?<BundesligaIcon/>:serieA?<SerieAIcon/>:<Goal size={18}/>} {gameLabel(prediction).toUpperCase()}</span>{(doublePoints || showXp || expired) && <div className="daily-rewards">{doublePoints && <span className="double-points-pill" aria-label="Evento: dobro de pontos">X2 pts</span>}{showXp && <span className={`xp-pill${supporterActive ? ' xp-pill-premium' : ''}`}><Zap size={14} aria-hidden="true"/> +{supporterActive ? 10 : 5} XP</span>}{expired&&<span className="daily-header-status"><Clock3 size={12} aria-hidden="true"/>{prediction.status==='settled'?'ENCERRADO':'EM JOGO'}</span>}</div>}</div>
+    {pick === undefined ? <DailySkeleton /> : <div className="prediction-content"><h2 className={title.length > 65 ? 'game-title-very-long' : title.length > 32 ? 'game-title-long' : prediction.slot === 8 ? 'game-title-compact' : undefined}>{gameTitle(title)}</h2><p className="muted text-sm">{competition}</p>
+      {!expired && <><span className="deadline"><Clock3 size={14} />PALPITES ENCERRAM EM</span><Countdown until={prediction.closesAt.toMillis()} offset={offset} active={countdownActive} /></>}
       <fieldset disabled={Boolean(pick) || expired || busy}><legend className="field-label">{pick ? 'Seu palpite está confirmado' : 'Qual é o seu palpite?'}</legend>
         <div className={`pick-options options-${prediction.options.length}`}>{prediction.options.map(option => <label key={option.id} className={`${(pick?.optionId || selected) === option.id ? 'selected' : ''} ${prediction.winningOptionId === option.id ? 'winner' : ''}`}>
           <input type="radio" name={`pick-${gameKey(prediction)}-${instanceId}`} value={option.id} checked={(pick?.optionId || selected) === option.id} onChange={() => onSelect(option.id)} onClick={() => { if (!pick && selected === option.id) onSelect(''); }} />
-          <span className="option-copy"><span>{option.label.toLocaleLowerCase('pt-BR') === 'empate' ? 'X' : option.label}</span>{typeof option.rankPoints === 'number' && <small>+{option.rankPoints} pts</small>}</span>{prediction.winningOptionId !== option.id && <span className="radio-indicator" />}
+          <span className="option-copy"><span>{dailyOptionLabel(prediction, option)}</span>{typeof option.rankPoints === 'number' && <small>+{option.rankPoints} pts</small>}</span>{prediction.winningOptionId !== option.id && <span className="radio-indicator" />}
         </label>)}</div>
       </fieldset>
       {pick ? (pick.status !== 'pending' || expired ? <div className={`pick-result ${pick.status}`} role="status">{pick.status === 'green' ? <Check /> : pick.status === 'red' ? <X /> : <LockKeyhole />}
-        <span>{pick.status === 'green' ? `Deu green! +${supporterActive ? 38 : 25} XP para você.` : pick.status === 'red' ? 'Deu red. O próximo palpite é uma nova chance.' : 'Aguardando o resultado.'}</span></div> : null)
+        <span>{pick.status === 'green' ? `Deu green! +${supporterActive ? 50 : 25} XP para você.` : pick.status === 'red' ? 'Deu red. O próximo palpite é uma nova chance.' : 'Aguardando o resultado.'}</span></div> : null)
         : !expired ? (selected ? <button className="primary-button w-full mt-5" disabled={busy} onClick={onSubmit}>{busy ? 'Confirmando…' : 'Confirmar meu palpite'} <Check size={18} /></button> : null)
           : <div className="pick-result pending" role="status"><LockKeyhole /><span>{prediction.status === 'settled' ? 'Este palpite foi encerrado.' : 'Em jogo. O prazo para novos palpites terminou.'}</span></div>}
     </div>}
@@ -144,8 +169,8 @@ export default function DailyCard({ uid, session, refreshTick, supporterActive, 
   const waitingForResults=todaysGames.length>0
     && todaysGames.every(game=>game.status!=='open'||game.closesAt.toMillis()<=now)
     && todaysGames.some(game=>game.status!=='settled');
-  const displayGames=orderDailyGames(games,now);
+  const displayGames=orderDailyGames(games);
   const cards=displayGames.length === 1 ? renderGame(displayGames[0], 'single', true)
     : <DailyGamesCarousel key={desktop?'desktop':'mobile'} games={displayGames} now={Date.now() + clockOffset} desktop={desktop} renderGame={renderGame} onPageChange={clearPendingSelections} />;
-  return <>{cards}{waitingForResults&&<p className="upcoming-predictions-notice" role="status">Palpites para o dia seguinte está liberado em instantes</p>}</>;
+  return <>{cards}{waitingForResults&&<p className="upcoming-predictions-notice" role="status">Palpites para o dia seguinte estará disponível em instantes!</p>}</>;
 }

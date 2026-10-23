@@ -1,0 +1,30 @@
+/* Serie A: the supplied blue/cyan A and a small Italian tricolour. */
+.daily-card[data-competition-theme="serie-a"] {
+ --accent:#a1e6ff;
+ --double-points-line:#5daddf;
+ border-color:#4e8ed3;
+ background:radial-gradient(ellipse at 100% 0,#087eff38,transparent 65%),linear-gradient(145deg,#102c53,#111a32 80%);
+}
+.daily-card[data-competition-theme="serie-a"] .daily-header {
+ border-color:#75baff40;
+ background:#148aff08;
+}
+.daily-card[data-competition-theme="serie-a"] .daily-header>span:first-child { color:#f0f9ff; }
+.daily-card[data-competition-theme="serie-a"] .serie-a-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="serie-a"] .prediction-content>p { color:#b9d7ef; }
+.daily-card[data-competition-theme="serie-a"] .deadline { color:#c6e7fc; }
+.daily-card[data-competition-theme="serie-a"] .deadline.in-play,
+.daily-card[data-competition-theme="serie-a"] .daily-header-status { background:#63c7ff12; border-color:#82cfff5c; }
+.daily-card[data-competition-theme="serie-a"] .countdown>span { background:#11213d; border-color:#77b2df5c; }
+.daily-card[data-competition-theme="serie-a"] .countdown small { color:#b9d7ef; }
+.daily-card[data-competition-theme="serie-a"] .pick-options label:not(.winner) { background:#15253f; border-color:#668eae; }
+.daily-card[data-competition-theme="serie-a"] .pick-options label.selected:not(.winner) { background:#168eff30; border-color:#94e4ff; }
+.daily-card[data-competition-theme="serie-a"] .pick-options label.selected:not(.winner) .option-copy>span { color:#effbff; }
+.daily-card[data-competition-theme="serie-a"] .pick-options label:not(.winner) .option-copy>small { color:#a1e6ff; }
+.daily-card[data-competition-theme="serie-a"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#a1e6ff; }
+.daily-card[data-competition-theme="serie-a"] .xp-pill:not(.xp-pill-premium),
+.daily-card[data-competition-theme="serie-a"] .double-points-pill { background:#63c7ff12; border-color:#82cfff5c; color:#c6efff; }
+.daily-card[data-competition-theme="serie-a"] .pick-result.pending { background:#101d3580; }
+.daily-card[data-competition-theme="serie-a"] .primary-button:not(:disabled) { color:#0a2444; border-color:#a1e6ff; background:linear-gradient(110deg,#53c9ff,#a1e6ff); }
+.daily-card[data-competition-theme="serie-a"] .primary-button:hover:not(:disabled) { background:#c0f0ff; border-color:#e5faff; }
+.daily-card[data-competition-theme="serie-a"] :focus-visible { outline-color:#a1e6ff; }

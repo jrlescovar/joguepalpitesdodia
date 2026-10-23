@@ -1,0 +1,27 @@
+/* Bundesliga: white footballer and bright red identity on a dark match card. */
+.daily-card[data-competition-theme="bundesliga"] {
+ --accent:#ffccd1;
+ --double-points-line:#d86a77;
+ border-color:#cc5263;
+ background:radial-gradient(ellipse at 100% 0,#d2051540,transparent 65%),linear-gradient(145deg,#420a19,#21151e 80%);
+}
+.daily-card[data-competition-theme="bundesliga"] .daily-header { border-color:#ee97a140; background:#d2051510; }
+.daily-card[data-competition-theme="bundesliga"] .daily-header>span:first-child { color:#fff5f6; }
+.daily-card[data-competition-theme="bundesliga"] .bundesliga-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="bundesliga"] .prediction-content>p { color:#edc6cc; }
+.daily-card[data-competition-theme="bundesliga"] .deadline { color:#f7d5da; }
+.daily-card[data-competition-theme="bundesliga"] .deadline.in-play,
+.daily-card[data-competition-theme="bundesliga"] .daily-header-status { background:#ed7f8e12; border-color:#ed8e9a5c; }
+.daily-card[data-competition-theme="bundesliga"] .countdown>span { background:#2d1520; border-color:#c9828d5c; }
+.daily-card[data-competition-theme="bundesliga"] .countdown small { color:#edc6cc; }
+.daily-card[data-competition-theme="bundesliga"] .pick-options label:not(.winner) { background:#2b1720; border-color:#98636f; }
+.daily-card[data-competition-theme="bundesliga"] .pick-options label.selected:not(.winner) { background:#e2213b30; border-color:#ffb7c1; }
+.daily-card[data-competition-theme="bundesliga"] .pick-options label.selected:not(.winner) .option-copy>span { color:#fff0f2; }
+.daily-card[data-competition-theme="bundesliga"] .pick-options label:not(.winner) .option-copy>small { color:#ffccd1; }
+.daily-card[data-competition-theme="bundesliga"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#ffccd1; }
+.daily-card[data-competition-theme="bundesliga"] .xp-pill:not(.xp-pill-premium),
+.daily-card[data-competition-theme="bundesliga"] .double-points-pill { background:#ed7f8e12; border-color:#ed8e9a5c; color:#ffe1e5; }
+.daily-card[data-competition-theme="bundesliga"] .pick-result.pending { background:#29131e80; }
+.daily-card[data-competition-theme="bundesliga"] .primary-button:not(:disabled) { color:#fff; border-color:#f27c8b; background:linear-gradient(110deg,#c90d28,#dc1835); }
+.daily-card[data-competition-theme="bundesliga"] .primary-button:hover:not(:disabled) { background:#b90d25; border-color:#ffacb8; }
+.daily-card[data-competition-theme="bundesliga"] :focus-visible { outline-color:#ffccd1; }

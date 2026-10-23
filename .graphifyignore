@@ -1,0 +1,22 @@
+# Generated artifacts and local helper environment
+.runtime/
+node_modules/
+dist/
+graphify-out/
+.git/
+.firebase/
+supabase/.temp/
+public/
+artes/
+.agents/
+.codex/
+# Secrets and dependency lockfiles are not useful graph inputs
+.env*
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*credentials*.json
+*service-account*.json
+package-lock.json

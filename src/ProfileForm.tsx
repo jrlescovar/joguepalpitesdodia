@@ -1,4 +1,4 @@
-import { boxRarities, fontRarity, isHalloweenStyle, isHalloweenFont } from './boxCatalog';
+import { boxRarities, boxRarity, fontRarity, isHalloweenStyle, isHalloweenFont } from './boxCatalog';
 import UsernameText from './UsernameText';
 import { usernameFonts, type UsernameFont } from './usernameFonts';
 import { isOwnerPreviewFont } from './ownerFontPreviews';
@@ -7,11 +7,11 @@ import { Check, LoaderCircle, LockKeyhole } from 'lucide-react';
 import { call,errorMessage } from './backend';
 import { avatarColors,colorNames,type Profile, type PassStatus, type PassNameStyle, type PassBorderStyle, type BoxState } from './types';
 import { Avatar,ErrorNotice } from './components';
-import { commonPassStyles, passStyleOptions } from './passStyleOptions';
+import { passStyleOptions } from './passStyleOptions';
 import './halloween.css';
 import './ownerStyleVariants.css';
-const epicStyles=new Set<PassNameStyle>(['midnight-electric','graphite-silver','wine-rose','neon-circuit','sunset-ocean','rare-plum-beige','halloween-pumpkin']);
-const styleCategory=(style:PassNameStyle)=>style==='lab-blue-6'||style==='lab-blue-9'?'legend':style==='lab-blue-10-jade-sky'?'myth':style.startsWith('lab-blue-')?null:style==='gold'||style==='rainbow'||style.startsWith('legend-')?'legend':style==='halloween-mist'||style==='halloween-bloodmoon'||style.startsWith('myth-')?'myth':epicStyles.has(style)?'epic':commonPassStyles.has(style)?null:'rare';
+const styleCategory=(style:PassNameStyle)=>style.startsWith('lab-blue-')&&!['lab-blue-6','lab-blue-9','lab-blue-9-red-orbit','lab-blue-9-green-orbit','lab-blue-10-jade-sky'].includes(style)?null:({common:null,rare:'rare',epic:'epic',mythic:'myth',legendary:'legend'} as const)[boxRarity(style)];
+const styleTierOrder=(style:PassNameStyle)=>boxRarities.findIndex(tier=>tier.id===boxRarity(style));
 const categoryName={rare:'Rara',epic:'Épica',myth:'Mítica',legend:'Lendária'};
 const fontTierOrder=(font:UsernameFont)=>isOwnerPreviewFont(font)?boxRarities.length:boxRarities.findIndex(tier=>tier.id===fontRarity(font));
 export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:()=>void;onShop?:()=>void;supporterActive?:boolean}) {
@@ -39,8 +39,8 @@ export default function ProfileForm({profile,onDone}:{profile?:Profile;onDone?:(
     }
     return()=>{active=false;};
   },[allStylesUnlocked,box]);
-  const visibleNameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||isHalloweenStyle(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedNames.has(style)));
-  const visibleFrameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||isHalloweenStyle(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedFrames.has(style)));
+  const visibleNameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||isHalloweenStyle(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedNames.has(style))).sort(([a],[b])=>styleTierOrder(a)-styleTierOrder(b));
+  const visibleFrameStyles=passStyleOptions.filter(([style])=>(!style.startsWith('lab-blue-')||isHalloweenStyle(style)||allStylesUnlocked)&&(style==='none'||allStylesUnlocked||unlockedFrames.has(style))).sort(([a],[b])=>styleTierOrder(a)-styleTierOrder(b));
   useEffect(()=>{if(!profile)return;let active=true;call<PassStatus>('getPassStatus').then(status=>{if(active){setPass(status);setNameStyle(current=>current===profile.passNameStyle?status.nameStyle:current);setBorderStyle(current=>current===profile.passBorderStyle?status.borderStyle:current);}}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
   useEffect(()=>{if(!profile)return;let active=true;call<BoxState>('getBoxState').then(state=>{if(active)setBox(state);}).catch(()=>{});return()=>{active=false;};},[profile?.uid]);
   const [availability,setAvailability]=useState<'idle'|'checking'|'available'|'taken'|'invalid'|'error'>('idle');const [busy,setBusy]=useState(false);const [error,setError]=useState('');

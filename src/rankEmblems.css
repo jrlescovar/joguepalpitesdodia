@@ -1,0 +1,11 @@
+/* Faceted rank insignia: native SVG gradients, no textures or animated layers. */
+.rank-emblem.rank-emblem-v2 { filter:none; }
+.rank-emblem-v2 .rank-ghost,.rank-emblem-v2 .rank-elite-shield { fill:var(--rank-core); opacity:1; }
+.rank-emblem-v2 .rank-stroke { stroke:var(--rank-metal); stroke-width:3.4; stroke-linejoin:miter; }
+.rank-emblem-v2 .rank-thin { stroke:var(--rank-edge); stroke-width:1.5; stroke-linejoin:miter; }
+.rank-emblem-v2 .rank-fill { fill:var(--rank-gem); }
+.rank-emblem-v2.rank-emblem-master .rank-master-border { stroke:var(--rank-metal); }
+.rank-emblem-v2.rank-emblem-master .rank-thin { stroke:#e9bc61; }
+.rank-emblem-v2.rank-emblem-elite .rank-elite-inner { stroke:#927d66; }
+/* Mestre uses the crown emblem; enlarge its artwork without moving nearby text. */
+.rank-emblem.rank-emblem-v2.rank-emblem-elite > svg { width:calc(100% + 1px); height:calc(100% + 1px); max-width:none; }

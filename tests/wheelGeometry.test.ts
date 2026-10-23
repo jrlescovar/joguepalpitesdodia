@@ -21,6 +21,25 @@ describe('wheel displayed odds and server prize landing',()=>{
     expect((halloween.end-halloween.start)/360*100).toBeCloseTo(7.875);
     expect(segments.filter(s=>s.kind==='empty').reduce((sum,segment)=>sum+segment.end-segment.start,0)/360*100).toBeCloseTo(42.625);
   });
+  it('adds five visual percentage points to legendary, taking only empty space while keeping real odds',()=>{
+    const updated=prizes.map(prize=>prize.kind==='supporter'?{...prize,kind:'legendary' as const,label:'1 Caixa Lendária'}:prize);
+    const original=structuredClone(updated),segments=wheelSegments(updated),oldSegments=wheelSegments(prizes);
+    const span=(kind:WheelPrize['kind'],rows=segments)=>rows.filter(p=>p.kind===kind).reduce((sum,p)=>sum+p.end-p.start,0);
+    expect(span('legendary')).toBeCloseTo(36);
+    expect(span('empty')).toBeCloseTo(span('empty',oldSegments)-18);
+    for(const kind of ['classic','halloween','font','name','frame'] as const)expect(span(kind)).toBeCloseTo(span(kind,oldSegments));
+    expect(segments.at(-1)?.end).toBeCloseTo(360);
+    expect(wheelPrizeSummary(updated).find(prize=>prize.kind==='legendary')?.chance).toBeCloseTo(5);
+    expect(wheelPrizeSummary(updated).find(prize=>prize.kind==='empty')?.chance).toBeCloseTo(42.625);
+    expect(updated).toEqual(original);
+    for(const segment of segments)expect((segment.middle+wheelLandingAngle(updated,segment.position,segment.kind))%360).toBeCloseTo(0);
+  });
+  it('keeps usable sectors when a custom catalog has insufficient empty space',()=>{
+    const small:WheelPrize[]=[{position:0,kind:'legendary',label:'Legendary',weight:99,chance:99},{position:1,kind:'empty',label:'Empty',weight:1,chance:1}];
+    const segments=wheelSegments(small);
+    expect(segments[0].end).toBeCloseTo(356.4);
+    expect(segments[1].end).toBeCloseTo(360);
+  });
   it('puts each returned server position exactly under the top pointer',()=>{
     for(const segment of wheelSegments(prizes)){
       expect((segment.middle+wheelLandingAngle(prizes,segment.position))%360).toBeCloseTo(0);

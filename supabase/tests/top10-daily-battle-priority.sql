@@ -46,7 +46,7 @@ begin
   perform public.ensure_daily_battle_round(d);
   if exists(select 1 from unnest(people[1:10]) leader(id) where not exists(select 1 from public.daily_battles b where b.day_id=d and b.player_right is not null and (b.player_left=leader.id or b.player_right=leader.id))) then raise exception 'Top10 vacancy at draw %',attempt; end if;
   if exists(select 1 from public.daily_battles b where day_id=d and player_right is not null and
-   (not public.daily_battle_opponents_allowed(d,player_left,player_right) or abs(left_start_rank_points::bigint-right_start_rank_points::bigint)>500)) then raise exception 'Draw bypassed constraints'; end if;
+   not public.daily_battle_opponents_allowed(d,player_left,player_right)) then raise exception 'Draw bypassed constraints'; end if;
   if exists(select id from (select player_left id from public.daily_battles where day_id=d union all select player_right from public.daily_battles where day_id=d and player_right is not null) participants group by id having count(*)>1) then raise exception 'Duplicate fighter'; end if;
   if exists(select 1 from public.daily_battles where day_id=d and (player_left=any(people[11:12]) or player_right=any(people[11:12]))) then raise exception 'Ordinary inactivity rule bypassed'; end if;
   select jsonb_agg(to_jsonb(b) order by id) into before_round from public.daily_battles b where day_id=d;
@@ -54,7 +54,7 @@ begin
   select jsonb_agg(to_jsonb(b) order by id) into after_round from public.daily_battles b where day_id=d;
   if before_round is distinct from after_round then raise exception 'Repeated draw changed fights'; end if;
  end loop;
- -- Gap 500 is valid and 501 is excluded by the priority pass as well.
+ -- Master opponents remain compatible at 500 and beyond 500.
  delete from public.daily_battles where day_id=d;
  insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,people[3],50000),(d,people[4],50500);
  -- Mark other leaders settled so this test isolates the two vacancies.
@@ -64,7 +64,7 @@ begin
  delete from public.daily_battles where day_id=d and player_right is not null;
  insert into public.daily_battles(day_id,player_left,left_start_rank_points) values(d,people[3],50000),(d,people[4],50501);
  perform public.pair_top10_daily_battles(d);
- if exists(select 1 from public.daily_battles where day_id=d and player_right is not null) then raise exception '501 boundary accepted'; end if;
+ if not exists(select 1 from public.daily_battles where day_id=d and player_right is not null) then raise exception 'Master gap 501 excluded'; end if;
  -- Reservations remain intact; the remaining eight leaders still get paired.
  delete from public.daily_battles where day_id=d;
  delete from public.daily_battle_rounds where day_id=d;
@@ -92,4 +92,4 @@ begin
   or has_function_privilege('anon','public.plan_priority_battle_pairs(uuid[],uuid[],jsonb)','execute') then raise exception 'Private functions exposed'; end if;
 end;
 $$;
-select 'PASS: real top 10, 20 priority draws, inactivity override only for top 10, yesterday exclusion, 500 ceiling, immutable fights, no points/stat changes; all rolled back' as result;
+select 'PASS: real top 10, 20 priority draws, inactivity override only for top 10, yesterday exclusion, Master unlimited band, ordinary 500 ceiling, immutable fights, no points/stat changes; all rolled back' as result;

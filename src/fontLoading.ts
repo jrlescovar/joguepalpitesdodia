@@ -7,10 +7,9 @@ export function warmUsernameFont(font:UsernameFont) {
   const entry=usernameFonts.find(([id])=>id===font);
   if(!entry)return;
   requested.add(font);
-  const link=document.createElement('link');
-  link.rel='preload';link.as='font';link.type='font/woff2';link.crossOrigin='anonymous';
-  link.href='/fonts/'+font+'.woff2?v='+(font==='eater'||font==='butcherman'?'1':'2');
-  document.head.appendChild(link);
+  // Load the face actually rendered, without creating unused preload hints.
+  const family=entry[2];
+  if(family)void document.fonts.load(`16px "${family}"`).catch(()=>{requested.delete(font);});
   try {
     const previous=JSON.parse(localStorage.getItem(cacheKey)||'[]');
     const recent=Array.isArray(previous)?previous.filter(id=>id!==font&&usernameFonts.some(([key])=>key===id)):[];

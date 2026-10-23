@@ -13,14 +13,14 @@ import './halloween.css';
 
 const pendingKey=(uid:string,theme:string)=>theme==='classic'?`apostadodia:box-opening:${uid}`:`apostadodia:box-opening:${theme}:${uid}`;
 
-function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
+export function PrizePreview({item,profile}:{item:BoxItem;profile:Profile}){
   return item.kind==='frame'
     ? <Avatar name={profile.username} color={profile.avatarColor} imageUrl={profile.useGoogleAvatar===false?null:profile.avatarUrl} borderStyle={item.style} large/>
     : <strong className={`box-name-preview pass-name-${item.kind==='font'?(profile.passNameStyle??'none'):item.style}`}><UsernameText name={profile.username} font={item.kind==='font'?item.style:'normal'}/></strong>;
 }
 
-function BoxArt({opening=false,theme='classic'}:{opening?:boolean;theme?:BoxTheme}){
-  return <div className={`box-art box-art-${theme}${theme!=='classic'&&theme!=='halloween'?' box-art-classic':''}${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} halloween={theme==='halloween'} graffiti={theme==='font'}/></div>;
+export function BoxArt({opening=false,theme='classic'}:{opening?:boolean;theme?:BoxTheme}){
+  return <div className={`box-art box-art-${theme}${theme!=='classic'&&theme!=='halloween'?' box-art-classic':''}${opening?' box-art-opening':''}`} aria-hidden="true"><span className="box-art-glow"/><ChestIcon size={190} className="box-art-chest" opening={opening} theme={theme} halloween={theme==='halloween'} graffiti={theme==='font'}/></div>;
 }
 
 export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCheckout=false,theme='classic',navigateTo=false,onNavigated,onAvailabilityChange}:{profile:Profile;onChanged:()=>void;refreshTick?:number;refreshAfterCheckout?:boolean;theme?:BoxTheme;navigateTo?:boolean;onNavigated?:()=>void;onAvailabilityChange?:(theme:BoxTheme,available:boolean)=>void}){
@@ -41,6 +41,7 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
   const trackRef=useRef<HTMLDivElement>(null);
   const animationRef=useRef<Animation|null>(null);
   const panelRef=useRef<HTMLElement>(null);
+  const requestInFlight=useRef(false);
 
   useEffect(()=>{
     if(state===null&&!pending&&!loadError)return;
@@ -85,19 +86,20 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
     const finish=()=>setPhase('result');
     document.addEventListener('visibilitychange',finish);
     if(phase==='box'){
-      const timer=window.setTimeout(()=>setPhase('reel'),500);
+      // Let the lid finish its 500ms movement, then hold it open for 200ms.
+      const timer=window.setTimeout(()=>setPhase('reel'),700);
       return()=>{window.clearTimeout(timer);document.removeEventListener('visibilitychange',finish);};
     }
     if(!trackRef.current){setPhase('result');document.removeEventListener('visibilitychange',finish);return;}
     const track=trackRef.current;
-    const card=track.firstElementChild?.getBoundingClientRect();
+    const card=track.firstElementChild as HTMLElement|null;
     if(!card||typeof track.animate!=='function'){
       setPhase('result');
       document.removeEventListener('visibilitychange',finish);
       return;
     }
     const prizeIndex=strip.length-3;
-    const distance=prizeIndex*(card.width+10);
+    const distance=prizeIndex*(card.offsetWidth+10);
     const animation=track.animate([
       {transform:'translateX(0px)'},
       {transform:`translateX(${-distance}px)`},
@@ -110,12 +112,16 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
   },[opening,phase,strip]);
 
   async function openBox(){
+    if(requestInFlight.current||opening)return;
+    requestInFlight.current=true;
     const key=pendingKey(profile.uid,theme);
     const requestId=sessionStorage.getItem(key)||crypto.randomUUID();
     sessionStorage.setItem(key,requestId);
     setBusy(true);setError('');
+    let confirmed:BoxOpening|null=null;
     try{
       const result=await call<BoxOpening>(boxOpenCalls[theme],{requestId});
+      confirmed=result;
       sessionStorage.removeItem(key);setPending(false);
       setState(current=>({balance:result.balance,inventory:result.duplicate?current?.inventory??[]:[...(current?.inventory??[]),result]}));
       const candidates=catalog;
@@ -131,7 +137,12 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
       }
       setStrip(reel);setDotCount(1);setOpening(result);setPhase('box');
       onChanged();
-    }catch(cause){setPending(true);setError(errorMessage(cause));}finally{setBusy(false);}
+    }catch(cause){
+      if(confirmed){
+        // A local presentation/refresh failure must never replay a confirmed purchase.
+        setPending(false);setOpening(confirmed);setPhase('result');
+      }else{setPending(true);setError(errorMessage(cause));}
+    }finally{requestInFlight.current=false;setBusy(false);}
   }
 
   async function equip(){
@@ -161,7 +172,8 @@ export default function BoxPanel({profile,onChanged,refreshTick=0,refreshAfterCh
     {error&&!opening&&<ErrorNotice message={error}/>}
     </section>}
     <BoxHelp open={helpOpen} onOpenChange={setHelpOpen} theme={theme} profile={profile}/>
-    <Modal className="box-opening-dialog" open={Boolean(opening)} dismissible={phase==='result'&&!equipBusy} onOpenChange={value=>{if(!value)close();}} title={phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
+    <Modal className={`box-opening-dialog${busy||phase!=='result'?' box-opening-animation':''}`} open={busy||Boolean(opening)} dismissible={!busy&&phase==='result'&&!equipBusy} onOpenChange={value=>{if(!value)close();}} title={busy?'Preparando abertura…':phase!=='result'?`Abrindo caixa${'.'.repeat(dotCount)}`:opening?.duplicate?'Item Repetido':'Novo estilo'}>
+      {busy&&!opening&&<div className="box-opening-stage" role="status"><BoxArt theme={theme}/></div>}
       {opening&&<div className="box-reveal">
         {phase==='box'?<div className="box-opening-stage"><BoxArt opening theme={theme}/></div>:phase==='reel'?<div className="box-reel-window"><div className="box-reel-marker"/><div className="box-reel-track" ref={trackRef}>{strip.map((item,index)=><div className={`box-reel-item box-tier-${item.rarity}${themed?' halloween-item':''}`} key={index}><PrizePreview item={item} profile={profile}/><span>{boxStyleLabel(item.style)}</span>{item.kind!=='name'&&<small>{item.kind==='font'?'Fonte':'Moldura'}</small>}</div>)}</div></div>:
           <><div className={`box-result box-tier-${opening.rarity}${themed?' halloween-item':''}`}><span className="box-result-rarity">{boxRarities.find(tier=>tier.id===opening.rarity)?.label}</span><PrizePreview item={opening} profile={profile}/><strong>{boxStyleLabel(opening.style)}</strong><span>{opening.kind==='name'?'Cor de nome':opening.kind==='font'?'Fonte do nome':'Moldura de perfil'}</span>{opening.duplicate&&<span className="box-xp-reward" role="status"><Zap size={18} aria-hidden="true"/> +{opening.xpAwarded} XP</span>}</div>

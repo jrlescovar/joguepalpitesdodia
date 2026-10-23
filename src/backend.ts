@@ -108,6 +108,7 @@ async function dispatch<T = unknown>(name: string, payload: unknown = {}): Promi
     case 'getGlobalRankTop10': return rpc<T>('get_global_rank_top10');
     case 'getMyGlobalRank': return rpc<T>('get_my_global_rank');
     case 'getGlobalRankingPage': return rpc<T>('get_global_ranking_page');
+    case 'getLigaWeekHistory': return rpc<T>('get_liga_week_history');
     case 'getArena': return rpc<T>('get_arena');
     case 'getArenaHistory': return rpc<T>('get_arena_history', { p_before_day: data.beforeDay ?? null });
     case 'getArenaKing': return rpc<T>('get_arena_king', { p_profile_id: data.uid });
@@ -124,11 +125,15 @@ async function dispatch<T = unknown>(name: string, payload: unknown = {}): Promi
     case 'submitTournamentPick': return rpc<Record<string, unknown>>('submit_finishing_tournament_pick', { p_tournament_id: data.tournamentId, p_slot: data.slot, p_option_id: data.optionId })
       .then(state => ({ ...state, clientReceivedAt: Date.now() }) as T);
     case 'getAdminFinishingTournament': return rpc<T>('get_admin_finishing_tournament', { p_tournament_id: data.tournamentId ?? null });
+    case 'getAdminPlayerTournamentPicks': return rpc<T>('get_admin_player_tournament_picks', { p_profile_id: data.uid, p_tournament_id: data.tournamentId ?? null });
+    case 'adminSaveTournamentPick': return rpc<T>('admin_save_tournament_pick', { p_profile_id: data.uid, p_tournament_id: data.tournamentId, p_slot: data.slot, p_option_id: data.optionId, p_expected_option_id: data.expectedOptionId });
     case 'getAutomaticResultsStatus': return rpc<T>('get_automatic_results_status');
     case 'settleTournamentPrediction': return rpc<T>('settle_finishing_tournament_prediction', { p_tournament_id: data.tournamentId, p_slot: data.slot, p_home_shots: data.homeShots, p_away_shots: data.awayShots });
     case 'settleTournamentWinner': return rpc<T>('settle_finishing_tournament_winner', { p_tournament_id: data.tournamentId, p_slot: data.slot, p_winning_option_id: data.winningOptionId });
     case 'getPublicProfile': return rpc<T>('get_public_profile', { p_profile_id: data.uid });
     case 'getPassStatus': return rpc<T>('get_pass_status');
+    case 'getCoinWallet': return rpc<T>('get_coin_wallet');
+    case 'buyBoxesWithCoins': return rpc<T>('buy_boxes_with_coins', { p_theme: data.theme, p_quantity: data.quantity, p_request_id: data.requestId });
     case 'setUsernameFont': return rpc<T>('set_username_font', { p_font: data.font });
     case 'setPassStyles': return rpc<T>('set_pass_styles', { p_border_style: data.borderStyle, p_name_style: data.nameStyle });
     case 'getFontBoxState': return rpc<T>('get_font_box_state');
@@ -140,6 +145,13 @@ async function dispatch<T = unknown>(name: string, payload: unknown = {}): Promi
     case 'spinDailyWheel': return rpc<T>('spin_daily_wheel', { p_request_id: data.requestId });
     case 'openFontBox': return rpc<T>('open_font_box', { p_request_id: data.requestId });
     case 'getHalloweenBoxState': return rpc<T>('get_halloween_box_state');
+    case 'getMailbox': return rpc<T>('get_mailbox');
+      case 'receiveMail': return rpc<T>('receive_mail',{p_kind:data.kind});
+      case 'receiveAllLevelDrops': return rpc<T>('receive_all_level_drops');
+      case 'receiveLevelDrop': return rpc<T>('receive_level_drop',{p_drop_id:data.dropId});
+      case 'grantLegendaryDrops': return rpc<T>('admin_grant_legendary_drops',{p_profile_id:data.uid,p_quantity:data.quantity});
+      case 'getLevelDrops': return rpc<T>('get_level_drops');
+    case 'interactLevelDrop': return rpc<T>('interact_level_drop',{p_drop_id:data.dropId,p_request_id:data.requestId,p_open:data.open});
     case 'getBoxState': return rpc<T>('get_box_state');
     case 'openBox': return rpc<T>('open_box', { p_request_id: data.requestId });
     case 'openHalloweenBox': return rpc<T>('open_halloween_box', { p_request_id: data.requestId });
@@ -161,6 +173,8 @@ async function dispatch<T = unknown>(name: string, payload: unknown = {}): Promi
     case 'getAdminPlayers': return rpc<T>('get_admin_players', { p_search: data.search, p_page: data.page });
     case 'getAdminDailyBots': return rpc<T>('get_admin_daily_bots');
     case 'setAdminDailyBotsEnabled': return rpc<T>('admin_set_daily_bots_enabled', { p_enabled: data.enabled });
+    case 'runAdminDailyBotsNow': return rpc<T>('admin_run_daily_bots_now', {});
+    case 'runAdminBotPickBatch': return rpc<T>('admin_run_bot_pick_batch', {p_first:Boolean(data.first)});
     case 'addAdminDailyBot': return rpc<T>('admin_add_daily_bot', { p_profile_id: data.uid });
     case 'removeAdminDailyBot': return rpc<T>('admin_remove_daily_bot', { p_profile_id: data.uid });
     case 'getAdminPicksForDay': return rpc<T>('get_admin_picks_for_day', { p_profile_id: data.uid, p_day_id: data.day });
@@ -178,7 +192,7 @@ async function dispatch<T = unknown>(name: string, payload: unknown = {}): Promi
   }
 }
 
-export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' | 'pass-pix' | 'box-checkout' | 'infinitepay-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font'; kind?: 'classic'|'halloween'|'font'|'supporter'|'tournament'; tournamentId?: string }) {
+export async function passRedirect(destination: 'infinitepay-checkout', body?: { quantity: number; requestId: string; theme?: 'classic'|'halloween'|'font'; kind?: 'classic'|'halloween'|'font'|'supporter'|'tournament'|'coins'; tournamentId?: string }) {
   const controller = new AbortController();
   const timer = window.setTimeout(() => controller.abort(), 20000);
   let response;
@@ -201,7 +215,7 @@ export async function passRedirect(destination: 'pass-checkout' | 'pass-portal' 
   }
   if (!data?.url) throw new Error(data?.error || 'Não foi possível abrir o pagamento.');
   const target = new URL(data.url);
-  const hosts = destination === 'infinitepay-checkout' ? ['checkout.infinitepay.io','buy.infinitepay.io'] : ['checkout.stripe.com','billing.stripe.com'];
+  const hosts = ['checkout.infinitepay.io','buy.infinitepay.io'];
   if (target.protocol !== 'https:' || target.username || target.password || target.port || !hosts.includes(target.hostname)) {
     throw new Error('Destino de pagamento inválido.');
   }

@@ -1,0 +1,32 @@
+/* Match the Champions tournament palette while preserving prediction layout and results. */
+.daily-card[data-competition-theme="champions"] {
+  --accent:#b5b8ff;
+  border-color:#656fe1;
+  background:radial-gradient(ellipse at 100% 0,#3536c15c,transparent 65%),linear-gradient(145deg,#070f45,#111a36);
+}
+.daily-card[data-competition-theme="champions"] .daily-header { border-color:#6d78d05c; }
+.daily-card[data-competition-theme="champions"] .champions-ball-icon { flex-shrink:0; }
+.daily-card[data-competition-theme="champions"] .daily-header>span:first-child { color:#e4e5ff; }
+.daily-card[data-competition-theme="champions"] .prediction-content>p { color:#c5c8f6; }
+.daily-card[data-competition-theme="champions"] .deadline { color:#b5b8ff; }
+.daily-card[data-competition-theme="champions"] .deadline.in-play { background:#7777ff14; border-color:#8585f560; }
+.daily-card[data-competition-theme="champions"] .countdown>span { background:#080f2d; border-color:#6d78d05c; }
+.daily-card[data-competition-theme="champions"] .countdown small { color:#c5c8f6; }
+.daily-card[data-competition-theme="champions"] .pick-options label:not(.winner) { background:#0b1430; border-color:#57638a; }
+.daily-card[data-competition-theme="champions"] .pick-options label.selected:not(.winner) { background:#545ce333; border-color:#8887e8; }
+.daily-card[data-competition-theme="champions"] .pick-options label:not(.winner) .option-copy>small { color:#b5b8ff; }
+.daily-card[data-competition-theme="champions"] .pick-options label.selected:not(.winner) .radio-indicator { border-color:#b5b8ff; }
+/* Result colors take precedence over selected, competition and double-point colors. */
+.daily-card.card .pick-options label.winner { border-color:#79e5ad; color:#87e8b3; background:#79e5ad18; box-shadow:inset 0 0 0 1px #79e5ad35; }
+.daily-card.card .pick-options label.winner .option-copy>span,
+.daily-card.card .pick-options label.winner .option-copy>small { color:#87e8b3; }
+.daily-card[data-competition-theme="champions"] .pick-result.pending { background:#080f2d80; }
+.daily-card[data-competition-theme="champions"] .xp-pill:not(.xp-pill-premium) { background:#7777ff14; border-color:#8585f560; }
+.daily-card[data-competition-theme="champions"] .primary-button:not(:disabled) { color:#fff; border-color:#8a87ff; background:linear-gradient(110deg,#203edb,#6759e8); }
+.daily-card[data-competition-theme="champions"] .primary-button:hover:not(:disabled) { background:#484bcb; border-color:#aaa6ff; }
+.daily-card[data-competition-theme="champions"] .primary-button:focus-visible,
+.daily-card[data-competition-theme="champions"] .pick-options label:has(input:focus-visible) { outline-color:#c9c8ff; }
+@media(prefers-contrast:more) {
+  .daily-card[data-competition-theme="champions"],
+  .daily-card[data-competition-theme="champions"] .pick-options label.selected:not(.winner) { border-color:#c9c8ff; }
+}

@@ -27,6 +27,9 @@
 .battle-fighter-opponent .battle-rank { right: -10px; }
 .battle-rank .rank-emblem { width: 32px; height: 36px; }
 .battle-rank.is-concealed { visibility: hidden; }
+@media (max-width: 1023px) {
+  .daily-battle-card:not(.arena-week-duel) .battle-rank { gap: 3px; }
+}
 .battle-center { display: flex; align-items: end; justify-content: center; justify-self: center; white-space: nowrap; transform: translateY(-13px); }
 .battle-center.has-score { position: relative; display: grid; grid-template-columns: 1fr max-content 1fr; width: max-content; align-items: center; gap: 7px; transform: none; }
 .battle-center.has-score > .battle-points:first-of-type { justify-self: end; }
@@ -80,8 +83,9 @@
 }
 
 .battle-pager-window { display: grid; overflow: hidden; }
-.battle-page { grid-area: 1 / 1; min-width: 0; transform: translateX(0); transition: transform 200ms var(--ease-out); }
-.battle-pager-window .daily-battle-card { margin-bottom: 0; }
+.battle-page { grid-area: 1 / 1; display: flex; flex-direction: column; min-width: 0; transform: translateX(0); transition: transform 200ms var(--ease-out); }
+.battle-pager-window .daily-battle-card { display: flex; flex-direction: column; flex: 1; margin-bottom: 0; }
+.battle-pager-window .daily-battle-card > .battle-waiting { display: grid; place-items: center; flex: 1; }
 .daily-battle-view[data-page="today"] .battle-page-previous { transform: translateX(-100%); }
 .daily-battle-view[data-page="previous"] .battle-page-today { transform: translateX(100%); }
 .daily-battle-view[data-motion="off"] .battle-page { transition: none; }

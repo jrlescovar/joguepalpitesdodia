@@ -10,7 +10,7 @@ import './box-offers.css';
 export default function BoxOffers({theme='classic',profile}:{theme?:'classic'|'halloween'|'font';profile?:Profile}) {
   const themed=theme==='halloween';
   const fonts=theme==='font';
-  const packs=fonts?[{quantity:1,price:'3,21'},{quantity:3,price:'5,67'},{quantity:5,price:'9,17'}]:themed?[{quantity:2,price:'3,21'},{quantity:6,price:'5,67'},{quantity:10,price:'9,17'}]:[{quantity:3,price:'3,21'},{quantity:7,price:'5,67'},{quantity:11,price:'9,17'}];
+  const packs=fonts?[{quantity:1,price:'3,21'},{quantity:3,price:'5,67'},{quantity:7,price:'9,17'}]:themed?[{quantity:2,price:'3,21'},{quantity:6,price:'5,67'},{quantity:12,price:'9,17'}]:[{quantity:3,price:'3,21'},{quantity:7,price:'5,67'},{quantity:12,price:'9,17'}];
   const featuredQuantity=packs[packs.length-1].quantity;
   const [busy, setBusy] = useState<number | null>(null);
   const [error, setError] = useState('');

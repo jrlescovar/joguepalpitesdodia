@@ -205,6 +205,29 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .recent-result-row.result-red .recent-result-winner { color: #ff8585; }
 .recent-result-row.result-neutral .recent-result-winner { color: #cbd5e1; }
 .recent-results-empty { display: flex; align-items: center; gap: 10px; padding: 20px 22px; color: var(--muted); font-size: .875rem; }
+.recent-results-day .recent-day-nav { grid-template-columns:44px minmax(0,1fr) 44px; padding:12px 0 18px; }
+.recent-results-day .recent-day-nav button { width:44px; height:44px; }
+.recent-day-heading { min-width:0; display:grid; gap:5px; text-align:center; }
+.recent-day-heading p { margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
+.recent-summary-green { color:#86efac; }
+.recent-summary-red { color:#ff8585; }
+.recent-results-grid .recent-result-row { gap:12px; padding-block:16px; }
+.recent-result-copy > small { font-size:10px; letter-spacing:.06em; color:#aeb7c5; }
+.result-green .recent-result-copy > small { color:#86efac; }
+.result-red .recent-result-copy > small { color:#ff8585; }
+.recent-result-copy > strong { font-weight:650; line-height:1.4; }
+.recent-result-fixture { color:var(--muted); font-size:12px; line-height:1.5; overflow-wrap:anywhere; }
+.recent-result-row .recent-result-winner { display:grid; gap:4px; min-width:64px; flex-shrink:0; padding:8px 10px; border:1px solid #86efac26; border-radius:10px; background:#86efac08; text-align:center; }
+.recent-result-winner > small { font-size:9px; font-weight:500; letter-spacing:.04em; color:var(--muted); }
+.recent-result-winner > b { font-size:13px; line-height:1.4; }
+.recent-result-row.result-red .recent-result-winner { border-color:#ff858526; background:#ff858508; }
+.recent-result-row.result-neutral .recent-result-winner { border-color:var(--line); background:#aeb7c508; }
+@media(max-width:480px){
+ .recent-results-day { padding-inline:14px; }
+ .recent-results-grid .recent-result-row { gap:9px; }
+ .recent-result-check { width:24px; height:24px; }
+ .recent-result-row .recent-result-winner { min-width:58px; max-width:30%; padding:7px; }
+}
 .profile-stats .streak-row { font-size: .8125rem; }
 .profile-stats .streak-row strong { font-size: .9375rem; }
 .profile-score-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -517,8 +540,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 @media (max-width: 640px) {
   .app-shell, .login-page, .auth-loading { padding-left: 18px; padding-right: 18px; }
   .app-main { padding-top: 20px; padding-bottom: calc(108px + env(safe-area-inset-bottom)); }
-  /* Short tournament pages must fill the mobile viewport for the fixed tab bar. */
-  .app-shell-tournament { min-height: 100dvh; }
+  /* Loading pages keep a full viewport while the browser bars change size. */
+  .app-shell { min-height: 100vh; min-height: 100dvh; }
   .page-heading { margin-bottom: 18px; }
   .page-heading h1 { font-size: clamp(1.65rem, 7vw, 2rem); }
   .login-copy h1 { font-size: clamp(2.75rem, 12vw, 3.65rem); }
@@ -643,11 +666,12 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .home-edit-profile { position: absolute; bottom: 3px; left: 24px; right: 24px; border: 0; padding: 0; background: transparent; color: var(--muted); font-size: 9px; line-height: 14px; text-align: center; cursor: pointer; }
 .bottom-nav a[aria-disabled="true"] { cursor: default; }
 .player-summary-identity h2 { margin-bottom: 2px; }
-.player-summary-identity > span { transform: translateY(-3px); }
 .player-summary-rank { display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: auto; }
 .player-summary-rank .rank-emblem { width: 32px; height: 36px; }
 .player-summary .level-badge { margin-left: 0; }
 .profile-identity h2 { margin-top: 4px; margin-bottom: 1px; }
+/* Paint the name effect on the glyphs' own box, including fonts with padding. */
+.profile-identity > h2 > .username-text { display:inline-block; max-width:100%; }
 .profile-level-mark {
   position: absolute;
   top: 24px;
@@ -660,6 +684,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   position: static;
   margin: 0;
 }
+.profile-level-details { position:relative; display:flex; }
+.profile-level-details .profile-player-id { position:absolute; top:calc(100% + 6px); left:50%; transform:translateX(-50%); font-size:.75rem; line-height:1.2; white-space:nowrap; }
 .profile-identity .xp-block { margin-top: 12px; margin-bottom: 0; }
 .profile-logout {
   flex-direction: column;
@@ -761,8 +787,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 @media (max-width: 640px) {
   .mobile-games .prediction-content h2 { display: flex; align-items: center; justify-content: center; line-height: 1.18; }
   .mobile-games .prediction-content h2.game-title-long,
-  .mobile-games .prediction-content h2.game-title-compact { font-size: 1.125rem; }
-  .mobile-games .prediction-content h2.game-title-very-long { font-size: 1rem; }
+  .mobile-games .prediction-content h2.game-title-compact { font-size: 1.1875rem; line-height:21.24px; }
+  .mobile-games .prediction-content h2.game-title-very-long { font-size: 1.0625rem; line-height:18.88px; }
   .mobile-games .pick-options label { min-height: 60px; }
 }
 
@@ -815,6 +841,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .rank-progress-master-content { display: flex; align-items: center; gap: 15px; }
 .rank-progress-master-content > div:not(.rank-progress-position) { display: grid; gap: 3px; }
 .rank-progress-master-content > div > strong { font-size: 1.1rem; }
+.rank-progress-master-content > div:not(.rank-progress-position) > strong { transform: translateY(3px); }
 .rank-progress-master-content > div > span { color: var(--muted); font-size: .86rem; }
 .rank-progress-position { display: grid; gap: 2px; margin-left: auto; text-align: right; }
 .rank-progress-position small { color: var(--muted); font-size: .67rem; letter-spacing: .08em; }
@@ -827,9 +854,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .global-ranking-page { max-width: 920px; }
   .rank-progress-card { max-width: 920px; margin-left: 0; margin-right: 0; }
   .global-ranking-card { max-width: 920px; margin-inline: 0; }
-  .global-ranking-page .battle-versus { max-width: 720px; margin-inline: auto; }
-  .global-ranking-page .battle-fighter-me .battle-rank,
-  .global-ranking-page .battle-fighter-opponent .battle-rank { left: 50%; right: auto; transform: translateX(-50%); }
+  .global-ranking-page .battle-versus { max-width: none; margin-inline: 0; }
 }
 .global-ranking-heading { display: flex; justify-content: space-between; padding: 17px 28px 17px 22px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .72rem; letter-spacing: .09em; }
 .global-ranking-list { list-style: none; padding: 0; margin: 0; }
@@ -859,7 +884,7 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .rank-emblem-platinum { --rank-color: #a2e4d8; --rank-glow: #7ddfc544; }
 .rank-emblem-diamond { --rank-color: #bc83ff; --rank-glow: #a765ff55; }
 .rank-emblem-legendary { --rank-color: #fb5968; --rank-glow: #f3394c66; }
-.rank-emblem-master { --rank-color: #ffd77a; --rank-glow: #f6aa3a88; }
+.rank-emblem-master { --rank-color: #ffd77a; --rank-glow: transparent; filter: none; }
 .rank-emblem-master .rank-master-border { stroke: #f3f5f8; }
 .global-ranking-empty { display: grid; justify-items: center; gap: 10px; padding: 34px 20px; color: var(--muted); text-align: center; }
 .global-ranking-empty p { margin: 0; }
@@ -902,7 +927,8 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .admin-option-row { grid-template-columns: minmax(0,1fr) 92px; gap: 8px; }
   .pick-options.options-2 .option-copy { align-items: center; }
 }
-@media (max-width: 640px) and (display-mode: standalone) {
+/* Keep the fixed menu on its own layer in browser tabs as well as installed mode. */
+@media (max-width: 640px) {
   .bottom-nav {
     transform: translate3d(-50%, 0, 0);
     -webkit-transform: translate3d(-50%, 0, 0);
@@ -918,17 +944,23 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 .rank-elite-shield { fill: #303640; }
 .rank-elite-inner { stroke: #8a929e; }
 .rank-progress-card { position: relative; }
+.rank-progress-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:14px; }
+.rank-progress-heading .rank-progress-caption { margin:0; padding:0; white-space:nowrap; }
+.rank-progress-position-caption { position:relative; padding-left:40px; color:var(--muted); font-size:.67rem; letter-spacing:.08em; white-space:nowrap; }
+.rank-progress-position-caption .rank-guide-button { top:50%; left:-4px; right:auto; transform:translateY(-50%); width:44px; height:44px; }
+.rank-progress-master .rank-progress-position > strong { font-size:2.25rem; line-height:1; letter-spacing:-.04em; }
 .rank-guide-button { position: absolute; top: 9px; right: 10px; width: 40px; height: 40px; display: grid; place-items: center; background: transparent; border: 0; color: var(--muted); border-radius: 50%; cursor: pointer; }
 .rank-guide-button:hover { color: #75b2ff; background: #75b2ff12; }
 .rank-progress-caption { padding-right: 36px; }
-.rank-guide-list { display: grid; margin-top: 18px; }
+.rank-guide-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
 .rank-guide-explanation { color: #bdcbe0; font-size: 13px; line-height: 1.65; padding: 14px; background: #75afff0a; border: 1px solid #75afff30; border-radius: 12px; margin: 16px 0 0; }
 .rank-guide-explanation strong { color: #e5efff; font-weight: 600; }
-.rank-guide-row { display: grid; grid-template-columns: 42px minmax(0,1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
-.rank-guide-row:last-child { border-bottom: 0; }
-.rank-guide-row .rank-emblem { width: 34px; height: 39px; }
-.rank-guide-row strong { font-size: 14px; }
-.rank-guide-row > span:last-child { font-size: 12px; color: var(--muted); }
+.rank-guide-row { display: flex; flex-direction: column; justify-content: center; gap: 6px; align-items: center; min-width: 0; padding: 12px 6px; border: 1px solid var(--line); border-radius: 12px; background: #12192344; text-align: center; }
+/* Keep scrollable guide icons as direct SVG paint: filtered layers can clip in iOS WebKit. */
+.rank-guide-row .rank-emblem { width: 34px; height: 39px; filter: none; }
+.rank-guide-row .rank-emblem svg { display: block; width: 34px; height: 39px; }
+.rank-guide-row strong { max-width: 100%; font-size: 14px; line-height: 1.2; }
+.rank-guide-row > span:last-child { max-width: 100%; font-size: 11.5px; line-height: 1.3; color: var(--muted); }
 
 
 .global-ranking-page .rank-progress-card { margin-bottom: 12px; }
@@ -1042,14 +1074,6 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
 }
 .player-summary-identity h2 { margin-bottom: 2px; }
 
-/* Extend the paint area for script flourishes without moving the name. */
-.global-rank-player strong:has(.username-font-dancingscript),
-.rank-name > strong:has(.username-font-dancingscript),
-.podium-place > strong:has(.username-font-dancingscript) {
-  overflow: visible;
-  clip-path: inset(-8px -4px -8px -8px);
-}
-
 /* Cover the iPhone status-bar safe area while a dialog is open. */
 .dialog-overlay { -webkit-backdrop-filter: blur(5px); }
 @media (max-width: 640px) {
@@ -1059,12 +1083,14 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .dialog-overlay { -webkit-backdrop-filter: none; }
 }
 
-.player-summary { padding: 10px 24px 20px; }
-.player-summary-identity h2 { transform: translateY(2px); }
-.player-summary-identity > span { transform: translateY(-5px); }
-.home-edit-profile { bottom: 6px; }
+.player-summary { padding: 16px 24px; }
+.player-summary-identity { --username-size-increase: 4px; }
+.app-main>.profile-overview .profile-identity>h2 { --username-size-increase:2px; }
+.player-summary-identity h2 { display:flex; align-items:center; margin:0; padding-block:0; transform:none; }
+.home-edit-profile { top:3px; bottom:auto; line-height:12px; }
+.home-edit-profile-bottom { top:auto; bottom:3px; color:transparent; }
 @media (max-width: 640px) {
-  .player-summary { padding: 10px 18px 20px; }
+  .player-summary { padding: 16px 18px; }
   .player-summary-identity { flex: 1; min-width: 0; }
   .player-summary-identity h2 { white-space: nowrap; }
   .player-summary-identity .username-text {
@@ -1076,3 +1102,199 @@ select:focus-visible, textarea:focus-visible, summary:focus-visible {
   .player-summary { padding-inline: 14px; }
   .player-summary > .flex { column-gap: 8px; }
 }
+.desktop-top-nav { display:none; }
+@media(min-width:1280px) {
+ .app-shell { zoom:1.2; }
+}
+@media(min-width:1024px) {
+ .app-shell { width:100%; max-width:1760px; padding-left:40px; padding-right:40px; }
+ .app-header { gap:24px; }
+ .desktop-top-nav { display:flex; align-items:center; justify-content:center; gap:6px; margin-left:auto; margin-right:auto; }
+ .desktop-top-nav a { display:flex; align-items:center; gap:8px; min-height:44px; padding:10px 14px; border-radius:12px; color:#b8c3d5; font-size:14px; white-space:nowrap; }
+ .desktop-top-nav a:hover { background:#ffffff08; color:#fff; }
+ .desktop-top-nav a.active { background:#75b2ff16; color:#80baff; }
+ .app-shell > .bottom-nav { display:none; }
+ .app-main { padding-bottom:40px; }
+ .desktop-header-date { display:none; }
+}
+@media(min-width:1800px) {
+ .app-shell { max-width:1920px; padding-left:64px; padding-right:64px; }
+}
+.recent-results > .section-heading h2 { font-size:1.25rem; }
+@media(min-width:1024px) {
+ .recent-results-grid { display:grid; grid-auto-flow:row; grid-template-columns:repeat(2,minmax(0,1fr)); column-gap:28px; }
+ .recent-results-grid .recent-result-row { min-width:0; padding-block:12px; }
+}
+@media(min-width:1024px) {
+ .profile-overview { width:100%; max-width:1200px; margin-inline:auto; }
+ .profile-overview .profile-battle-stats { width:100%; max-width:720px; justify-self:center; margin-inline:auto; }
+ .profile-battle-stats .daily-battle-card { width:100%; }
+ .profile-battle-stats .battle-versus { padding-inline:22px; }
+ .profile-battle-stats .battle-fighter-me .battle-rank { left:-10px; right:auto; transform:none; }
+ .profile-battle-stats .battle-fighter-opponent .battle-rank { right:-10px; left:auto; transform:none; }
+}
+@media(min-width:1024px) {
+ .global-ranking-dashboard { grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); }
+ .global-ranking-dashboard > .global-ranking-results { grid-column:1; grid-row:1; }
+ .global-ranking-dashboard > .global-ranking-summary { grid-column:2; grid-row:1; }
+ .battle-desktop-history { display:grid; gap:16px; }
+ .battle-desktop-history .daily-battle-card { margin:0; }
+}
+@media(min-width:1024px) {
+ .profile-overview { max-width:1160px; grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr); gap:22px; }
+ .profile-overview .profile-layout > section.profile-picks-stats { grid-column:2; grid-row:1; }
+ .profile-overview .profile-battle-stats { grid-column:2; grid-row:2; max-width:none; margin:0; }
+ .profile-overview .achievements-card { grid-column:1; grid-row:2; padding:20px; }
+ .profile-overview .profile-admin-footer { grid-column:1 / -1; }
+ .profile-overview .profile-identity { padding:24px; background:radial-gradient(ellipse at top,#75b2ff12,transparent 75%),#191d25; }
+ .profile-overview .medals-grid { max-width:none; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+ .profile-overview .medal-tile { height:108px; }
+ .profile-overview .profile-stats { padding:8px 18px; }
+ .profile-overview .streak-row { padding-block:12px; }
+ .profile-overview .profile-score-grid { gap:10px; }
+ .profile-overview .profile-score-grid .stat-card { padding:14px; }
+ .profile-overview .profile-battle-stats .score-grid { margin-bottom:14px; }
+ .profile-battle-stats .daily-battle-card { --battle-fighter-height:148px; border-radius:18px; }
+ .profile-battle-stats .battle-versus { grid-template-columns:minmax(0,1fr) 110px minmax(0,1fr); gap:8px; padding:10px 16px 0; }
+ .profile-battle-stats .battle-heading { padding:13px 16px; }
+ .profile-battle-stats .battle-heading > span { font-size:.74rem; letter-spacing:.04em; }
+ .profile-battle-stats .battle-fighter .avatar { width:70px; height:70px; }
+ .profile-battle-stats .battle-fighter > strong { font-size:1rem; }
+ .profile-battle-stats .battle-rank { font-size:1rem; }
+ .profile-battle-stats .battle-comparison-open { min-height:42px; }
+}
+@media(min-width:1024px) {
+ .dialog-content:has(.profile-form) { width:calc(100vw - 96px); max-width:760px; padding:28px; max-height:calc(100dvh - 64px); }
+ .dialog-content:has(.profile-form) .dialog-title { font-size:1.5rem; margin-bottom:20px; }
+ .dialog-content .profile-form .avatar-choice { padding:16px; border:1px solid #354156; border-radius:16px; background:#75b2ff08; }
+ .dialog-content .profile-form .avatar-choice .avatar { width:76px; height:76px; }
+ .dialog-content .profile-form .profile-style-group { margin-top:20px; }
+ .dialog-content .profile-form .pass-style-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+ .dialog-content .profile-form .pass-style-option { min-height:94px; }
+ .dialog-content .profile-form .profile-style-tabs button { min-height:44px; }
+ .dialog-content .profile-form > .primary-button { margin-top:20px; min-height:48px; }
+}
+@media(min-width:1024px) {
+ .profile-overview { grid-template-columns:repeat(2,minmax(0,1fr)); }
+ .profile-overview .profile-identity { grid-column:1; grid-row:1; }
+ .profile-overview .achievements-card { grid-column:2; grid-row:1; }
+ .profile-overview .profile-layout > section.profile-picks-stats { grid-column:1; grid-row:2; }
+ .profile-overview .profile-battle-stats { grid-column:2; grid-row:2; }
+}
+@media(min-width:1024px) {
+ .profile-overview .profile-identity,.profile-overview .achievements-card { align-self:stretch; }
+ .profile-overview .achievements-card { padding:16px; }
+ .profile-overview .achievements-heading { margin-bottom:10px; }
+ .profile-overview .medals-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+ .profile-overview .medal-tile { height:88px; padding:4px; }
+}
+@media(min-width:1024px) {
+ .profile-battle-stats .daily-battle-view .daily-battle-card { margin-top:0; }
+}
+@media(min-width:1024px) {
+ .app-main .shop-layout { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px; align-items:start; }
+ .app-main .shop-layout > .wheel-panel { grid-column:1; grid-row:1; order:0; margin:0; }
+ .app-main .shop-layout > .pass-panel { grid-column:2; grid-row:1; order:0; margin:0; }
+ .app-main .shop-layout > .wheel-panel .wheel-layout { grid-template-columns:minmax(0,1fr); gap:20px; justify-items:center; }
+ .app-main .shop-layout > .wheel-panel .wheel-art { width:min(100%,300px); }
+ .app-main .shop-layout > .wheel-panel .wheel-controls { width:100%; }
+}
+@media(min-width:1024px) {
+ .profile-overview .profile-layout > section.profile-picks-stats { align-self:stretch; display:flex; flex-direction:column; margin-bottom:74px; }
+ .profile-overview .profile-picks-stats > .profile-stats { flex:1; display:flex; flex-direction:column; }
+ .profile-overview .profile-picks-stats .streak-row { flex:1; display:flex; align-items:center; justify-content:space-between; }
+}
+
+@media(min-width:1024px) {
+ .daily-battle-card .battle-fighter-me .battle-rank { left:2px; }
+ .daily-battle-card .battle-fighter-opponent .battle-rank { right:2px; }
+ .app-main .shop-layout > .wheel-panel .wheel-art { width:min(100%,260px); }
+ .app-main .shop-layout > .wheel-panel .wheel-layout { gap:14px; }
+ .app-main .shop-layout > .wheel-panel .wheel-heading { margin-bottom:16px; }
+}
+
+/* Keep the tournament medal readable within the shared medal grid. */
+.medal-tile.tournament-medal-tile {
+ grid-template-rows: 16px 34px 24px;
+ row-gap: 4px;
+ background: linear-gradient(145deg,#79b5ff12,#e7bd6508);
+ border-color: #6684a24d;
+}
+.tournament-medal-tile > .medal-level { display:flex; align-items:center; gap:5px; font-size:.6rem; font-weight:600; }
+.tournament-win-count { color:#f5d78e; font-size:.6rem; font-weight:750; }
+.medal-tile.tournament-medal-tile > .tournament-medal-emblem { width:32px; height:34px; transform:none; }
+.tournament-medal-tile > .medal-name { display:flex; flex-direction:column; gap:2px; margin-top:0; font-size:.6rem; line-height:1.1; }
+.tournament-medal-tile > .medal-name > span:first-child { color:#aab9cc; font-size:.54rem; font-weight:500; }
+@media(min-width:1024px) {
+ .profile-overview .profile-layout > section.profile-picks-stats { margin-bottom:0; }
+ .profile-overview .profile-picks-stats > .profile-stats { flex:none; margin-top:var(--profile-battle-offset, 0px); height:var(--profile-battle-height, auto); }
+}
+
+.global-ranking-results .global-ranking-own-label { position:relative; top:-5px; }
+
+@media (min-width: 1024px) {
+ .app-main .shop-layout > .wheel-panel { display:flex; flex-direction:column; padding-bottom:33px; }
+ .app-main .shop-layout > .wheel-panel .wheel-layout { flex:1; width:100%; margin:0; grid-template-rows:minmax(0,1fr) auto; }
+ .app-main .shop-layout > .wheel-panel .wheel-art { width:min(100%,340px); align-self:center; }
+ .app-main .shop-layout > .wheel-panel .wheel-controls { position:relative; align-self:end; }
+ .app-main .shop-layout > .wheel-panel .wheel-reset { position:absolute; top:100%; left:0; right:0; }
+}
+
+@media (min-width: 1024px) {
+ .app-main .shop-layout > .wheel-panel .wheel-prize-art { transform:scale(1.3); }
+}
+
+@media (min-width: 1024px) {
+ .arena-week-duel .battle-fighter-me .battle-rank .rank-emblem { position:relative; left:-3px; }
+ .arena-week-duel .battle-fighter-opponent .battle-rank .rank-emblem { position:relative; left:3px; }
+}
+
+@media (min-width: 1024px) {
+ .dialog-content.gameplay-help-dialog { width:calc(100vw - 80px); max-width:1080px; max-height:calc(100dvh - 64px); padding:32px; }
+ .gameplay-help-dialog .dialog-title { padding-right:40px; margin-bottom:12px; font-size:1.75rem; }
+ .gameplay-help-dialog > .help-list { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,1fr); column-gap:32px; row-gap:16px; margin-top:24px; }
+ .gameplay-help-dialog .help-list > p { grid-column:1; margin:0; min-width:0; }
+ .gameplay-help-dialog .help-list p { font-size:.875rem; line-height:1.65; }
+ .gameplay-help-dialog .help-battle { grid-column:2; grid-row:1 / span 7; min-width:0; margin:0; padding:0 0 0 28px; border-top:0; border-left:1px solid var(--line); }
+ .gameplay-help-dialog .help-battle h3 { margin:0 0 18px; }
+ .gameplay-help-dialog .help-battle p { margin:0 0 16px; }
+ .gameplay-help-dialog .help-credit { grid-column:1 / -1; margin:4px 0 0; padding-top:16px; }
+}
+@media (min-width: 1024px) {
+ .profile-overview .profile-identity > .avatar { transform:translateY(22px) scale(1.28); }
+ .profile-overview .profile-identity > h2 { transform:translateY(36px) scale(1.22); transform-origin:center top; }
+ .profile-overview .profile-identity > .xp-block { margin-top:auto; padding-top:12px; transform:translateY(16px); }
+}
+
+
+@media (min-width: 1024px) {
+ .desktop-games .prediction-content h2 { display:block; font-size:clamp(1.75rem,2.2vw,2.125rem); line-height:1.22; }
+ .desktop-games .prediction-content h2.game-title-long { font-size:clamp(1.625rem,1.9vw,1.875rem); }
+ .desktop-games .prediction-content h2.game-title-very-long { font-size:clamp(1.375rem,1.6vw,1.625rem); }
+ .desktop-games .prediction-content > p { font-size:clamp(1.125rem,1.3vw,1.25rem); line-height:1.5; }
+}
+
+@media (min-width: 1024px) {
+ .auth-loading { width:100%; max-width:1680px; padding-inline:clamp(32px,5vw,96px); }
+ .auth-loading-header { height:88px; flex:none; }
+ .auth-loading-header .brand { font-size:32px; }
+ .auth-loading-main { padding:40px 0 128px; }
+ .auth-loading-main > strong { font-size:clamp(24px,2vw,32px); line-height:1.3; }
+ .auth-loading-main > span { font-size:17px; line-height:1.5; margin-top:10px; }
+ .auth-loading-track { width:clamp(240px,22vw,320px); height:6px; margin-top:28px; }
+}
+
+
+/* Keep the desktop Ranking refresh above the right-hand global position. */
+@media(min-width:1200px){
+ .global-ranking-dashboard{position:relative}
+ .global-ranking-dashboard .global-ranking-results>.page-heading{position:static}
+ .global-ranking-dashboard .global-ranking-results>.page-heading>.icon-button{position:absolute;top:0;right:0}
+}
+
+
+/* Match the desktop Ranking spacing below the app header. */
+@media(min-width:1200px){
+ .app-main-tournament,.app-main-league,.app-main-profile{padding-top:20px}
+}
+

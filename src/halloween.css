@@ -1,9 +1,11 @@
 .avatar.pass-border-halloween-pumpkin { --supporter-ring: linear-gradient(120deg,#ff6500,#ffbe73,#ff9500,#ff6500); --frame-wave:#ffcf9a; }
-.avatar.pass-border-halloween-bloodmoon { --supporter-ring: linear-gradient(120deg,#a83258,#ff959d,#ff333d,#a83258); --frame-wave:#ffd0d4; }
+.avatar.pass-border-halloween-bloodmoon { --supporter-ring: linear-gradient(100deg,#d5001f,#ff727a,#ff333d,#6d000c,#d5001f); --frame-wave:#ff727a; }
+/* Purple frame model recolored to the exported Lua Sangrenta palette. */
+.avatar.avatar.pass-border-halloween-bloodmoon::after { background:conic-gradient(#d5001f,#ff727a,#ff333d,#6d000c,#d5001f) border-box; }
 .avatar.pass-border-halloween-mist { --supporter-ring: linear-gradient(120deg,#a86bff,#ffffff,#a86bff,#b8bdc9,#a86bff); --frame-wave:#ffffff; }
 .pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist { background-size:200% 100%;background-clip:text;-webkit-background-clip:text;color:transparent;animation:supporter-wave 3s linear infinite; }
 .pass-name-halloween-pumpkin { background-image:linear-gradient(100deg,#ff6500,#ffbe73,#ff9500,#ff6500); }
-.pass-name-halloween-bloodmoon { background-image:linear-gradient(100deg,#a83258,#ff959d,#ff333d,#a83258); }
+.pass-name-halloween-bloodmoon { background-image:linear-gradient(100deg,#d5001f,#ff727a,#ff333d,#6d000c,#d5001f); }
 .pass-name-halloween-mist { background-image:linear-gradient(100deg,#a86bff,#ffffff,#a86bff,#b8bdc9,#a86bff); }
 .card.box-panel-halloween { border-color:#ad682f;background:radial-gradient(circle at 50% 15%,#51302c 0,#28202c 45%,#171c25 100%); }
 .box-panel-halloween .box-art-glow { background:#f8863f38; }
@@ -13,7 +15,7 @@
 .box-halloween-description { margin:8px 0 0;color:#f1c9ad;font-size:13px; }
 .halloween-catalog { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px;margin-top:18px;font-size:12px;color:#e4c6ad; }
 .halloween-catalog h3 { grid-column:1/-1;margin:0 0 4px;color:#ffd09a; }
-@media(prefers-reduced-motion:reduce){.pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist{animation:none}}
+@media(prefers-reduced-motion:reduce){.pass-name-halloween-pumpkin,.pass-name-halloween-bloodmoon,.pass-name-halloween-mist{animation:none}.avatar.avatar.pass-border-halloween-bloodmoon::after{animation:none!important}}
 
 .box-offers-halloween { border-color:#be752e; }
 .box-offers-halloween .box-offer-art { background:linear-gradient(145deg,#804317,#352019); }

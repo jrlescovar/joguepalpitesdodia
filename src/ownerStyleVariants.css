@@ -7,7 +7,7 @@
 [class*="pass-name-lab-blue-7-"] { --lab-angle:203deg; animation:lab-palette-scan 4.45s ease-in-out infinite; }
 [class*="pass-name-lab-blue-9-"] { --lab-angle:261deg; animation:lab-palette-orbit 5.15s ease-in-out infinite; }
 [class*="pass-name-lab-blue-10-"] { --lab-angle:290deg; animation:lab-palette-aurora 5.5s ease-in-out infinite; }
-@keyframes lab-palette-mist {0%,100%{filter:drop-shadow(0 0 1px var(--lab-mid))}50%{filter:drop-shadow(0 0 5px var(--lab-mid))}}
+@keyframes lab-palette-mist {0%,100%{filter:drop-shadow(0 0 .25px color-mix(in srgb,var(--lab-mid) 30%,transparent))}50%{filter:drop-shadow(0 0 2px color-mix(in srgb,var(--lab-mid) 50%,transparent))}}
 @keyframes lab-palette-ice {50%{background-position:100% 100%}}
 @keyframes lab-palette-scan {25%{background-position:0% 100%}50%{background-position:100% 100%}75%{background-position:100% 0%}}
 @keyframes lab-palette-orbit {50%{background-position:100% 100%;filter:drop-shadow(0 0 2px var(--lab-accent))}}
@@ -15,35 +15,10 @@
 
 /* Named palettes for both the username and matching frame. */
 .pass-name-lab-blue-4-rose-quartz, .pass-border-lab-blue-4-rose-quartz { --lab-dark:#f26eb0; --lab-mid:#ff72b8; --lab-light:#fff1f8; --lab-accent:#ffbd47; }
-.pass-name-lab-blue-4-tourmaline, .pass-border-lab-blue-4-tourmaline { --lab-dark:#35d096; --lab-mid:#39e8a3; --lab-light:#ecfff5; --lab-accent:#b8f542; }
-.pass-name-lab-blue-4-glacial-opal, .pass-border-lab-blue-4-glacial-opal { --lab-dark:#77aaef; --lab-mid:#80b7ff; --lab-light:#f7f5ff; --lab-accent:#d58bff; }
-.pass-name-lab-blue-4-garnet, .pass-border-lab-blue-4-garnet { --lab-dark:#fb6c8a; --lab-mid:#ff6887; --lab-light:#fff1f2; --lab-accent:#ffc15c; }
-.pass-name-lab-blue-4-obsidian, .pass-border-lab-blue-4-obsidian { --lab-dark:#9babcc; --lab-mid:#a9bbdf; --lab-light:#ffffff; --lab-accent:#8be0ff; }
-.pass-name-lab-blue-6-violet-haze, .pass-border-lab-blue-6-violet-haze { --lab-dark:#b777fc; --lab-mid:#bd82fe; --lab-light:#faf5ff; --lab-accent:#d1a9fd; }
-.pass-name-lab-blue-6-coral-cloud, .pass-border-lab-blue-6-coral-cloud { --lab-dark:#fa6732; --lab-mid:#fd7443; --lab-light:#fff4ee; --lab-accent:#fca586; }
-.pass-name-lab-blue-6-emerald-veil, .pass-border-lab-blue-6-emerald-veil { --lab-dark:#06e177; --lab-mid:#02e477; --lab-light:#f0fff5; --lab-accent:#06e177; }
-.pass-name-lab-blue-6-daybreak, .pass-border-lab-blue-6-daybreak { --lab-dark:#fb5b95; --lab-mid:#fd6aa0; --lab-light:#fff7de; --lab-accent:#fd9fc1; }
 .pass-name-lab-blue-6-crimson-silk, .pass-border-lab-blue-6-crimson-silk { --lab-dark:#fb5b94; --lab-mid:#fd6a9f; --lab-light:#fff1f6; --lab-accent:#fd9fc0; }
-.pass-name-lab-blue-6-moonlight, .pass-border-lab-blue-6-moonlight { --lab-dark:#069ee1; --lab-mid:#02a7ee; --lab-light:#ffffff; --lab-accent:#4ec6fa; }
 .pass-name-lab-blue-7-acid-pulse, .pass-border-lab-blue-7-acid-pulse { --lab-dark:#a9de2c; --lab-mid:#b8f52e; --lab-light:#f7ffe1; --lab-accent:#4ee5a4; }
-.pass-name-lab-blue-7-ruby-laser, .pass-border-lab-blue-7-ruby-laser { --lab-dark:#fd6a90; --lab-mid:#ff688e; --lab-light:#fff1f5; --lab-accent:#ffb35f; }
-.pass-name-lab-blue-7-lilac-code, .pass-border-lab-blue-7-lilac-code { --lab-dark:#b284ff; --lab-mid:#b084ff; --lab-light:#faf5ff; --lab-accent:#ee8fff; }
-.pass-name-lab-blue-7-solar-pixel, .pass-border-lab-blue-7-solar-pixel { --lab-dark:#edcb2c; --lab-mid:#ffe236; --lab-light:#ffffed; --lab-accent:#ffab46; }
-.pass-name-lab-blue-7-turquoise-beat, .pass-border-lab-blue-7-turquoise-beat { --lab-dark:#26d1c5; --lab-mid:#2ae4d4; --lab-light:#efffff; --lab-accent:#c0ed45; }
-.pass-name-lab-blue-7-pink-tuning, .pass-border-lab-blue-7-pink-tuning { --lab-dark:#ed66e2; --lab-mid:#f66aea; --lab-light:#fff1ff; --lab-accent:#ffaa58; }
-.pass-name-lab-blue-7-white-signal, .pass-border-lab-blue-7-white-signal { --lab-dark:#b7c7de; --lab-mid:#cadcf5; --lab-light:#ffffff; --lab-accent:#89b4ff; }
-.pass-name-lab-blue-9-copper-orbit, .pass-border-lab-blue-9-copper-orbit { --lab-dark:#eb9e60; --lab-mid:#ffb16b; --lab-light:#fff7ee; --lab-accent:#ffe147; }
-.pass-name-lab-blue-9-green-comet, .pass-border-lab-blue-9-green-comet { --lab-dark:#45ce8e; --lab-mid:#4ae39c; --lab-light:#f0fff6; --lab-accent:#c8ef43; }
-.pass-name-lab-blue-9-magenta-satellite, .pass-border-lab-blue-9-magenta-satellite { --lab-dark:#de6ef3; --lab-mid:#e975ff; --lab-light:#fdf4ff; --lab-accent:#91b9ff; }
-.pass-name-lab-blue-9-gravity, .pass-border-lab-blue-9-gravity { --lab-dark:#9c8ff0; --lab-mid:#a799ff; --lab-light:#f5f3ff; --lab-accent:#80e4f2; }
 .pass-name-lab-blue-9-meteorite, .pass-border-lab-blue-9-meteorite { --lab-dark:#ea8958; --lab-mid:#ff9961; --lab-light:#fff7ed; --lab-accent:#ffdb49; }
-.pass-name-lab-blue-9-crimson-star, .pass-border-lab-blue-9-crimson-star { --lab-dark:#f56f9c; --lab-mid:#ff709f; --lab-light:#fff1f8; --lab-accent:#ffa75e; }
-.pass-name-lab-blue-10-red-aurora, .pass-border-lab-blue-10-red-aurora { --lab-dark:#f96b9d; --lab-mid:#ff659a; --lab-light:#fff1f7; --lab-accent:#ffba48; }
 .pass-name-lab-blue-10-jade-sky, .pass-border-lab-blue-10-jade-sky { --lab-dark:#42d0a0; --lab-mid:#48e6b0; --lab-light:#f0fff9; --lab-accent:#46ddeb; }
-.pass-name-lab-blue-10-borealis, .pass-border-lab-blue-10-borealis { --lab-dark:#a18ef2; --lab-mid:#b099ff; --lab-light:#faf5ff; --lab-accent:#58e4b6; }
-.pass-name-lab-blue-10-pink-horizon, .pass-border-lab-blue-10-pink-horizon { --lab-dark:#e578af; --lab-mid:#f583be; --lab-light:#fff1f8; --lab-accent:#b395ff; }
-.pass-name-lab-blue-10-indigo-vortex, .pass-border-lab-blue-10-indigo-vortex { --lab-dark:#8b94f2; --lab-mid:#939eff; --lab-light:#f1f5ff; --lab-accent:#e28cff; }
-.pass-name-lab-blue-10-golden-galaxy, .pass-border-lab-blue-10-golden-galaxy { --lab-dark:#ebc159; --lab-mid:#ffd564; --lab-light:#fffbea; --lab-accent:#f08cde; }
 /* Frame glints stay colored, except the requested Halo (6) and Orbit (9). */
 .avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::before { background:repeating-conic-gradient(var(--lab-mid) 0deg 12deg,var(--lab-dark) 12deg 30deg,var(--lab-accent) 30deg 45deg) border-box; animation:frame-blue-facets 4.8s ease-in-out infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-4-"]::after { background:var(--lab-accent) border-box; animation:frame-blue-frost 3.4s ease-in-out infinite; }
@@ -56,3 +31,178 @@
 .avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::before { background:conic-gradient(var(--lab-dark),var(--lab-mid),var(--lab-mid),var(--lab-accent),var(--lab-dark)) border-box; animation:frame-blue-aurora 7s linear infinite; }
 .avatar.avatar.avatar[class*="pass-border-lab-blue-10-"]::after { background:conic-gradient(transparent,var(--lab-mid),transparent,var(--lab-accent),transparent) border-box; opacity:.55; animation:frame-blue-aurora 5.5s linear infinite reverse; }
 @media(prefers-reduced-motion:reduce){[class*="pass-name-lab-blue-"],.avatar.avatar.avatar[class*="pass-border-lab-blue-"]::before,.avatar.avatar.avatar[class*="pass-border-lab-blue-"]::after{animation:none!important;}}
+
+.pass-name-lab-blue-9-red-orbit {color:#ef4444;background:linear-gradient(261deg,#7f1d1d,#ef4444,#fff1f2,#ef4444,#b91c1c);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-deep 5.15s ease-in-out infinite;}
+.avatar.avatar.avatar.pass-border-lab-blue-9-red-orbit::before {background:conic-gradient(#450a0a,#b91c1c,#450a0a,#b91c1c,#450a0a) border-box;animation:frame-blue-current 9s linear infinite reverse;}
+.avatar.avatar.avatar.pass-border-lab-blue-9-red-orbit::after {background:repeating-conic-gradient(transparent 0deg 100deg,#ef4444 103deg,#fff1f2 110deg,#ef4444 117deg,transparent 120deg) border-box;animation:frame-blue-satellites 3s linear infinite;}
+
+.pass-name-lab-blue-9-green-orbit {color:#22c55e;background:linear-gradient(261deg,#14532d,#22c55e,#ecfdf5,#22c55e,#15803d);background-size:250% 250%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:lab-deep 5.15s ease-in-out infinite;}
+.avatar.avatar.avatar.pass-border-lab-blue-9-green-orbit::before {background:conic-gradient(#052e16,#15803d,#052e16,#15803d,#052e16) border-box;animation:frame-blue-current 9s linear infinite reverse;}
+.avatar.avatar.avatar.pass-border-lab-blue-9-green-orbit::after {background:repeating-conic-gradient(transparent 0deg 100deg,#22c55e 103deg,#ecfdf5 110deg,#22c55e 117deg,transparent 120deg) border-box;animation:frame-blue-satellites 3s linear infinite;}
+
+/* Clown: Quartzo Rosa name and Gold frame, captured creator palette. */
+.pass-name-halloween-clown{color:rgba(212,0,90,1) !important;background-image:linear-gradient(116deg, rgba(59,130,246,1) 0%, rgba(212,0,90,1) 30%, rgba(204,255,122,1) 43%, rgba(204,255,122,1) 52%, rgba(212,0,90,1) 65%, rgba(59,130,246,1) 100%) !important;text-shadow:none;filter:none;animation-name:clown-name-base-0 !important;}
+@keyframes clown-name-base-0 { 
+  50% { background-position: 100% 100%; }
+}
+.avatar.avatar.avatar.pass-border-halloween-clown{border-color:rgba(212,0,90,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-halloween-clown::before{background-image:linear-gradient(100deg, rgba(212,0,90,1) 0%, rgba(59,130,246,1) 20%, rgba(204,255,122,1) 34%, rgba(212,0,90,1) 42%, rgba(59,130,246,1) 57%, rgba(204,255,122,1) 74%, rgba(212,0,90,1) 88%, rgba(212,0,90,1) 100%) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:clown-frame-layerbefore-0 !important;}
+@keyframes clown-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-halloween-clown::after{background-image:linear-gradient(100deg, rgba(212,0,90,1) 0%, rgba(59,130,246,1) 20%, rgba(204,255,122,1) 34%, rgba(212,0,90,1) 42%, rgba(59,130,246,1) 57%, rgba(204,255,122,1) 74%, rgba(212,0,90,1) 88%, rgba(212,0,90,1) 100%) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:clown-frame-layerafter-0 !important;}
+@keyframes clown-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+
+.pass-name-halloween-clown{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:clown-name-base-0 3.4s ease-in-out infinite}
+.avatar.avatar.avatar.pass-border-halloween-clown::before{animation:clown-frame-layerbefore-0 7s linear infinite}
+.avatar.avatar.avatar.pass-border-halloween-clown::after{animation:clown-frame-layerafter-0 5.5s linear infinite reverse}
+.avatar.avatar.avatar.pass-border-halloween-clown::before,.avatar.avatar.avatar.pass-border-halloween-clown::after{background-origin:border-box}.avatar.avatar.avatar.pass-border-halloween-clown::after{opacity:.65}@media(prefers-reduced-motion:reduce){.pass-name-halloween-clown,.avatar.avatar.avatar.pass-border-halloween-clown::before,.avatar.avatar.avatar.pass-border-halloween-clown::after{animation:none!important}}
+
+/* Cleópatra: updated creator palette and Pulso Ácido name effect. */
+.pass-name-halloween-cleopatra{color:rgba(92,92,92,1) !important;background-image:linear-gradient(203deg, rgba(254,228,168,1) 0%, rgba(92,92,92,1) 30%, rgba(82,214,252,1) 43%, rgba(82,214,252,1) 52%, rgba(92,92,92,1) 65%, rgba(254,228,168,1) 100%) !important;text-shadow:none;filter:none;animation-name:cleopatra-name-base-0 !important;}
+@keyframes cleopatra-name-base-0 { 
+  25% { background-position: 0% 100%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 100% 0%; }
+}
+.avatar.avatar.avatar.pass-border-halloween-cleopatra{border-color:rgba(92,92,92,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-halloween-cleopatra::before{background-image:repeating-conic-gradient(rgba(92,92,92,1) 0deg, rgba(92,92,92,1) 12deg, rgba(254,228,168,1) 12deg, rgba(254,228,168,1) 30deg, rgba(82,214,252,1) 30deg, rgba(82,214,252,1) 45deg) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:cleopatra-frame-layerbefore-0 !important;}
+@keyframes cleopatra-frame-layerbefore-0 { 
+  0%, 100% { transform: rotate(-12deg); }
+  50% { transform: rotate(12deg); }
+}
+.avatar.avatar.avatar.pass-border-halloween-cleopatra::after{background-image:none !important;background-color:rgba(92,92,92,1) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:cleopatra-frame-layerafter-0 !important;}
+@keyframes cleopatra-frame-layerafter-0 { 
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.85; }
+}
+
+.pass-name-halloween-cleopatra{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:cleopatra-name-base-0 4.45s ease-in-out infinite}
+.avatar.avatar.avatar.pass-border-halloween-cleopatra::before{background-origin:border-box;animation:cleopatra-frame-layerbefore-0 4.8s ease-in-out infinite}
+.avatar.avatar.avatar.pass-border-halloween-cleopatra::after{background-origin:border-box;animation:cleopatra-frame-layerafter-0 3.4s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.pass-name-halloween-cleopatra,.avatar.avatar.avatar.pass-border-halloween-cleopatra::before,.avatar.avatar.avatar.pass-border-halloween-cleopatra::after{animation:none!important}}
+
+/* Softer highlights in the creator name models, keeping their motion. */
+.pass-name-lab-blue-6-crimson-silk{animation-name:creator-silk-soft}
+@keyframes creator-silk-soft{0%,100%{filter:drop-shadow(0 0 .25px color-mix(in srgb,var(--lab-mid) 25%,transparent))}50%{filter:drop-shadow(0 0 .8px color-mix(in srgb,var(--lab-mid) 35%,transparent))}}
+.pass-name-lab-blue-9-meteorite{animation-name:creator-meteorite-soft}
+@keyframes creator-meteorite-soft{50%{background-position:100% 100%;filter:drop-shadow(0 0 .5px color-mix(in srgb,var(--lab-accent) 30%,transparent))}}
+
+/* Semáforo: exported Clown name and Nebulosa frame, six-color palette. */
+.pass-name-halloween-semaforo{color:rgba(181,26,0,1) !important;background-image:linear-gradient(116deg,#b51a00,#f5ec00,#14c000,#14c000,#f5ec00,#b51a00,#b51a00) !important;text-shadow:none;filter:none;animation-name:semaforo-name-base-0 !important;}
+@keyframes semaforo-name-base-0 { 
+  50% { background-position: 100% 100%; }
+}
+.avatar.avatar.avatar.pass-border-halloween-semaforo{border-color:rgba(181,26,0,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-halloween-semaforo::before{background-image:linear-gradient(100deg,#b51a00,#f5ec00,#14c000,#14c000,#f5ec00,#b51a00,#b51a00) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:semaforo-frame-layerbefore-0 !important;}
+@keyframes semaforo-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-halloween-semaforo::after{background-image:linear-gradient(100deg,#b51a00,#f5ec00,#14c000,#14c000,#f5ec00,#b51a00,#b51a00) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:semaforo-frame-layerafter-0 !important;}
+@keyframes semaforo-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+.pass-name-halloween-semaforo{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:3.4s ease-in-out infinite semaforo-name-base-0}
+.avatar.avatar.avatar.pass-border-halloween-semaforo::before{background-origin:border-box;animation:7s linear infinite semaforo-frame-layerbefore-0}
+.avatar.avatar.avatar.pass-border-halloween-semaforo::after{background-origin:border-box;opacity:0.65;animation:5.5s linear infinite reverse semaforo-frame-layerafter-0}
+@media(prefers-reduced-motion:reduce){.pass-name-halloween-semaforo,.avatar.avatar.avatar.pass-border-halloween-semaforo::before,.avatar.avatar.avatar.pass-border-halloween-semaforo::after{animation:none!important}}
+
+/* Criptônita: exported Luz de Alma name and Arco-íris frame. */
+.pass-name-legend-kryptonite{color:rgba(15,58,0,1) !important;background-image:linear-gradient(174deg,#0f3a00,#057700,#07c000,#10ff10,#37ffaf,#38feff,#0f3a00) !important;text-shadow:none;filter:drop-shadow(rgba(0, 0, 0, 0) 0px 0px 0px);animation-name:kryptonite-name-base-0 !important;}
+@keyframes kryptonite-name-base-0 { 
+  50% { filter: drop-shadow(rgba(55,255,175,.5) 0px 0px 2px); background-position: 50% 100%; }
+}
+.avatar.avatar.avatar.pass-border-legend-kryptonite{border-color:rgba(15,58,0,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-legend-kryptonite::before{background-image:linear-gradient(100deg,#0f3a00,#057700,#263e0f,#0f3a00) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:kryptonite-frame-layerbefore-0 !important;}
+@keyframes kryptonite-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-legend-kryptonite::after{background-image:linear-gradient(100deg,#0f3a00,#057700,#263e0f,#0f3a00) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:kryptonite-frame-layerafter-0 !important;}
+@keyframes kryptonite-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+.pass-name-legend-kryptonite{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:4.1s ease-in-out infinite kryptonite-name-base-0}
+.avatar.avatar.avatar.pass-border-legend-kryptonite::before{background-origin:border-box;animation:7s linear infinite kryptonite-frame-layerbefore-0}
+.avatar.avatar.avatar.pass-border-legend-kryptonite::after{background-origin:border-box;opacity:0.65;animation:5.5s linear infinite reverse kryptonite-frame-layerafter-0}
+@media(prefers-reduced-motion:reduce){.pass-name-legend-kryptonite,.avatar.avatar.avatar.pass-border-legend-kryptonite::before,.avatar.avatar.avatar.pass-border-legend-kryptonite::after{animation:none!important}}
+
+/* Sky Blue: exported Luz de Alma name and Arco-íris frame. */
+.pass-name-legend-sky-blue{color:rgba(130,152,255,1) !important;background-image:linear-gradient(174deg,#8298ff,#8298ff,#8298ff,#8298ff,#d9deff,#f8fffe,#8298ff) !important;text-shadow:none;filter:drop-shadow(rgba(0, 0, 0, 0) 0px 0px 0px);animation-name:sky-blue-name-base-0 !important;}
+@keyframes sky-blue-name-base-0 { 
+  50% { filter: drop-shadow(rgba(217,222,255,.5) 0px 0px 2px); background-position: 50% 100%; }
+}
+.avatar.avatar.avatar.pass-border-legend-sky-blue{border-color:rgba(0,16,148,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-legend-sky-blue::before{background-image:linear-gradient(100deg,#001094,#0000f3,#1a0a52,#001094) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:sky-blue-frame-layerbefore-0 !important;}
+@keyframes sky-blue-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-legend-sky-blue::after{background-image:linear-gradient(100deg,#001094,#0000f3,#1a0a52,#001094) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:sky-blue-frame-layerafter-0 !important;}
+@keyframes sky-blue-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+.pass-name-legend-sky-blue{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:4.1s ease-in-out infinite sky-blue-name-base-0}
+.avatar.avatar.avatar.pass-border-legend-sky-blue::before{background-origin:border-box;animation:7s linear infinite sky-blue-frame-layerbefore-0}
+.avatar.avatar.avatar.pass-border-legend-sky-blue::after{background-origin:border-box;opacity:0.65;animation:5.5s linear infinite reverse sky-blue-frame-layerafter-0}
+@media(prefers-reduced-motion:reduce){.pass-name-legend-sky-blue,.avatar.avatar.avatar.pass-border-legend-sky-blue::before,.avatar.avatar.avatar.pass-border-legend-sky-blue::after{animation:none!important}}
+
+/* Onda de Sangue: exported Luz de Alma name and Arco-íris frame. */
+.pass-name-legend-blood-wave{color:rgba(255,131,148,1) !important;background-image:linear-gradient(174deg,#ff8394,#ff8394,#ff737e,#ff737e,#ffc2c2,#f8fffe,#ff8394) !important;text-shadow:none;filter:drop-shadow(rgba(0, 0, 0, 0) 0px 0px 0px);animation-name:blood-wave-name-base-0 !important;}
+@keyframes blood-wave-name-base-0 { 
+  50% { filter: drop-shadow(rgba(255,194,194,.5) 0px 0px 2px); background-position: 50% 100%; }
+}
+.avatar.avatar.avatar.pass-border-legend-blood-wave{border-color:rgba(81,0,17,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-legend-blood-wave::before{background-image:linear-gradient(100deg,#510011,#b51a00,#831100,#510011) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:blood-wave-frame-layerbefore-0 !important;}
+@keyframes blood-wave-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-legend-blood-wave::after{background-image:linear-gradient(100deg,#510011,#b51a00,#831100,#510011) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:blood-wave-frame-layerafter-0 !important;}
+@keyframes blood-wave-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+.pass-name-legend-blood-wave{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:4.1s ease-in-out infinite blood-wave-name-base-0}
+.avatar.avatar.avatar.pass-border-legend-blood-wave::before{background-origin:border-box;animation:7s linear infinite blood-wave-frame-layerbefore-0}
+.avatar.avatar.avatar.pass-border-legend-blood-wave::after{background-origin:border-box;opacity:0.65;animation:5.5s linear infinite reverse blood-wave-frame-layerafter-0}
+@media(prefers-reduced-motion:reduce){.pass-name-legend-blood-wave,.avatar.avatar.avatar.pass-border-legend-blood-wave::before,.avatar.avatar.avatar.pass-border-legend-blood-wave::after{animation:none!important}}
+
+/* Orizonte: exported Luz de Alma name and Arco-íris frame. */
+.pass-name-myth-orizonte{color:rgba(86,61,0,1) !important;background-image:linear-gradient(203deg,#563d00,#707070,#474747,#ffdbd8,#ff6250,#785800,#563d00) !important;text-shadow:none;filter:none;animation-name:orizonte-name-base-0 !important;}
+@keyframes orizonte-name-base-0 { 
+  25% { background-position: 0% 100%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 100% 0%; }
+}
+.avatar.avatar.avatar.pass-border-myth-orizonte{border-color:rgba(86,61,0,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-myth-orizonte::before{background-image:linear-gradient(100deg,#563d00,#707070,#474747,#ffdbd8,#ff6250,#785800,#563d00) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:orizonte-frame-layerbefore-0 !important;}
+@keyframes orizonte-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-myth-orizonte::after{background-image:linear-gradient(100deg,#563d00,#707070,#474747,#ffdbd8,#ff6250,#785800,#563d00) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:orizonte-frame-layerafter-0 !important;}
+@keyframes orizonte-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+.pass-name-myth-orizonte{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:4.45s ease-in-out infinite orizonte-name-base-0}
+.avatar.avatar.avatar.pass-border-myth-orizonte::before{background-origin:border-box;animation:7s linear infinite orizonte-frame-layerbefore-0}
+.avatar.avatar.avatar.pass-border-myth-orizonte::after{background-origin:border-box;opacity:0.65;animation:5.5s linear infinite reverse orizonte-frame-layerafter-0}
+@media(prefers-reduced-motion:reduce){.pass-name-myth-orizonte,.avatar.avatar.avatar.pass-border-myth-orizonte::before,.avatar.avatar.avatar.pass-border-myth-orizonte::after{animation:none!important}}
+
+/* Barbie: Luz de Alma name, Nebulosa frame. */
+.pass-name-myth-barbie.pass-name-myth-barbie{color:rgba(251,74,180,1) !important;background-image:linear-gradient(174deg,#fb4ab4,#ff56fb,#fc69ff,#ff83ff,#feb7ff,#fb4ab4) !important;text-shadow:none;filter:drop-shadow(rgba(0, 0, 0, 0) 0px 0px 0px);animation-name:barbie-name-base-0 !important;}
+@keyframes barbie-name-base-0 { 
+  50% { filter: drop-shadow(rgba(254,183,255,.5) 0px 0px 2px); background-position: 50% 100%; }
+}
+.avatar.avatar.avatar.pass-border-myth-barbie{border-color:rgba(251,74,180,1) !important;box-shadow:none !important;background-image:none !important;animation-name:none !important;}
+.avatar.avatar.avatar.pass-border-myth-barbie::before{background-image:linear-gradient(100deg,#fb4ab4,#ff56fb,#fc69ff,#ff83ff,#feb7ff,#fb4ab4) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:barbie-frame-layerbefore-0 !important;}
+@keyframes barbie-frame-layerbefore-0 { 
+  100% { transform: rotate(360deg); }
+}
+.avatar.avatar.avatar.pass-border-myth-barbie::after{background-image:linear-gradient(100deg,#fb4ab4,#ff56fb,#fc69ff,#ff83ff,#feb7ff,#fb4ab4) !important;background-color:rgba(0, 0, 0, 0) !important;border-color:rgba(0, 0, 0, 0) !important;box-shadow:none !important;filter:none;animation-name:barbie-frame-layerafter-0 !important;}
+@keyframes barbie-frame-layerafter-0 { 
+  100% { transform: rotate(360deg); }
+}
+.pass-name-myth-barbie.pass-name-myth-barbie{background-size:250% 250%;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:4.1s ease-in-out infinite barbie-name-base-0}
+.avatar.avatar.avatar.pass-border-myth-barbie::before{background-origin:border-box;animation:7s linear infinite barbie-frame-layerbefore-0}
+.avatar.avatar.avatar.pass-border-myth-barbie::after{background-origin:border-box;opacity:0.65;animation:5.5s linear infinite reverse barbie-frame-layerafter-0}
+@media(prefers-reduced-motion:reduce){.pass-name-myth-barbie.pass-name-myth-barbie,.avatar.avatar.avatar.pass-border-myth-barbie::before,.avatar.avatar.avatar.pass-border-myth-barbie::after{animation:none!important}}
+

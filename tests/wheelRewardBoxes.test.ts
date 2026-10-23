@@ -18,6 +18,11 @@ describe('wheel reward destination',()=>{
     expect(wheelRewardDestination(replacement,'frame')).toBe('frame');
     expect(wheelRewardDestination(replacement,'halloween')).toBe('classic');
   });
+  it('routes a legendary prize to the legendary box inventory',()=>{
+    const won=reward('legendary',{legendary:1});
+    expect(wheelRewardBoxes(won)).toEqual([{theme:'legendary',quantity:1,label:'Caixa Lendária'}]);
+    expect(wheelRewardDestination(won)).toBe('legendary');
+  });
   it('offers no box for an empty reward or absent result',()=>{
     expect(wheelRewardBoxes(null)).toEqual([]);
     expect(wheelRewardDestination(reward('empty',{}))).toBeNull();

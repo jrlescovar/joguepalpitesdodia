@@ -1,0 +1,42 @@
+create or replace function public.battle_today() returns date language sql stable as $$select coalesce(nullif(current_setting('liga.test_day',true),''),(timezone('America/Sao_Paulo',now())::date)::text)::date$$;
+alter table public.predictions disable trigger user;
+alter table public.picks disable trigger user;
+alter table public.predictions drop constraint valid_prediction_options;
+do $$
+declare w date:=date '2072-01-04'; a uuid; b uuid; c uuid; inactive uuid; old_titles jsonb;
+begin
+ select jsonb_agg(to_jsonb(t) order by award_key) into old_titles from public.arena_week_titles t where week_start<date '2026-10-19';
+ insert into public.public_profiles(id,player_id,username,avatar_color,rank_points) values(gen_random_uuid(),99141001,'ligasunday','#3b82f6',0) returning id into a;
+ insert into public.public_profiles(id,player_id,username,avatar_color,rank_points) values(gen_random_uuid(),99141002,'ligamonday','#3b82f6',0) returning id into b;
+ insert into public.public_profiles(id,player_id,username,avatar_color,rank_points) values(gen_random_uuid(),99141003,'ligatuesday','#3b82f6',0) returning id into c;
+ insert into public.public_profiles(id,player_id,username,avatar_color,rank_points) values(gen_random_uuid(),99141004,'ligainactive','#3b82f6',999999) returning id into inactive;
+ insert into public.predictions(day_id,title,options,closes_at,status) select w+i,'Liga eligibility QA','[{"id":"yes","label":"Yes","rankPoints":100}]'::jsonb,(w+i)::timestamptz,'settled' from generate_series(-1,6)i;
+ insert into public.picks(profile_id,prediction_day,option_id,status) values(a,w-1,'yes','green');
+ perform set_config('liga.test_day',w::text,true);perform public.refresh_arena_round(w);
+ if not exists(select 1 from public.arena_entries where day_id=w and profile_id=a) then raise exception 'Sunday pick not eligible Monday';end if;
+ if exists(select 1 from public.arena_entries where day_id=w and profile_id=inactive) then raise exception 'Inactive rank leader included';end if;
+ insert into public.picks(profile_id,prediction_day,option_id,status) values(b,w,'yes','green');
+ perform public.refresh_arena_round(w);
+ if not exists(select 1 from public.liga_week_participants where week_start=w and profile_id=b) then raise exception 'Monday late entry missing';end if;
+ perform set_config('liga.test_day',(w+1)::text,true);
+ insert into public.picks(profile_id,prediction_day,option_id,status) values(c,w+1,'yes','green');perform public.refresh_arena_round(w+1);
+ if not exists(select 1 from public.arena_entries where day_id=w+1 and profile_id=c) then raise exception 'Tuesday current pick missing from daily';end if;
+ if not exists(select 1 from public.arena_entries where day_id=w+1 and profile_id=b) then raise exception 'Monday pick missing from Tuesday daily';end if;
+ if exists(select 1 from public.arena_entries where day_id=w+1 and profile_id=a) then raise exception 'Two-day-old pick eligible daily';end if;
+ if exists(select 1 from public.liga_week_participants where week_start=w and profile_id=c) then raise exception 'Tuesday newcomer entered weekly';end if;
+ if not exists(select 1 from public.arena_week_scores where week_start=w and day_id=w+1 and profile_id=a) then raise exception 'Weekly participant removed due to daily inactivity';end if;
+ perform set_config('liga.test_day',(w+6)::text,true);perform public.refresh_weekly_arena();perform public.refresh_weekly_arena();
+ if (select winner_id from public.arena_weeks where week_start=w) is distinct from b then raise exception 'Weekly winner wrong';end if;
+ if (select count(*) from public.arena_week_titles where week_start=w)<>1 then raise exception 'Duplicate title';end if;
+ if (select count(*) from public.arena_week_scores where week_start=w)<>14 then raise exception 'Expected 7 days for 2 fixed participants';end if;
+ if old_titles is distinct from (select jsonb_agg(to_jsonb(t) order by award_key) from public.arena_week_titles t where week_start<date '2026-10-19') then raise exception 'Historical titles changed';end if;
+ -- Everyone active qualifies, even beyond 100; rank does not determine entry.
+ perform set_config('liga.test_day',(w+7)::text,true);
+ insert into public.public_profiles(id,player_id,username,avatar_color,rank_points) select gen_random_uuid(),99142000+i,'liga100qa'||i,'#3b82f6',0 from generate_series(1,110)i;
+ insert into public.picks(profile_id,prediction_day,option_id,status) select id,w+6,'yes','green' from public.public_profiles where player_id between 99142001 and 99142110;
+ perform public.refresh_arena_round(w+7);
+ if (select count(*) from public.arena_entries where day_id=w+7)<>110 then raise exception 'Active entry still capped at 100';end if;
+ if (select count(*) from public.liga_week_participants where week_start=w+7)<>110 then raise exception 'Weekly roster capped at 100';end if;
+ if has_table_privilege('authenticated','public.liga_week_participants','insert') then raise exception 'Roster write leaked';end if;
+end;$$;
+select 'Daily activity, Monday entry, Tuesday lock, fixed weekly roster, 7 days, no top100 cap, history and permissions passed' as result;

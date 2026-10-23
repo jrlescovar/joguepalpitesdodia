@@ -8,22 +8,22 @@ begin
  if target is null then raise exception 'Player 1000002 missing';end if;
  if (select count(*) from public.box_inventory where profile_id=target and kind='font')<>5 then raise exception 'Missing granted fonts';end if;
  perform set_config('request.jwt.claim.sub',subject::text,true);
- foreach font in array array['monocraft','dancingscript','bebasneue','amaticsc','kalam'] loop
+ foreach font in array array['monocraft','marckscript','bebasneue','amaticsc','kalam'] loop
  perform public.set_username_font(font);
  if public.get_public_profile(target)->>'usernameFont'<>font then raise exception 'Public font mismatch';end if;
  end loop;
  select p.id,v.auth_user_id into other,other_subject from public.public_profiles p join public.private_profiles v on v.profile_id=p.id where p.player_id not in (1000001,1000002) order by p.player_id limit 1;
  perform set_config('request.jwt.claim.sub',other_subject::text,true);
  delete from public.box_inventory where profile_id=other and kind='font';
- begin perform public.set_username_font('dancingscript');raise exception 'Locked font accepted';exception when raise_exception then if SQLERRM<>'Fonte indisponível para esta conta.' then raise;end if;end;
+ begin perform public.set_username_font('marckscript');raise exception 'Locked font accepted';exception when raise_exception then if SQLERRM<>'Fonte indisponível para esta conta.' then raise;end if;end;
  insert into public.box_balances(profile_id,balance) values(other,2) on conflict(profile_id) do update set balance=2;
  select pass_name_style into before_style from public.public_profiles where id=other;
  item:=public.open_box(request);
- if item->>'kind'<>'font' or item->>'style'<>'dancingscript' or item->>'rarity'<>'legendary' or (item->>'duplicate')::boolean or (item->>'balance')::int<>1 then raise exception 'Wrong font reward: %',item;end if;
+ if item->>'kind'<>'font' or item->>'style'<>'marckscript' or item->>'rarity'<>'legendary' or (item->>'duplicate')::boolean or (item->>'balance')::int<>1 then raise exception 'Wrong font reward: %',item;end if;
  again:=public.open_box(request);
  if again<>item then raise exception 'Idempotence failed';end if;
- perform public.set_username_font('dancingscript');
- if public.get_public_profile(other)->>'usernameFont'<>'dancingscript' then raise exception 'Unlocked font invisible';end if;
+ perform public.set_username_font('marckscript');
+ if public.get_public_profile(other)->>'usernameFont'<>'marckscript' then raise exception 'Unlocked font invisible';end if;
  if (select pass_name_style from public.public_profiles where id=other)<>before_style then raise exception 'Font changed color';end if;
  item:=public.open_box(gen_random_uuid());
  if not (item->>'duplicate')::boolean or (item->>'xpAwarded')::int<>500 or (item->>'balance')::int<>0 then raise exception 'Duplicate failed: %',item;end if;

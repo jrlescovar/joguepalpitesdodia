@@ -68,16 +68,11 @@
 .arena-bracket-placeholder { color: #97aac5; font-size: 12px; }
 .arena-knockout-player.is-winner { background: #e8c16e15; color: #f4d384; }
 .arena-final-match { border-color: #e6c47470; box-shadow: 0 0 26px #e6c4740a; }
-.arena-week-champion { display: flex; align-items: center; gap: 18px; padding: 22px; border-color: #e6c47450; background: linear-gradient(130deg,#e6c47415,#17202c); }
-.arena-week-champion > svg { color: #f4d78d; flex: none; }
-.arena-week-champion span { display: block; font-size: 10px; letter-spacing: .1em; color: #e1c786; margin-bottom: 6px; }
-.arena-week-champion strong { font-size: 17px; }
-.arena-week-champion p { color: #b0c1d8; font-size: 12px; line-height: 1.6; margin: 7px 0 0; }
-.arena-week-champion button { border: 0; background: transparent; color: #ffe3a1; font: inherit; padding: 4px 0; min-height: 44px; }
 .weekly-arena button:focus-visible { outline: 2px solid #f6cf75; outline-offset: 3px; }
 @media(max-width:767px) { .arena-week-hero { padding: 14px 16px; } .arena-daily-winners { grid-template-columns: repeat(2,minmax(0,1fr)); } .arena-week-road { gap: 6px; } .arena-week-road span { font-size: 9px; } .arena-week-road strong { font-size: 10px; } .arena-bracket { grid-template-columns: minmax(0,1fr); gap: 24px; } .arena-bracket-stage:first-child > div { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; } .arena-bracket-stage:not(:last-child) .arena-knockout-match::after { display: none; } .arena-bracket-stage:nth-child(2) > div { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; } .arena-bracket-stage:last-child { max-width: 400px; width: 100%; justify-self: center; } .arena-knockout-player .avatar { width: 24px; height: 24px; } .arena-knockout-player button { flex-wrap: wrap; } .arena-knockout-player button strong { flex-basis: 100%; } .arena-knockout-match header small { font-size: 9px; } .arena-week-standings th:first-child { width: 44%; padding-left: 7px; } .arena-week-standings th,.arena-week-standings td { padding: 10px 3px; font-size: 10px; } .arena-week-standings th button { gap: 4px; flex-wrap: wrap; } .arena-week-standings th button strong { flex-basis: 100%; font-size: 12px; } .arena-week-standings th button > span { width: 24px; font-size: 10px; } .arena-week-standings .avatar { width: 26px; height: 26px; } .arena-week-standings > header { padding: 10px 12px; } .arena-week-note { padding: 0 12px; } }
 .arena-page .page-heading { margin-bottom: 0; }
 .arena-heading-actions { display: flex; align-items: center; gap: 8px; }
+.arena-player .liga-eliminated-label { color:#ffaaa6; font-size:10px; line-height:12px; font-weight:500; }
 .arena-help { display: grid; gap: 12px; margin-top: 16px; color: #d6dce6; font-size: 14px; line-height: 1.5; }
 .arena-help p { margin: 0; }
 .arena-help strong { color: #f4cb72; }
@@ -95,27 +90,31 @@
 .arena-position.arena-first { color: #f4cb72; }
 .arena-position.arena-second { color: #c8d2e0; }
 .arena-position.arena-third { color: #cd9968; }
-.arena-player { position: relative; margin-left: 5px; transform: translateY(-4px); }
+.arena-player { position: relative; margin-left: 5px; }
+.arena-points { position:relative; display:grid; justify-items:end; }
+.arena-points>strong { font-size:inherit; line-height:1.2; }
+.arena-points>small { position:absolute; top:calc(100% + 3px); right:0; display:block; font-size:10px; line-height:12px; color:#aab2c0; font-weight:400; }
 .arena-player small { position: absolute; top: 100%; left: 0; display: block; font-size: 10px; line-height: 12px; color: #aab2c0; }
 .arena-history { display: grid; gap: 12px; margin-top: 12px; }
 .arena-history-dialog { width:calc(100% - 32px); max-width:600px; }
 .arena-history-dialog .dialog-title { padding-right:28px; }
 .arena-history h2 { margin: 0; font-size: 20px; }
 .arena-history-empty { margin: 0; color: #aab2c0; font-size: 14px; }
-.arena-history-list { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
-.arena-history-card { display: grid; grid-template-columns: 44px 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; width: 100%; padding: 12px 16px; color: #f4f7fb; text-align: left; cursor: pointer; }
-.arena-history-card .avatar { width: 42px; height: 42px; }
-.arena-history-date { color: #f4f7fb; font-size: 12px; font-weight: 700; transform: translateX(-3px); }
-.arena-history-player { display: grid; min-width: 0; gap: 0; }
-.arena-history-player strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; transform: translateY(4px); }
-.arena-history-player small { color: #aab2c0; font-size: 12px; }
-.arena-history-score { display: grid; justify-items: end; gap: 2px; color: #f4cb72; font-size: 13px; white-space: nowrap; }
+.arena-history-list { --history-card-height:78px; display: grid; min-height: calc(5 * var(--history-card-height) + 36px); align-content: start; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.arena-history-card { display: grid; grid-template-columns: 44px 42px minmax(0, 1fr) auto; grid-template-rows:24px 16px; align-content:center; align-items: center; gap: 2px 12px; width: 100%; height:var(--history-card-height); min-height:var(--history-card-height); padding: 12px 16px; color: #f4f7fb; text-align: left; cursor: pointer; }
+.arena-history-card .avatar { grid-row:1 / 3; grid-column:2; width: 42px; height: 42px; }
+.arena-history-date { grid-row:1 / 3; grid-column:1; color: #f4f7fb; font-size: 12px; font-weight: 700; transform: translateX(-3px); }
+.arena-history-player { grid-column:3; grid-row:1 / 3; min-width:0; }
+.arena-history-player strong { display:flex; align-items:center; height:24px; line-height:24px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 15px; }
+.arena-history-score { grid-column:4; grid-row:1 / 3; display: grid; grid-template-rows:24px 16px; justify-items: end; gap: 2px; color: #f4cb72; font-size: 13px; white-space: nowrap; }
+.arena-history-score strong { display:flex; align-items:center; height:24px; line-height:24px; }
+.arena-history-score small { color:#aab2c0; font-size:12px; line-height:16px; }
 .arena-history-pagination { display: flex; align-items: center; justify-content: center; gap: 14px; }
-.arena-history-pagination > span { font-size: 12px; color: var(--muted); min-width: 90px; text-align: center; }
+.arena-history-pagination > span { font-size: 16px; color: var(--muted); min-width: 90px; text-align: center; }
 @media (max-width: 640px) {
   .arena-table .global-ranking-list button { grid-template-columns: 28px 36px minmax(0, 1fr) 42px; }
   .arena-table .avatar { width: 36px; height: 36px; }
-  .arena-history-card { grid-template-columns: 34px 36px minmax(0, 1fr) auto; gap: 8px; padding: 10px 12px; }
+  .arena-history-card { grid-template-columns: 34px 36px minmax(0, 1fr) auto; column-gap: 8px; padding: 10px 12px; }
   .arena-history-card .avatar { width: 36px; height: 36px; }
 }
 .arena-mode-tabs button:focus-visible { outline:2px solid #f6cf75; outline-offset:3px; }
@@ -141,3 +140,80 @@
 }
 
 .arena-week-standings > header h2 { margin:0; line-height:1.2; }
+
+.arena-week-road span.is-lit { border-top-color:#f4d279; }
+
+.arena-history-date.is-double-points { color: #fb923c; }
+
+/* Reuse the daily battle card and fighter geometry without approximations. */
+.arena-week-duel.daily-battle-card { margin:0; }
+.arena-duel-status { color:#aabbd3; font-size:10px; }
+.arena-duel-placeholder { color:#aabbd3; font-size:12px; }
+.arena-bracket { grid-template-columns:minmax(0,1fr); }
+.arena-bracket-stage > div { display:grid; grid-template-columns:minmax(0,1fr); justify-content:stretch; width:100%; gap:14px; }
+@media(min-width:1024px) { .arena-bracket-stage > div { grid-template-columns:repeat(2,minmax(0,1fr)); } .arena-bracket-stage:last-child > div { grid-template-columns:minmax(0,1fr); max-width:540px; margin-inline:auto; } }
+
+.arena-stage-tabs { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.arena-bracket-stage:last-child { max-width:none; width:100%; }
+.arena-bracket-stage > div { grid-template-columns:minmax(0,1fr); }
+@media(min-width:1024px) { .arena-bracket-stage > div,.arena-bracket-stage:last-child > div { grid-template-columns:repeat(2,minmax(0,1fr)); max-width:none; } .arena-bracket-stage > div:has(> article:only-child) { grid-template-columns:minmax(0,1fr); max-width:540px; margin-inline:auto; } }
+
+/* Empty knockout slots sit level with the central versus mark. */
+.arena-week-duel .arena-duel-placeholder { padding-top:0; transform:translateY(-13px); }
+.arena-week-duel .battle-versus:has(.arena-duel-placeholder):not(:has(.avatar)) { grid-template-columns:minmax(0,1fr) 30px minmax(0,1fr); gap:10px; }
+.arena-week-duel .battle-versus:has(.arena-duel-placeholder):not(:has(.avatar)) .arena-duel-placeholder:first-child { align-items:flex-end; text-align:right; }
+.arena-week-duel .battle-versus:has(.arena-duel-placeholder):not(:has(.avatar)) .arena-duel-placeholder:last-child { align-items:flex-start; text-align:left; }
+
+.arena-table .global-ranking-own-label { position: relative; top: -5px; }
+
+
+/* Custom fonts stay inside the same name row in every champion card. */
+.arena-history-player strong .username-text { display:block; min-width:0; overflow:hidden; text-overflow:ellipsis; line-height:1.2!important; padding-block:0!important; }
+@media(max-width:767px) { .arena-history-list { --history-card-height:72px; } }
+
+.liga-week-history .arena-history-list{min-height:0}
+.liga-week-period{display:grid;gap:3px}
+
+
+/* Desktop keeps both Liga tables visible; mobile retains its view buttons. */
+.liga-tables,.liga-daily-panel{display:grid;gap:18px;min-width:0;align-content:start}
+.liga-tables .global-ranking-card{width:100%;min-width:0}
+.liga-daily-empty{padding:20px;margin:0}
+@media(min-width:1024px){
+ .arena-page.global-ranking-page{max-width:1400px;width:100%}
+ .liga-tables-with-week{grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start}
+ .liga-tables .arena-table>header>span{min-width:0;line-height:1.4}
+ .liga-tables .arena-table>header>strong{flex-shrink:0}
+}
+
+
+/* Denser Liga tables on desktop, with mobile row geometry unchanged. */
+@media(min-width:1024px){
+ .arena-page{gap:12px}
+ .arena-page>.page-heading{margin-bottom:0}
+ .liga-daily-panel,.liga-tables>.weekly-arena{gap:12px}
+ .liga-tables .arena-table>header{padding:8px 14px}
+ .liga-tables .arena-columns{padding-block:6px}
+ .liga-tables .global-ranking-list button{min-height:54px;padding:8px 18px 8px 14px;gap:10px;grid-template-columns:30px 34px minmax(0,1fr) 64px}
+ .liga-tables .global-ranking-list .avatar{width:34px;height:34px}
+ .liga-tables .arena-points>small{top:100%}
+ .liga-tables .liga-eliminated-label{top:calc(100% - 4px)}
+}
+
+
+.liga-help-section{display:grid;gap:12px;min-width:0;align-content:start}
+.liga-help-section>h3{display:none}
+@media(min-width:1200px){
+ .arena-page{row-gap:18px}
+ .arena-page>.page-heading{height:46px;min-height:46px;margin-bottom:0}
+ .arena-page>.page-heading h1{font-size:1.9rem}
+}
+@media(min-width:1024px){
+ .dialog-content.liga-help-dialog{width:calc(100vw - 64px);max-width:1040px}
+ .liga-help-dialog .arena-help{grid-template-columns:repeat(2,minmax(0,1fr));gap:0;align-items:start}
+ .liga-help-section:first-child{padding-right:28px}
+ .liga-help-section+.liga-help-section{padding-left:28px;border-left:1px solid #4a5260}
+ .liga-help-section>h3{display:flex;align-items:center;gap:9px;margin:0 0 4px;font-size:18px;line-height:1.4;color:#f4f7fb}
+ .liga-help-section>h3 svg{flex-shrink:0;color:#8bbaff}
+ .liga-help-section+.liga-help-section>h3 svg{color:#f4cb72}
+}

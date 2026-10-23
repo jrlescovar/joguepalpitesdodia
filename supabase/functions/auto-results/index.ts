@@ -44,7 +44,7 @@ Deno.serve(async request => {
           continue;
         }
         if (fixture.fixture.status.short !== 'FT') continue;
-        if (target.kind === 'tournament' && !shots.has(fixture.fixture.id)) shots.set(fixture.fixture.id, await api<Stats>(`fixtures/statistics?fixture=${fixture.fixture.id}`, key));
+        if (target.kind === 'tournament' && target.metric !== 'classic' && !shots.has(fixture.fixture.id)) shots.set(fixture.fixture.id, await api<Stats>(`fixtures/statistics?fixture=${fixture.fixture.id}`, key));
         const evidence = evaluate(target, fixture, shots.get(fixture.fixture.id));
         if (!evidence) {
           await admin.rpc('record_automatic_result_issue', { p_key: target.key, p_issue: 'Resultado final ou estatísticas incompletas.' });

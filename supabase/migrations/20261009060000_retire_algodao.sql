@@ -1,0 +1,10 @@
+begin;
+update public.public_profiles set pass_name_style='none' where pass_name_style='rose-purple';
+update public.public_profiles set pass_border_style='none' where pass_border_style='rose-purple';
+delete from public.box_inventory where kind in ('name','frame') and style='rose-purple';
+update public.box_style_catalog set theme='retired' where style='rose-purple';
+alter table public.public_profiles add constraint retired_algodao_name check(pass_name_style<>'rose-purple');
+alter table public.public_profiles add constraint retired_algodao_frame check(pass_border_style<>'rose-purple');
+notify pgrst,'reload schema';
+commit;
+select (select count(*) from public.public_profiles where pass_name_style='rose-purple' or pass_border_style='rose-purple') equipped,(select count(*) from public.box_inventory where style='rose-purple') inventory,(select theme from public.box_style_catalog where style='rose-purple') theme,(select count(*) from public.box_openings where style='rose-purple') preserved_openings;

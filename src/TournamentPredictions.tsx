@@ -1,16 +1,21 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ArrowRight, Check, Clock3, Equal, House, LoaderCircle, LockKeyhole, Plane } from 'lucide-react';
+import { teamNameDisplay } from './teamNameDisplay';
+import { dailyCompetitionLabel } from './dailyGameDisplay';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { ArrowRight, Check, Clock3, LoaderCircle, LockKeyhole, X } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { ErrorNotice } from './components';
-import { tournamentDay, tournamentOptions, tournamentTime, type FinishingTournamentState, type TournamentOption, type TournamentPrediction } from './finishingTournamentTypes';
+import { tournamentDay, tournamentOptionsFor, tournamentTime, type FinishingTournamentState, type TournamentOption, type TournamentPrediction } from './finishingTournamentTypes';
 import { useCardCarousel } from './useCardCarousel';
 import CarouselControls from './CarouselControls';
 import './boxCarousel.css';
 
-function TournamentPickCarousel({games,renderGame}:{games:TournamentPrediction[];renderGame:(game:TournamentPrediction)=>ReactNode}) {
+const teamLabel = (name: string) => teamNameDisplay(name).replace(/\bBorussia\b/gi, 'B.');
+
+function TournamentPickCarousel({games,renderGame,onActiveChange}:{games:TournamentPrediction[];renderGame:(game:TournamentPrediction)=>ReactNode;onActiveChange:()=>void}) {
   const keys=games.map(game=>String(game.slot));
   const {rail,slides,active,shown,snapStarts,goTo,gestureHandlers}=useCardCarousel(keys,{perPage:1});
   const requested=useRef<number|null>(null);
+  useLayoutEffect(onActiveChange,[active,onActiveChange]);
   useEffect(()=>{
     const container=rail.current;
     if(!container)return;
@@ -35,7 +40,7 @@ function TournamentPickCarousel({games,renderGame}:{games:TournamentPrediction[]
         {renderGame(game)}
       </div>;})}
     </div>
-    <CarouselControls active={active} labels={games.map(game=>`palpite ${game.slot}`)} onSelect={page=>{requested.current=page;goTo(page);}} previousLabel="Palpite anterior do torneio" nextLabel="Próximo palpite do torneio"/>
+    <CarouselControls compactSelect active={active} labels={games.map(game=>`palpite ${game.slot}`)} onSelect={page=>{requested.current=page;goTo(page);}} previousLabel="Palpite anterior do torneio" nextLabel="Próximo palpite do torneio"/>
   </div>;
 }
 
@@ -43,6 +48,7 @@ export default function TournamentPredictions({ data, offset, today, onSaved }: 
   const days = [...new Set(data.predictions.map(game => game.dayId))].sort();
   const [day, setDay] = useState(() => days.includes(today) ? today : days[0]);
   const [selected, setSelected] = useState<Record<number, TournamentOption>>({});
+  const clearSelection = useCallback(() => setSelected(previous => Object.keys(previous).length ? {} : previous), []);
   const [busy, setBusy] = useState<number | null>(null);
   const [error, setError] = useState<{ slot: number; message: string } | null>(null);
   const [now, setNow] = useState(() => Date.now() + offset);
@@ -60,44 +66,48 @@ export default function TournamentPredictions({ data, offset, today, onSaved }: 
     setBusy(slot); setError(null);
     try {
       const state = await call<FinishingTournamentState>('submitTournamentPick', { tournamentId: data.id, slot, optionId });
+      clearSelection();
       onSaved(state);
     } catch (cause) { setError({ slot, message: errorMessage(cause) }); }
     finally { setBusy(null); }
   }
   const games = data.predictions.filter(game => game.dayId === day);
   const confirmed = games.filter(game => game.myOptionId).length;
-  return <div className="tournament-picks-content">
-    <div className="tournament-day-tabs" role="group" aria-label="Dia dos palpites do torneio">
+  return <div className="tournament-picks-content" data-single-day={days.length===1 || undefined}>
+    {days.length > 1 && <div className="tournament-day-tabs" role="group" aria-label="Dia dos palpites do torneio">
       {days.map(value => <button key={value} type="button" aria-pressed={day === value} onClick={() => setDay(value)}>{tournamentDay(value)}</button>)}
-    </div>
+    </div>}
     <p className="tournament-picks-progress">{confirmed} / {games.length} confirmados neste dia</p>
     <div className="tournament-day-progress" role="progressbar" aria-label="Palpites confirmados neste dia" aria-valuemin={0} aria-valuemax={games.length} aria-valuenow={confirmed}><span style={{width:`${games.length ? confirmed / games.length * 100 : 0}%`}}/></div>
-    <TournamentPickCarousel key={day} games={games} renderGame={game => {
+    <TournamentPickCarousel key={day} games={games} onActiveChange={clearSelection} renderGame={game => {
+        const options = tournamentOptionsFor(data.metric, game);
         const closed = game.status !== 'open' || Date.parse(game.closesAt) <= now;
         const picked = game.myOptionId;
         const current = picked ?? selected[game.slot];
-        const label = tournamentOptions.find(option => option.id === picked)?.label;
         return <article key={game.slot} className="tournament-pick-card" aria-label={`Palpite ${game.slot}: ${game.homeTeam} x ${game.awayTeam}`}>
-          <div className="tournament-pick-meta"><span>{game.competition}</span><span><Clock3 size={13} aria-hidden="true"/>{tournamentTime(game.closesAt)} · Brasília</span></div>
+          <div className="tournament-pick-meta"><span>{dailyCompetitionLabel(game.competition)}</span><span><Clock3 size={13} aria-hidden="true"/>{game.status === 'open' && Date.parse(game.closesAt) <= now ? 'Em Jogo' : `${tournamentTime(game.closesAt)} · Brasília`}</span></div>
           <h3>{game.title}</h3>
-          <div className="tournament-duel"><div><span className="tournament-team-mark" aria-hidden="true"><House size={21}/></span><strong>{game.homeTeam}</strong></div><span className="tournament-duel-versus" aria-hidden="true">VS</span><div><span className="tournament-team-mark" aria-hidden="true"><Plane size={21}/></span><strong>{game.awayTeam}</strong></div></div>
-          <p className="tournament-choice-label">{picked ? 'Sua escolha' : closed ? 'Seleção encerrada' : 'Quem recebe mais cartões?'}</p>
-          <div className="tournament-pick-options" role="group" aria-label={`Escolha para ${game.homeTeam} x ${game.awayTeam}`}>
-            {tournamentOptions.map(option => <button type="button" key={option.id} aria-label={option.label} aria-pressed={current === option.id}
-              className={current === option.id ? 'selected' : ''} disabled={Boolean(picked) || closed || busy !== null}
-              onClick={() => { setSelected(previous => ({ ...previous, [game.slot]: option.id })); setError(null); }}>
-              <span className="tournament-option-symbol" aria-hidden="true">{current === option.id ? <Check size={18}/> : option.id === 'home' ? <House size={18}/> : option.id === 'draw' ? <Equal size={18}/> : <Plane size={18}/>}</span><strong>{option.label}</strong><small>{option.id === 'home' ? 'Mandante' : option.id === 'draw' ? 'Totais iguais' : 'Visitante'}</small>
+          <div className="tournament-duel"><div><strong>{teamLabel(game.homeTeam)}</strong></div><span className="tournament-duel-versus" aria-hidden="true">VS</span><div><strong>{teamLabel(game.awayTeam)}</strong></div></div>
+          {!picked && (closed || (data.metric !== 'classic' && data.metric !== 'mixed')) && <p className="tournament-choice-label">{closed ? 'Seleção encerrada' : data.metric === 'cards' ? 'Quem recebe mais cartões?' : 'Quem terá mais finalizações?'}</p>}
+          <div className={`tournament-pick-options${options.length === 2 ? ' tournament-options-binary' : ''}`} role="group" aria-label={`Escolha para ${game.title}: ${game.homeTeam} x ${game.awayTeam}`}>
+            {options.map(option => <button type="button" key={option.id} aria-label={option.label} aria-pressed={current === option.id}
+              className={`${current === option.id ? 'selected' : ''}${game.status === 'settled' && game.winningOptionId === option.id ? ' correct' : ''}`} aria-description={game.status === 'settled' && game.winningOptionId === option.id ? 'Opção correta' : undefined} disabled={Boolean(picked) || closed || busy !== null}
+              onClick={() => { setSelected(previous => previous[game.slot] === option.id ? {} : { [game.slot]: option.id }); setError(null); }}>
+              <strong>{option.label}</strong>
             </button>)}
           </div>
-          {picked ? <p className={`tournament-pick-feedback ${game.myResult ?? ''}`} role="status">
-            {game.myResult === 'correct' ? <><Check size={15}/>Acertou · +1 ponto no torneio</>
-              : game.myResult === 'incorrect' ? 'Não acertou · 0 pontos no torneio'
-              : <><Check size={15}/>Palpite confirmado: {label}</>}
-          </p> : closed ? <p className="tournament-pick-feedback"><LockKeyhole size={14}/>Prazo encerrado</p>
-            : <button type="button" className="primary-button tournament-pick-submit" disabled={!current || busy !== null} onClick={() => void submit(game.slot)}>
+          {picked ? null : closed ? <p className="tournament-pick-feedback"><LockKeyhole size={14}/>Prazo encerrado</p>
+            : current && <button type="button" className="primary-button tournament-pick-submit" disabled={busy !== null} onClick={() => void submit(game.slot)}>
               {busy === game.slot ? <><LoaderCircle size={16} className="spin"/>Confirmando…</> : <>Confirmar palpite<ArrowRight size={17} aria-hidden="true"/></>}
             </button>}
-          {game.status === 'settled' && <p className="tournament-pick-result">{game.homeShots !== null && game.awayShots !== null ? `Finalizações: ${game.homeShots} × ${game.awayShots} · ` : ''}Resultado: {tournamentOptions.find(option => option.id === game.winningOptionId)?.label}</p>}
+          {picked && game.status === 'settled' && <div className={`pick-result tournament-outcome ${picked === game.winningOptionId ? 'green' : 'red'}`} role="status">
+            {picked === game.winningOptionId ? <Check aria-hidden="true"/> : <X aria-hidden="true"/>}
+            <span>{picked === game.winningOptionId ? 'Deu green! +1 pts para você.' : 'Deu red.'}</span>
+          </div>}
+          {picked && game.status === 'open' && closed && <div className="pick-result tournament-outcome in-progress" role="status">
+            <Clock3 aria-hidden="true"/>
+            <span>Em andamento</span>
+          </div>}
           {error?.slot === game.slot && <ErrorNotice message={error.message}/>}
         </article>;
       }}/>

@@ -1,0 +1,11 @@
+.daily-card .prediction-content>h2 { margin-bottom:10px; }
+.daily-header:has(.daily-header-status) { display:grid; grid-template-columns:minmax(0,1fr) auto; }
+.daily-header:has(.daily-header-status)>span:first-child { min-width:0; }
+.daily-header:has(.daily-header-status) .daily-rewards { flex-wrap:wrap; justify-content:flex-end; }
+.daily-header .daily-header-status { display:inline-flex; align-items:center; justify-content:center; gap:5px; padding:5px 7px; border:1px solid currentColor; border-radius:999px; color:var(--accent); background:#75b2ff0c; font-size:10px; font-weight:600; line-height:1.2; white-space:nowrap; }
+.daily-header-status svg { flex-shrink:0; }
+@media(max-width:640px) {
+ .daily-header:has(.daily-header-status) .daily-rewards { flex-direction:row; flex-wrap:nowrap; align-items:center; gap:4px; }
+ .daily-header:has(.daily-header-status) .double-points-pill { align-self:center; padding:5px 6px; font-size:10px; line-height:1.2; }
+ .daily-header:has(.daily-header-status)>span:first-child { letter-spacing:.04em; }
+}

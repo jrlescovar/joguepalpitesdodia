@@ -19,8 +19,8 @@ function RankProgress({ points, position }: { points: number; position: number |
   const tier = rankTier(points);
   const nextTier = rankTiers[rankTiers.findIndex(item => item.key === tier.key) + 1];
   if (!nextTier) return <section className="card rank-progress-card rank-progress-master" aria-label="Sua patente no Ranking Global">
-    <div className="rank-progress-caption">SUA PATENTE</div>{guide}
-    <div className="rank-progress-master-content"><RankEmblem points={points}/><div><strong>{tier.name}</strong><span>{tier.min}+ pts</span></div><div className="rank-progress-position"><small>POSIÇÃO GLOBAL</small><strong>{position === null ? '—' : `#${position}`}</strong></div></div>
+    <div className="rank-progress-heading"><div className="rank-progress-caption">SUA PATENTE</div><div className="rank-progress-position-caption">{guide}<span>POSIÇÃO GLOBAL</span></div></div>
+    <div className="rank-progress-master-content"><RankEmblem points={points}/><div><strong>{tier.name}</strong><span>{tier.min}+ pts</span></div><div className="rank-progress-position" aria-label="Posição global"><strong>{position === null ? '—' : `#${position}`}</strong></div></div>
   </section>;
   const earned = points - tier.min;
   const needed = nextTier.min - tier.min;

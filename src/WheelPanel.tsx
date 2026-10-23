@@ -1,19 +1,19 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Check, CircleHelp, Gift, LoaderCircle, LockKeyhole, RotateCw } from 'lucide-react';
+import { CircleHelp, Gift, LoaderCircle, LockKeyhole, RotateCw } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { ErrorNotice, Modal } from './components';
-import { wheelLandingAngle, wheelSegments } from './wheelGeometry';
+import { wheelLandingAngle } from './wheelGeometry';
 import { wheelPrizeSummary } from './wheelPrizeSummary';
 import { animateWheel, setWheelAngle } from './wheelMotion';
 import WheelPrizeIcon from './WheelPrizeIcon';
 import WheelRewardModal from './WheelRewardModal';
-import type { BoxTheme, WheelPrize, WheelReward, WheelState } from './types';
+import WheelArt from './WheelArt';
+import type { WheelBoxTheme, WheelReward, WheelState } from './types';
 import './wheel.css';
 
-const colors:Record<WheelPrize['kind'],string>={classic:'#65512c',halloween:'#753f26',font:'#4d3d79',name:'#235e67',frame:'#315079',supporter:'#a47724',empty:'#282e3a'};
 const pendingKey=(profileId:string)=>`apostadodia:daily-wheel:${profileId}`;
 
-export default function WheelPanel({profileId,refreshTick,onChanged,onOpenReward}:{profileId:string;refreshTick:number;onChanged:()=>void;onOpenReward:(destination:BoxTheme|'supporter')=>void}){
+export default function WheelPanel({profileId,refreshTick,onChanged,onOpenReward}:{profileId:string;refreshTick:number;onChanged:()=>void;onOpenReward:(destination:WheelBoxTheme|'supporter')=>void}){
   const [state,setState]=useState<WheelState|null>(null);
   const [error,setError]=useState('');
   const [retry,setRetry]=useState(0);
@@ -76,7 +76,7 @@ export default function WheelPanel({profileId,refreshTick,onChanged,onOpenReward
   },[animating]);
 
   async function spin(){
-    if(inFlight.current||animating||!state)return;
+    if(inFlight.current||!state||spinDisabled)return;
     inFlight.current=true;setBusy(true);setError('');setRevealedReward(null);
     const requestId=sessionStorage.getItem(pendingKey(profileId))??crypto.randomUUID();
     sessionStorage.setItem(pendingKey(profileId),requestId);setPending(true);
@@ -109,30 +109,25 @@ export default function WheelPanel({profileId,refreshTick,onChanged,onOpenReward
     finally{inFlight.current=false;if(mounted.current)setBusy(false);}
   }
 
-  const result=reward??state?.result;
   const spinning=busy||animating;
   const unlocked=state?.unlimited||(state?.eligible&&!state.used);
-  const segments=wheelSegments(state?.prizes??[]);
-  const gradient=`conic-gradient(${segments.map(prize=>`${colors[prize.kind]} ${prize.start}deg ${prize.end}deg`).join(',')})`;
+  const spinDisabled=spinning||!state||(!state.unlimited&&state.used)||(!pending&&!unlocked);
   const remaining=state?.remaining??0;
   const prizeSummary=wheelPrizeSummary(state?.prizes??[]);
   return <><section className="card wheel-panel" aria-labelledby="daily-wheel-title">
     <header className="wheel-heading"><div><span className="wheel-eyebrow"><Gift size={15}/> SEU BÔNUS DIÁRIO</span><h2 id="daily-wheel-title">Roleta da Sorte<span>.</span></h2></div><button className="icon-button" type="button" aria-label="Como funciona a Roleta da Sorte" onClick={()=>setHelp(true)}><CircleHelp size={20}/></button></header>
     <div className="wheel-layout">
-      <div className="wheel-art" aria-hidden="true"><div className="wheel-pointer"/><div className="wheel-disc" ref={disc} style={{background:segments.length?gradient:undefined}}/>{segments.map(prize=>{
-        const angle=prize.middle*Math.PI/180;
-        return <span className={`wheel-segment wheel-segment-${prize.kind}`} key={prize.position} data-wheel-middle={prize.middle} style={{left:`${50+36*Math.sin(angle)}%`,top:`${50-36*Math.cos(angle)}%`}}><span className="wheel-prize-upright"><WheelPrizeIcon kind={prize.kind}/></span></span>;
-      })}<div className="wheel-hub"><strong>Giro</strong><small>Grátis</small></div></div>
+      <WheelArt prizes={state?.prizes??[]} ref={disc}/>
       <div className="wheel-controls">
-        <span className={`wheel-status ${unlocked?'wheel-status-ready':''}`}>{state?.unlimited?<><RotateCw size={16}/> Giros ilimitados para jrlescovar</>:state?.used?<><Check size={16}/> Giro de hoje utilizado</>:unlocked?<><Gift size={16}/> Seu giro está liberado!</>:<><LockKeyhole size={16}/> Complete seus palpites</>}</span>
-        {(!state||state.unlimited||(!state.used&&!unlocked))&&<p>{!state?'Carregando seu giro…':state.unlimited?'Você pode girar novamente para experimentar os prêmios.':remaining>0?`Falta${remaining===1?'':'m'} ${remaining} palpite${remaining===1?'':'s'} aberto${remaining===1?'':'s'} para liberar seu giro grátis.`:'Faça os palpites do dia para liberar um giro grátis.'}</p>}
-        <button type="button" className="primary-button wheel-spin-button" disabled={spinning||!state||(!pending&&!unlocked)} onClick={()=>void spin()}>{spinning?<LoaderCircle size={19} className="spin"/>:pending?<RotateCw size={19}/>:unlocked?<Gift size={19}/>:<LockKeyhole size={19}/>} {busy?'Preparando giro…':animating?'Girando…':pending?'Retomar meu giro':state?.used?'Volte amanhã':state?.unlimited&&result?'Girar novamente':'Girar grátis'}</button>
-        <small className="wheel-reset">{state?.unlimited?'Exclusivo da sua conta · Sem limite diário':'1 giro por dia · Renova às 00:00 de Brasília'}</small>
+        {(!state?.used||state.unlimited)&&<span className={`wheel-status ${unlocked?'wheel-status-ready':''}`}>{unlocked?<><Gift size={16}/> Seu giro está liberado!</>:<><LockKeyhole size={16}/> Complete seus palpites</>}</span>}
+        {(!state||(!state.used&&!unlocked))&&<p>{!state?'Carregando seu giro…':remaining>0?`Falta${remaining===1?'':'m'} ${remaining} palpite${remaining===1?'':'s'} aberto${remaining===1?'':'s'} para liberar seu giro grátis.`:'Faça os palpites do dia para liberar um giro grátis.'}</p>}
+        <button type="button" className="primary-button wheel-spin-button" disabled={spinDisabled} onClick={()=>void spin()}>{spinning?<LoaderCircle size={19} className="spin"/>:pending?<RotateCw size={19}/>:unlocked?<Gift size={19}/>:<LockKeyhole size={19}/>} {busy?'Preparando giro…':animating?'Girando…':pending?'Retomar meu giro':state?.used?'Volte amanhã':'Girar grátis'}</button>
+        {!state?.unlimited&&<small className="wheel-reset">1 giro por dia · Renova às 00:00 de Brasília</small>}
         {error&&<ErrorNotice message={error} retry={()=>setRetry(value=>value+1)}/>}
       </div>
     </div>
-    <Modal open={help} onOpenChange={setHelp} title="Seu giro diário"><div className="wheel-help"><p>Faça todos os palpites que estiverem abertos hoje para liberar um giro grátis. Quem já completou os palpites de hoje também pode girar.</p><p>O giro renova às 00:00 de Brasília e não acumula. Depois de liberado, continua disponível até o fim do dia.</p><p>O Apoiador tem 5% de chance somente às quintas-feiras, no horário de Brasília. Nos outros dias, continua na roleta, mas não pode ser sorteado. O prêmio inclui um mês com todos os benefícios e a medalha. Se você já tiver um passe ativo, recebe 7 caixas aleatórias entre personalização, Halloween, fontes, cor de nome e moldura.</p><p>As caixas de cor de nome e moldura usam os mesmos itens e chances por raridade da caixa de personalização. Itens repetidos viram XP.</p>
-      <section className="wheel-prizes" aria-labelledby="wheel-prizes-title"><h3 id="wheel-prizes-title">Prêmios e chances</h3>{state?<ol>{prizeSummary.map(prize=><li key={prize.kind}><WheelPrizeIcon kind={prize.kind} small/><span>{prize.label}{prize.kind==='supporter'?' · Somente às quintas-feiras':''}</span><b>{prize.chance.toLocaleString('pt-BR',{maximumFractionDigits:3})}%</b></li>)}</ol>:<p>Carregando prêmios…</p>}</section>
+    <Modal open={help} onOpenChange={setHelp} title="Seu giro diário"><div className="wheel-help"><p>Faça todos os palpites que estiverem abertos hoje para liberar um giro grátis. Quem já completou os palpites de hoje também pode girar.</p><p>O giro renova às 00:00 de Brasília e não acumula. Depois de liberado, continua disponível até o fim do dia.</p><p>Ao ganhar, ela fica disponível em Minhas caixas, pronta para abrir. Ela garante um item lendário; itens repetidos viram XP.</p><p>As caixas de cor de nome e moldura usam os mesmos itens e chances por raridade da caixa de personalização. Itens repetidos viram XP.</p>
+      <section className="wheel-prizes" aria-labelledby="wheel-prizes-title"><h3 id="wheel-prizes-title">Prêmios e chances</h3>{state?<ol>{prizeSummary.map(prize=><li key={prize.kind}><WheelPrizeIcon kind={prize.kind} small/><span>{prize.label}</span><b>{prize.chance.toLocaleString('pt-BR',{maximumFractionDigits:3})}%</b></li>)}</ol>:<p>Carregando prêmios…</p>}</section>
     </div></Modal>
   </section><WheelRewardModal reward={revealedReward} onClose={()=>setRevealedReward(null)} onNavigate={onOpenReward}/></>;
 }
