@@ -4,7 +4,7 @@ import { call, errorMessage, invalidateReads, passRedirect } from './backend';
 import { Avatar, ErrorNotice, Loading, Modal } from './components';
 import UsernameText from './UsernameText';
 import ProfileOverview from './ProfileOverview';
-import {usePublicProfileNavigation} from './usePublicProfileNavigation';
+import {useOwnProfileRedirect,usePublicProfileNavigation} from './usePublicProfileNavigation';
 import TournamentPredictions from './TournamentPredictions';
 import type { FinishingTournamentState, TournamentPlayer } from './finishingTournamentTypes';
 import { tournamentTime } from './finishingTournamentTypes';
@@ -56,6 +56,7 @@ export default function FinishingTournament({ ownUid, refreshTick, today, lastCl
   const [rules, setRules] = useState(false);
   const [busy, setBusy] = useState(false);
   const [selected, setSelected] = useState<PublicProfile | null>(null);
+  const redirectOwnProfile=useOwnProfileRedirect();
   const {openPublicProfile,cancelProfileOpen,profileOpenNotice}=usePublicProfileNavigation(setSelected);
   const retry = useCallback(() => { invalidateReads(); setReload(value => value + 1); }, []);
   useEffect(() => {
@@ -74,7 +75,7 @@ export default function FinishingTournament({ ownUid, refreshTick, today, lastCl
     try { await passRedirect('infinitepay-checkout', { kind: 'tournament', quantity: 1, tournamentId: data.id, requestId: crypto.randomUUID() }); }
     catch (cause) { setError(errorMessage(cause)); setBusy(false); }
   }
-  async function openProfile(player: TournamentPlayer) {
+  async function openProfile(player: TournamentPlayer) { if(redirectOwnProfile(player.uid))return;
     setSelected(player); window.scrollTo({ top: 0, behavior: 'instant' });
     try {
       const profile = await call<PublicProfile | null>('getPublicProfile', { uid: player.uid });

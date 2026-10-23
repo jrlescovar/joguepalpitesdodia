@@ -1,9 +1,19 @@
-import {useCallback,useEffect,useRef,useState} from 'react';
+import {createContext,useContext,useCallback,useEffect,useRef,useState} from 'react';
 import {call,errorMessage} from './backend';
 import {ErrorNotice} from './components';
 import type {PublicProfile} from './types';
 
-export function usePublicProfileNavigation(onOpen:(profile:PublicProfile)=>void) {
+type OwnProfileTarget={uid:string;open:()=>void};
+export const OwnProfileNavigation=createContext<OwnProfileTarget|null>(null);
+export function useOwnProfileRedirect(){
+  const own=useContext(OwnProfileNavigation);
+  return (uid:string)=>{if(own&&uid===own.uid){own.open();return true;}return false;};
+}
+
+export function usePublicProfileNavigation(onOpen:(profile:PublicProfile)=>void,ownTarget?:OwnProfileTarget) {
+  const inheritedOwn=useContext(OwnProfileNavigation);
+  const ownRef=useRef(ownTarget??inheritedOwn);
+  ownRef.current=ownTarget??inheritedOwn;
   const onOpenRef=useRef(onOpen);
   onOpenRef.current=onOpen;
   const request=useRef(0);
@@ -13,6 +23,7 @@ export function usePublicProfileNavigation(onOpen:(profile:PublicProfile)=>void)
   useEffect(()=>()=>{request.current++;},[]);
   const cancelProfileOpen=useCallback(()=>{request.current++;setLoading(false);setError('');},[]);
   const openPublicProfile=useCallback((uid:string)=>{
+    if(ownRef.current?.uid===uid){request.current++;setLoading(false);setError('');ownRef.current.open();return;}
     const generation=++request.current;
     target.current=uid;setLoading(true);setError('');
     void call<PublicProfile|null>('getPublicProfile',{uid}).then(profile=>{

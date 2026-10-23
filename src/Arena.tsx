@@ -4,7 +4,7 @@ import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice, Modal } from './components';
 import UsernameText from './UsernameText';
 import ProfileOverview from './ProfileOverview';
-import {usePublicProfileNavigation} from './usePublicProfileNavigation';
+import {useOwnProfileRedirect,usePublicProfileNavigation} from './usePublicProfileNavigation';
 import type { PublicProfile } from './types';
 import './arena.css';
 import { pollWhileVisible } from './visiblePolling';
@@ -27,6 +27,7 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
   const [showHelp, setShowHelp] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [selected, setSelected] = useState<PublicProfile | null>(null);
+  const redirectOwnProfile=useOwnProfileRedirect();
   const {openPublicProfile,cancelProfileOpen,profileOpenNotice}=usePublicProfileNavigation(setSelected);
   const [history, setHistory] = useState<ArenaHistoryEntry[]>([]);
   const [historyLoading, setHistoryLoading] = useState(true);
@@ -78,7 +79,7 @@ export default function Arena({ ownUid, today, lastClosedPrediction, refreshTick
     } catch (cause) { if (request === historyRequest.current) setHistoryError(errorMessage(cause)); }
     finally { if (request === historyRequest.current) setHistoryLoading(false); }
   }
-  function openProfile(player: PublicProfile) { setSelected(player); window.scrollTo({ top: 0, behavior: 'instant' }); }
+  function openProfile(player: PublicProfile) { if(redirectOwnProfile(player.uid))return; setSelected(player); window.scrollTo({ top: 0, behavior: 'instant' }); }
   const weekday=new Date(`${data?.dayId ?? today}T12:00:00Z`).getUTCDay();
   const hasDailyArena=weekday>=1&&weekday<=4;
   const showDailyArena=hasDailyArena&&(!data?.week||arenaView==='daily');

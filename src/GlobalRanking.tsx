@@ -4,7 +4,7 @@ import { ArrowLeft, RefreshCw, Shield, CircleHelp } from 'lucide-react';
 import { call, errorMessage } from './backend';
 import { Avatar, ErrorNotice, Modal } from './components';
 import ProfileOverview from './ProfileOverview';
-import {usePublicProfileNavigation} from './usePublicProfileNavigation';
+import {useOwnProfileRedirect,usePublicProfileNavigation} from './usePublicProfileNavigation';
 import { rankTier, rankTiers } from './rankTiers';
 import RankEmblem from './RankEmblem';
 import DailyBattle from './DailyBattle';
@@ -52,6 +52,7 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
   const [error, setError] = useState('');
   const [reload, setReload] = useState(0);
   const [selected, setSelected] = useState<PublicProfile | null>(null);
+  const redirectOwnProfile=useOwnProfileRedirect();
   const {openPublicProfile,cancelProfileOpen,profileOpenNotice}=usePublicProfileNavigation(setSelected);
   useEffect(() => {
     let current = true;
@@ -62,7 +63,7 @@ export default function GlobalRanking({ ownUid, ownPoints, lastClosedPrediction,
       .finally(() => { if (current) setLoading(false); });
     return () => { current = false; };
   }, [reload, refreshTick]);
-  async function openProfile(player: RankedPlayer) {
+  async function openProfile(player: RankedPlayer) { if(redirectOwnProfile(player.uid))return;
     setSelected(player);
     try {
       const details = await call<PublicProfile | null>('getPublicProfile', { uid: player.uid });
